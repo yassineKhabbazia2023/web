@@ -1,4 +1,4 @@
-import type { BeneficiaryDocumentType, SupportingDocumentType } from '@entities/enums'
+import type { SupportingDocumentType } from '@entities/enums'
 
 // Shared shape of every document returned by the prospect `/documents` endpoint.
 export interface ConformityDocument {
@@ -7,24 +7,6 @@ export interface ConformityDocument {
   contentType: string
   uploadedAt: string
   uploadedBy: string
-}
-
-export interface SupportingDocument extends ConformityDocument {
-  documentType: SupportingDocumentType
-}
-
-export interface BeneficiaryDocument extends ConformityDocument {
-  beneficiaryId: string
-  documentType: BeneficiaryDocumentType
-  fileOrder: number
-}
-
-export interface ConformityDocumentsResponse {
-  prospectId: number
-  supportingDocuments: SupportingDocument[]
-  beneficiaryDocuments: BeneficiaryDocument[]
-  commercialProposal: ConformityDocument | null
-  engagementLetter: ConformityDocument | null
 }
 
 // Returned by the dedicated /onboarding/{accountId}/supporting-documents endpoint:

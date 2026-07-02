@@ -10,6 +10,7 @@ export interface DocumentsListItem {
   documentName: string
   documentDepositDate: string
   documentDepositedBy?: string
+  documentDepositedByInitials?: string
   options?: DocumentOption[]
 }
 
@@ -26,4 +27,5 @@ export interface PDocumentsListProps {
   pData: DocumentsListItem[]
   pStripe?: boolean
   pVisibleColumns?: PDocumentsListColumn[]
+  pSelectable?: boolean
 }

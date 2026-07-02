@@ -5,7 +5,8 @@ import { downloadFile } from '@pulse/common/helpers'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
 import type { ConformityDocument } from '@entities/services/conformity-documents'
-import { formatDateToLocale } from '@entities/helpers'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+import { formatDateToLocale, getInitials } from '@entities/helpers'
 import type { DocumentsListItem } from '@pulse/styleguide/types'
 
 export function useDocumentsList() {
@@ -15,12 +16,18 @@ export function useDocumentsList() {
   const isLoading = ref(false)
 
   const documentsListItems = computed<DocumentsListItem[]>(() =>
-    documents.value.map((document) => ({
-      documentId: document.id,
-      documentName: document.fileName,
-      documentDepositDate: formatDateToLocale(document.uploadedAt),
-      documentDepositedBy: document.uploadedBy,
-    })),
+    documents.value.map((document) => {
+      const [firstName, lastName] = isNotNullNorEmpty(document.uploadedBy)
+        ? document.uploadedBy.split(' ')
+        : []
+      return {
+        documentId: document.id,
+        documentName: document.fileName,
+        documentDepositDate: formatDateToLocale(document.uploadedAt),
+        documentDepositedBy: document.uploadedBy,
+        documentDepositedByInitials: getInitials(firstName, lastName),
+      }
+    }),
   )
 
   const loadDocuments = async (): Promise<void> => {
@@ -29,14 +36,7 @@ export function useDocumentsList() {
     }
     isLoading.value = true
     try {
-      const response = await ConformityDocumentsService.getConformityDocuments(currentEntity.value.accountId)
-      // Flatten every document category exposed by the endpoint into a single list.
-      documents.value = [
-        ...response.supportingDocuments,
-        ...response.beneficiaryDocuments,
-        ...(response.commercialProposal === null ? [] : [response.commercialProposal]),
-        ...(response.engagementLetter === null ? [] : [response.engagementLetter]),
-      ]
+      documents.value = await ConformityDocumentsService.getConformityDocuments(currentEntity.value.accountId)
     } catch (error) {
       logger.error('Error fetching conformity documents', error)
     } finally {

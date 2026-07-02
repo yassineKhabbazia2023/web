@@ -12,17 +12,17 @@ describe('documents-consult-drawer.store', () => {
     expect(store.isOpen).toBe(false)
   })
 
-  it('should open the drawer when open is called', () => {
+  it('should open the drawer when openDocumentsConsultDrawer is called', () => {
     const store = useDocumentsConsultDrawerStore()
 
-    store.open()
+    store.openDocumentsConsultDrawer()
 
     expect(store.isOpen).toBe(true)
   })
 
   it('should close the drawer when close is called', () => {
     const store = useDocumentsConsultDrawerStore()
-    store.open()
+    store.openDocumentsConsultDrawer()
 
     store.close()
 

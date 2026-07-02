@@ -4,6 +4,7 @@ import PTable from '../../atoms/PTable'
 import PTableColumn from '../../atoms/PTableColumn'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
+import PAvatar from '../../atoms/PAvatar'
 import type { DocumentsListItem, PDocumentsListProps } from './PDocumentsListTypes'
 
 const baseData: DocumentsListItem[] = [
@@ -46,7 +47,7 @@ const createWrapper = (props: Partial<PDocumentsListProps> = {}) =>
               </template>
             </div>
           `,
-          props: ['pLabel', 'pProp', 'pWidth', 'pAlign'],
+          props: ['pLabel', 'pProp', 'pWidth', 'pAlign', 'pType'],
         },
       },
     },
@@ -72,7 +73,7 @@ describe('PDocumentsList', () => {
       expect(columns[0].props('pLabel')).toBe('Nom du document')
       expect(columns[1].props('pLabel')).toBe('Déposé par')
       expect(columns[2].props('pLabel')).toBe('Déposé le')
-      expect(columns[3].props('pLabel')).toBe('Options')
+      expect(columns[3].props('pLabel')).toBe('Actions')
     })
 
     it('renders only the visible columns when pVisibleColumns is provided', () => {
@@ -104,6 +105,64 @@ describe('PDocumentsList', () => {
       const iconNames = icons.map(icon => icon.props('pName'))
 
       expect(iconNames).toContain('filetypeNone')
+    })
+
+    it('renders an avatar with the initials before the depositor name', () => {
+      const wrapper = createWrapper({
+        pData: [{
+          documentId: '1',
+          documentName: 'contract-final.pdf',
+          documentDepositDate: '15/03/2024',
+          documentDepositedBy: 'Marie Dupont',
+          documentDepositedByInitials: 'MD',
+        }],
+      })
+      const depositedByCell = wrapper.find('.p-documents-list__deposited-by-cell')
+
+      expect(depositedByCell.exists()).toBe(true)
+      expect(depositedByCell.findComponent(PAvatar).exists()).toBe(true)
+      expect(depositedByCell.findComponent(PAvatar).text()).toContain('MD')
+      expect(depositedByCell.text()).toContain('Marie Dupont')
+    })
+
+    it('does not render an avatar when no depositor is provided', () => {
+      const wrapper = createWrapper({
+        pData: [{
+          documentId: '1',
+          documentName: 'contract-final.pdf',
+          documentDepositDate: '15/03/2024',
+        }],
+      })
+      const depositedByCell = wrapper.find('.p-documents-list__deposited-by-cell')
+
+      expect(depositedByCell.findComponent(PAvatar).exists()).toBe(false)
+    })
+  })
+
+  describe('selection', () => {
+    it('does not render a selection column by default', () => {
+      const wrapper = createWrapper()
+      const columns = wrapper.findAllComponents(PTableColumn)
+
+      expect(columns.some(column => column.props('pType') === 'selection')).toBe(false)
+    })
+
+    it('renders a selection column first when pSelectable is true', () => {
+      const wrapper = createWrapper({ pSelectable: true })
+      const columns = wrapper.findAllComponents(PTableColumn)
+
+      expect(columns).toHaveLength(5)
+      expect(columns[0].props('pType')).toBe('selection')
+    })
+
+    it('emits selection-change with the selected rows when the table selection changes', async () => {
+      const wrapper = createWrapper({ pSelectable: true })
+      const selectedRows = [baseData[0], baseData[2]]
+
+      await wrapper.findComponent(PTable).vm.$emit('selection-change', selectedRows)
+
+      expect(wrapper.emitted('selection-change')).toBeTruthy()
+      expect(wrapper.emitted('selection-change')?.[0]).toEqual([selectedRows])
     })
   })
 

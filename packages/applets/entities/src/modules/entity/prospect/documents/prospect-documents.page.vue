@@ -31,40 +31,45 @@
         "
       >
         <PTitle pTitle="Documents" />
+      </div>
+      <div
+        class="
+          flex
+          flex--justify-content-flex-end
+          margin-bottom--4
+        "
+      >
         <PButton
-          pType="primary"
           pSize="small"
-          data-testid="upload-document-button"
-          @click="openFilePicker"
+          :pLoading="isDownloading"
+          data-testid="download-documents-button"
+          @click="downloadDocuments"
         >
-          <PIcon pName="upload" />
-          <span class="padding-left--2">Déposer un document</span>
+          <PIcon pName="download" />
+          <span class="padding-left--2">{{ t('entities.prospect.documents.download') }}</span>
         </PButton>
       </div>
-      <input
-        ref="fileInputRef"
-        type="file"
-        class="prospect-documents__file-input"
-      >
-      <DocumentsList />
+      <DocumentsList
+        v-model:selected-documents="selectedDocuments"
+        selectable
+      />
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { PButton, PEntityHeader, PIcon, PTitle } from '@pulse/styleguide/components'
 import DocumentsList from './documents-list/documents-list.vue'
+import { useDocumentsDownload } from './documents-download/documents-download.composable'
+
+const { t } = useI18n()
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
 
-const fileInputRef = useTemplateRef<HTMLInputElement>('fileInputRef')
-
-const openFilePicker = (): void => {
-  fileInputRef.value?.click()
-}
+const { selectedDocuments, isDownloading, downloadDocuments } = useDocumentsDownload()
 </script>
 
 <style scoped lang="scss">
@@ -78,10 +83,6 @@ const openFilePicker = (): void => {
   &__content {
     flex: 1;
     overflow-y: auto;
-  }
-
-  &__file-input {
-    display: none;
   }
 }
 </style>

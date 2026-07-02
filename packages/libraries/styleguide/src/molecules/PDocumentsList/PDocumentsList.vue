@@ -3,7 +3,14 @@
     :pData="pData"
     :pStripe="pStripe"
     pRowKey="documentId"
+    @selection-change="onSelectionChange"
   >
+    <PTableColumn
+      v-if="pSelectable"
+      pType="selection"
+      pWidth="48"
+    />
+
     <PTableColumn
       v-if="isColumnVisible('name')"
       pLabel="Nom du document"
@@ -39,7 +46,33 @@
       pLabel="Déposé par"
       pProp="documentDepositedBy"
       pSortable
-    />
+    >
+      <template #default="{ row }">
+        <div
+          class="
+            p-documents-list__deposited-by-cell
+            flex
+            flex--align-items-center
+          "
+        >
+          <PAvatar
+            v-if="hasDepositedBy(row)"
+            class="margin-right--2"
+            pType="xsmall"
+            pColor="fuschia"
+          >
+            {{ row.documentDepositedByInitials }}
+          </PAvatar>
+          <span
+            class="
+              overflow-hidden
+              text-overflow--ellipsis
+              no-wrap
+            "
+          >{{ row.documentDepositedBy }}</span>
+        </div>
+      </template>
+    </PTableColumn>
 
     <PTableColumn
       v-if="isColumnVisible('depositDate')"
@@ -52,7 +85,7 @@
 
     <PTableColumn
       v-if="isColumnVisible('options')"
-      pLabel="Options"
+      pLabel="Actions"
       pAlign="right"
       pWidth="160"
     >
@@ -93,6 +126,7 @@ import PTable from '../../atoms/PTable'
 import PTableColumn from '../../atoms/PTableColumn'
 import PIcon from '../../atoms/PIcon'
 import PButton from '../../atoms/PButton'
+import PAvatar from '../../atoms/PAvatar'
 import { getIconName } from '../../utils/fileExtension'
 import { PDOCUMENTS_LIST_DEFAULT_COLUMNS } from './PDocumentsListTypes'
 import type { DocumentsListItem, PDocumentsListColumn, PDocumentsListProps } from './PDocumentsListTypes'
@@ -100,6 +134,7 @@ import type { DocumentsListItem, PDocumentsListColumn, PDocumentsListProps } fro
 const props = withDefaults(defineProps<PDocumentsListProps>(), {
   pStripe: false,
   pVisibleColumns: () => PDOCUMENTS_LIST_DEFAULT_COLUMNS,
+  pSelectable: false,
 })
 
 const isColumnVisible = (column: PDocumentsListColumn): boolean =>
@@ -108,10 +143,19 @@ const isColumnVisible = (column: PDocumentsListColumn): boolean =>
 const emit = defineEmits<{
   download: [documentId: string]
   option: [event: string, documentId: string]
+  'selection-change': [selected: DocumentsListItem[]]
 }>()
+
+const onSelectionChange = (selected: DocumentsListItem[]): void => {
+  emit('selection-change', selected)
+}
 
 const hasCustomOptions = (row: DocumentsListItem): boolean => {
   return row.options !== undefined && row.options.length > 0
+}
+
+const hasDepositedBy = (row: DocumentsListItem): boolean => {
+  return row.documentDepositedBy !== undefined && row.documentDepositedBy !== ''
 }
 
 const parseDepositDate = (date: string): number => {

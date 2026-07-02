@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
 export const useDocumentsConsultDrawerStore = defineStore('documents-consult-drawer', () => {
   const isOpen = ref(false)
 
-  const open = () => {
+  const openDocumentsConsultDrawer = () => {
     isOpen.value = true
   }
 
@@ -14,5 +14,5 @@ export const useDocumentsConsultDrawerStore = defineStore('documents-consult-dra
     isOpen.value = false
   }
 
-  return { isOpen, open, close }
+  return { isOpen, openDocumentsConsultDrawer, close }
 })

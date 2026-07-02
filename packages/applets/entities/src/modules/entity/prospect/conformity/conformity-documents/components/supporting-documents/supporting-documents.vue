@@ -85,7 +85,7 @@
       <PButton
         pType="secondary"
         class="flex--grow-1 flex--basis-0"
-        @click="open"
+        @click="openDocumentsConsultDrawer"
       >
         {{ t('entities.prospect.conformity.conformityDocuments.consult') }}
       </PButton>
@@ -158,7 +158,7 @@ const {
   getItems: () => props.items,
 }, emit)
 
-const { open } = useDocumentsConsultDrawerStore()
+const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const onUploadFileDeleted = (documentType: SupportingDocumentType, deletedFile: UploadFile | UploadRawFile): void => {
   const rawFile = getRawFile(deletedFile)

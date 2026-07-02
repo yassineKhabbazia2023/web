@@ -136,13 +136,12 @@
           />
 
           <!-- Action buttons -->
-          <!-- TODO: Implement view documents feature -->
           <BeneficiaryActions
             :canSave="canSaveActiveDocuments"
             :isSaving="isSaving"
             :isValidating="isValidatingAll"
             :beneficiaryStepStatus="beneficiaryStepStatus"
-            @view-documents="() => { }"
+            @view-documents="openDocumentsConsultDrawer"
             @save-documents="onSaveUploadedFiles"
             @validate-all-beneficiaries="onValidateAllBeneficiaries"
           />
@@ -187,6 +186,7 @@ import {
 } from '@pulse/styleguide/components'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
+import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
 import { BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS } from './beneficiaries.constants'
 import { buildBeneficiaryFormRules } from './beneficiaries.validation'
 import { useBeneficiaries } from './beneficiaries.composable'
@@ -198,6 +198,8 @@ import BeneficiaryDocumentUpload from './components/beneficiary-document-upload/
 import DeleteDocumentDialog from '../../dialog/delete-document-dialog/delete-document-dialog.vue'
 
 const { t } = useI18n()
+
+const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const props = defineProps<BeneficiariesProps>()
 

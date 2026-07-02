@@ -1,7 +1,8 @@
 import { apiGatewayMock } from '@pulse/common/mocks/vitest'
+import { getPaginationMock } from '@pulse/common/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { SupportingDocumentType } from '@entities/enums'
-import { getConformityDocumentsResponseMock, getSupportingDocumentsResponseMock } from '@entities/__mocks__'
+import { getConformityDocumentMock, getSupportingDocumentsResponseMock } from '@entities/__mocks__'
 import { ConformityDocumentsService } from './conformity-documents.service'
 
 vi.mock('@pulse/common/api', () => ({
@@ -15,14 +16,14 @@ const accountId = 602
 
 describe('ConformityDocumentsService', () => {
   describe('getConformityDocuments', () => {
-    it('should GET the documents of the prospect and return the data', async () => {
-      const responseData = getConformityDocumentsResponseMock()
-      apiGatewayMock.get.mockResolvedValueOnce({ data: responseData })
+    it('should GET the documents of the prospect and return the paginated items', async () => {
+      const items = [getConformityDocumentMock({ id: '1' }), getConformityDocumentMock({ id: '2' })]
+      apiGatewayMock.get.mockResolvedValueOnce({ data: getPaginationMock({ items }) })
 
       const result = await ConformityDocumentsService.getConformityDocuments(prospectId)
 
       expect(apiGatewayMock.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents`)
-      expect(result).toEqual(responseData)
+      expect(result).toEqual(items)
     })
   })
 

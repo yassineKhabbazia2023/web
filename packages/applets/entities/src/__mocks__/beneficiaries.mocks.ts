@@ -1,4 +1,3 @@
-import type { UploadFile } from 'element-plus'
 import { BeneficiaryDocumentType } from '../modules/entity/prospect/types'
 import type { BeneficiariesResponse, Beneficiary, BeneficiaryDocument } from '../modules/entity/prospect/types'
 import type { BeneficiaryFormState } from '../modules/entity/prospect/conformity/beneficiaries/beneficiaries.types'
@@ -9,14 +8,6 @@ export const getFileMock = (name: string = 'cni-recto.pdf', sizeInBytes?: number
     name,
     { type: 'application/pdf' },
   )
-
-export const getUploadFileMock = (raw: File): UploadFile =>
-  ({
-    name: raw.name,
-    raw,
-    uid: 1,
-    status: 'ready',
-  }) as UploadFile
 
 export const getBeneficiaryDocumentMock = (
   overrides: Partial<BeneficiaryDocument> = {},

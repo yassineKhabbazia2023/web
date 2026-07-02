@@ -1,14 +1,16 @@
 import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { SupportingDocumentType } from '@entities/enums'
-import type { ConformityDocumentsResponse, SupportingDocumentsResponse } from './conformity-documents.types'
+import type { SupportingDocumentsResponse, ConformityDocument } from './conformity-documents.types'
+import type { PaginationResponse } from '@pulse/common/types'
 
 export class ConformityDocumentsService {
-  static async getConformityDocuments(prospectId: number): Promise<ConformityDocumentsResponse> {
-    const response = await api.gateway.get<ConformityDocumentsResponse>(
+  static async getConformityDocuments(prospectId: number) {
+    const response = await api.gateway.get<PaginationResponse<ConformityDocument>>(
       `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents`,
     )
-    return response.data
+
+    return response.data.items
   }
 
   static async getSupportingDocuments(accountId: number): Promise<SupportingDocumentsResponse> {

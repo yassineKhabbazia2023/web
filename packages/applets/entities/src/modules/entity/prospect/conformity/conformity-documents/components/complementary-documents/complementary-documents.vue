@@ -80,7 +80,7 @@
       <PButton
         pType="secondary"
         class="flex--grow-1 flex--basis-0"
-        @click="open"
+        @click="openDocumentsConsultDrawer"
       >
         {{ t('entities.prospect.conformity.complementaryDocuments.consult') }}
       </PButton>
@@ -155,7 +155,7 @@ const {
   saveErrorMessage: t('entities.prospect.conformity.complementaryDocuments.saveError'),
 }, emit)
 
-const { open } = useDocumentsConsultDrawerStore()
+const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const onUploadFileDeleted = (deletedFile: UploadFile | UploadRawFile): void => {
   const rawFile = getRawFile(deletedFile)

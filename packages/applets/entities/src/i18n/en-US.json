@@ -546,6 +546,10 @@
           "confirmCancel": "Cancel"
         }
       },
+      "documents": {
+        "download": "Download",
+        "downloadError": "An error occurred while downloading the documents."
+      },
       "documentsConsultDrawer": {
         "title": "Documents",
         "alert": "Find your documents here.",

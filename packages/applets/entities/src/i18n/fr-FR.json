@@ -546,6 +546,10 @@
           "confirmCancel": "Annuler"
         }
       },
+      "documents": {
+        "download": "Télécharger",
+        "downloadError": "Une erreur est survenue lors du téléchargement des documents."
+      },
       "documentsConsultDrawer": {
         "title": "Documents",
         "alert": "Retrouvez ici vos documents.",

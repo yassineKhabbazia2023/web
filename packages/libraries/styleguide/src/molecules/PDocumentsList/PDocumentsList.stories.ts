@@ -29,6 +29,13 @@ const meta: Meta<typeof PDocumentsList> = {
       control: 'object',
       description: 'Columns to display, in their fixed order (all columns by default)',
     },
+    pSelectable: {
+      control: 'boolean',
+      description: 'Whether a leading selection column (with a select-all header checkbox) is displayed',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   tags: ['autodocs'],
 }
@@ -42,30 +49,35 @@ const baseData: DocumentsListItem[] = [
     documentName: 'contract-final.pdf',
     documentDepositDate: '15/03/2024',
     documentDepositedBy: 'Marie Dupont',
+    documentDepositedByInitials: 'MD',
   },
   {
     documentId: '2',
     documentName: 'report-annual.docx',
     documentDepositDate: '02/04/2024',
     documentDepositedBy: 'Jean Martin',
+    documentDepositedByInitials: 'JM',
   },
   {
     documentId: '3',
     documentName: 'screenshot-2024.png',
     documentDepositDate: '12/05/2024',
     documentDepositedBy: 'Marie Dupont',
+    documentDepositedByInitials: 'MD',
   },
   {
     documentId: '4',
     documentName: 'spreadsheet.xlsx',
     documentDepositDate: '21/05/2024',
     documentDepositedBy: 'Paul Bernard',
+    documentDepositedByInitials: 'PB',
   },
   {
     documentId: '5',
     documentName: 'unknown-file.zzz',
     documentDepositDate: '01/06/2024',
     documentDepositedBy: 'Jean Martin',
+    documentDepositedByInitials: 'JM',
   },
 ]
 
@@ -134,12 +146,14 @@ export const WithCustomOptions: Story = {
         documentName: 'contract-final.pdf',
         documentDepositDate: '15/03/2024',
         documentDepositedBy: 'Marie Dupont',
+        documentDepositedByInitials: 'MD',
       },
       {
         documentId: '2',
         documentName: 'report-annual.docx',
         documentDepositDate: '02/04/2024',
         documentDepositedBy: 'Jean Martin',
+        documentDepositedByInitials: 'JM',
         options: [
           { iconName: 'eye', event: 'preview' },
           { iconName: 'download', event: 'download' },
@@ -150,12 +164,40 @@ export const WithCustomOptions: Story = {
         documentName: 'screenshot-2024.png',
         documentDepositDate: '12/05/2024',
         documentDepositedBy: 'Paul Bernard',
+        documentDepositedByInitials: 'PB',
         options: [
           { iconName: 'trash', event: 'delete' },
         ],
       },
     ],
     pStripe: false,
+  },
+}
+
+export const Selectable: Story = {
+  render: (args) => ({
+    components: { PDocumentsList },
+    setup() {
+      const onDownload = (documentId: string) => {
+        console.log('Download document', documentId)
+      }
+      const onSelectionChange = (selected: DocumentsListItem[]) => {
+        console.log('Selection changed', selected.map(document => document.documentId))
+      }
+      return { args, onDownload, onSelectionChange }
+    },
+    template: `
+      <PDocumentsList
+        v-bind="args"
+        @download="onDownload"
+        @selection-change="onSelectionChange"
+      />
+    `,
+  }),
+  args: {
+    pData: baseData,
+    pStripe: false,
+    pSelectable: true,
   },
 }
 
