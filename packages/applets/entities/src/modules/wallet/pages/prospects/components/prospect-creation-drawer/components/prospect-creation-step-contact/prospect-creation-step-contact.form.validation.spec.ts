@@ -33,7 +33,7 @@ describe('prospect-creation-step-contact.form.validation', () => {
     it('should fail when only an optional role is assigned', async () => {
       const prospectFormData = ref(getProspectFormDataMock({
         interlocutors: [getInterlocutorMock({ id: 1 })],
-        interlocutorRoles: { 1: 2 },
+        interlocutorRoles: { 1: [2] },
       }))
       const collaboratorTargetRoles = ref(getCollaboratorTargetRolesMock())
       const { validate, validationErrorMessageKey } = useProspectCreationStepContactValidation({
@@ -50,7 +50,7 @@ describe('prospect-creation-step-contact.form.validation', () => {
     it('should pass when every mandatory role is assigned to at least one interlocutor', async () => {
       const prospectFormData = ref(getProspectFormDataMock({
         interlocutors: [getInterlocutorMock({ id: 1 })],
-        interlocutorRoles: { 1: 1 },
+        interlocutorRoles: { 1: [1] },
       }))
       const collaboratorTargetRoles = ref(getCollaboratorTargetRolesMock())
       const { validate, validationErrorMessageKey } = useProspectCreationStepContactValidation({
@@ -71,7 +71,7 @@ describe('prospect-creation-step-contact.form.validation', () => {
           getInterlocutorMock({ id: 1 }),
           getInterlocutorMock({ id: 2 }),
         ],
-        interlocutorRoles: { 1: 1 },
+        interlocutorRoles: { 1: [1] },
       }))
       const collaboratorTargetRoles = ref(getCollaboratorTargetRolesMock())
       const { validate, validationErrorMessageKey } = useProspectCreationStepContactValidation({
@@ -91,9 +91,29 @@ describe('prospect-creation-step-contact.form.validation', () => {
           getInterlocutorMock({ id: 1 }),
           getInterlocutorMock({ id: 2 }),
         ],
-        interlocutorRoles: { 1: 1, 2: 2 },
+        interlocutorRoles: { 1: [1], 2: [2] },
       }))
       const collaboratorTargetRoles = ref(getCollaboratorTargetRolesMock())
+      const { validate, validationErrorMessageKey } = useProspectCreationStepContactValidation({
+        prospectFormData,
+        collaboratorTargetRoles,
+      })
+
+      const result = await validate()
+
+      expect(result).toBe(true)
+      expect(validationErrorMessageKey.value).toBe(null)
+    })
+
+    it('should pass when a single interlocutor is assigned both mandatory roles at once', async () => {
+      const prospectFormData = ref(getProspectFormDataMock({
+        interlocutors: [getInterlocutorMock({ id: 1 })],
+        interlocutorRoles: { 1: [1, 2] },
+      }))
+      const collaboratorTargetRoles = ref(getCollaboratorTargetRolesMock([
+        { isMandatory: true },
+        { isMandatory: true },
+      ]))
       const { validate, validationErrorMessageKey } = useProspectCreationStepContactValidation({
         prospectFormData,
         collaboratorTargetRoles,

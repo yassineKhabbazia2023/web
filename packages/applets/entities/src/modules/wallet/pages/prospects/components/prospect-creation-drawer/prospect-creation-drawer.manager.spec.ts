@@ -70,8 +70,8 @@ describe('ProspectCreationDrawerManager', () => {
       city: 'Lyon',
       nafCode: '6201Z',
       interlocutorRoles: {
-        5: CASE_MANAGER_ROLE_ID,
-        6: ACCOUNT_MANAGER_ROLE_ID,
+        5: [CASE_MANAGER_ROLE_ID],
+        6: [ACCOUNT_MANAGER_ROLE_ID],
       },
       signatory: {
         title: 'M',
@@ -170,13 +170,25 @@ describe('ProspectCreationDrawerManager', () => {
     it('sets caseManagerContactId to null when the MASTER_OF_FILE role is not assigned', () => {
       const incomplete = getProspectFormDataMock({
         ...formData,
-        interlocutorRoles: { 6: ACCOUNT_MANAGER_ROLE_ID },
+        interlocutorRoles: { 6: [ACCOUNT_MANAGER_ROLE_ID] },
       })
 
       const payload = ProspectCreationDrawerManager.toCreationPayload(incomplete, collaboratorTargetRoles, dropdownsContent)
 
       expect(payload.caseManagerContactId).toBeNull()
       expect(payload.accountManagerContactId).toBe(6)
+    })
+
+    it('resolves both caseManagerContactId and accountManagerContactId to the same contact when it holds both mandatory roles', () => {
+      const biRole = getProspectFormDataMock({
+        ...formData,
+        interlocutorRoles: { 5: [CASE_MANAGER_ROLE_ID, ACCOUNT_MANAGER_ROLE_ID] },
+      })
+
+      const payload = ProspectCreationDrawerManager.toCreationPayload(biRole, collaboratorTargetRoles, dropdownsContent)
+
+      expect(payload.caseManagerContactId).toBe(5)
+      expect(payload.accountManagerContactId).toBe(5)
     })
   })
 })

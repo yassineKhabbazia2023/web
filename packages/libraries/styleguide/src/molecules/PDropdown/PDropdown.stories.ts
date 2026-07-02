@@ -363,3 +363,38 @@ export const WithClearButton: Story = {
     pClearable: true,
   },
 }
+
+export const WithCustomEmptyState: Story = {
+  render: (args) => ({
+    components: { PDropdown },
+    setup() {
+      const value = ref('')
+
+      return {
+        args: { ...args, pOptions: [] },
+        value,
+      }
+    },
+    template: `
+      <div style="padding: 20px; height: 300px;">
+        <h3>Dropdown with Custom Empty State</h3>
+        <PDropdown
+          v-model="value"
+          v-bind="args"
+          style="width: 240px;"
+        >
+          <template #empty>
+            <p style="padding: 12px; text-align: center; color: #999;">
+              — No options available —
+            </p>
+          </template>
+        </PDropdown>
+        <p style="margin-top: 16px;">Selected value: {{ value }}</p>
+        <p><em>Options array is empty, showing a custom message via the empty slot</em></p>
+      </div>
+    `,
+  }),
+  args: {
+    pPlaceholder: 'No options to select',
+  },
+}

@@ -16,8 +16,8 @@ export function useProspectCreationStepContactValidation(
     const { interlocutors, interlocutorRoles } = params.prospectFormData.value
 
     const everyInterlocutorHasRole = interlocutors.every((interlocutor) => {
-      const roleId = interlocutorRoles[interlocutor.id]
-      return roleId !== undefined && roleId !== null
+      const roleIds = interlocutorRoles[interlocutor.id]
+      return roleIds !== undefined && roleIds.length > 0
     })
 
     if (everyInterlocutorHasRole === false) {
@@ -25,7 +25,7 @@ export function useProspectCreationStepContactValidation(
       return false
     }
 
-    const assignedRoleIds = new Set(Object.values(interlocutorRoles))
+    const assignedRoleIds = new Set(Object.values(interlocutorRoles).flat())
 
     const allMandatoryRolesAssigned = params.collaboratorTargetRoles.value
       .filter((role) => role.isMandatory === true)

@@ -26,7 +26,7 @@ export interface ProspectFormData {
   legalForm: string
   legalStructure: string
   interlocutors: Contact[]
-  interlocutorRoles: Record<Contact['id'], number>
+  interlocutorRoles: Record<Contact['id'], number[]>
   signatory: ProspectSignatory
 }
 

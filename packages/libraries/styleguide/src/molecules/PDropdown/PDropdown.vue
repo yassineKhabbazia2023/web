@@ -50,6 +50,12 @@
         {{ pCheckAllLabel }}
       </PCheckbox>
     </template>
+    <template
+      v-if="$slots.empty !== undefined"
+      #empty
+    >
+      <slot name="empty" />
+    </template>
     <template v-if="!hasGroups">
       <ElOption
         v-for="({ pValue, pLabel, pDisabled, pDescription, internalValue }, index) in internalOptions"

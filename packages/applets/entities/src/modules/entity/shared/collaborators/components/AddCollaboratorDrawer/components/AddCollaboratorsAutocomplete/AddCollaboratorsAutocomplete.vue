@@ -3,6 +3,7 @@
     v-model="searchQuery"
     :pPlaceholder="t('searchPlaceholder')"
     :pFetchSuggestions="getCollaboratorsSuggestions"
+    :pDisabled="disabled"
     valueKey="id"
     @select="handleCollaboratorSelection"
   >
@@ -76,8 +77,8 @@ function handleCollaboratorSelection(contact: Contact) {
 }
 
 async function getCollaboratorsSuggestions(searchValue: string, callback: any) {
-  const collaborators = props.pFetchCollaborators !== undefined
-    ? await props.pFetchCollaborators(searchValue)
+  const collaborators = props.fetchCollaborators !== undefined
+    ? await props.fetchCollaborators(searchValue)
     : await fetchContactsFromSameHub(searchValue, 100)
   callback(collaborators ?? [])
 }

@@ -98,8 +98,9 @@
             "interlocutorsTitle": "Définissez le Responsable de compte RYDGE",
             "interlocutorsSearchLabel": "Veuillez rechercher un collaborateur :",
             "rolePlaceholder": "Indiquer un rôle",
+            "noRolesAvailable": "Veuillez modifier les rôles ou retirer ce collaborateur",
             "mandatoryRolesAlert": "Merci d'assigner un maître de dossier et un responsable de compte",
-            "missingInterlocutorRoleAlert": "Merci d'assigner un rôle à chaque interlocuteur"
+            "missingInterlocutorRoleAlert": "Merci d'assigner un rôle à chaque interlocuteur ou retirer un interlocuteur sans rôle"
           }
         }
       },
@@ -109,7 +110,7 @@
         "cancel": "Annuler",
         "confirm": "Archiver le dossier prospect",
         "success": "Le dossier prospect a bien été archivé",
-        "error": "Echec de l'archivage du prospect"
+        "error": "Échec de l'archivage du prospect"
       },
       "prospectCreate": {
         "success": "Le prospect a été correctement créé",

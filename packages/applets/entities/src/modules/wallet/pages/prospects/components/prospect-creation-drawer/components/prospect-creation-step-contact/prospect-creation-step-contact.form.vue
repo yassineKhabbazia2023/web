@@ -19,7 +19,8 @@
         </p>
         <AddCollaboratorsAutocomplete
           :selectedCollaborators="model.interlocutors"
-          :pFetchCollaborators="ProspectsService.fetchCollaborators"
+          :fetchCollaborators="ProspectsService.fetchCollaborators"
+          :disabled="areAllRolesAssigned"
           @add-collaborator="onAddInterlocutor"
           @remove-collaborator="onRemoveInterlocutor"
         />
@@ -54,11 +55,24 @@
         <template #right-section>
           <PDropdown
             v-model="model.interlocutorRoles[interlocutor.id]"
+            pMultiple
             class="prospect-creation-step-contact__dropdown"
             :pOptions="getRoleOptionsFor(interlocutor.id)"
             :pPlaceholder="t('entities.wallet.prospect.form.contact.rolePlaceholder')"
             :data-testid="`prospect-interlocutor-role-dropdown-${interlocutor.id}`"
-          />
+          >
+            <template #empty>
+              <p
+                class="
+                  padding--3
+                  text-center
+                  text-color--gray-400
+                "
+              >
+                — {{ t('entities.wallet.prospect.form.contact.noRolesAvailable') }} —
+              </p>
+            </template>
+          </PDropdown>
         </template>
       </PUserActionCard>
     </li>
@@ -126,9 +140,9 @@ async function validate(): Promise<boolean> {
 
 function getRoleOptionsFor(interlocutorId: Contact['id']) {
   const takenByOthers = new Set<number>()
-  for (const [collabId, roleId] of Object.entries(model.value.interlocutorRoles)) {
-    if (Number(collabId) !== interlocutorId && roleId !== undefined && roleId !== null) {
-      takenByOthers.add(roleId)
+  for (const [collabId, roleIds] of Object.entries(model.value.interlocutorRoles)) {
+    if (Number(collabId) !== interlocutorId) {
+      roleIds.forEach((roleId) => takenByOthers.add(roleId))
     }
   }
   return props.collaboratorTargetRoles
@@ -136,8 +150,17 @@ function getRoleOptionsFor(interlocutorId: Contact['id']) {
     .map((role) => ({ pValue: role.id, pLabel: role.label }))
 }
 
+const areAllRolesAssigned = computed(() => {
+  if (props.collaboratorTargetRoles.length === 0) {
+    return false
+  }
+  const assignedRoleIds = new Set(Object.values(model.value.interlocutorRoles).flat())
+  return props.collaboratorTargetRoles.every((role) => assignedRoleIds.has(role.id))
+})
+
 function onAddInterlocutor(contact: Contact): void {
   model.value.interlocutors.push(contact)
+  model.value.interlocutorRoles[contact.id] = []
 }
 
 function onRemoveInterlocutor(id: Contact['id']): void {

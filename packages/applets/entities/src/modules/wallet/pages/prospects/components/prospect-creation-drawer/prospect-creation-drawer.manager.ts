@@ -61,11 +61,10 @@ export class ProspectCreationDrawerManager {
       .find((role) => role.labelKey === ACCOUNT_MANAGER_ROLE_LABEL_KEY)?.id
 
     const contactIdByRoleId = new Map<number, number>()
-    for (const [contactIdString, roleId] of Object.entries(formData.interlocutorRoles)) {
-      if (roleId === null || roleId === undefined) {
-        continue
+    for (const [contactIdString, roleIds] of Object.entries(formData.interlocutorRoles)) {
+      for (const roleId of roleIds) {
+        contactIdByRoleId.set(roleId, Number(contactIdString))
       }
-      contactIdByRoleId.set(roleId, Number(contactIdString))
     }
 
     const caseManagerContactId = caseManagerRoleId === undefined

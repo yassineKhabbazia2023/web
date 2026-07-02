@@ -98,8 +98,9 @@
             "interlocutorsTitle": "Set the RYDGE account manager",
             "interlocutorsSearchLabel": "Please search for a collaborator:",
             "rolePlaceholder": "Select a role",
+            "noRolesAvailable": "Please change the roles or remove this collaborator",
             "mandatoryRolesAlert": "Please assign a case manager and an account manager",
-            "missingInterlocutorRoleAlert": "Please assign a role to each interlocutor"
+            "missingInterlocutorRoleAlert": "Please assign a role to each interlocutor or remove an interlocutor without a role"
           }
         }
       },
