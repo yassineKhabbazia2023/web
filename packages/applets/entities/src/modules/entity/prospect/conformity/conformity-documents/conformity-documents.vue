@@ -48,7 +48,6 @@
         :maxFiles="complementaryMaxFiles"
         :isLoading="isLoading"
         @saved="reload"
-        @deleted="reload"
       />
     </ConformityStepCard>
   </div>

@@ -61,10 +61,7 @@
         :pFileName="document.fileName"
         pStatus="success"
         :pIconName="getIconName(document.fileName, 'filetypeNone')"
-        :pHasButton="isCollab === true"
-        pButtonIconName="trash"
-        :pTitleButton="t('entities.prospect.conformity.complementaryDocuments.uploadDeleteButtonTitle')"
-        @on-click-file-action="onRequestDocumentDeletion(document)"
+        :pHasButton="false"
       />
     </div>
 
@@ -94,22 +91,12 @@
         {{ t('entities.prospect.conformity.complementaryDocuments.save') }}
       </PButton>
     </div>
-
-    <DeleteDocumentDialog
-      v-model="isDeleteDialogOpen"
-      :pProspectId="prospectId!"
-      :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
-      :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
-      @deleted="onDocumentDeleted"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@pulse/common/stores'
 import { getRawFile } from '@pulse/styleguide'
 import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import {
@@ -121,7 +108,6 @@ import {
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
 import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
-import DeleteDocumentDialog from '@entities/modules/entity/prospect/dialog/delete-document-dialog/delete-document-dialog.vue'
 import { useComplementaryDocuments } from './complementary-documents.composable'
 import type { ComplementaryDocumentsEmits, ComplementaryDocumentsProps } from './complementary-documents.types'
 import {
@@ -131,25 +117,18 @@ import {
 
 const { t } = useI18n()
 
-const { isCollab } = storeToRefs(useUserStore())
-
 const props = defineProps<ComplementaryDocumentsProps>()
 const emit = defineEmits<ComplementaryDocumentsEmits>()
 
 const availableSlots = computed(() => Math.max(props.maxFiles - props.documents.length, 0))
 
 const {
-  prospectId,
   isSaving,
   uploadResetKey,
   hasPendingUploads,
-  isDeleteDialogOpen,
-  documentPendingDeletion,
   onFilesSelected,
   onRemoveSelectedFile,
   onSave,
-  onRequestDocumentDeletion,
-  onDocumentDeleted,
 } = useComplementaryDocuments({
   saveSuccessMessage: t('entities.prospect.conformity.complementaryDocuments.saveSuccess'),
   saveErrorMessage: t('entities.prospect.conformity.complementaryDocuments.saveError'),

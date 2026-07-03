@@ -4,7 +4,6 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
-import { getUploadedSupportingDocumentMock } from '@entities/__mocks__'
 import { useComplementaryDocuments } from './complementary-documents.composable'
 
 vi.mock('@entities/services/conformity-documents')
@@ -32,22 +31,12 @@ describe('complementary-documents.composable', () => {
   })
 
   describe('file selection', () => {
-    it('should store the selected File instances and flag pending uploads', () => {
+    it('should flag pending uploads when files are selected', () => {
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
 
       result.onFilesSelected([fileMock], availableSlots)
 
-      expect(result.selectedFiles.value).toEqual([fileMock])
       expect(result.hasPendingUploads.value).toBe(true)
-    })
-
-    it('should cap the selection at the available slots', () => {
-      const otherFile = new File(['content'], 'autre.pdf', { type: 'application/pdf' })
-      const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      result.onFilesSelected([fileMock, otherFile], 1)
-
-      expect(result.selectedFiles.value).toEqual([fileMock])
     })
 
     it('should ignore entries that are not File instances', () => {
@@ -55,18 +44,16 @@ describe('complementary-documents.composable', () => {
 
       result.onFilesSelected([undefined as unknown as File], availableSlots)
 
-      expect(result.selectedFiles.value).toEqual([])
       expect(result.hasPendingUploads.value).toBe(false)
     })
 
-    it('should remove a single selected file', () => {
-      const otherFile = new File(['content'], 'autre.pdf', { type: 'application/pdf' })
+    it('should clear pending uploads flag when a file is removed and no files remain', () => {
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
 
-      result.onFilesSelected([fileMock, otherFile], availableSlots)
+      result.onFilesSelected([fileMock], availableSlots)
       result.onRemoveSelectedFile(fileMock)
 
-      expect(result.selectedFiles.value).toEqual([otherFile])
+      expect(result.hasPendingUploads.value).toBe(false)
     })
   })
 
@@ -109,37 +96,6 @@ describe('complementary-documents.composable', () => {
       expect(displayNotificationMock).toHaveBeenCalledWith('error', optionsMock.saveErrorMessage)
       expect(emitMock).toHaveBeenCalledWith('saved')
       expect(result.isSaving.value).toBe(false)
-    })
-  })
-
-  describe('document deletion flow', () => {
-    it('should open the dialog when a deletion is requested', () => {
-      const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      const document = getUploadedSupportingDocumentMock()
-      result.onRequestDocumentDeletion(document)
-
-      expect(result.isDeleteDialogOpen.value).toBe(true)
-      expect(result.documentPendingDeletion.value).toEqual({ document })
-    })
-
-    it('should clear the pending deletion when the model is closed', () => {
-      const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      result.onRequestDocumentDeletion(getUploadedSupportingDocumentMock())
-      result.isDeleteDialogOpen.value = false
-
-      expect(result.documentPendingDeletion.value).toBeUndefined()
-    })
-
-    it('should clear the pending deletion and emit deleted once the document is deleted', () => {
-      const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      result.onRequestDocumentDeletion(getUploadedSupportingDocumentMock())
-      result.onDocumentDeleted()
-
-      expect(result.documentPendingDeletion.value).toBeUndefined()
-      expect(emitMock).toHaveBeenCalledWith('deleted')
     })
   })
 })

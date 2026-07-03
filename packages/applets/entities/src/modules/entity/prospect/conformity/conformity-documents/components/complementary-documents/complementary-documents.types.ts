@@ -10,11 +10,6 @@ export interface ComplementaryDocumentsProps {
 
 export interface ComplementaryDocumentsEmits {
   (event: 'saved'): void
-  (event: 'deleted'): void
-}
-
-export interface ComplementaryDocumentDeletionTarget {
-  document: UploadedSupportingDocument
 }
 
 export interface UseComplementaryDocumentsOptions {

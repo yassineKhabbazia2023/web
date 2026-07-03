@@ -5,9 +5,7 @@ import { displayNotification } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
-import type { UploadedSupportingDocument } from '@entities/services/conformity-documents'
 import type {
-  ComplementaryDocumentDeletionTarget,
   ComplementaryDocumentsEmits,
   UseComplementaryDocumentsOptions,
 } from './complementary-documents.types'
@@ -16,9 +14,7 @@ export function useComplementaryDocuments(
   options: UseComplementaryDocumentsOptions,
   emit: ComplementaryDocumentsEmits,
 ) {
-  const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
-
-  const prospectId = computed(() => currentEntity.value?.prospectId ?? undefined)
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const isSaving = ref(false)
   const selectedFiles = ref<File[]>([])
@@ -68,40 +64,12 @@ export function useComplementaryDocuments(
     }
   }
 
-  const documentPendingDeletion = ref<ComplementaryDocumentDeletionTarget>()
-
-  const isDeleteDialogOpen = computed({
-    get: () => documentPendingDeletion.value !== undefined,
-    set: (isOpen: boolean) => {
-      if (isOpen === false) {
-        documentPendingDeletion.value = undefined
-      }
-    },
-  })
-
-  const onRequestDocumentDeletion = (document: UploadedSupportingDocument) => {
-    documentPendingDeletion.value = { document }
-  }
-
-  // The deletion itself (API call + notifications) is owned by the shared
-  // DeleteDocumentDialog; here we just clear state and let the parent reload.
-  const onDocumentDeleted = () => {
-    documentPendingDeletion.value = undefined
-    emit('deleted')
-  }
-
   return {
-    prospectId,
     isSaving,
-    selectedFiles,
     uploadResetKey,
     hasPendingUploads,
-    isDeleteDialogOpen,
-    documentPendingDeletion,
     onFilesSelected,
     onRemoveSelectedFile,
     onSave,
-    onRequestDocumentDeletion,
-    onDocumentDeleted,
   }
 }
