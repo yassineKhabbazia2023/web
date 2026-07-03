@@ -318,6 +318,20 @@
     },
     "prospect": {
       "conformity": {
+        "title": "Étapes",
+        "description": "Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert.",
+        "sections": {
+          "identity": "Identité(s)",
+          "documents": "Documents",
+          "mission": "Mission"
+        },
+        "steps": {
+          "beneficiary": "Bénéficiaires effectifs",
+          "supportingDocuments": "Documents justificatifs",
+          "commercialProposal": "Proposition commerciale",
+          "paymentMethod": "Moyens de paiement",
+          "engagementLetter": "Lettre de mission"
+        },
         "beneficiaries": {
           "description": "Les informations ont été récupérées automatiquement. Déposez une pièce d'identité.",
           "noBeneficiariesFromInpi": "Aucun bénéficiaire n'a été remonté par l'INPI",

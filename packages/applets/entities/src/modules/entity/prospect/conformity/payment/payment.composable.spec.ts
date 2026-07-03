@@ -19,9 +19,12 @@ const downloadSignedMandateMock = vi.mocked(ConformityPaymentService.downloadSig
 const downloadFileMock = vi.mocked(downloadFile)
 const displayNotificationMock = vi.mocked(displayNotification)
 
+const onPaymentPreferenceChangedMock = vi.fn()
+
 const optionsMock = {
   updateErrorMessage: 'updateError',
   downloadErrorMessage: 'downloadError',
+  onPaymentPreferenceChanged: onPaymentPreferenceChangedMock,
 }
 
 const prospectIdMock = 602
@@ -71,6 +74,7 @@ describe('payment.composable', () => {
       expect(setOtherPaymentPreferenceMock).toHaveBeenCalledWith(prospectIdMock)
       expect(result.paymentType.value).toBe(ConformityPaymentType.Other)
       expect(result.isSaving.value).toBe(false)
+      expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
     })
 
     it('should display an error notification and keep the previous state when it fails', async () => {
@@ -84,6 +88,7 @@ describe('payment.composable', () => {
       expect(displayNotificationMock).toHaveBeenCalledWith('error', optionsMock.updateErrorMessage)
       expect(result.paymentType.value).toBeNull()
       expect(result.isSaving.value).toBe(false)
+      expect(onPaymentPreferenceChangedMock).not.toHaveBeenCalled()
     })
   })
 
@@ -99,6 +104,7 @@ describe('payment.composable', () => {
       expect(resetPaymentPreferenceMock).toHaveBeenCalledWith(prospectIdMock)
       expect(result.paymentType.value).toBeNull()
       expect(result.isSaving.value).toBe(false)
+      expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
     })
 
     it('should display an error notification and keep the previous state when it fails', async () => {
@@ -113,6 +119,7 @@ describe('payment.composable', () => {
       expect(displayNotificationMock).toHaveBeenCalledWith('error', optionsMock.updateErrorMessage)
       expect(result.paymentType.value).toBe(ConformityPaymentType.Other)
       expect(result.isSaving.value).toBe(false)
+      expect(onPaymentPreferenceChangedMock).not.toHaveBeenCalled()
     })
   })
 
@@ -131,6 +138,7 @@ describe('payment.composable', () => {
       expect(getPaymentPreferenceMock).toHaveBeenLastCalledWith(prospectIdMock)
       expect(result.paymentType.value).toBe(ConformityPaymentType.MandateSepa)
       expect(result.isLoading.value).toBe(false)
+      expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
     })
 
     it('should keep the previous state when the refresh fails', async () => {
@@ -144,6 +152,7 @@ describe('payment.composable', () => {
       await result.refreshPaymentPreference()
 
       expect(result.paymentType.value).toBe(ConformityPaymentType.Other)
+      expect(onPaymentPreferenceChangedMock).not.toHaveBeenCalled()
     })
   })
 

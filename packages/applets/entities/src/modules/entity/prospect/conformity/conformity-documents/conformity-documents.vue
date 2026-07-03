@@ -9,7 +9,7 @@
   >
     <ConformityStepCard
       v-if="shouldDisplaySupportingDocuments"
-      :pStepId="SUPPORTING_DOCS_STEP_ID"
+      :pStepId="PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.SupportingDocuments]"
       :pTitle="t('entities.prospect.conformity.conformityDocuments.title')"
     >
       <PAlert
@@ -59,8 +59,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert } from '@pulse/styleguide/components'
 import ConformityStepCard from '../components/conformity-step-card/conformity-step-card.vue'
-import { SUPPORTING_DOCS_STEP_ID } from '../prospect-conformity.consts'
-import { OnboardingStepStatus } from '../prospect-conformity.enums'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
+import { PROSPECT_CONFORMITY_STEP_SLUGS } from '../prospect-conformity.consts'
 import SupportingDocuments from './components/supporting-documents/supporting-documents.vue'
 import ComplementaryDocuments from './components/complementary-documents/complementary-documents.vue'
 import { useConformityDocuments } from './conformity-documents.composable'

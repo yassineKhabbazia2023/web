@@ -33,6 +33,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     try {
       await ConformityPaymentService.setOtherPaymentPreference(prospectId)
       paymentType.value = ConformityPaymentType.Other
+      options.onPaymentPreferenceChanged?.()
     } catch (error) {
       logger.error('Error setting OTHER payment preference', error)
       displayNotification('error', options.updateErrorMessage)
@@ -47,6 +48,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     try {
       const response = await ConformityPaymentService.getPaymentPreference(prospectId)
       paymentType.value = response.paymentType
+      options.onPaymentPreferenceChanged?.()
     } catch (error) {
       logger.error('Error refreshing payment preference', error)
     }
@@ -60,6 +62,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     try {
       await ConformityPaymentService.resetPaymentPreference(prospectId)
       paymentType.value = null
+      options.onPaymentPreferenceChanged?.()
     } catch (error) {
       logger.error('Error resetting payment preference', error)
       displayNotification('error', options.updateErrorMessage)

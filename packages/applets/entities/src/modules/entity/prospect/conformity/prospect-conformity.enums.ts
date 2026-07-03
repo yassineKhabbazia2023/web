@@ -1,13 +1,14 @@
 export enum ProspectConformitySection {
-  Bases = 'bases',
+  Identity = 'identity',
   Documents = 'documents',
-  Relation = 'relation',
+  Mission = 'mission',
 }
 
 export enum OnboardingStep {
   Beneficiary = 'Beneficiary',
   CommercialProposal = 'CommercialProposal',
   EngagementLetter = 'EngagementLetter',
+  PaymentMethod = 'PaymentMethod',
   SupportingDocuments = 'SupportingDocuments',
 }
 

@@ -1,10 +1,10 @@
-import type { PCompletionTrackerListItemStatus } from '@pulse/styleguide/types'
-import type { ProspectConformitySection } from './prospect-conformity.enums'
+import type { OnboardingStep, ProspectConformitySection } from './prospect-conformity.enums'
 
-export interface ProspectConformityItem {
-  id: string
-  label: string
-  status: PCompletionTrackerListItemStatus
+export interface ProspectConformityStep {
+  id: OnboardingStep
+  // URL/DOM identifier (kebab-case). Decoupled from `id` so the address bar hash
+  // and anchor ids stay readable without touching the backend enum contract.
+  slug: string
+  labelKey: string
   section: ProspectConformitySection
-  secondaryText?: string
 }

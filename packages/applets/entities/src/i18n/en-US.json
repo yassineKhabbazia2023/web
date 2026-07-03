@@ -318,6 +318,20 @@
     },
     "prospect": {
       "conformity": {
+        "title": "Steps",
+        "description": "This space lets you easily track your onboarding, complete the required information, and move forward step by step with your expert.",
+        "sections": {
+          "identity": "Identity",
+          "documents": "Documents",
+          "mission": "Mission"
+        },
+        "steps": {
+          "beneficiary": "Beneficial owners",
+          "supportingDocuments": "Supporting documents",
+          "commercialProposal": "Commercial proposal",
+          "paymentMethod": "Payment method",
+          "engagementLetter": "Engagement letter"
+        },
         "beneficiaries": {
           "description": "The information has been retrieved automatically. Upload an identity document.",
           "noBeneficiariesFromInpi": "No beneficiary has been reported by INPI",

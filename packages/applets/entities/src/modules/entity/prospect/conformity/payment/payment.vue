@@ -191,6 +191,7 @@ import {
 } from './payment.consts'
 import { PaymentBodyKind, PaymentFooterAction } from './payment.enums'
 import type {
+  PaymentEmits,
   PaymentFooterButton,
   PaymentProps,
 } from './payment.types'
@@ -198,6 +199,8 @@ import type {
 const props = withDefaults(defineProps<PaymentProps>(), {
   isCollaborator: false,
 })
+
+const emit = defineEmits<PaymentEmits>()
 
 const { t } = useI18n()
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
@@ -216,6 +219,7 @@ const {
 } = usePayment(prospectId, {
   updateErrorMessage: t(`${PAYMENT_I18N_BASE}.updateError`),
   downloadErrorMessage: t(`${PAYMENT_I18N_BASE}.downloadError`),
+  onPaymentPreferenceChanged: () => emit('payment-preference-changed'),
 })
 
 const isNotSelected = computed(() => paymentType.value === null)

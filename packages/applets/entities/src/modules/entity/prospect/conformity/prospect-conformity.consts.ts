@@ -1,36 +1,35 @@
-import { ProspectConformitySection } from './prospect-conformity.enums'
-import type { ProspectConformityItem } from './prospect-conformity.types'
+import { OnboardingStep, ProspectConformitySection } from './prospect-conformity.enums'
+import type { ProspectConformityStep } from './prospect-conformity.types'
 
-export const SUPPORTING_DOCS_STEP_ID = 'supporting-docs'
-
-export const COMMERCIAL_PROPOSAL_STEP_ID = 'commercial-proposal'
-
-export const PROSPECT_CONFORMITY_TITLE = 'Étapes'
-
-export const PROSPECT_CONFORMITY_DESCRIPTION = 'Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d\'avancer étape par étape avec votre expert.'
+const I18N_KEY = 'entities.prospect.conformity'
 
 export const PROSPECT_CONFORMITY_SECTION_ORDER: readonly ProspectConformitySection[] = [
-  ProspectConformitySection.Bases,
+  ProspectConformitySection.Identity,
   ProspectConformitySection.Documents,
-  ProspectConformitySection.Relation,
+  ProspectConformitySection.Mission,
 ]
 
-export const PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID = 'beneficiaries'
-
-export const PAYMENT_STEP_ID = 'sepa'
-
-export const ENGAGEMENT_LETTER_STEP_ID = 'engagement-letter'
-
-export const PROSPECT_CONFORMITY_SECTION_TITLES: Record<ProspectConformitySection, string> = {
-  [ProspectConformitySection.Bases]: 'Les bases',
-  [ProspectConformitySection.Documents]: 'Les documents',
-  [ProspectConformitySection.Relation]: 'Commencer la relation',
+export const PROSPECT_CONFORMITY_SECTION_TITLE_KEYS: Record<ProspectConformitySection, string> = {
+  [ProspectConformitySection.Identity]: `${I18N_KEY}.sections.identity`,
+  [ProspectConformitySection.Documents]: `${I18N_KEY}.sections.documents`,
+  [ProspectConformitySection.Mission]: `${I18N_KEY}.sections.mission`,
 }
 
-export const PROSPECT_CONFORMITY_STEPS: readonly ProspectConformityItem[] = [
-  { id: PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID, label: 'Bénéficiaires effectifs', status: 'incomplete', section: ProspectConformitySection.Bases },
-  { id: SUPPORTING_DOCS_STEP_ID, label: 'Documents justificatifs', status: 'incomplete', section: ProspectConformitySection.Documents },
-  { id: COMMERCIAL_PROPOSAL_STEP_ID, label: 'Proposition commerciale', status: 'incomplete', section: ProspectConformitySection.Documents },
-  { id: PAYMENT_STEP_ID, label: 'Moyens de paiement', status: 'incomplete', section: ProspectConformitySection.Documents },
-  { id: ENGAGEMENT_LETTER_STEP_ID, label: 'Lettre de mission', status: 'incomplete', section: ProspectConformitySection.Relation },
+// URL/DOM slug for each backend step. The enum values are the backend contract
+// (sent/received by the API) and must stay untouched, so this map is the single
+// source of truth for the kebab-case identifier shown in the address bar hash.
+export const PROSPECT_CONFORMITY_STEP_SLUGS: Record<OnboardingStep, string> = {
+  [OnboardingStep.Beneficiary]: 'beneficiaires-effectifs',
+  [OnboardingStep.SupportingDocuments]: 'documents-justificatifs',
+  [OnboardingStep.CommercialProposal]: 'proposition-commerciale',
+  [OnboardingStep.PaymentMethod]: 'moyens-de-paiement',
+  [OnboardingStep.EngagementLetter]: 'lettre-de-mission',
+}
+
+export const PROSPECT_CONFORMITY_STEPS: readonly ProspectConformityStep[] = [
+  { id: OnboardingStep.Beneficiary, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.Beneficiary], labelKey: `${I18N_KEY}.steps.beneficiary`, section: ProspectConformitySection.Identity },
+  { id: OnboardingStep.SupportingDocuments, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.SupportingDocuments], labelKey: `${I18N_KEY}.steps.supportingDocuments`, section: ProspectConformitySection.Documents },
+  { id: OnboardingStep.CommercialProposal, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.CommercialProposal], labelKey: `${I18N_KEY}.steps.commercialProposal`, section: ProspectConformitySection.Documents },
+  { id: OnboardingStep.PaymentMethod, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.PaymentMethod], labelKey: `${I18N_KEY}.steps.paymentMethod`, section: ProspectConformitySection.Documents },
+  { id: OnboardingStep.EngagementLetter, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.EngagementLetter], labelKey: `${I18N_KEY}.steps.engagementLetter`, section: ProspectConformitySection.Mission },
 ]
