@@ -143,6 +143,135 @@ describe('EntityContactService', () => {
       ])
     })
 
+    it('should keep one contact with one role unchanged when the user appears once', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: [
+          buildApiItem({
+            firstName: 'Anna',
+            lastName: 'Smith',
+            email: 'anna@example.com',
+            labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
+          }),
+        ],
+      })
+
+      const result = await EntityContactService.getProspectContacts(accountId)
+
+      expect(result).toStrictEqual([
+        {
+          firstname: 'Anna',
+          lastname: 'Smith',
+          role: 'Responsable de compte',
+          phoneNumber: '0600000000',
+          email: 'anna@example.com',
+        },
+      ])
+    })
+
+    it('should merge distinct roles from multiple labels on the same contact', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: [
+          buildApiItem({
+            firstName: 'Oussema',
+            lastName: 'Ben Amor',
+            email: 'obenamor@rydge.fr',
+            landPhone: '',
+            mobilePhone: '0123456789',
+            labels: [
+              {
+                code: CollaboratorRole.CLP,
+                customerLabel: 'Responsable de Compte',
+                collaboratorLabel: 'Responsable de Compte',
+              },
+              {
+                code: CollaboratorRole.AM,
+                customerLabel: 'Maître de Dossier',
+                collaboratorLabel: 'Maître de Dossier',
+              },
+            ],
+          }),
+        ],
+      })
+
+      const result = await EntityContactService.getProspectContacts(accountId)
+
+      expect(result).toStrictEqual([
+        {
+          firstname: 'Oussema',
+          lastname: 'Ben Amor',
+          role: 'Responsable de Compte | Maître de Dossier',
+          phoneNumber: '0123456789',
+          email: 'obenamor@rydge.fr',
+        },
+      ])
+    })
+
+    it('should not duplicate identical role labels from the same contact labels', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: [
+          buildApiItem({
+            firstName: 'Anna',
+            lastName: 'Smith',
+            email: 'anna@example.com',
+            labels: [
+              { code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' },
+              { code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' },
+            ],
+          }),
+        ],
+      })
+
+      const result = await EntityContactService.getProspectContacts(accountId)
+
+      expect(result).toStrictEqual([
+        {
+          firstname: 'Anna',
+          lastname: 'Smith',
+          role: 'Responsable de compte',
+          phoneNumber: '0600000000',
+          email: 'anna@example.com',
+        },
+      ])
+    })
+
+    it('should keep separate cards for different contacts', async () => {
+      const firstContact = buildApiItem({
+        firstName: 'Anna',
+        lastName: 'Smith',
+        email: 'anna@example.com',
+        labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
+      })
+      const secondContact = buildApiItem({
+        firstName: 'Anna',
+        lastName: 'Smith',
+        email: 'anna.other@example.com',
+        labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
+      })
+
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: [firstContact, secondContact],
+      })
+
+      const result = await EntityContactService.getProspectContacts(accountId)
+
+      expect(result).toStrictEqual([
+        {
+          firstname: 'Anna',
+          lastname: 'Smith',
+          role: 'Responsable de compte',
+          phoneNumber: '0600000000',
+          email: 'anna@example.com',
+        },
+        {
+          firstname: 'Anna',
+          lastname: 'Smith',
+          role: 'Responsable de compte',
+          phoneNumber: '0600000000',
+          email: 'anna.other@example.com',
+        },
+      ])
+    })
+
     it('should filter out contacts whose labels field is missing', async () => {
       vi.mocked(api.gateway.get).mockResolvedValueOnce({
         data: [

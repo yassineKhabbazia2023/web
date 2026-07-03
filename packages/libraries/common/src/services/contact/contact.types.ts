@@ -30,5 +30,5 @@ export interface EntityContact {
 // A contact paired with the prospect label (CLP or AM) that qualified it.
 export interface ProspectEntry {
   item: ContactResponseItem
-  prospectLabel: ContactLabel
+  prospectLabels: ContactLabel[]
 }
