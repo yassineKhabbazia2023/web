@@ -57,7 +57,7 @@ export function usePaymentConfiguration(options: UsePaymentConfigurationOptions)
     isSubmitting.value = true
     try {
       const { signatureUrl: generatedSignatureUrl } = await ConformityPaymentService.generateSepaMandate({
-        prospectId: options.prospectId,
+        accountId: options.accountId,
         ribFile: ribFile.value,
         bankDetails: { ...bankDetails },
       })
@@ -79,7 +79,7 @@ export function usePaymentConfiguration(options: UsePaymentConfigurationOptions)
 
   // Reads the payment preference and moves to the completion screen when the mandate is signed.
   const advanceIfMandateSigned = async (): Promise<boolean> => {
-    const { paymentType } = await ConformityPaymentService.getPaymentPreference(options.prospectId)
+    const { paymentType } = await ConformityPaymentService.getPaymentPreference(options.accountId)
     const isSigned = paymentType === ConformityPaymentType.MandateSepa
     if (isSigned) {
       currentStep.value = PaymentConfigurationStep.Completed

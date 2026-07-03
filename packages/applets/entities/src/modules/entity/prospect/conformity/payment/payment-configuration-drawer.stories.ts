@@ -30,9 +30,9 @@ function mockSignedMandateDownload(): void {
     Promise.resolve(new Blob(['mock signed SEPA mandate'], { type: 'application/pdf' }))
 }
 
-// Seed the current entity (used as prospectId/office) and stub the API so stories render offline.
+// Seed the current entity (used as accountId/office) and stub the API so stories render offline.
 function setupMocks(paymentType: ConformityPaymentType | null): void {
-  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1 }))
+  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ accountId: 1 }))
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   mockSignedMandateDownload()
 }
@@ -41,7 +41,7 @@ function setupMocks(paymentType: ConformityPaymentType | null): void {
 // page, the first preference read (initial iframe load) reports "not signed", and after the prospect
 // "signs" (the iframe re-navigates) the next read reports signed.
 function setupSignatureSimulationMocks(): void {
-  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1 }))
+  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ accountId: 1 }))
   let checkCount = 0
   ConformityPaymentService.getPaymentPreference = () => {
     checkCount += 1

@@ -203,10 +203,10 @@ const props = withDefaults(defineProps<PaymentProps>(), {
 const emit = defineEmits<PaymentEmits>()
 
 const { t } = useI18n()
-const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-// This card is only rendered within the prospect conformity flow, where the prospect id is always defined.
-const prospectId = currentEntity.value?.prospectId as number
+// This card is only rendered within the prospect conformity flow, where the account id is always defined.
+const accountId = currentEntityId.value!
 
 const {
   paymentType,
@@ -216,7 +216,7 @@ const {
   returnToSepa,
   refreshPaymentPreference,
   downloadMandate,
-} = usePayment(prospectId, {
+} = usePayment(accountId, {
   updateErrorMessage: t(`${PAYMENT_I18N_BASE}.updateError`),
   downloadErrorMessage: t(`${PAYMENT_I18N_BASE}.downloadError`),
   onPaymentPreferenceChanged: () => emit('payment-preference-changed'),

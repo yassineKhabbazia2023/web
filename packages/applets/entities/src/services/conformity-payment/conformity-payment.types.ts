@@ -18,7 +18,7 @@ export interface ProspectMandateBankDetails {
 }
 
 export interface GenerateSepaMandateParams {
-  prospectId: number
+  accountId: number
   ribFile: File
   bankDetails: ProspectMandateBankDetails
 }

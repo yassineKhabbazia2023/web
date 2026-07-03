@@ -82,11 +82,11 @@ const I18N = `${PAYMENT_I18N_BASE}.configurationDrawer.completed`
 
 const { t } = useI18n()
 
-const props = defineProps<{ prospectId: number }>()
+const props = defineProps<{ accountId: number }>()
 
 // Self-contained: fetching and opening the signed mandate concerns only this step.
 const { isLoadingSignedMandate, openSignedMandate } = useCompletedStep({
-  prospectId: props.prospectId,
+  accountId: props.accountId,
   downloadErrorMessage: t(`${PAYMENT_I18N_BASE}.configurationDrawer.downloadError`),
 })
 </script>

@@ -33,7 +33,7 @@
       />
       <CompletedStep
         v-else
-        :prospect-id="prospectId"
+        :account-id="accountId"
       />
 
       <template #footer>
@@ -104,11 +104,11 @@ const emit = defineEmits<{
   completed: []
 }>()
 
-const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
 
 const officeAddress = currentEntity.value?.office?.address
 
-const prospectId = currentEntity.value?.prospectId as number
+const accountId = currentEntityId.value!
 
 const {
   bankDetails,
@@ -126,7 +126,7 @@ const {
   onRibFileChanged,
   reset,
 } = usePaymentConfiguration({
-  prospectId,
+  accountId,
   addressPrefill: {
     addressLine1: officeAddress?.addressLine1,
     addressLine2: officeAddress?.addressLine2,

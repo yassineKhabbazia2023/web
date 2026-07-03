@@ -13,7 +13,7 @@ const downloadSignedMandateMock = vi.mocked(ConformityPaymentService.downloadSig
 const displayNotificationMock = vi.mocked(displayNotification)
 const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
-const paramsMock = { prospectId: 602, downloadErrorMessage: 'downloadError' }
+const paramsMock = { accountId: 602, downloadErrorMessage: 'downloadError' }
 
 describe('completed-step.composable', () => {
   beforeEach(() => {

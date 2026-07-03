@@ -7,7 +7,7 @@ import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import { SIGNED_MANDATE_FILE_NAME } from './payment.consts'
 import type { UsePaymentOptions } from './payment.types'
 
-export function usePayment(prospectId: number, options: UsePaymentOptions) {
+export function usePayment(accountId: number, options: UsePaymentOptions) {
   // Prospect payment type from the API; `null` means no method has been selected yet.
   const paymentType = ref<ConformityPaymentType | null>(null)
   const isLoading = ref(true)
@@ -16,7 +16,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
   const loadPaymentPreference = async (): Promise<void> => {
     isLoading.value = true
     try {
-      const response = await ConformityPaymentService.getPaymentPreference(prospectId)
+      const response = await ConformityPaymentService.getPaymentPreference(accountId)
       paymentType.value = response.paymentType
     } catch (error) {
       logger.error('Error fetching payment preference', error)
@@ -31,7 +31,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     }
     isSaving.value = true
     try {
-      await ConformityPaymentService.setOtherPaymentPreference(prospectId)
+      await ConformityPaymentService.setOtherPaymentPreference(accountId)
       paymentType.value = ConformityPaymentType.Other
       options.onPaymentPreferenceChanged?.()
     } catch (error) {
@@ -46,7 +46,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
   // so we re-fetch instead of mutating the state locally. No isLoading toggle, to avoid a card flicker.
   const refreshPaymentPreference = async (): Promise<void> => {
     try {
-      const response = await ConformityPaymentService.getPaymentPreference(prospectId)
+      const response = await ConformityPaymentService.getPaymentPreference(accountId)
       paymentType.value = response.paymentType
       options.onPaymentPreferenceChanged?.()
     } catch (error) {
@@ -60,7 +60,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     }
     isSaving.value = true
     try {
-      await ConformityPaymentService.resetPaymentPreference(prospectId)
+      await ConformityPaymentService.resetPaymentPreference(accountId)
       paymentType.value = null
       options.onPaymentPreferenceChanged?.()
     } catch (error) {
@@ -79,7 +79,7 @@ export function usePayment(prospectId: number, options: UsePaymentOptions) {
     }
     isSaving.value = true
     try {
-      const signedMandate = await ConformityPaymentService.downloadSignedMandate(prospectId)
+      const signedMandate = await ConformityPaymentService.downloadSignedMandate(accountId)
       downloadFile(signedMandate, SIGNED_MANDATE_FILE_NAME)
     } catch (error) {
       logger.error('Error downloading the signed SEPA mandate', error)

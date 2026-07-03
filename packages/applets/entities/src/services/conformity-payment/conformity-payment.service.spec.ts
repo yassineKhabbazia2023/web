@@ -10,8 +10,8 @@ vi.mock('@pulse/common/api', () => ({
   },
 }))
 
-const prospectId = 602
-const onboardingBasePath = `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}`
+const accountId = 602
+const onboardingBasePath = `${API_PREFIXES.PROSPECT}/onboarding/${accountId}`
 const sepaPath = `${onboardingBasePath}/payment-preferences/sepa`
 const sepaContentPath = `${onboardingBasePath}/payment-preferences/sepa/content`
 const signatureUrl = 'https://app.getaccept.com/sign/abc123'
@@ -39,7 +39,7 @@ describe('ConformityPaymentService', () => {
       const responseData: PaymentPreferenceResponse = { paymentType: ConformityPaymentType.MandateSepa }
       apiGatewayMock.get.mockResolvedValueOnce({ data: responseData })
 
-      const result = await ConformityPaymentService.getPaymentPreference(prospectId)
+      const result = await ConformityPaymentService.getPaymentPreference(accountId)
 
       expect(apiGatewayMock.get).toHaveBeenCalledWith(`${onboardingBasePath}/payment-preferences`)
       expect(result).toEqual(responseData)
@@ -49,7 +49,7 @@ describe('ConformityPaymentService', () => {
       const responseData: PaymentPreferenceResponse = { paymentType: null }
       apiGatewayMock.get.mockResolvedValueOnce({ data: responseData })
 
-      const result = await ConformityPaymentService.getPaymentPreference(prospectId)
+      const result = await ConformityPaymentService.getPaymentPreference(accountId)
 
       expect(result).toEqual(responseData)
     })
@@ -57,7 +57,7 @@ describe('ConformityPaymentService', () => {
 
   describe('resetPaymentPreference', () => {
     it('should DELETE the payment preferences of the prospect', async () => {
-      await ConformityPaymentService.resetPaymentPreference(prospectId)
+      await ConformityPaymentService.resetPaymentPreference(accountId)
 
       expect(apiGatewayMock.delete).toHaveBeenCalledWith(`${onboardingBasePath}/payment-preferences`)
     })
@@ -65,7 +65,7 @@ describe('ConformityPaymentService', () => {
 
   describe('setOtherPaymentPreference', () => {
     it('should POST the OTHER payment preference of the prospect', async () => {
-      await ConformityPaymentService.setOtherPaymentPreference(prospectId)
+      await ConformityPaymentService.setOtherPaymentPreference(accountId)
 
       expect(apiGatewayMock.post).toHaveBeenCalledWith(`${onboardingBasePath}/payment-preferences/other`)
     })
@@ -75,7 +75,7 @@ describe('ConformityPaymentService', () => {
     it('should POST a multipart form with the RIB and banking information and return the signing link', async () => {
       apiGatewayMock.post.mockResolvedValueOnce({ data: { signatureUrl } })
 
-      const result = await ConformityPaymentService.generateSepaMandate({ prospectId, ribFile, bankDetails })
+      const result = await ConformityPaymentService.generateSepaMandate({ accountId, ribFile, bankDetails })
 
       expect(apiGatewayMock.post).toHaveBeenCalledWith(
         sepaPath,
@@ -99,7 +99,7 @@ describe('ConformityPaymentService', () => {
       apiGatewayMock.post.mockResolvedValueOnce({ data: { signatureUrl } })
 
       await ConformityPaymentService.generateSepaMandate({
-        prospectId,
+        accountId,
         ribFile,
         bankDetails: { ...bankDetails, addressLine2: '' },
       })
@@ -114,7 +114,7 @@ describe('ConformityPaymentService', () => {
       const blob = new Blob(['signed mandate'], { type: 'application/pdf' })
       apiGatewayMock.get.mockResolvedValueOnce({ data: blob })
 
-      const result = await ConformityPaymentService.downloadSignedMandate(prospectId)
+      const result = await ConformityPaymentService.downloadSignedMandate(accountId)
 
       expect(apiGatewayMock.get).toHaveBeenCalledWith(sepaContentPath, { responseType: 'blob' })
       expect(result).toBe(blob)

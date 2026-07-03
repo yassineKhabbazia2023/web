@@ -5,10 +5,10 @@ import { ConformityPaymentType } from '@entities/enums'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import Payment from './payment.vue'
 
-// Seeds the current entity (used as prospectId) and stubs the API so the story renders
+// Seeds the current entity (used as accountId) and stubs the API so the story renders
 // the chosen state offline, without a backend.
 function mockPaymentPreference(paymentType: ConformityPaymentType | null): void {
-  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1 }))
+  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ accountId: 1 }))
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   ConformityPaymentService.setOtherPaymentPreference = () => Promise.resolve()
   ConformityPaymentService.resetPaymentPreference = () => Promise.resolve()

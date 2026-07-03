@@ -265,23 +265,23 @@ export const devMockHandlers: RequestHandler[] = [
 
   // --- Payment preferences & SEPA mandate (prospect onboarding) ---
 
-  http.get('*/prospect/api/onboarding/:prospectId/payment-preferences', () => {
+  http.get('*/prospect/api/onboarding/:accountId/payment-preferences', () => {
     return HttpResponse.json(getPaymentPreferenceResponse())
   }),
 
-  http.delete('*/prospect/api/onboarding/:prospectId/payment-preferences', async () => {
+  http.delete('*/prospect/api/onboarding/:accountId/payment-preferences', async () => {
     await delay(800)
     return HttpResponse.json({}, { status: 204 })
   }),
 
-  http.post('*/prospect/api/onboarding/:prospectId/payment-preferences/other', async () => {
+  http.post('*/prospect/api/onboarding/:accountId/payment-preferences/other', async () => {
     await delay(800)
     return HttpResponse.json({}, { status: 204 })
   }),
 
   // Generate the SEPA mandate and hand back the same-origin signing page (served by the e2e Vite
   // plugin). A fresh mandate is unsigned until "Signer" is clicked in that page.
-  http.post('*/prospect/api/onboarding/:prospectId/payment-preferences/sepa', async () => {
+  http.post('*/prospect/api/onboarding/:accountId/payment-preferences/sepa', async () => {
     await delay(1500)
     isMandateSignedInMock = false
     return HttpResponse.json({ signatureUrl: '/mock/getaccept-signature' })
@@ -297,7 +297,7 @@ export const devMockHandlers: RequestHandler[] = [
   // Signed mandate downloaded from the completed step (the real API streams it as a binary file).
   // To test the "mandate not signed yet" case, return `new HttpResponse(null, { status: 404 })`
   // instead (see the real endpoint's 404 behaviour).
-  http.get('*/prospect/api/onboarding/:prospectId/payment-preferences/sepa/content', async () => {
+  http.get('*/prospect/api/onboarding/:accountId/payment-preferences/sepa/content', async () => {
     await delay(800)
     return new HttpResponse(new Blob(['mock signed SEPA mandate'], { type: 'application/octet-stream' }), {
       headers: { 'Content-Type': 'application/octet-stream' },

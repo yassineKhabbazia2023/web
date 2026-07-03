@@ -17,7 +17,7 @@ const displayNotificationMock = vi.mocked(displayNotification)
 const SIGNATURE_URL = 'https://app.getaccept.com/sign/abc123'
 
 const optionsMock = {
-  prospectId: 602,
+  accountId: 602,
   submitErrorMessage: 'submitError',
   notSignedMessage: 'notSigned',
   signatureCheckErrorMessage: 'signatureCheckError',
@@ -87,7 +87,7 @@ describe('payment-configuration-drawer.composable', () => {
         const submitPromise = result.submitGeneralInformation()
         await vi.advanceTimersByTimeAsync(499)
 
-        expect(generateSepaMandateMock).toHaveBeenCalledWith(expect.objectContaining({ prospectId: 602, ribFile }))
+        expect(generateSepaMandateMock).toHaveBeenCalledWith(expect.objectContaining({ accountId: 602, ribFile }))
         expect(result.signatureUrl.value).toBe('')
         expect(result.currentStep.value).toBe(PaymentConfigurationStep.GeneralInformation)
 

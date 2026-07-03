@@ -27,7 +27,7 @@ const optionsMock = {
   onPaymentPreferenceChanged: onPaymentPreferenceChangedMock,
 }
 
-const prospectIdMock = 602
+const accountIdMock = 602
 
 describe('payment.composable', () => {
   beforeEach(() => {
@@ -42,13 +42,13 @@ describe('payment.composable', () => {
     it('should fetch the payment preference and expose it', async () => {
       getPaymentPreferenceMock.mockResolvedValue({ paymentType: ConformityPaymentType.MandateSepa })
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
 
       expect(result.isLoading.value).toBe(true)
 
       await flushPromises()
 
-      expect(getPaymentPreferenceMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(getPaymentPreferenceMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.paymentType.value).toBe(ConformityPaymentType.MandateSepa)
       expect(result.isLoading.value).toBe(false)
     })
@@ -56,7 +56,7 @@ describe('payment.composable', () => {
     it('should handle fetch errors gracefully', async () => {
       getPaymentPreferenceMock.mockRejectedValue(new Error('API Error'))
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       expect(result.paymentType.value).toBeNull()
@@ -66,12 +66,12 @@ describe('payment.composable', () => {
 
   describe('selectOtherMethod', () => {
     it('should set the preference to OTHER and update the local state', async () => {
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.selectOtherMethod()
 
-      expect(setOtherPaymentPreferenceMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(setOtherPaymentPreferenceMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.paymentType.value).toBe(ConformityPaymentType.Other)
       expect(result.isSaving.value).toBe(false)
       expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
@@ -80,7 +80,7 @@ describe('payment.composable', () => {
     it('should display an error notification and keep the previous state when it fails', async () => {
       setOtherPaymentPreferenceMock.mockRejectedValue(new Error('POST Error'))
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.selectOtherMethod()
@@ -96,12 +96,12 @@ describe('payment.composable', () => {
     it('should reset the preference to null and update the local state', async () => {
       getPaymentPreferenceMock.mockResolvedValue({ paymentType: ConformityPaymentType.Other })
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.returnToSepa()
 
-      expect(resetPaymentPreferenceMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(resetPaymentPreferenceMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.paymentType.value).toBeNull()
       expect(result.isSaving.value).toBe(false)
       expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
@@ -111,7 +111,7 @@ describe('payment.composable', () => {
       getPaymentPreferenceMock.mockResolvedValue({ paymentType: ConformityPaymentType.Other })
       resetPaymentPreferenceMock.mockRejectedValue(new Error('DELETE Error'))
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.returnToSepa()
@@ -125,7 +125,7 @@ describe('payment.composable', () => {
 
   describe('refreshPaymentPreference', () => {
     it('should re-fetch the preference and update the state without toggling isLoading', async () => {
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       getPaymentPreferenceMock.mockResolvedValue({ paymentType: ConformityPaymentType.MandateSepa })
@@ -135,7 +135,7 @@ describe('payment.composable', () => {
       expect(result.isLoading.value).toBe(false)
       await pending
 
-      expect(getPaymentPreferenceMock).toHaveBeenLastCalledWith(prospectIdMock)
+      expect(getPaymentPreferenceMock).toHaveBeenLastCalledWith(accountIdMock)
       expect(result.paymentType.value).toBe(ConformityPaymentType.MandateSepa)
       expect(result.isLoading.value).toBe(false)
       expect(onPaymentPreferenceChangedMock).toHaveBeenCalledTimes(1)
@@ -144,7 +144,7 @@ describe('payment.composable', () => {
     it('should keep the previous state when the refresh fails', async () => {
       getPaymentPreferenceMock.mockResolvedValue({ paymentType: ConformityPaymentType.Other })
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       getPaymentPreferenceMock.mockRejectedValue(new Error('GET Error'))
@@ -161,12 +161,12 @@ describe('payment.composable', () => {
       const signedMandate = new Blob(['signed mandate'], { type: 'application/pdf' })
       downloadSignedMandateMock.mockResolvedValue(signedMandate)
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.downloadMandate()
 
-      expect(downloadSignedMandateMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(downloadSignedMandateMock).toHaveBeenCalledWith(accountIdMock)
       expect(downloadFileMock).toHaveBeenCalledWith(signedMandate, SIGNED_MANDATE_FILE_NAME)
       expect(result.isSaving.value).toBe(false)
     })
@@ -174,7 +174,7 @@ describe('payment.composable', () => {
     it('should notify and not download when the fetch fails', async () => {
       downloadSignedMandateMock.mockRejectedValue(new Error('GET Error'))
 
-      const [result] = withSetup(() => usePayment(prospectIdMock, optionsMock))
+      const [result] = withSetup(() => usePayment(accountIdMock, optionsMock))
       await flushPromises()
 
       await result.downloadMandate()

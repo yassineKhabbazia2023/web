@@ -12,7 +12,7 @@ export interface MandateAddressPrefill {
 }
 
 export interface UsePaymentConfigurationOptions {
-  prospectId: number
+  accountId: number
   // Address prefilled from the entity office; every field stays editable.
   addressPrefill?: MandateAddressPrefill
   submitErrorMessage: string

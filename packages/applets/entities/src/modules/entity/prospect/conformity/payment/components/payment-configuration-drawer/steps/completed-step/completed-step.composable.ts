@@ -17,7 +17,7 @@ export function useCompletedStep(params: UseCompletedStepParams) {
     isLoadingSignedMandate.value = true
     try {
       const hasOpened = await openDocumentInNewTab(() =>
-        ConformityPaymentService.downloadSignedMandate(params.prospectId),
+        ConformityPaymentService.downloadSignedMandate(params.accountId),
       )
       if (hasOpened === false) {
         displayNotification('error', params.downloadErrorMessage)

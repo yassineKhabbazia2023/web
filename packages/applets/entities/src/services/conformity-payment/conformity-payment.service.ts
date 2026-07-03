@@ -7,32 +7,32 @@ import type {
   PaymentPreferenceResponse,
 } from './conformity-payment.types'
 
-const onboardingBasePath = (prospectId: number): string =>
-  `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}`
+const onboardingBasePath = (accountId: number): string =>
+  `${API_PREFIXES.PROSPECT}/onboarding/${accountId}`
 
 export class ConformityPaymentService {
   // Retrieve the current payment preference (MANDATE_SEPA, OTHER or null when not selected yet).
-  static async getPaymentPreference(prospectId: number): Promise<PaymentPreferenceResponse> {
+  static async getPaymentPreference(accountId: number): Promise<PaymentPreferenceResponse> {
     const response = await api.gateway.get<PaymentPreferenceResponse>(
-      `${onboardingBasePath(prospectId)}/payment-preferences`,
+      `${onboardingBasePath(accountId)}/payment-preferences`,
     )
     return response.data
   }
 
   // Reset the payment preference to null (unselected) and the PAYMENT_METHOD onboarding step
-  static resetPaymentPreference(prospectId: number): Promise<void> {
-    return api.gateway.delete(`${onboardingBasePath(prospectId)}/payment-preferences`)
+  static resetPaymentPreference(accountId: number): Promise<void> {
+    return api.gateway.delete(`${onboardingBasePath(accountId)}/payment-preferences`)
   }
 
   // Set the payment preference to OTHER (alternative payment method).
-  static setOtherPaymentPreference(prospectId: number): Promise<void> {
-    return api.gateway.post(`${onboardingBasePath(prospectId)}/payment-preferences/other`)
+  static setOtherPaymentPreference(accountId: number): Promise<void> {
+    return api.gateway.post(`${onboardingBasePath(accountId)}/payment-preferences/other`)
   }
 
   // Upload the RIB and banking information, generate the SEPA mandate PDF, send it to
   // GetAccept and return the signing link to embed in the signature iframe.
   static async generateSepaMandate(
-    { prospectId, ribFile, bankDetails }: GenerateSepaMandateParams,
+    { accountId, ribFile, bankDetails }: GenerateSepaMandateParams,
   ): Promise<GenerateSepaMandateResponse> {
     const formData = new FormData()
     formData.append('file', ribFile)
@@ -48,7 +48,7 @@ export class ConformityPaymentService {
     formData.append('bic', bankDetails.bic)
 
     const response = await api.gateway.post<GenerateSepaMandateResponse>(
-      `${onboardingBasePath(prospectId)}/payment-preferences/sepa`,
+      `${onboardingBasePath(accountId)}/payment-preferences/sepa`,
       formData,
       {
         headers: {
@@ -61,9 +61,9 @@ export class ConformityPaymentService {
 
   // Download the signed SEPA mandate once the prospect has signed via GetAccept (Règle n°07 — Étape 2).
   // The endpoint streams the PDF as binary and returns 404 while the mandate has not been signed yet.
-  static async downloadSignedMandate(prospectId: number): Promise<Blob> {
+  static async downloadSignedMandate(accountId: number): Promise<Blob> {
     const response = await api.gateway.get<Blob>(
-      `${onboardingBasePath(prospectId)}/payment-preferences/sepa/content`,
+      `${onboardingBasePath(accountId)}/payment-preferences/sepa/content`,
       { responseType: 'blob' },
     )
     return response.data
