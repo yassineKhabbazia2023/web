@@ -5,6 +5,9 @@
 - **Never use GitHub-specific APIs or tools** (gh pr, gh issue, gh api, etc.)
 - To inspect branch changes, use only **git commands** (`git log`, `git diff`, `git show`, etc.)
 - To identify PR details, rely on the current branch name and git history — do not attempt to query any external PR API
+- Commit messages follow conventional commits (`type(scope): description`), prefixed with a gitmoji and `[Tag]` scopes (e.g. `🐛 fix(entities): keep supporting document labels after upload`, `✨ [Payment] Add non-signatory alert`)
+- Branch names follow `<type>/<workitem-id>_snake_case_description` with type ∈ `feature`, `fix`, `bug`, `bugfix`, `enabler` (e.g. `feature/61858_agent_props`)
+- **Commits and pushes are handled exclusively by the user** — never run `git commit` or `git push` unless the user explicitly asks for it
 
 ## Architecture Overview
 
@@ -15,21 +18,27 @@ This is an npm workspaces monorepo with three main package categories:
 1. **Apps** (`packages/apps/`): Vue 3 applications
    - `customer` (`@pulse/customer`): Client-facing app with Gigya authentication, served at `/`
    - `collaborator` (`@pulse/collaborator`): Internal collaborator app with MSAL SSO, served at `/collaborateur/`
-   - Both apps orchestrate routing, authentication flows, and layout components
-   - Both integrate all applets and libraries
+   - `backoffice` (`@pulse/backoffice`): Internal admin app — no applet dependencies, only common/toolbox/styleguide
+   - `e2e-mocks` (`@pulse/e2e-mocks`): not a Vue app — MSW-based E2E testing/mock infrastructure consumed by the other apps
+   - `customer`, `collaborator` and `backoffice` orchestrate routing, authentication flows, and layout components
+   - `customer` and `collaborator` integrate applets and libraries; `backoffice` integrates only libraries
 
 2. **Applets** (`packages/applets/`): Feature-specific micro-applications
    - `entities`: Entity management and business logic
-   - `ged`: Document management system (GED)
+   - `booking`: Appointment booking workflows
+   - `feed-center`: Notification/feed center
+   - `ged`: Document management system (GED) (legacy — ask to clarify intention before starting code if an evolution is needed)
+   - `homepage`: Landing/dashboard homepage
    - `launcher`: Application launcher interface
    - `login`: Authentication flows
-   - `mandate`: Mandate management workflows
+   - `mandate`: Mandate management workflows (legacy — ask to clarify intention before starting code if an evolution is needed)
    - `offers-catalog`: Product catalog functionality
    - `pennylane`: Pennylane integration
    - `powerbi`: PowerBI reporting integration
 
 3. **Libraries** (`packages/libraries/`): Shared code and components
    - `common`: Core services, API clients, stores, and utilities
+   - `shared`: Shared cross-app code (see package for details)
    - `toolbox`: Fundamental utilities, logging, feature flags
    - `styleguide`: Design system components and assets
    - `widgets`: Widget system for configurable dashboards
@@ -40,6 +49,7 @@ This is an npm workspaces monorepo with three main package categories:
 - **API Integration**: Centralized through API Gateway with axios interceptors
 - **Authentication**: MSAL for collaborator SSO, Gigya for client authentication, token management in authentication service
 - **Routing**: Vue Router with guards for authentication, permissions, and feature flags
+- **Feature Flags**: declared in the `Feature` enum (`@pulse/common`), checked via `FeatureFlagManager.isXxxActivated()` static accessors (never read env vars directly — some flags are served by OpenFeature/ConfigCat). Routes are gated with the `FEATURE_FLAG_META` route meta
 - **Component Architecture**: Atomic design (atoms, molecules, organisms), Composition API with TypeScript, story-driven development with Storybook
 - **Build System**: Vite with custom configurations per workspace
 
@@ -48,6 +58,17 @@ This is an npm workspaces monorepo with three main package categories:
 ### Language
 
 - All comments must be written in **English**
+- All user-facing output (reviews, explanations, questions, summaries) must match the language of the user's last message — the team works in French, code artifacts stay in English
+
+### Additional Conventions (Skills)
+
+Detailed conventions live in `.agents/skills/*/SKILL.md` and should be consulted even when not auto-triggered:
+
+- `file-conventions`: file naming, folder structure, type naming, SFC structure
+- `testing`: unit testing requirements and patterns
+- `npm-install`: mandatory pre-flight checks before adding any dependency
+- `review-pr`: PR review process (conventions + functional logic/flows)
+- `run-app`: how to run the apps, Storybook, tests and lint locally
 
 ### Coding Standards
 
@@ -61,6 +82,7 @@ This is an npm workspaces monorepo with three main package categories:
 - For nullish checks, use `value === null || value === undefined` instead of `!value`, use utils like `isNullOrEmpty` when appropriate
 - **Always use `String#replaceAll()` instead of `String#replace()`** with global regex flags. For literal replacements, use `replaceAll('x', 'y')` instead of `replace(/x/g, 'y')`. This avoids regex backtracking vulnerabilities and improves readability
 - **Never prefix a function call with `void`** (e.g. write `doSomething()`, not `void doSomething()`)
+- **Never use `console.*`** — log through `logger` from `@pulse/toolbox`
 
 ### CSS Class Formatting
 
@@ -95,6 +117,14 @@ When using more than 2 CSS classes, use multi-line format:
 - **Destructure composables when consuming them** instead of keeping the returned object. Top-level refs are auto-unwrapped in templates, so destructuring avoids `.value` in templates (e.g. `const { isLoading, booking } = useBookingForm()`, then `{{ isLoading }}` in the template — never `const form = useBookingForm()` then `form.isLoading.value`).
 - **Never reference `props.xxx` in templates.** It's unnecessary in Vue 3: `defineProps` return values are already available directly in the template (e.g. `{{ bookingId }}`, not `{{ props.bookingId }}`). This only applies to templates — using `const props = defineProps<...>()` and `props.xxx` in the script is fine and does not need to be destructured.
 - **Never prefix props with a leading `p` (e.g. `pDisabled`, `pType`).** That `p` prefix is a `@pulse/styleguide` component convention only (see `PSkewedButtonProps` etc. in `packages/libraries/styleguide`). Components in apps, applets, and other libraries must use plain, unprefixed prop names (e.g. `disabled`, `type`).
+- **UI components always come from `@pulse/styleguide`** (e.g. `import { PButton } from '@pulse/styleguide/components'`). Never render `el-*` tags directly — element-plus is an implementation detail of the styleguide (importing its types is fine). For user notifications, use `PNotification` / `displayNotification` from `@pulse/styleguide`.
+
+### i18n
+
+- Never hardcode user-facing strings — every label goes through vue-i18n
+- Each applet owns its locale files in `src/i18n/fr-FR.json` and `src/i18n/en-US.json` — always add keys to **both**
+- Keys are namespaced under the applet name in camelCase (e.g. `feedCenter.settingsDrawer.success`, `entities.wallet.subscriptionStatusFilters.toCreate`)
+- In components and composables, use `const { t } = useI18n()` (from `vue-i18n`); outside a component context (managers), use `i18n.global.t(...)` with `i18n` from `@pulse/common/i18n`
 
 ### Import Restrictions
 
@@ -138,13 +168,13 @@ These local aliases are **only** for imports within the same package. For cross-
 
 **Do NOT ask the user** for permission to fetch documentation. Always proactively consult Context7.
 
-**Fallback**: If Context7 is not available, refer to the official Vue 3 documentation at https://vuejs.org/ or use `web_fetch` to retrieve up-to-date information.
+**Fallback**: If Context7 is not available, refer to the official Vue 3 documentation at https://vuejs.org/ or use the `WebFetch` tool to retrieve up-to-date information.
 
 ## Environment Setup
 
 ### Key Environment Variables
 
-The application uses environment variables loaded via `env-vars.js`. Key variables include: API Gateway URLs and aliases, authentication configuration (MSAL, Gigya), feature flags, third-party service keys (Amplitude, ProductFruits, Axeptio).
+Environment variables are configured per app/environment (not in a single root file). Key variables include: API Gateway URLs and aliases, authentication configuration (MSAL, Gigya), feature flags, third-party service keys (Amplitude, ProductFruits, Axeptio).
 
 See `CONFIG.md` for the complete list of environment variables and their purposes.
 
@@ -180,6 +210,7 @@ When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
+  - Exception: the Coding Standards (falsy/truthy checks, `replaceAll`, `import type`, etc.) apply to every line you write or modify, even inside a legacy file that doesn't follow them. Do not rewrite untouched lines to conform.
 - If you notice unrelated dead code, mention it - don't delete it.
 
 When your changes create orphans:
@@ -222,7 +253,8 @@ When you write a plan, follow these rules:
 When you execute a plan, follow these rules:
 
 - Think hard and write elegant code that completes the plan
-- After every code block you write, lint:fix, build and write corresponding tests and run them before writing the next code block
+- After every code block you write, lint:fix and build before writing the next code block
+- Write and run corresponding unit tests as mandated by the `testing` skill before moving on
 - Do not install or add any new package/dependency without explicitly asking for approval first. Explain why it is needed and what benefits it brings before installing
 - Always scope `lint`, `build`, and `test` commands to the workspace(s) you edited — never run them on the entire repository (to prevent long execution times)
   - `npm run lint --workspace=@pulse/customer`

@@ -10,6 +10,7 @@ Reviews all changes in the current branch (compared to the target branch, defaul
 - `AGENTS.md` — all sections (code conventions, Vue 3 standards, CSS formatting, import restrictions)
 - `.agents/skills/file-conventions/SKILL.md` — all rules
 - `.agents/skills/testing/SKILL.md` — all rules
+- `.agents/skills/npm-install/SKILL.md` — only if the diff touches `package.json` or `package-lock.json`
 
 Beyond conventions, the review also analyzes the **functional logic and the flows** the changes participate in — correctness, edge cases, data flow, async and user/navigation flows, and regression risk.
 
@@ -25,6 +26,7 @@ The review follows a strict two-phase workflow: **full review first**, then **in
    - `AGENTS.md` (already available in conversation context via `CLAUDE.md`)
    - `.agents/skills/file-conventions/SKILL.md`
    - `.agents/skills/testing/SKILL.md`
+   - `.agents/skills/npm-install/SKILL.md` — only if the diff touches `package.json` or `package-lock.json` (check the added dependencies against its gates: popularity, recency, deprecation, license)
 2. **Identify Changes**: Run `git diff <base>...HEAD --name-only` where `<base>` is the target branch (default: `main`). If the user specifies a different target branch, use that instead. If the base branch does not exist locally, run `git fetch origin <base>` first and diff against `origin/<base>`.
 3. **Capture Intent**: Run `git log <base>..HEAD --oneline` and read the branch name to reconstruct **what the PR is supposed to do**. This intent is the reference used in Step 2b to verify the logic actually delivers it.
 4. **Smart Read**: For each changed file:
@@ -39,7 +41,9 @@ The review has **two complementary dimensions**. Run both for every changed file
 
 #### 2a — Conventions
 
-For each changed file, verify **all rules** from the three sources above. Only report violations on **changed lines** (additions and modifications in the diff). Do not flag pre-existing issues in unchanged code unless they are directly impacted by the changes (e.g., a renamed import that breaks a convention).
+For each changed file, verify **all rules** from the sources above. Only report violations on **changed lines** (additions and modifications in the diff). Do not flag pre-existing issues in unchanged code unless they are directly impacted by the changes (e.g., a renamed import that breaks a convention).
+
+**File-level obligations** are exempt from the changed-lines scoping: for each changed `.manager.ts`, `.composable.ts`, or `.validation.ts`, verify that the sibling `.spec.ts` exists and was updated if the behavior changed. A missing mandatory spec is a 🔴 finding even though no specific line is at fault.
 
 #### 2b — Logic & flows
 
@@ -52,6 +56,9 @@ Beyond style, analyze whether the code is **functionally correct** and whether t
 - **User & navigation flows** — routing guards (auth, permissions, feature flags), redirects, modal open/close lifecycle, form submission paths. Verify both the **happy path** AND the **failure path**.
 - **Regression risk** — when the change touches a shared function, store, or component, trace its **callers** (read the relevant unchanged files) to confirm nothing downstream breaks.
 - **Intent gap** — anything the PR claims to do (per its commits/branch) but does not, or does only partially.
+- **i18n** — every translation key added or renamed must exist in BOTH locale files (`fr-FR.json` and `en-US.json`) of the applet. Flag hardcoded user-facing strings in templates.
+- **Security** — flag `v-html` on non-sanitized data, secrets/tokens/URLs that should be environment variables, and sensitive data written to logs.
+- **Stories** — if a component with a `.stories.ts` file changed its props/behavior, check the story still reflects it.
 
 Report logic/flow findings with the same severity scale (Step 3). When the correct behavior is **ambiguous**, raise a **question for the author** instead of inventing a fix you are unsure about.
 
@@ -59,6 +66,11 @@ Report logic/flow findings with the same severity scale (Step 3). When the corre
 
 Severity icons: 🔴 ERROR (must fix) · ⚠️ WARNING (should fix) · ℹ️ INFO (consider fixing)
 Type: `Conv` (convention) · `Logic` (logic/flow).
+
+Classification criteria:
+- 🔴 ERROR: breaks a flow or behavior (logic bug, broken edge case, regression), or violates an absolute rule (falsy/truthy checks, defineModel, import restrictions, missing mandatory test)
+- ⚠️ WARNING: convention divergence without functional impact, or a plausible but unproven logic risk
+- ℹ️ INFO: improvement opportunity (simplification, naming, reuse of an existing helper)
 
 ```
 ## PR Review — [branch name]
@@ -122,8 +134,8 @@ For an **ambiguous logic/flow finding** with no certain fix, present it as a **q
 **D. Move to the next point.** Repeat until all violations are addressed or skipped.
 
 **E. After all violations in a file are addressed**, run the full validation pipeline on affected files only:
-   - `npm run build --workspace=@pulse/<workspace>`
-   - Run only the related test file(s) (e.g., `npx vitest run <modified-file>.spec.ts --workspace=@pulse/<workspace>`) — do not run the full test suite.
+   - `npm run build --workspace=@pulse/<workspace>` — skip if the workspace has no `build` script (e.g. `@pulse/e2e-mocks`)
+   - Run only the related test file(s) (e.g., `npm run test --workspace=@pulse/<workspace> -- <modified-file>.spec.ts`) — do not run the full test suite.
 
 ### Bulk mode (on request only)
 
@@ -132,6 +144,10 @@ If the user explicitly asks for bulk mode:
 2. Ask the user to approve/reject each violation by number
 3. Apply all approved fixes
 4. Run validation once at the end on all modified files
+
+### Final validation
+
+Before writing the Fix Summary, run lint + build + related tests once per affected workspace (same commands as Step E). "All checks passing" in the summary must reflect this actual run, not an assumption.
 
 ### Final summary
 
@@ -153,5 +169,5 @@ If the user explicitly asks for bulk mode:
 - **Point by point by default** — after the review summary, immediately present the first violation and its fix, ask for approval, then move to the next. Only switch to bulk mode if the user explicitly requests it
 - If a fix introduces a new violation, flag it immediately
 - When fixing Vue code, consult Context7 for up-to-date Vue 3 documentation
-- **Write the review in French** — all descriptions, explanations, and fix proposals must be in French
+- **Match the user's language** (per AGENTS.md) — in practice the team works in French, so reviews are almost always in French
 - **Git only** — never use `gh`, GitHub CLI, or any GitHub API. This project uses Azure DevOps. Use only `git` commands to collect branch and diff information

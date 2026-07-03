@@ -7,13 +7,15 @@ description: File naming conventions, folder structure, type naming, file respon
 
 ## File Naming Convention
 
-Always use **kebab-case** for files and folders. Files should be separated by responsibility using the following suffixes:
+Always use **kebab-case** for files and folders — including new files added next to legacy PascalCase siblings (never rename the existing ones to match). The only exception is `@pulse/styleguide`, where components intentionally use PascalCase (`P<Name>/P<Name>.vue`): follow that convention when working there.
+
+Files should be separated by responsibility using the following suffixes:
 
 | Suffix | Purpose | Example |
 |--------|---------|---------|
 | `.vue` | Vue component (template + minimal script setup) | `booking-form.vue` |
-| `.stories.vue` | Component story | `booking-form.stories.vue` |
-| `.vue.spec.ts` | Component test | `booking-form.vue.spec.ts` |
+| `.stories.ts` | Component story (CSF format, `Meta`/`StoryObj` from `@storybook/vue3-vite`) | `booking-form.stories.ts` |
+| `.vue.spec.ts` | Component test (legacy — never create new ones, see the `testing` skill) | `booking-form.vue.spec.ts` |
 | `.page.vue` | Page component | `booking.page.vue` |
 | `.composable.ts` | Vue reactive logic, event handling, lifecycle hooks | `booking.composable.ts` |
 | `.directive.ts` | Directive | `booking.directive.ts` |
@@ -32,7 +34,7 @@ Always use **kebab-case** for files and folders. Files should be separated by re
 | `.interceptor.ts` | HTTP interceptor | `booking.interceptor.ts` |
 | `.validation.ts` | Form validation rules and schemas | `booking.validation.ts` |
 
-**Important**: Interfaces and types must NEVER be declared inside `.manager.ts`, `.composable.ts`, or other files. They must always be in a dedicated `.types.ts` file in the same folder.
+**Important**: Exported interfaces and types must always be declared in a dedicated `.types.ts` file in the same folder — never in `.manager.ts`, `.composable.ts`, `.vue`, or any other file. A type used only inside a single file can stay in that file, unexported. The moment another file needs it, move it to the `.types.ts` file instead of exporting it in place.
 
 ## Type Naming Conventions
 
@@ -43,7 +45,6 @@ Use **PascalCase** for all types and interfaces. Follow these naming patterns:
 | `[Feature]Props` | Component props | `BookingFormProps` |
 | `[Feature]Emits` | Component emits | `BookingFormEmits` |
 | `[Feature]Item` | Single entity/model | `BookingItem`, `UserItem` |
-| `[Feature]List` | Array/collection type | `BookingList` |
 | `[Feature]Response` | API response | `BookingResponse` |
 | `[Feature]Request` | API request payload | `BookingRequest` |
 | `[Feature]State` | Store/composable state | `BookingState` |
@@ -79,7 +80,7 @@ export interface BookingResponse {
 
 ## File Structure
 
-Each component must be in its own dedicated folder containing all its related files:
+A component with related files (manager, composable, types, etc.) must be in its own dedicated folder containing all of them:
 
 ```
 components/
@@ -100,6 +101,8 @@ components/
     ...
 ```
 
+**Exception**: a trivial single-file component (only a `.vue` file, no manager/composable/types) can live flat in the parent `components/` folder — unless every sibling component in that folder uses a dedicated folder; in that case match the siblings and create a folder too. Create the dedicated folder as soon as a second related file appears.
+
 ## File Responsibilities
 
 **Managers (`.manager.ts`)**
@@ -111,6 +114,10 @@ components/
 ```typescript
 // Good: Class with static methods
 export class BookingManager {
+  static async fetchBooking(bookingId: string) {
+    return await BookingService.getBooking(bookingId)
+  }
+
   static async fetchBookings() {
     return await BookingService.getBookings()
   }
@@ -134,6 +141,7 @@ export function calculateTotal(items: BookingItem[]) { /* ... */ }
 ```typescript
 // booking-form.composable.ts
 import { ref, computed, onMounted } from 'vue'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { BookingManager } from './booking-form.manager'
 import type { BookingItem } from './booking-form.types'
 
@@ -141,12 +149,15 @@ export function useBookingForm(bookingId: string) {
   const booking = ref<BookingItem | null>(null)
   const isLoading = ref(false)
 
-  const isValid = computed(() => booking.value?.title.length > 0)
+  const isValid = computed(() => isNotNullNorEmpty(booking.value?.title))
 
   async function loadBooking() {
     isLoading.value = true
-    booking.value = await BookingManager.fetchBooking(bookingId)
-    isLoading.value = false
+    try {
+      booking.value = await BookingManager.fetchBooking(bookingId)
+    } finally {
+      isLoading.value = false
+    }
   }
 
   onMounted(() => {

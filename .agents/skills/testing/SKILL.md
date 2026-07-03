@@ -26,7 +26,7 @@ description: Unit testing requirements, Vitest guidelines, mock patterns, and te
 ## Testing Guidelines
 
 - Use Vitest for all testing
-- Do **not** test `.vue` files, only `.ts` files
+- Do **not** create tests for `.vue` files, only for `.ts` files. Existing human-written `.vue.spec.ts` files are legitimate: never flag them in review or delete them, and if your change breaks one, update it — just never create a new one
 - Do not `beforeEach(() => { vi.clearAllMocks() })` if it's not absolutely needed
 - Do not import vi stuff (`import { describe, it, expect, beforeEach, vi } from 'vitest'`) — already globally available
 - Mutualize mocks outside of `describe` blocks when possible, do not repeat mocks unless necessary
@@ -37,6 +37,7 @@ description: Unit testing requirements, Vitest guidelines, mock patterns, and te
 
 - Use `getStoreMock` from `@pulse/common/mocks/vitest` for Pinia store mocks
 - Use `withSetup` from `@pulse/toolbox/utils/test` when testing composables with lifecycle hooks
+- To mock the logger, use the auto mock: `vi.mock('@pulse/toolbox')` then assert with `vi.mocked(logger.error)`. Caveat: this mocks every export of the toolbox main entry (`useDebounce`, validator re-exports…) — if the tested code needs their real behavior, spread the original module and mock only the logger: `vi.mock('@pulse/toolbox', async (importOriginal) => ({ ...await importOriginal<object>(), logger: loggerMock }))` with `loggerMock` from `@pulse/toolbox/mocks`
 
 ## Async Testing Patterns
 
@@ -49,24 +50,24 @@ import { nextTick } from 'vue'
 it('should handle async operations', async () => {
   vi.mocked(MyService.fetchData).mockResolvedValueOnce({ items: [] })
 
-  const { result } = withSetup(() => useMyComposable())
+  const [{ isLoading, items }] = withSetup(() => useMyComposable())
 
   // Wait for all pending promises to resolve
   await flushPromises()
 
-  expect(result.isLoading.value).toBe(false)
-  expect(result.items.value).toEqual([])
+  expect(isLoading.value).toBe(false)
+  expect(items.value).toEqual([])
 })
 
 it('should update reactive state', async () => {
-  const { result } = withSetup(() => useMyComposable())
+  const [{ updateValue, computedProp }] = withSetup(() => useMyComposable())
 
-  result.updateValue('new')
+  updateValue('new')
 
   // Wait for Vue reactivity to flush
   await nextTick()
 
-  expect(result.computedProp.value).toBe('new-derived')
+  expect(computedProp.value).toBe('new-derived')
 })
 ```
 
@@ -78,10 +79,10 @@ Composables with lifecycle hooks (`onMounted`, `onUnmounted`, etc.) **must** use
 it('should load data on mount', async () => {
   vi.mocked(MyManager.fetchItems).mockResolvedValueOnce([{ id: '1' }])
 
-  const { result } = withSetup(() => useMyComposable())
+  const [{ items }] = withSetup(() => useMyComposable())
   await flushPromises()
 
-  expect(result.items.value).toHaveLength(1)
+  expect(items.value).toHaveLength(1)
   expect(vi.mocked(MyManager.fetchItems)).toHaveBeenCalledOnce()
 })
 ```
@@ -125,3 +126,17 @@ vi.mock('../../../services', () => ({
   },
 }))
 ```
+
+## Running Tests
+
+Each workspace's `test` script is `vitest run`. Always scope to the workspace — never run tests on the entire repository:
+
+```bash
+# Whole workspace
+npm run test --workspace=@pulse/entities
+
+# Single file (path or filename filter after --)
+npm run test --workspace=@pulse/entities -- src/path/booking.manager.spec.ts
+```
+
+Never use `npx vitest --workspace=...` — that flag does not exist in Vitest 4.

@@ -36,7 +36,7 @@ WebFetch  url: https://registry.npmjs.org/<package-name>/latest
           prompt: "Return JSON only. Extract: name, version, license (string or object), deprecated (string if present, otherwise absent)."
 
 WebFetch  url: https://registry.npmjs.org/-/v1/search?text=<package-name>&size=1
-          prompt: "Return JSON only. Extract objects[0].package.date (ISO timestamp of the latest publish)."
+          prompt: "Return JSON only. Extract objects[0].package.name and objects[0].package.date (ISO timestamp of the latest publish)."
 
 WebFetch  url: https://api.npmjs.org/downloads/point/last-week/<package-name>
           prompt: "Return JSON only. Extract the 'downloads' integer."
@@ -45,6 +45,7 @@ WebFetch  url: https://api.npmjs.org/downloads/point/last-week/<package-name>
 Notes:
 
 - A 404 on `/latest` means the package does not exist → **abort** and tell the user.
+- The search endpoint is a fuzzy text search: verify `objects[0].package.name` is EXACTLY the requested package. If it is not, the publish date is unknown — flag it as `⚠️ Stale check inconclusive` instead of trusting the wrong package's date.
 - Never fetch the full doc at `/registry.npmjs.org/<pkg>` (no `/latest`): it can be multi-MB for popular packages and gets truncated.
 - Scoped packages (`@vueuse/core`): no URL encoding needed on any endpoint.
 - `license` is usually a string (`"MIT"`, `"Apache-2.0"`, ...); legacy packages may use `{ "type": "MIT" }` or an array. Normalize to one SPDX string before applying the gate.
