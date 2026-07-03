@@ -138,12 +138,24 @@ export function useProspectConformity(
   // smaller offsetTop, so it can already reach the top once the last one can.
   // useElementSize is backed by a ResizeObserver, so the spacer stays correct
   // as the card's async content loads or the window resizes.
+  // border-box so both heights match what the browser uses for scroll math:
+  // the container's clientHeight, and the card's full height including its own padding.
   const lastStepCard = ref<HTMLElement | null>(null)
-  const { height: containerHeight } = useElementSize(scrollContainerRef)
-  const { height: lastStepCardHeight } = useElementSize(lastStepCard)
-  const spacerHeight = computed(() =>
-    Math.max(0, containerHeight.value - lastStepCardHeight.value),
-  )
+  const { height: containerHeight } = useElementSize(scrollContainerRef, undefined, { box: 'border-box' })
+  const { height: lastStepCardHeight } = useElementSize(lastStepCard, undefined, { box: 'border-box' })
+
+  // The container's own bottom padding and the flex gap the browser inserts before this very
+  // spacer both already add scrollable room below the last card. Left unaccounted, they let the
+  // user keep scrolling past the point where the last card's top reaches the container's top edge.
+  const spacerHeight = computed(() => {
+    const container = scrollContainerRef.value
+    if (container === null) {
+      return 0
+    }
+    const { rowGap, paddingBottom } = getComputedStyle(container)
+    const extraScrollableSpace = (Number.parseFloat(rowGap) || 0) + (Number.parseFloat(paddingBottom) || 0)
+    return Math.max(0, containerHeight.value - lastStepCardHeight.value - extraScrollableSpace)
+  })
 
   // useScroll owns the (passive) scroll listener and its cleanup, and exposes
   // arrivedState.bottom — true once within BOTTOM_DETECTION_THRESHOLD_PX of the

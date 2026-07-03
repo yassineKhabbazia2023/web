@@ -533,6 +533,21 @@ describe('useProspectConformity', () => {
     expect(spacerHeight.value).toBe(600)
   })
 
+  it('subtracts the container bottom padding and row gap already providing scrollable room', async () => {
+    const containerHeight = ref(800)
+    const lastCardHeight = ref(200)
+    mockElementSizes(containerHeight, lastCardHeight)
+
+    const container = createScrollContainer()
+    container.value!.style.paddingBottom = '20px'
+    container.value!.style.rowGap = '30px'
+
+    const [{ spacerHeight }] = withSetup(() => useProspectConformity(container))
+    await vi.runAllTimersAsync()
+
+    expect(spacerHeight.value).toBe(550)
+  })
+
   it('clamps the spacer height to zero when the last card is taller than the container', async () => {
     mockElementSizes(ref(100), ref(500))
 

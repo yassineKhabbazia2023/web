@@ -8,6 +8,23 @@
       flex-gap--6
     "
   >
+    <h2
+      class="
+        flex
+        flex--align-items-center
+        font-size--16
+        font-semibold
+        margin--0
+      "
+    >
+      <PIcon
+        pName="pulse"
+        :pColor="AppColors.JUNGLE_400"
+        pSize="16"
+      />
+      <span class="margin-left--1">{{ isLoading ? fallbackTitle : title }}</span>
+    </h2>
+
     <div
       v-if="isLoading"
       class="
@@ -19,36 +36,12 @@
       <PLoader pType="primary" pSize="48px" />
     </div>
     <template v-else>
-      <div
-        class="
-          flex
-          flex--direction-column
-          flex-gap--2
-        "
+      <p
+        v-if="bodyKind === PaymentBodyKind.Benefits"
+        class="margin--0"
       >
-        <h2
-          class="
-            flex
-            flex--align-items-center
-            font-size--16
-            font-semibold
-            margin--0
-          "
-        >
-          <PIcon
-            pName="pulse"
-            :pColor="AppColors.JUNGLE_400"
-            pSize="16"
-          />
-          <span class="margin-left--1">{{ title }}</span>
-        </h2>
-        <p
-          v-if="bodyKind === PaymentBodyKind.Benefits"
-          class="margin--0"
-        >
-          {{ t(`${PAYMENT_I18N_BASE}.description`) }}
-        </p>
-      </div>
+        {{ t(`${PAYMENT_I18N_BASE}.description`) }}
+      </p>
 
       <div
         v-if="bodyKind === PaymentBodyKind.Benefits"

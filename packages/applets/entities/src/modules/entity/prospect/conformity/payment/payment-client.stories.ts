@@ -47,6 +47,7 @@ const meta: Meta<typeof Payment> = {
   },
   args: {
     isCollaborator: false,
+    fallbackTitle: 'Moyens de paiement',
   },
   render: renderWithState({ paymentType: null }),
 }

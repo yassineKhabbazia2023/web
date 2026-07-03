@@ -3,6 +3,9 @@ import type { PaymentFooterAction } from './payment.enums'
 
 export interface PaymentProps {
   isCollaborator?: boolean
+  // Title shown while the payment preference is loading, matching the stepper's static title
+  // for this step (the component's own title is only known once the state has loaded).
+  fallbackTitle: string
 }
 
 export interface PaymentEmits {

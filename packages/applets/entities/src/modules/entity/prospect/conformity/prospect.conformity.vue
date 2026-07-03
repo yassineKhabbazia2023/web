@@ -93,6 +93,7 @@
             <Payment
               v-else-if="step.id === OnboardingStep.PaymentMethod"
               :isCollaborator="isCollab"
+              :fallbackTitle="t(step.labelKey)"
               @payment-preference-changed="loadOnboardingSteps"
             />
             <p
