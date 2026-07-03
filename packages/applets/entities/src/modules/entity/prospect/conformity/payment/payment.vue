@@ -16,7 +16,7 @@
         padding--6
       "
     >
-      <PLoader pSize="32px" />
+      <PLoader pType="primary" pSize="48px" />
     </div>
     <template v-else>
       <div

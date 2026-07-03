@@ -1,29 +1,11 @@
 <template>
   <div
     v-if="isLoading"
-    class="beneficiaries-skeleton"
+    class="flex flex--justify-content-center margin-y--4"
   >
-    <PSkeleton
-      pHeight="14px"
-      pWidth="60%"
-    />
-    <PSkeleton
-      pHeight="40px"
-      class="margin-top--6"
-    />
-    <div class="flex flex-gap--4 margin-top--4">
-      <PSkeleton
-        pHeight="120px"
-        pWidth="48%"
-      />
-      <PSkeleton
-        pHeight="120px"
-        pWidth="48%"
-      />
-    </div>
-    <PSkeleton
-      pHeight="40px"
-      class="margin-top--4"
+    <PLoader
+      pType="primary"
+      pSize="48"
     />
   </div>
   <div
@@ -179,7 +161,6 @@ import {
   PFormLine,
   PInput,
   PPastille,
-  PSkeleton,
   PTabPane,
   PTabs,
   PLoader,

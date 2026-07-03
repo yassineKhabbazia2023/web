@@ -5,7 +5,7 @@
   >
     <PLoader
       pType="primary"
-      pSize="50"
+      pSize="48"
     />
   </div>
   <div

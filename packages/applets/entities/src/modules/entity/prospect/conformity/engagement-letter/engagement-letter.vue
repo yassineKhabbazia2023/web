@@ -15,7 +15,7 @@
         margin-top--4
       "
     >
-      <PLoader pType="primary" />
+      <PLoader pType="primary" pSize="48" />
     </div>
     <PAlert
       v-else-if="status === undefined"
