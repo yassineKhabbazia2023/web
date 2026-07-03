@@ -1,12 +1,53 @@
 {
   "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "env.d.ts",
-    "./src/**/*",
-    "./tests/**/*",
-    "__mocks__",
-    "./src/**/*.json",
-    "./package.json",
-    "./public/feature-flags.local.json"
+  "references": [
+    {
+      "path": "../../applets/booking"
+    },
+    {
+      "path": "../../libraries/common"
+    },
+    {
+      "path": "../../applets/entities"
+    },
+    {
+      "path": "../../applets/feed-center"
+    },
+    {
+      "path": "../../applets/ged"
+    },
+    {
+      "path": "../../applets/homepage"
+    },
+    {
+      "path": "../../applets/launcher"
+    },
+    {
+      "path": "../../applets/login"
+    },
+    {
+      "path": "../../applets/mandate"
+    },
+    {
+      "path": "../../applets/offers-catalog"
+    },
+    {
+      "path": "../../applets/pennylane"
+    },
+    {
+      "path": "../../applets/powerbi"
+    },
+    {
+      "path": "../../libraries/shared"
+    },
+    {
+      "path": "../../libraries/styleguide"
+    },
+    {
+      "path": "../../libraries/toolbox"
+    },
+    {
+      "path": "../../libraries/widgets"
+    }
   ]
 }

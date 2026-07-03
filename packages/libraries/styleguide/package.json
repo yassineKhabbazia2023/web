@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
-    "build:types": "vue-tsc --build --force",
+    "build:types": "vue-tsc --build",
     "build:vite": "vite build",
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",

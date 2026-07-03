@@ -25,6 +25,13 @@ const createPlaceholder = (container: HTMLElement) => {
   `
 }
 
+declare global {
+  var powerbi: {
+    embed: (container: HTMLElement) => object
+    reset: () => void
+  }
+}
+
 globalThis.powerbi = {
   embed: (container: HTMLElement) => {
     createPlaceholder(container)

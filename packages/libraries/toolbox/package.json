@@ -13,6 +13,7 @@
     "./utils/browser": "./src/utils/browser/browser.utils.ts",
     "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
+    "./utils/e2e": "./src/utils/e2e/e2e.utils.ts",
     "./utils/validator": "./src/utils/validators/index.ts",
     "./utils/banking-validators": "./src/utils/banking-validators/index.ts",
     "./utils/pdf-text-extractor": "./src/utils/pdf-text-extractor/index.ts",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
-    "build:types": "vue-tsc --build --force",
+    "build:types": "vue-tsc --build",
     "build:vite": "vite build",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",

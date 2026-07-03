@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { VITE_ASSETS_BASE_URL, VITE_CONFIGCAT_SDK_KEY } from 'env-vars'
 import { AppVersionManager } from '@pulse/toolbox'
+import { waitForMsw } from '@pulse/toolbox/utils/e2e'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
@@ -39,7 +40,6 @@ window.branch = AppVersionManager.getBranchName()
 async function bootstrap() {
   // Wait for MSW to be ready in E2E mode before initializing the app
   if (import.meta.env.VITE_E2E_MODE === 'true') {
-    const { waitForMsw } = await import('@pulse/e2e-mocks/helpers')
     await waitForMsw()
   }
 

@@ -12,7 +12,7 @@
     "build": "npm run build:vite --",
     "preview": "vite preview",
     "build:vite": "vite build --emptyOutDir",
-    "build:types": "vue-tsc --build --force",
+    "build:types": "vue-tsc --build",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest run",
@@ -37,5 +37,8 @@
     "@pulse/styleguide": "3.1.0",
     "@pulse/toolbox": "1.0.0",
     "@pulse/widgets": "1.0.0"
+  },
+  "devDependencies": {
+    "@pulse/e2e-mocks": "1.0.0"
   }
 }

@@ -1,15 +1,8 @@
 {
   "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "./src/**/*",
-    "./src/**/*.json",
-    "tests/**/*",
-    "__mocks__",
-    "src/**/*.json",
-    "./package.json",
-  ],
-  "compilerOptions": {
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-  }
+  "references": [
+    {
+      "path": "../../libraries/toolbox"
+    }
+  ]
 }

@@ -1,5 +1,13 @@
 {
   "extends": ["./tsconfig.base", "./tsconfig.paths"],
+  "include": [
+    "${configDir}/env.d.ts",
+    "${configDir}/src/**/*",
+    "${configDir}/src/**/*.json",
+    "${configDir}/tests/**/*",
+    "${configDir}/__mocks__",
+    "${configDir}/package.json"
+  ],
   "compilerOptions": {
     "types": [
       "@pinia/testing",
@@ -8,7 +16,7 @@
       "vite/client",
       "node"
     ],
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types"
+    "declarationDir": "${configDir}/dist/types",
+    "outDir": "${configDir}/dist/types"
   }
 }

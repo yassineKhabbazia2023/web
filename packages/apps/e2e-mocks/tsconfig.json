@@ -1,15 +1,6 @@
 {
-  "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.json",
-    "./package.json"
-  ],
-  "compilerOptions": {
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "baseUrl": ".",
-    "paths": {}
-  }
+  "extends": "../../@config/tsconfig.base.app"
+  // No "references" on purpose: e2e-mocks' @pulse/* imports resolve to workspace
+  // sources via npm hoisting, so it doesn't need referenced projects to be built
+  // first. It is still built as part of the graph when referenced (e.g. by backoffice).
 }

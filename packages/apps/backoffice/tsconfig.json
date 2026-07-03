@@ -1,10 +1,17 @@
 {
   "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "env.d.ts",
-    "./src/**/*",
-    "__mocks__",
-    "./src/**/*.json",
-    "./package.json"
+  "references": [
+    {
+      "path": "../../libraries/common"
+    },
+    {
+      "path": "../e2e-mocks"
+    },
+    {
+      "path": "../../libraries/styleguide"
+    },
+    {
+      "path": "../../libraries/toolbox"
+    }
   ]
 }

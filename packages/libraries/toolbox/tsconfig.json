@@ -1,15 +1,3 @@
 {
-  "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "env.d.ts",
-    "src/**/*",
-    "tests/**/*",
-    "__mocks__",
-    "src/**/*.json",
-    "./package.json"
-  ],
-  "compilerOptions": {
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-  }
+  "extends": "../../@config/tsconfig.base.app"
 }

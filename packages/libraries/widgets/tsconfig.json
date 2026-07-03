@@ -1,12 +1,11 @@
 {
   "extends": "../../@config/tsconfig.base.app",
-  "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.json",
-    "tests/**/*",
-    "__mocks__",
-    "./package.json"
-  ],
-  "compilerOptions": {}
+  "references": [
+    {
+      "path": "../../libraries/common"
+    },
+    {
+      "path": "../../libraries/styleguide"
+    }
+  ]
 }
