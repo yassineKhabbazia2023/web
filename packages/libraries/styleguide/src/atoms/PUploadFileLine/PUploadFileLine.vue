@@ -169,10 +169,6 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
     &-white {
       background: var(--p-white);
       border-bottom: 1px solid transparent;
-
-      &:not(:last-child) {
-        border-color: var(--p-gray-100);
-      }
     }
   }
 
@@ -217,6 +213,19 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
     padding: 1.2rem;
     border: 1px dashed var(--el-border-color);
     border-radius: var(--el-border-radius-small);
+
+    // Solid status borders must win over the default dashed dropzone border.
+    &#{$self}--status-fail {
+      border: 1px solid var(--p-stroke-error);
+    }
+
+    &#{$self}--status-success {
+      border: 1px solid var(--p-stroke-success);
+    }
+
+    &#{$self}--status-ready {
+      border: 1px solid var(--p-stroke-information-secondary);
+    }
 
     #{$self}__content {
       position: relative;
