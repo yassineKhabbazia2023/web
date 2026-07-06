@@ -21,6 +21,7 @@
         <div
           class="
             p-documents-list__name-cell
+            max-width-full
             flex
             flex--align-items-center
           "
@@ -30,13 +31,15 @@
             :pName="getIconName(row.documentName, 'filetypeNone')"
             pSize="16"
           />
-          <span
-            class="
-              overflow-hidden
-              text-overflow--ellipsis
-              no-wrap
-            "
-          >{{ row.documentName }}</span>
+          <PTooltip :pContent="row.documentName">
+            <span
+              class="
+                overflow-hidden
+                text-overflow--ellipsis
+                no-wrap
+              "
+            >{{ row.documentName }}</span>
+          </PTooltip>
         </div>
       </template>
     </PTableColumn>
@@ -51,6 +54,7 @@
         <div
           class="
             p-documents-list__deposited-by-cell
+            max-width-full
             flex
             flex--align-items-center
           "
@@ -63,13 +67,15 @@
           >
             {{ row.documentDepositedByInitials }}
           </PAvatar>
-          <span
-            class="
-              overflow-hidden
-              text-overflow--ellipsis
-              no-wrap
-            "
-          >{{ row.documentDepositedBy }}</span>
+          <PTooltip :pContent="row.documentDepositedBy">
+            <span
+              class="
+                overflow-hidden
+                text-overflow--ellipsis
+                no-wrap
+              "
+            >{{ row.documentDepositedBy }}</span>
+          </PTooltip>
         </div>
       </template>
     </PTableColumn>
@@ -127,6 +133,7 @@ import PTableColumn from '../../atoms/PTableColumn'
 import PIcon from '../../atoms/PIcon'
 import PButton from '../../atoms/PButton'
 import PAvatar from '../../atoms/PAvatar'
+import PTooltip from '../../atoms/PTooltip'
 import { getIconName } from '../../utils/fileExtension'
 import { PDOCUMENTS_LIST_DEFAULT_COLUMNS } from './PDocumentsListTypes'
 import type { DocumentsListItem, PDocumentsListColumn, PDocumentsListProps } from './PDocumentsListTypes'

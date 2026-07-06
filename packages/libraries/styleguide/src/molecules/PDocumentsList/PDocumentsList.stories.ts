@@ -220,3 +220,55 @@ export const WithVisibleColumns: Story = {
     pVisibleColumns: ['name', 'depositDate', 'options'],
   },
 }
+
+export const WithEllipsis: Story = {
+  render: (args) => ({
+    components: { PDocumentsList },
+    setup() {
+      return { args }
+    },
+    template: `
+      <PDocumentsList v-bind="args" />
+    `,
+  }),
+  args: {
+    pData: [
+      {
+        documentId: '1',
+        documentName: 'compte-rendu-assemblee-generale-extraordinaire-approbation-des-comptes-annuels-2024.pdf',
+        documentDepositDate: '15/03/2024',
+        documentDepositedBy: 'Marie Dupont',
+        documentDepositedByInitials: 'MD',
+      },
+      {
+        documentId: '2',
+        documentName: 'attestation-de-vigilance-urssaf-premier-trimestre-2024-entreprise-dupont-et-associes.docx',
+        documentDepositDate: '02/04/2024',
+        documentDepositedBy: 'Jean Martin',
+        documentDepositedByInitials: 'JM',
+      },
+      {
+        documentId: '3',
+        documentName: 'capture-ecran-tableau-de-bord-analytique-performances-commerciales-mai-2024-version-finale.png',
+        documentDepositDate: '12/05/2024',
+        documentDepositedBy: 'Marie Dupont',
+        documentDepositedByInitials: 'MD',
+      },
+      {
+        documentId: '4',
+        documentName: 'tableau-previsionnel-tresorerie-consolidee-groupe-exercice-2024-2025-revision-definitive.xlsx',
+        documentDepositDate: '21/05/2024',
+        documentDepositedBy: 'Paul Bernard',
+        documentDepositedByInitials: 'PB',
+      },
+      {
+        documentId: '5',
+        documentName: 'archive-complete-justificatifs-comptables-factures-fournisseurs-premier-semestre-2024.zip',
+        documentDepositDate: '01/06/2024',
+        documentDepositedBy: 'Jean Martin',
+        documentDepositedByInitials: 'JM',
+      },
+    ],
+    pStripe: false,
+  },
+}
