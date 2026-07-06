@@ -26,7 +26,7 @@ export function useDeleteDocumentDialog(
     }
     isDeleting.value = true
     try {
-      await ProspectsService.deleteProspectDocument(props.pProspectId, props.pDocumentId)
+      await ProspectsService.deleteProspectDocument(props.accountId, props.pDocumentId)
       displayNotification('success', t(`${I18N_KEY}.success`))
       emit('deleted')
       dialogModel.value = false

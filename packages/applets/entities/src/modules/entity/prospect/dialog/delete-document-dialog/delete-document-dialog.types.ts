@@ -1,5 +1,5 @@
 export interface DeleteDocumentDialogProps {
-  pProspectId: number
+  accountId: number
   pDocumentId: number | string | undefined
   pFileName?: string
 }

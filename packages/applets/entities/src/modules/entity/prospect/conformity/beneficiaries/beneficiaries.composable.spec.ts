@@ -67,7 +67,7 @@ describe('beneficiaries.composable', () => {
 
       await flushPromises()
 
-      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.beneficiaries.value).toHaveLength(2)
       expect(result.activeBeneficiaryId.value).toBe(firstBeneficiaryIdMock)
       expect(result.formStateByBeneficiaryId.value[secondBeneficiaryIdMock]).toEqual({
@@ -79,14 +79,25 @@ describe('beneficiaries.composable', () => {
       expect(result.isLoading.value).toBe(false)
     })
 
-    it('should not fetch beneficiaries when there is no prospectId', async () => {
-      setCurrentEntity(undefined)
+    it('should not fetch beneficiaries when there is no account id', async () => {
+      setCurrentEntity(prospectIdMock, null)
 
       const [result] = withSetup(() => useBeneficiaries(emitMock))
 
       await flushPromises()
 
       expect(fetchBeneficiariesMock).not.toHaveBeenCalled()
+      expect(result.isLoading.value).toBe(false)
+    })
+
+    it('should fetch beneficiaries with the account id without requiring a prospect id', async () => {
+      setCurrentEntity(undefined)
+
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+
+      await flushPromises()
+
+      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.isLoading.value).toBe(false)
     })
 
@@ -103,13 +114,13 @@ describe('beneficiaries.composable', () => {
   })
 
   describe('onValidateAllBeneficiaries', () => {
-    it('should complete the beneficiary onboarding step with the account id and keep beneficiaries loaded by prospect id', async () => {
+    it('should complete the beneficiary onboarding step with the account id and keep beneficiaries loaded by account id', async () => {
       const [result] = withSetup(() => useBeneficiaries(emitMock))
       await flushPromises()
 
       await result.onValidateAllBeneficiaries()
 
-      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(accountIdMock)
       expect(completeOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.Beneficiary)
       expect(displayNotificationMock).toHaveBeenCalledWith('success', BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS)
       expect(result.isValidatingAll.value).toBe(false)
@@ -186,7 +197,7 @@ describe('beneficiaries.composable', () => {
       await result.onSave()
 
       expect(uploadBeneficiaryDocumentsMock).toHaveBeenCalledWith(
-        prospectIdMock,
+        accountIdMock,
         firstBeneficiaryIdMock,
         BeneficiaryDocumentType.CNI,
         files,
@@ -260,7 +271,7 @@ describe('beneficiaries.composable', () => {
       await result.onSave()
 
       expect(uploadBeneficiaryDocumentsMock).toHaveBeenCalledWith(
-        prospectIdMock,
+        accountIdMock,
         firstBeneficiaryIdMock,
         BeneficiaryDocumentType.CNI,
         [missingFile],

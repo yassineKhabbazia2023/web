@@ -97,7 +97,7 @@
 
     <DeleteDocumentDialog
       v-model="isDeleteDialogOpen"
-      :pProspectId="prospectId!"
+      :accountId="currentEntityId!"
       :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
       :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
       @deleted="onDocumentDeleted"
@@ -146,7 +146,7 @@ const skeletonVariant = computed(() =>
 )
 
 const {
-  prospectId,
+  currentEntityId,
   isSaving,
   canSave,
   isDeleteDialogOpen,

@@ -15,11 +15,7 @@ import type {
 } from './supporting-documents.types'
 
 export function useSupportingDocuments(options: UseSupportingDocumentsOptions, emit: SupportingDocumentsEmits) {
-  const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
-
-  // Documents/uploads use the accountId-keyed endpoint; deletion goes through the
-  // prospectId-keyed /onboarding endpoint owned by the shared dialog.
-  const prospectId = computed(() => currentEntity.value?.prospectId ?? undefined)
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const isSaving = ref(false)
   const selectedFilesByType = ref<SupportingDocumentSelection>({})
@@ -101,7 +97,7 @@ export function useSupportingDocuments(options: UseSupportingDocumentsOptions, e
   }
 
   return {
-    prospectId,
+    currentEntityId,
     isSaving,
     selectedFilesByType,
     hasPendingUploads,

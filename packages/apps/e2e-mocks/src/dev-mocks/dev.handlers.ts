@@ -230,11 +230,11 @@ export const devMockHandlers: RequestHandler[] = [
     return HttpResponse.error()
   }),
 
-  http.get('*/prospect/api/onboarding/:prospectId/beneficiaries', () => {
+  http.get('*/prospect/api/onboarding/:accountId/beneficiaries', () => {
     return HttpResponse.json(getBeneficiariesResponse())
   }),
 
-  http.post('*/prospect/api/onboarding/:prospectId/beneficiaries/:beneficiaryId/identity-documents', async () => {
+  http.post('*/prospect/api/onboarding/:accountId/beneficiaries/:beneficiaryId/identity-documents', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 201 })
   }),
@@ -263,7 +263,7 @@ export const devMockHandlers: RequestHandler[] = [
   }),
 
   // Shared endpoint: also deletes beneficiaries identity documents
-  http.delete('*/prospect/api/onboarding/:prospectId/documents/:documentId', async () => {
+  http.delete('*/prospect/api/onboarding/:accountId/documents/:documentId', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 204 })
   }),

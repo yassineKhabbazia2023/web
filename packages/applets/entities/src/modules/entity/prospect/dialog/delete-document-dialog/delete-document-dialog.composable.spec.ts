@@ -12,9 +12,10 @@ vi.mock('@pulse/styleguide')
 vi.mock('@pulse/toolbox')
 
 const I18N_KEY = 'entities.prospect.deleteDocumentDialog'
+const accountIdMock = 1971
 
 const buildProps = (overrides: Partial<DeleteDocumentDialogProps> = {}): DeleteDocumentDialogProps => ({
-  pProspectId: 602,
+  accountId: accountIdMock,
   pDocumentId: 42,
   pFileName: 'kbis.pdf',
   ...overrides,
@@ -40,11 +41,11 @@ describe('useDeleteDocumentDialog', () => {
       vi.mocked(ProspectsService.deleteProspectDocument).mockResolvedValueOnce()
       const dialogModel = ref(true)
       const emit = vi.fn()
-      const { onConfirm } = useDeleteDocumentDialog(buildProps({ pProspectId: 602, pDocumentId: 42 }), dialogModel, emit)
+      const { onConfirm } = useDeleteDocumentDialog(buildProps({ accountId: accountIdMock, pDocumentId: 42 }), dialogModel, emit)
 
       await onConfirm()
 
-      expect(vi.mocked(ProspectsService.deleteProspectDocument)).toHaveBeenCalledWith(602, 42)
+      expect(vi.mocked(ProspectsService.deleteProspectDocument)).toHaveBeenCalledWith(accountIdMock, 42)
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', `${I18N_KEY}.success`)
       expect(emit).toHaveBeenCalledWith('deleted')
       expect(dialogModel.value).toBe(false)

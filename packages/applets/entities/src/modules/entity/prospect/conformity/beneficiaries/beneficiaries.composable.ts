@@ -17,8 +17,7 @@ import type {
 
 export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const { t } = useI18n()
-  const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
-  const currentProspectId = computed(() => currentEntity.value?.prospectId)
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const isLoading = ref(true)
   const isRefreshing = ref(false)
@@ -53,7 +52,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   })
 
   const loadBeneficiaries = async () => {
-    if (currentProspectId.value === undefined || currentProspectId.value === null) {
+    if (currentEntityId.value === undefined || currentEntityId.value === null) {
       isLoading.value = false
       isRefreshing.value = false
       return
@@ -63,7 +62,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
       isRefreshing.value = true
     }
     try {
-      const response = await ProspectsService.fetchBeneficiaries(currentProspectId.value)
+      const response = await ProspectsService.fetchBeneficiaries(currentEntityId.value)
       beneficiaries.value = response.beneficiaries
 
       formStateByBeneficiaryId.value = Object.fromEntries(
@@ -117,8 +116,8 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
       (beneficiary) => beneficiary.beneficiaryId === activeBeneficiaryId.value,
     )
     if (
-      currentProspectId.value === undefined ||
-      currentProspectId.value === null ||
+      currentEntityId.value === undefined ||
+      currentEntityId.value === null ||
       activeBeneficiaryId.value === undefined ||
       activeBeneficiary === undefined ||
       formState === undefined
@@ -137,7 +136,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     isSaving.value = true
     try {
       await ProspectsService.uploadBeneficiaryDocuments(
-        currentProspectId.value,
+        currentEntityId.value,
         activeBeneficiaryId.value,
         formState.documentType,
         formState.files,
@@ -184,7 +183,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     isRefreshing,
     isSaving,
     isValidatingAll,
-    currentProspectId,
+    currentEntityId,
     beneficiaries,
     activeBeneficiary,
     activeBeneficiaryId,

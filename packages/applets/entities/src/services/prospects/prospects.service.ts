@@ -73,15 +73,15 @@ export class ProspectsService {
     return response.data.items ?? []
   }
 
-  static async fetchBeneficiaries(prospectId: number): Promise<BeneficiariesResponse> {
+  static async fetchBeneficiaries(accountId: number): Promise<BeneficiariesResponse> {
     const response = await api.gateway.get<BeneficiariesResponse>(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/beneficiaries`,
     )
     return response.data
   }
 
   static async uploadBeneficiaryDocuments(
-    prospectId: number,
+    accountId: number,
     beneficiaryId: string,
     documentType: BeneficiaryDocumentType,
     files: File[],
@@ -93,7 +93,7 @@ export class ProspectsService {
     }
 
     return api.gateway.post(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries/${beneficiaryId}/identity-documents`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/beneficiaries/${beneficiaryId}/identity-documents`,
       formData,
       {
         headers: {
@@ -104,11 +104,11 @@ export class ProspectsService {
   }
 
   static deleteProspectDocument(
-    prospectId: number,
+    accountId: number,
     documentId: number | string,
   ): Promise<void> {
     return api.gateway.delete(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents/${documentId}`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/documents/${documentId}`,
     )
   }
 

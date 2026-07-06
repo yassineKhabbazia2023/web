@@ -136,7 +136,7 @@
   </div>
   <DeleteDocumentDialog
     v-model="isDeleteDialogOpen"
-    :pProspectId="currentProspectId!"
+    :accountId="currentEntityId!"
     :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
     :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
     @deleted="onDocumentDeleted"
@@ -188,7 +188,7 @@ const {
   isRefreshing,
   isSaving,
   isValidatingAll,
-  currentProspectId,
+  currentEntityId,
   beneficiaries,
   activeBeneficiary,
   activeBeneficiaryId,

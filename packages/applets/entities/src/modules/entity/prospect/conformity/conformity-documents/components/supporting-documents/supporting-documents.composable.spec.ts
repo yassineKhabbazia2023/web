@@ -186,6 +186,12 @@ describe('supporting-documents.composable', () => {
   })
 
   describe('document deletion flow', () => {
+    it('should expose the current account id for document deletion', () => {
+      const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
+
+      expect(result.currentEntityId.value).toBe(accountIdMock)
+    })
+
     it('should open the dialog when a deletion is requested', () => {
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 

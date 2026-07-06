@@ -227,14 +227,14 @@ describe('ProspectsService', () => {
   })
 
   describe('fetchBeneficiaries', () => {
-    it('should GET the beneficiaries of the prospect and return the data', async () => {
+    it('should GET the beneficiaries of the account and return the data', async () => {
       const responseData = getBeneficiariesResponseMock()
       mocks.get.mockResolvedValueOnce({ data: responseData })
 
-      const result = await ProspectsService.fetchBeneficiaries(prospectId)
+      const result = await ProspectsService.fetchBeneficiaries(accountId)
 
       expect(mocks.get).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/beneficiaries`,
       )
       expect(result).toEqual(responseData)
     })
@@ -247,14 +247,14 @@ describe('ProspectsService', () => {
       const verso = getFileMock('cni-verso.pdf')
 
       await ProspectsService.uploadBeneficiaryDocuments(
-        prospectId,
+        accountId,
         beneficiaryId,
         BeneficiaryDocumentType.CNI,
         [recto, verso],
       )
 
       expect(mocks.post).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries/${beneficiaryId}/identity-documents`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/beneficiaries/${beneficiaryId}/identity-documents`,
         expect.any(FormData),
         { headers: { 'Content-Type': 'multipart/form-data' } },
       )
@@ -265,13 +265,13 @@ describe('ProspectsService', () => {
   })
 
   describe('deleteProspectDocument', () => {
-    it('should DELETE the prospect document by its id', async () => {
+    it('should DELETE the account document by its id', async () => {
       const documentId = 'doc-guid-1'
 
-      await ProspectsService.deleteProspectDocument(prospectId, documentId)
+      await ProspectsService.deleteProspectDocument(accountId, documentId)
 
       expect(mocks.delete).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents/${documentId}`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/documents/${documentId}`,
       )
     })
   })
