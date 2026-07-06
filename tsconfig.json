@@ -2,7 +2,6 @@
   "extends": "./packages/@config/tsconfig.base",
   "files": [],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {}
   },
   "references": [

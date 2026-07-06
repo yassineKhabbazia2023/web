@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import ContactsWidget from './Contacts.widget.vue'
+import ContactsWidget from './contacts.widget.vue'
 import type { WidgetContact } from './contact.widget.types'
 
 const meta: Meta<typeof ContactsWidget> = {

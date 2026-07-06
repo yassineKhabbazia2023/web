@@ -9,7 +9,7 @@ export default {
       name: WidgetName.CONTACTS,
       size: WidgetSize.ONE_CELL,
     }
-    app.component(widgetGridDefinition.name, defineAsyncComponent(() => import('./Contacts.widget.vue')))
+    app.component(widgetGridDefinition.name, defineAsyncComponent(() => import('./contacts.widget.vue')))
     WidgetsGridManager.registerWidget(widgetGridDefinition)
   },
 }
