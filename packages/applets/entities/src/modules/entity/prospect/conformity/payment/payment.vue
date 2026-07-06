@@ -25,16 +25,10 @@
       <span class="margin-left--1">{{ isLoading ? fallbackTitle : title }}</span>
     </h2>
 
-    <div
+    <ConformitySectionSkeleton
       v-if="isLoading"
-      class="
-        flex
-        flex--justify-content-center
-        padding--6
-      "
-    >
-      <PLoader pType="primary" pSize="48px" />
-    </div>
+      :variant="skeletonVariant"
+    />
     <template v-else>
       <p
         v-if="bodyKind === PaymentBodyKind.Benefits"
@@ -170,10 +164,13 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { PAlert, PButton, PIcon, PLoader, PTag } from '@pulse/styleguide/components'
+import { PAlert, PButton, PIcon, PTag } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityPaymentType } from '@entities/enums'
+import { OnboardingStepStatus } from '../prospect-conformity.enums'
+import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
+import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import OtherPaymentMethodConfirmationModal from './components/other-payment-method-confirmation-modal.vue'
 import PaymentConfigurationDrawer from './components/payment-configuration-drawer/payment-configuration-drawer.vue'
 import { usePayment } from './payment.composable'
@@ -222,6 +219,17 @@ const isSignatory = computed(() => currentEntity.value?.isSignatory === true)
 // Only a client who is the prospect's signatory may choose or configure the payment method.
 // Non-signatory clients (like collaborators) get a read-only "pending" alert instead of the action buttons.
 const canManagePayment = computed(() => isClient.value && isSignatory.value)
+
+// The stepper status is resolved before this body loads. Completed shows the mandate summary;
+// otherwise a managing user gets the benefits/actions layout and everyone else a pending alert.
+const skeletonVariant = computed(() => {
+  if (props.status === OnboardingStepStatus.Completed) {
+    return ConformitySkeletonVariant.PaymentCompleted
+  }
+  return canManagePayment.value
+    ? ConformitySkeletonVariant.PaymentBenefits
+    : ConformitySkeletonVariant.InfoAlert
+})
 
 const title = computed(() => {
   if (isNotSelected.value) {

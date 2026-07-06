@@ -1,4 +1,5 @@
 import type { IconName } from '@pulse/styleguide/types'
+import type { OnboardingStepStatus } from '../prospect-conformity.enums'
 import type { PaymentFooterAction } from './payment.enums'
 
 export interface PaymentProps {
@@ -6,6 +7,8 @@ export interface PaymentProps {
   // Title shown while the payment preference is loading, matching the stepper's static title
   // for this step (the component's own title is only known once the state has loaded).
   fallbackTitle: string
+  // Stepper status for this step, resolved before the body loads, used to pick the loading skeleton.
+  status?: OnboardingStepStatus
 }
 
 export interface PaymentEmits {

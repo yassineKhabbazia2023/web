@@ -1,13 +1,8 @@
 <template>
-  <div
+  <ConformitySectionSkeleton
     v-if="isLoading"
-    class="flex flex--justify-content-center margin-y--4"
-  >
-    <PLoader
-      pType="primary"
-      pSize="48"
-    />
-  </div>
+    :variant="skeletonVariant"
+  />
   <div
     v-else
     class="
@@ -111,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
@@ -119,10 +115,11 @@ import { getRawFile } from '@pulse/styleguide'
 import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import {
   PButton,
-  PLoader,
   PUpload,
   PUploadFileLine,
 } from '@pulse/styleguide/components'
+import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section.skeleton.vue'
+import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
 import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
@@ -140,6 +137,13 @@ const { isCollab } = storeToRefs(useUserStore())
 
 const props = defineProps<SupportingDocumentsProps>()
 const emit = defineEmits<SupportingDocumentsEmits>()
+
+// Once completed the section is read-only (uploaded file lines); otherwise it shows upload zones.
+const skeletonVariant = computed(() =>
+  props.isCompleted
+    ? ConformitySkeletonVariant.SupportingDocumentsList
+    : ConformitySkeletonVariant.SupportingDocumentsUpload,
+)
 
 const {
   prospectId,

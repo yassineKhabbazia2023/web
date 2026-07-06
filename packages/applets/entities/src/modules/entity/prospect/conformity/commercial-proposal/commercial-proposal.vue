@@ -7,15 +7,10 @@
       margin-top--4
     "
   >
-    <div
+    <ConformitySectionSkeleton
       v-if="isLoading"
-      class="
-        flex
-        flex--justify-content-center
-      "
-    >
-      <PLoader pType="primary" pSize="48" />
-    </div>
+      :variant="skeletonVariant"
+    />
     <PAlert
       v-else-if="status === undefined"
       pType="danger"
@@ -48,8 +43,10 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
-import { PAlert, PLoader } from '@pulse/styleguide/components'
+import { PAlert } from '@pulse/styleguide/components'
 import { OnboardingStepStatus } from '../prospect-conformity.enums'
+import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
+import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import CommercialProposalCustomer from './commercial-proposal-customer/commercial-proposal-customer.vue'
 import CommercialProposalCollab from './commercial-proposal-collab/commercial-proposal-collab.vue'
 import { useCommercialProposal } from './commercial-proposal.composable'
@@ -64,6 +61,15 @@ const { t } = useI18n()
 const { isCollab, isCustomer } = storeToRefs(useUserStore())
 
 const isCompleted = computed(() => props.status === OnboardingStepStatus.Completed)
+
+// The skeleton only shows on first load, before the stepper status is known (it comes from
+// the same fetch as isLoading), so it always reserves an in-progress shape: an information
+// alert for the customer, an upload zone for the collaborator.
+const skeletonVariant = computed(() =>
+  isCustomer.value
+    ? ConformitySkeletonVariant.InfoAlert
+    : ConformitySkeletonVariant.DocumentUploadSend,
+)
 
 const {
   isDownloading,

@@ -1,13 +1,8 @@
 <template>
-  <div
+  <ConformitySectionSkeleton
     v-if="isLoading"
-    class="flex flex--justify-content-center margin-y--4"
-  >
-    <PLoader
-      pType="primary"
-      pSize="48"
-    />
-  </div>
+    :variant="ConformitySkeletonVariant.ComplementaryDocuments"
+  />
   <div
     v-else
     class="
@@ -101,10 +96,11 @@ import { getRawFile } from '@pulse/styleguide'
 import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import {
   PButton,
-  PLoader,
   PUpload,
   PUploadFileLine,
 } from '@pulse/styleguide/components'
+import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section.skeleton.vue'
+import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
 import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'

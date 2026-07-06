@@ -26,11 +26,3 @@ withDefaults(defineProps<PSkeletonProps>(), {
   pLoading: true,
 })
 </script>
-
-<style lang="scss">
-// Element Plus maps --el-skeleton-circle-size to --el-avatar-size
-// which is only set on .el-avatar elements, not globally
-.el-skeleton {
-  --el-skeleton-circle-size: 40px;
-}
-</style>

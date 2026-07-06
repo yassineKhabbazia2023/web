@@ -1,13 +1,8 @@
 <template>
-  <div
+  <ConformitySectionSkeleton
     v-if="isLoading"
-    class="flex flex--justify-content-center margin-y--4"
-  >
-    <PLoader
-      pType="primary"
-      pSize="48"
-    />
-  </div>
+    :variant="ConformitySkeletonVariant.Beneficiary"
+  />
   <div
     v-else
     class="beneficiaries"
@@ -166,6 +161,8 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import type { PDropdownOption } from '@pulse/styleguide/types'
+import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
+import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
 import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
 import { BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS } from './beneficiaries.constants'

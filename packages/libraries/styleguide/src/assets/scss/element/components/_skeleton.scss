@@ -1,4 +1,11 @@
 $skeleton: (
   'color': var(--p-gray-50),
-  'to-color': var(--p-gray-200),
+  // Soften the animation's moving band (magic value, no matching gray token yet).
+  'to-color': #eef1f3,
 );
+
+// Element Plus maps --el-skeleton-circle-size to --el-avatar-size
+// which is only set on .el-avatar elements, not globally.
+.el-skeleton {
+  --el-skeleton-circle-size: 40px;
+}
