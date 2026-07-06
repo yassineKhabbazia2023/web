@@ -49,8 +49,26 @@ export class ManageWalletMenuManager {
     ]
   }
 
-  static buildSelectedFoldersMenuElements(translations: ManageWalletMenuTranslations): AccessibleMenuItem[] {
+  static buildSelectedFoldersMenuElements(
+    translations: ManageWalletMenuTranslations,
+    selectedFoldersCount: number,
+    isSelectedFolderCustomerRelation?: boolean,
+  ): AccessibleMenuItem[] {
     return [
+      {
+        pIconName: 'personCheck',
+        pValue: translations.declareCustomerRelation,
+        pActionName: ManageWalletAction.DECLARE_CUSTOMER_RELATION,
+        pState: 'default',
+        display: selectedFoldersCount > 1 || isSelectedFolderCustomerRelation !== true,
+      },
+      {
+        pIconName: 'personSlash',
+        pValue: translations.removeCustomerRelation,
+        pActionName: ManageWalletAction.REMOVE_CUSTOMER_RELATION,
+        pState: 'default',
+        display: selectedFoldersCount > 1 || isSelectedFolderCustomerRelation === true,
+      },
       {
         pIconName: 'folderSymlink',
         pValue: translations.delegateFolders,
@@ -71,9 +89,14 @@ export class ManageWalletMenuManager {
   static getMenuElements(
     selectedFoldersCount: number,
     translations: ManageWalletMenuTranslations,
+    isSelectedFolderCustomerRelation?: boolean,
   ): PToolboxItemProps[] {
     if (selectedFoldersCount > 0) {
-      return filterAccessibleMenuItems(ManageWalletMenuManager.buildSelectedFoldersMenuElements(translations))
+      return filterAccessibleMenuItems(ManageWalletMenuManager.buildSelectedFoldersMenuElements(
+        translations,
+        selectedFoldersCount,
+        isSelectedFolderCustomerRelation,
+      ))
     }
     return filterAccessibleMenuItems(ManageWalletMenuManager.buildWalletMenuElements(translations))
   }

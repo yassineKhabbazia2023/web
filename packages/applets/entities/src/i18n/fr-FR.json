@@ -229,6 +229,27 @@
       "confirm": "Confirmer",
       "remove": "Se retirer"
     },
+    "bulkCustomerRelationDrawer": {
+      "close": "Fermer",
+      "open": "Ouvrir",
+      "declareTitle": "Se déclarer en relation client",
+      "removeTitle": "Se retirer de la relation client",
+      "declareDescription": "En vous déclarant en relation client, vous facilitez la relation entre vous et votre client. Vous serez visible sur l’espace client et le client vous identifiera comme interlocuteur à contacter.",
+      "removeDescription": "En vous retirant de la relation client, vous ne serez plus visible sur l’espace client et le client ne vous identifiera plus comme interlocuteur à contacter.",
+      "verifySelection": "Vérifiez la liste ci-dessous avant de confirmer.",
+      "selectedFolders": "Dossier(s) sélectionné(s)",
+      "folderName": "Raison sociale",
+      "customerCode": "Code client",
+      "alreadyDeclaredInformation": "Les dossiers grisés sont ceux sur lesquels vous êtes déjà en relation client.",
+      "alreadyRemovedInformation": "Les dossiers grisés sont ceux sur lesquels vous n’êtes pas en relation client.",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "success": "La relation client a été mise à jour avec succès.",
+      "partialSuccess": "La relation client a été mise à jour pour {succeededCount} {folderLabel} sur {totalCount}. {remainingMessage}",
+      "folderLabel": "dossier | dossiers",
+      "remainingFailure": "Le dossier restant n’a pas pu être traité, réessayez. | Les {count} dossiers restants n’ont pas pu être traités, réessayez.",
+      "failure": "La mise à jour de la relation client n’a pas pu aboutir. Réessayez dans quelques instants."
+    },
     "invoices": {
       "title": "Dématérialisation des factures RYDGE Conseil",
       "description": "Avec RYDGE Conseil, bénéficiez {noExtraCost} de l'émission des factures Cabinet au {electronicFormat} et de l'accès à {digitalVault} contenant l'ensemble des factures et avoirs dématérialisés, hébergé auprès d'un tiers de confiance.",

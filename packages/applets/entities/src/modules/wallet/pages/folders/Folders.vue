@@ -28,6 +28,7 @@
         <ManageWalletButton
           v-if="isManageWalletMenuActivated"
           :selectedFoldersCount="selectedFolders.length"
+          :is-selected-folder-customer-relation="selectedFolderCustomerRelationStatus"
           @action-selected="onWalletAction"
         />
         <template v-else>
@@ -89,6 +90,13 @@
         :has-remaining-collaborator-folder="hasRemainingCollaboratorFolder"
         :isConfirmButtonLoading="isRemoveFromFoldersLoading"
         @confirm="confirmRemoveFromFolders"
+      />
+      <BulkCustomerRelationDrawer
+        v-if="isBulkCustomerRelationDrawerOpened"
+        v-model="isBulkCustomerRelationDrawerOpened"
+        :selectedFolders="selectedFolders"
+        :targetCustomerRelationStatus="targetCustomerRelationStatus"
+        @updated="handleBulkCustomerRelationUpdated"
       />
     </div>
     <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
@@ -255,6 +263,7 @@ import DelegationDrawer from './components/DelegationDrawer'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 import { RemoveFromFoldersManager } from './components/RemoveFromFoldersConfirmationModal/remove-from-folders.manager'
+import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import { getDefaultAccountFilters } from './components/AccountFiltersDrawer/account-filters-drawer.utils'
@@ -445,6 +454,26 @@ const openSelectedFoldersDelegationDrawer = () => {
   isDelegationDrawerOpened.value = true
 }
 
+const isBulkCustomerRelationDrawerOpened = ref(false)
+const targetCustomerRelationStatus = ref(false)
+
+function openBulkCustomerRelationDrawer(targetStatus: boolean) {
+  targetCustomerRelationStatus.value = targetStatus
+  isBulkCustomerRelationDrawerOpened.value = true
+}
+
+async function handleBulkCustomerRelationUpdated(succeededAccountIds: number[]) {
+  const succeededAccountIdSet = new Set(succeededAccountIds)
+  selectedFolders.value = selectedFolders.value.map(folder => ({
+    ...folder,
+    isCustomerRelation: succeededAccountIdSet.has(folder.id)
+      ? targetCustomerRelationStatus.value
+      : folder.isCustomerRelation,
+  }))
+  isBulkCustomerRelationDrawerOpened.value = false
+  await fetchTableDataAndFavorites()
+}
+
 const handleDisplayDelegationDrawer = (row: RegularWalletData) => {
   rowDelegationFolder.value = getSelectedFolderFromRow(row)
   delegationInitialTab.value = undefined
@@ -534,6 +563,8 @@ async function confirmRemoveFromFolders() {
 const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void | Promise<void>> = {
   [ManageWalletAction.DELEGATE_WALLET]: () => openDelegationDrawerOnTab(DelegationTab.DELEGATE_WALLET),
   [ManageWalletAction.DELEGATE_FOLDERS]: () => openSelectedFoldersDelegationDrawer(),
+  [ManageWalletAction.DECLARE_CUSTOMER_RELATION]: () => openBulkCustomerRelationDrawer(true),
+  [ManageWalletAction.REMOVE_CUSTOMER_RELATION]: () => openBulkCustomerRelationDrawer(false),
   [ManageWalletAction.REMOVE_FROM_FOLDERS]: () => openRemoveFromFoldersConfirmationModal(),
   [ManageWalletAction.VIEW_PERMANENT_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PERMANENT_DELEGATIONS),
   [ManageWalletAction.REQUEST_DELEGATION]: () => openDelegationDrawerOnTab(DelegationTab.REQUEST_DELEGATION),
@@ -600,6 +631,12 @@ const searchResult = ref<SearchResult<RegularWalletData>>({
   totalItems: 0,
 })
 const { selectedFolders, selectedFolderIds } = useFolderSelection(searchResult)
+
+const selectedFolderCustomerRelationStatus = computed(() =>
+  selectedFolders.value.length === 1
+    ? selectedFolders.value[0].isCustomerRelation
+    : undefined,
+)
 
 function retrieveAndBindAccountsQuery() {
   const { accountNumbers } = route.query

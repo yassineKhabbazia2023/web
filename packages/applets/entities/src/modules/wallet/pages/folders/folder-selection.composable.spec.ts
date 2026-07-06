@@ -23,7 +23,16 @@ describe('getSelectedFolderFromRow', () => {
       id: 42,
       name: 'Folder name',
       avatarColor: 'persian',
+      isCustomerRelation: false,
     })
+  })
+
+  it('considers a missing customer relation status as false', () => {
+    const folderWithoutCustomerRelationStatus = getMockedMappedAccount({
+      isCustomerRelation: undefined,
+    })
+
+    expect(getSelectedFolderFromRow(folderWithoutCustomerRelationStatus).isCustomerRelation).toBe(false)
   })
 })
 
@@ -67,6 +76,7 @@ describe('useFolderSelection', () => {
       accountNumber: firstFolder.accountNumber,
       avatarColor: firstFolder.owner.avatarColor,
       id: firstFolder.accountId,
+      isCustomerRelation: firstFolder.isCustomerRelation,
       name: firstFolder.name,
     }])
     expect(selectedFolderIds.value).toStrictEqual([firstFolder.accountId])
@@ -98,6 +108,28 @@ describe('useFolderSelection', () => {
       firstFolder.accountId,
       secondFolder.accountId,
     ])
+  })
+
+  it('should refresh an already selected folder from the current search result', () => {
+    const initialFolder = getMockedMappedAccount({
+      accountId: 10,
+      isCustomerRelation: false,
+    })
+    const searchResult = ref(getMockedWalletQueryResult({
+      items: [initialFolder],
+    }))
+    const { selectedFolders, selectedFolderIds } = useFolderSelection(searchResult)
+    selectedFolderIds.value = [initialFolder.accountId]
+
+    searchResult.value = getMockedWalletQueryResult({
+      items: [{
+        ...initialFolder,
+        isCustomerRelation: true,
+      }],
+    })
+    selectedFolderIds.value = [initialFolder.accountId]
+
+    expect(selectedFolders.value[0].isCustomerRelation).toBe(true)
   })
 
   it('should remove folders that are not in the new selected ids', () => {

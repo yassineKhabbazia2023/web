@@ -11,6 +11,7 @@ export const getSelectedFolderFromRow = (folder: RegularWalletData): SelectedFol
   id: folder.accountId,
   name: folder.name,
   avatarColor: folder.owner.avatarColor as SelectedFolder['avatarColor'],
+  isCustomerRelation: folder.isCustomerRelation === true,
 })
 
 export function useFolderSelection(searchResult: Ref<SearchResult<RegularWalletData>>) {
@@ -28,18 +29,16 @@ export function useFolderSelection(searchResult: Ref<SearchResult<RegularWalletD
 
       selectedFolders.value = newSelectedFolderIds.reduce<SelectedFolder[]>(
         (selectedFoldersAccumulator, selectedFolderId) => {
+          const currentFolder = currentFoldersById.get(selectedFolderId)
+          if (currentFolder !== undefined) {
+            selectedFoldersAccumulator.push(getSelectedFolderFromRow(currentFolder))
+            return selectedFoldersAccumulator
+          }
+
           const alreadySelectedFolder = selectedFoldersById.get(selectedFolderId)
           if (alreadySelectedFolder !== undefined) {
             selectedFoldersAccumulator.push(alreadySelectedFolder)
-            return selectedFoldersAccumulator
           }
-
-          const currentFolder = currentFoldersById.get(selectedFolderId)
-          if (currentFolder === undefined) {
-            return selectedFoldersAccumulator
-          }
-
-          selectedFoldersAccumulator.push(getSelectedFolderFromRow(currentFolder))
           return selectedFoldersAccumulator
         },
         [],

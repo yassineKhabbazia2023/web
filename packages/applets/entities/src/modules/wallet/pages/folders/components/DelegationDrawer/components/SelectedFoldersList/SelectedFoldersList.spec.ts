@@ -18,6 +18,7 @@ function formatFoldersProps(
     accountNumber,
     name: legalName,
     avatarColor: color,
+    isCustomerRelation: false,
   }))
 }
 

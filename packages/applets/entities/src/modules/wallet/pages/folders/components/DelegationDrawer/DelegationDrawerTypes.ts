@@ -6,6 +6,7 @@ export interface SelectedFolder {
   id: Entity['accountId']
   name: Entity['legalName']
   avatarColor: Entity['color']
+  isCustomerRelation: boolean
 }
 
 export interface DelegationDrawerProps {

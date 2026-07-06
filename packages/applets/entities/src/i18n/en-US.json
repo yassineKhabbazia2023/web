@@ -229,6 +229,27 @@
       "confirm": "Confirm",
       "remove": "Remove myself"
     },
+    "bulkCustomerRelationDrawer": {
+      "close": "Close",
+      "open": "Open",
+      "declareTitle": "Declare myself in the client relationship",
+      "removeTitle": "Remove myself from the client relationship",
+      "declareDescription": "By declaring yourself in the client relationship, you make it easier to connect with your client. You will be visible in the client portal and identified as a point of contact.",
+      "removeDescription": "By removing yourself from the client relationship, you will no longer be visible in the client portal or identified as a point of contact.",
+      "verifySelection": "Check the list below before confirming.",
+      "selectedFolders": "Selected folder(s)",
+      "folderName": "Company name",
+      "customerCode": "Customer code",
+      "alreadyDeclaredInformation": "Grayed-out folders are those where you are already in the client relationship.",
+      "alreadyRemovedInformation": "Grayed-out folders are those where you are not in the client relationship.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "success": "The client relationship was successfully updated.",
+      "partialSuccess": "The client relationship was updated for {succeededCount} {folderLabel} out of {totalCount}. {remainingMessage}",
+      "folderLabel": "folder | folders",
+      "remainingFailure": "The remaining folder could not be processed, please try again. | The {count} remaining folders could not be processed, please try again.",
+      "failure": "The client relationship update could not be completed. Please try again in a few moments."
+    },
     "invoices": {
       "title": "Dematerialization of RYDGE Conseil invoices",
       "description": "With RYDGE Conseil, benefit {noExtraCost} from the issuance of Firm invoices in {electronicFormat} and access to {digitalVault} containing all dematerialized invoices and credit notes, hosted with a trusted third party.",

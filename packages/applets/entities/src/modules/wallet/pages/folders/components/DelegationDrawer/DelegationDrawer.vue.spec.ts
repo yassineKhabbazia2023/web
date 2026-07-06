@@ -35,10 +35,12 @@ const defaultProps: DelegationDrawerProps = {
     {
       ...FIRST_SELECTED_FOLDER,
       avatarColor: 'cyan',
+      isCustomerRelation: false,
     },
     {
       ...SECOND_SELECTED_FOLDER,
       avatarColor: 'fuschia',
+      isCustomerRelation: false,
     },
   ],
   numberOfFoldersInPortfolio: 20,

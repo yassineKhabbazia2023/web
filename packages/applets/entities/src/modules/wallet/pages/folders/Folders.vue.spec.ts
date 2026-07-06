@@ -26,6 +26,7 @@ import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFilte
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import { MISSION_TYPE } from '@entities/constants'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
+import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
 
 import Folders from './Folders.vue'
 
@@ -233,6 +234,118 @@ describe('deploy', () => {
     await nextTick()
 
     expect(manageWalletButton.props('selectedFoldersCount')).toBe(1)
+    expect(manageWalletButton.props('isSelectedFolderCustomerRelation')).toBe(firstFolder.isCustomerRelation)
+  })
+
+  it('forwards the customer relation status for a related single folder', async () => {
+    const relatedFolder = {
+      ...mockedQueryResult.items[0],
+      isCustomerRelation: true,
+    }
+    mockFetchWalletData.mockResolvedValueOnce({
+      ...mockedQueryResult,
+      items: [relatedFolder],
+    })
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', [relatedFolder.accountId])
+    await nextTick()
+
+    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+  })
+
+  it.each([
+    {
+      action: ManageWalletAction.DECLARE_CUSTOMER_RELATION,
+      targetCustomerRelationStatus: true,
+    },
+    {
+      action: ManageWalletAction.REMOVE_CUSTOMER_RELATION,
+      targetCustomerRelationStatus: false,
+    },
+  ])(
+    'opens the bulk customer relation drawer for $action',
+    async ({ action, targetCustomerRelationStatus }) => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const selectedFolderIds = mockedQueryResult.items.map(({ accountId }) => accountId)
+
+      const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+      tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+      await nextTick()
+
+      wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', action)
+      await nextTick()
+
+      const drawer = wrapper.findComponent(BulkCustomerRelationDrawer)
+      expect(drawer.exists()).toBe(true)
+      expect(drawer.props('targetCustomerRelationStatus')).toBe(targetCustomerRelationStatus)
+      expect(drawer.props('selectedFolders')).toHaveLength(2)
+    },
+  )
+
+  it('refreshes the wallet and selected statuses after a bulk customer relation update', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 1)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit(
+      'action-selected',
+      ManageWalletAction.DECLARE_CUSTOMER_RELATION,
+    )
+    await nextTick()
+
+    wrapper.findComponent(BulkCustomerRelationDrawer).vm.$emit('updated', selectedFolderIds)
+    await flushPromises()
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(wrapper.findComponent(BulkCustomerRelationDrawer).exists()).toBe(false)
+    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+  })
+
+  it('updates only folders that succeeded after a partial customer relation update', async () => {
+    const [succeededFolder, failedFolder] = mockedQueryResult.items
+    const updatedQueryResult = {
+      ...mockedQueryResult,
+      items: mockedQueryResult.items.map(folder => ({
+        ...folder,
+        isCustomerRelation: folder.accountId === succeededFolder.accountId,
+      })),
+    }
+    mockFetchWalletData
+      .mockResolvedValueOnce(mockedQueryResult)
+      .mockResolvedValueOnce(updatedQueryResult)
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', [succeededFolder.accountId, failedFolder.accountId])
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit(
+      'action-selected',
+      ManageWalletAction.DECLARE_CUSTOMER_RELATION,
+    )
+    await nextTick()
+
+    wrapper.findComponent(BulkCustomerRelationDrawer).vm.$emit('updated', [succeededFolder.accountId])
+    await flushPromises()
+
+    tableData.vm.$emit('update:selectedFolderIds', [succeededFolder.accountId])
+    await nextTick()
+    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+
+    tableData.vm.$emit('update:selectedFolderIds', [failedFolder.accountId])
+    await nextTick()
+    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(false)
   })
 
   it.each([
@@ -290,6 +403,7 @@ describe('deploy', () => {
       id: targetedFolder.accountId,
       name: targetedFolder.name,
       avatarColor: targetedFolder.owner.avatarColor,
+      isCustomerRelation: targetedFolder.isCustomerRelation,
     }])
     expect(delegationDrawer.props('initialTab')).toBeUndefined()
   })

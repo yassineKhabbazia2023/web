@@ -43,6 +43,8 @@ const { t } = useI18n({
       manageWallet: 'Manage my portfolio | Manage this folder | Manage these folders',
       delegateWallet: 'Delegate my portfolio',
       delegateFolders: 'Delegate the folder | Delegate the folders',
+      declareCustomerRelation: 'Declare myself in the client relationship',
+      removeCustomerRelation: 'Remove myself from the client relationship',
       removeFromFolders: 'Remove myself from this folder | Remove myself from these folders',
       viewPermanentDelegations: 'View my permanent delegations',
       requestDelegation: 'Request a delegation',
@@ -53,6 +55,8 @@ const { t } = useI18n({
       manageWallet: 'Gérer mon portefeuille | Gérer ce dossier | Gérer ces dossiers',
       delegateWallet: 'Déléguer mon portefeuille',
       delegateFolders: 'Déléguer le dossier | Déléguer les dossiers',
+      declareCustomerRelation: 'Me déclarer en relation client',
+      removeCustomerRelation: 'Me retirer de la relation client',
       removeFromFolders: 'Me retirer de ce dossier | Me retirer de ces dossiers',
       viewPermanentDelegations: 'Voir mes délégations permanentes',
       requestDelegation: 'Demander une délégation',
@@ -71,6 +75,8 @@ const buttonLabel = computed(() => t('manageWallet', props.selectedFoldersCount)
 const menuTranslations = computed<ManageWalletMenuTranslations>(() => ({
   delegateWallet: t('delegateWallet'),
   delegateFolders: t('delegateFolders', props.selectedFoldersCount),
+  declareCustomerRelation: t('declareCustomerRelation'),
+  removeCustomerRelation: t('removeCustomerRelation'),
   removeFromFolders: t('removeFromFolders', props.selectedFoldersCount),
   viewPermanentDelegations: t('viewPermanentDelegations'),
   requestDelegation: t('requestDelegation'),
@@ -79,7 +85,11 @@ const menuTranslations = computed<ManageWalletMenuTranslations>(() => ({
 }))
 
 const toolboxItems = computed(() =>
-  ManageWalletMenuManager.getMenuElements(props.selectedFoldersCount, menuTranslations.value),
+  ManageWalletMenuManager.getMenuElements(
+    props.selectedFoldersCount,
+    menuTranslations.value,
+    props.isSelectedFolderCustomerRelation,
+  ),
 )
 
 const onItemClicked = (action: ManageWalletAction) => {
