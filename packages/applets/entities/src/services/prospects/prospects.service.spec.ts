@@ -38,6 +38,7 @@ vi.mock('@pulse/common/api', () => ({
 }))
 
 const prospectId = 602
+const accountId = 1971
 const entityId = 1971
 
 describe('ProspectsService', () => {
@@ -276,27 +277,27 @@ describe('ProspectsService', () => {
   })
 
   describe('fetchOnboardingSteps', () => {
-    it('should GET the onboarding steps of the prospect and return the data', async () => {
+    it('should GET the onboarding steps of the account and return the data', async () => {
       const responseData: OnboardingStepResponse[] = [
         { id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.InProgress },
       ]
       mocks.get.mockResolvedValueOnce({ data: responseData })
 
-      const result = await ProspectsService.fetchOnboardingSteps(prospectId)
+      const result = await ProspectsService.fetchOnboardingSteps(accountId)
 
       expect(mocks.get).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps`,
       )
       expect(result).toEqual(responseData)
     })
   })
 
   describe('completeOnboardingStep', () => {
-    it('should PUT the step complete endpoint with the step name', async () => {
-      await ProspectsService.completeOnboardingStep(prospectId, OnboardingStep.CommercialProposal)
+    it('should PUT the step complete endpoint with the account id and unchanged step name body', async () => {
+      await ProspectsService.completeOnboardingStep(accountId, OnboardingStep.CommercialProposal)
 
       expect(mocks.put).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps/complete`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps/complete`,
         { StepName: OnboardingStep.CommercialProposal },
       )
     })

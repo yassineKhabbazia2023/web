@@ -155,7 +155,7 @@ import {
 
 const { t } = useI18n()
 
-const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
 const { isCollab } = storeToRefs(useUserStore())
 const documentsConsultDrawerStore = useDocumentsConsultDrawerStore()
 const { isOpen: isConsultDrawerOpen } = storeToRefs(documentsConsultDrawerStore)
@@ -173,7 +173,7 @@ const {
   totalCount,
   isLoadingSteps,
   reload: loadOnboardingSteps,
-} = useOnboardingSteps(() => currentEntity.value?.prospectId)
+} = useOnboardingSteps(() => currentEntityId.value)
 
 const steps = PROSPECT_CONFORMITY_STEPS
 

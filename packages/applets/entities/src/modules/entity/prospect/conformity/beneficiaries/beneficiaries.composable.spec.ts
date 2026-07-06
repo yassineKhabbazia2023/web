@@ -14,6 +14,7 @@ import {
 } from '@entities/__mocks__/beneficiaries.mocks'
 import { useBeneficiaries } from './beneficiaries.composable'
 import { BENEFICIARIES_I18N_KEYS } from './beneficiaries.constants'
+import { OnboardingStep } from '../prospect-conformity.enums'
 
 vi.mock('@entities/services/prospects/prospects.service')
 vi.mock('@pulse/styleguide')
@@ -26,16 +27,19 @@ vi.mock('vue-i18n', () => ({
 
 const fetchBeneficiariesMock = vi.mocked(ProspectsService.fetchBeneficiaries)
 const uploadBeneficiaryDocumentsMock = vi.mocked(ProspectsService.uploadBeneficiaryDocuments)
+const completeOnboardingStepMock = vi.mocked(ProspectsService.completeOnboardingStep)
 const displayNotificationMock = vi.mocked(displayNotification)
 
 const prospectIdMock = 602
+const accountIdMock = 1971
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-const setCurrentEntity = (prospectId: number | undefined): void => {
+const setCurrentEntity = (prospectId: number | undefined, accountId: number | null = accountIdMock): void => {
   currentEntityStoreMock.currentEntity = prospectId === undefined
     ? undefined
-    : { prospectId } as EntitySummary
+    : { prospectId, accountId } as EntitySummary
+  currentEntityStoreMock.currentEntityId = accountId === null ? undefined : accountId
 }
 
 const emitMock = vi.fn()
@@ -95,6 +99,33 @@ describe('beneficiaries.composable', () => {
 
       expect(result.beneficiaries.value).toEqual([])
       expect(result.isLoading.value).toBe(false)
+    })
+  })
+
+  describe('onValidateAllBeneficiaries', () => {
+    it('should complete the beneficiary onboarding step with the account id and keep beneficiaries loaded by prospect id', async () => {
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      await result.onValidateAllBeneficiaries()
+
+      expect(fetchBeneficiariesMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(completeOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.Beneficiary)
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS)
+      expect(result.isValidatingAll.value).toBe(false)
+      expect(emitMock).toHaveBeenCalledWith('refresh-steps')
+    })
+
+    it('should not complete the beneficiary onboarding step when there is no account id', async () => {
+      setCurrentEntity(prospectIdMock, null)
+
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      await result.onValidateAllBeneficiaries()
+
+      expect(completeOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isValidatingAll.value).toBe(false)
     })
   })
 

@@ -17,7 +17,7 @@ import type {
 
 export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const { t } = useI18n()
-  const { currentEntity } = storeToRefs(useCurrentEntityStore())
+  const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
   const currentProspectId = computed(() => currentEntity.value?.prospectId)
 
   const isLoading = ref(true)
@@ -160,13 +160,13 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   }
 
   const onValidateAllBeneficiaries = async () => {
-    if (currentProspectId.value === undefined || currentProspectId.value === null) {
+    if (currentEntityId.value === undefined || currentEntityId.value === null) {
       return
     }
 
     isValidatingAll.value = true
     try {
-      await ProspectsService.completeOnboardingStep(currentProspectId.value, OnboardingStep.Beneficiary)
+      await ProspectsService.completeOnboardingStep(currentEntityId.value, OnboardingStep.Beneficiary)
       displayNotification('success', t(BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS))
       emit('refresh-steps')
     } catch (error) {

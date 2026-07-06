@@ -4,7 +4,7 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import type { OnboardingStepResponse } from '@entities/services/prospects/prospects.types'
 import { OnboardingStep, OnboardingStepStatus } from './prospect-conformity.enums'
 
-export function useOnboardingSteps(getProspectId: () => number | null | undefined) {
+export function useOnboardingSteps(getAccountId: () => number | null | undefined) {
   const onboardingSteps = ref<OnboardingStepResponse[]>([])
   const isLoadingSteps = ref(true)
 
@@ -20,13 +20,13 @@ export function useOnboardingSteps(getProspectId: () => number | null | undefine
   const totalCount = computed(() => onboardingSteps.value.length)
 
   const reload = async (): Promise<void> => {
-    const prospectId = getProspectId()
-    if (prospectId === undefined || prospectId === null) {
+    const accountId = getAccountId()
+    if (accountId === undefined || accountId === null) {
       isLoadingSteps.value = false
       return
     }
     try {
-      const steps = await ProspectsService.fetchOnboardingSteps(prospectId)
+      const steps = await ProspectsService.fetchOnboardingSteps(accountId)
       if (steps !== undefined) {
         onboardingSteps.value = steps
       }

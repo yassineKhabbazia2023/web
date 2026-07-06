@@ -112,16 +112,16 @@ export class ProspectsService {
     )
   }
 
-  static async fetchOnboardingSteps(prospectId: number): Promise<OnboardingStepResponse[]> {
+  static async fetchOnboardingSteps(accountId: number): Promise<OnboardingStepResponse[]> {
     const response = await api.gateway.get<OnboardingStepResponse[]>(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps`,
     )
     return response.data
   }
 
-  static completeOnboardingStep(prospectId: number, step: OnboardingStep): Promise<void> {
+  static completeOnboardingStep(accountId: number, step: OnboardingStep): Promise<void> {
     return api.gateway.put(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps/complete`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps/complete`,
       { StepName: step },
     )
   }

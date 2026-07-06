@@ -9,7 +9,7 @@ vi.mock('@pulse/toolbox')
 
 const fetchOnboardingStepsMock = vi.mocked(ProspectsService.fetchOnboardingSteps)
 
-const prospectIdMock = 602
+const accountIdMock = 1971
 
 const stepsResponseMock = [
   { id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.Completed },
@@ -26,20 +26,20 @@ describe('onboarding-steps.composable', () => {
 
   describe('initial loading on mount', () => {
     it('should fetch the steps and expose the status map', async () => {
-      const [result] = withSetup(() => useOnboardingSteps(() => prospectIdMock))
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
 
       expect(result.isLoadingSteps.value).toBe(true)
 
       await flushPromises()
 
-      expect(fetchOnboardingStepsMock).toHaveBeenCalledWith(prospectIdMock)
+      expect(fetchOnboardingStepsMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.isLoadingSteps.value).toBe(false)
       expect(result.stepStatusById.value.get(OnboardingStep.CommercialProposal)).toBe(OnboardingStepStatus.Completed)
       expect(result.stepStatusById.value.get(OnboardingStep.Beneficiary)).toBe(OnboardingStepStatus.ToDo)
     })
 
     it('should compute the counts strictly from the API response', async () => {
-      const [result] = withSetup(() => useOnboardingSteps(() => prospectIdMock))
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
       await flushPromises()
 
       expect(result.totalCount.value).toBe(5)
@@ -47,8 +47,8 @@ describe('onboarding-steps.composable', () => {
     })
   })
 
-  describe('missing prospect id', () => {
-    it('should not fetch and stop loading when the prospect id is undefined', async () => {
+  describe('missing account id', () => {
+    it('should not fetch and stop loading when the account id is undefined', async () => {
       const [result] = withSetup(() => useOnboardingSteps(() => undefined))
       await flushPromises()
 
@@ -60,7 +60,7 @@ describe('onboarding-steps.composable', () => {
 
   describe('reload', () => {
     it('should re-fetch the steps and refresh the exposed state', async () => {
-      const [result] = withSetup(() => useOnboardingSteps(() => prospectIdMock))
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
       await flushPromises()
 
       fetchOnboardingStepsMock.mockResolvedValue([
@@ -69,7 +69,7 @@ describe('onboarding-steps.composable', () => {
 
       await result.reload()
 
-      expect(fetchOnboardingStepsMock).toHaveBeenLastCalledWith(prospectIdMock)
+      expect(fetchOnboardingStepsMock).toHaveBeenLastCalledWith(accountIdMock)
       expect(result.totalCount.value).toBe(1)
       expect(result.completedCount.value).toBe(1)
       expect(result.stepStatusById.value.get(OnboardingStep.PaymentMethod)).toBe(OnboardingStepStatus.Completed)
@@ -78,7 +78,7 @@ describe('onboarding-steps.composable', () => {
 
   describe('error handling', () => {
     it('should keep the previous state and stop loading when the fetch fails', async () => {
-      const [result] = withSetup(() => useOnboardingSteps(() => prospectIdMock))
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
       await flushPromises()
 
       fetchOnboardingStepsMock.mockRejectedValue(new Error('API Error'))

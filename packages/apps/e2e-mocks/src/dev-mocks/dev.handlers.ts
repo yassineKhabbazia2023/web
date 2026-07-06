@@ -187,6 +187,13 @@ const supportingDocumentsResponse = {
   ],
 }
 
+const onboardingStepsResponse = [
+  { 'id': 'CommercialProposal', 'status': 'Completed' },
+  { 'id': 'EngagementLetter', 'status': 'InProgress' },
+  { 'id': 'Beneficiary', 'status': BENEFICIARIES_SCENARIO === 'completed' ? 'Completed' : 'InProgress' },
+  { 'id': 'SupportingDocuments', 'status': 'InProgress' },
+]
+
 // Switch this flag to test the different payment preference states (payment.vue):
 // - 'notSelected': no method chosen yet — the SEPA configuration drawer and the "autre moyen" choice are offered
 // - 'sepa': a SEPA mandate has already been configured
@@ -232,8 +239,12 @@ export const devMockHandlers: RequestHandler[] = [
     return HttpResponse.json({}, { status: 201 })
   }),
 
+  http.get('*/prospect/api/onboarding/:accountId/steps', () => {
+    return HttpResponse.json(onboardingStepsResponse)
+  }),
+
   // Completes an onboarding step (e.g. beneficiaries, supporting documents)
-  http.put('*/prospect/api/onboarding/:prospectId/steps/complete', async () => {
+  http.put('*/prospect/api/onboarding/:accountId/steps/complete', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 204 })
   }),
