@@ -50,6 +50,7 @@ const buildRow = (overrides: Partial<RegularWalletData> = {}): RegularWalletData
   name: 'Test Entity',
   isFavorite: false,
   isCustomerRelation: false,
+  lastActivityDate: null,
   ...overrides,
 })
 
@@ -107,6 +108,20 @@ describe('useRegularEntitiesList', () => {
       expect(emit).toHaveBeenCalledWith('sort-account', {
         field: 'city',
         descending: false,
+      })
+
+      app.unmount()
+    })
+
+    it('emits sort-account and tracks column sort for the lastActivityDate column', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.handleSort({ prop: 'lastActivityDate', order: SortDirection.DESCENDING, column: {} as any })
+
+      expect(vi.mocked(WalletTrackingManager.trackColumnSortRequested)).toHaveBeenCalledWith(WalletSortColumn.LAST_ACTIVITY_DATE)
+      expect(emit).toHaveBeenCalledWith('sort-account', {
+        field: 'lastActivityDate',
+        descending: true,
       })
 
       app.unmount()

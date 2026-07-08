@@ -34,6 +34,7 @@
       },
       "entitiesListRegular": {
         "city": "Ville",
+        "lastActivityDate": "Dernière activité",
         "status": "Statut",
         "option": "Actions",
         "deployThisFolder": "Déployer ce dossier",

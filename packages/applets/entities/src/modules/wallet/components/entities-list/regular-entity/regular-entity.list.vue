@@ -149,6 +149,19 @@
     </PTableColumn>
     <template v-if="isCollab === true">
       <PTableColumn
+        :pLabel="t(`${REGULAR_KEY}.lastActivityDate`)"
+        pProp="lastActivityDate"
+        pSortable="custom"
+        :pSortOrders="SORT_ORDERS"
+        pMinWidth="160px"
+      >
+        <template #default="scope">
+          <p class="overflow-hidden text-overflow--ellipsis">
+            {{ RegularEntitiesListManager.getLastActivityDateLabel(scope.row.lastActivityDate) }}
+          </p>
+        </template>
+      </PTableColumn>
+      <PTableColumn
         :pLabel="t(`${REGULAR_KEY}.status`)"
         pProp="status"
       >
@@ -277,6 +290,7 @@ import { AccountType } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
 import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regular-entity.list.types'
 import { useRegularEntitiesList } from './regular-entity.list.composable'
+import { RegularEntitiesListManager } from './regular-entity.list.manager'
 import { RegularEntityAction } from './regular-entity.list.enums'
 
 const { t } = useI18n()

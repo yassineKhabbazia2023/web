@@ -6,7 +6,10 @@ export const SORT_COLUMN_TRACKING_MAP: Record<string, WalletSortColumn> = {
   leader: WalletSortColumn.LEADER,
   email: WalletSortColumn.EMAIL,
   city: WalletSortColumn.CITY,
+  lastActivityDate: WalletSortColumn.LAST_ACTIVITY_DATE,
 }
+
+export const LAST_ACTIVITY_DATE_FALLBACK_LABEL = '-'
 
 export const MENU_ACTION_TRACKING_MAP: Record<string, WalletMenuActionValue> = {
   access: WalletMenuActionValue.ACCESS_FOLDER,

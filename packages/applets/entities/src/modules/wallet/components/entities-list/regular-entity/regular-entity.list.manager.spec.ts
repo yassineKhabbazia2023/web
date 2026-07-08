@@ -72,6 +72,16 @@ describe('RegularEntitiesListManager', () => {
     })
   })
 
+  describe('getLastActivityDateLabel', () => {
+    it('should return the date formatted with the fr-FR locale', () => {
+      expect(RegularEntitiesListManager.getLastActivityDateLabel('2026-06-02T10:00:00')).toBe('02/06/2026')
+    })
+
+    it('should return the fallback label when the date is null', () => {
+      expect(RegularEntitiesListManager.getLastActivityDateLabel(null)).toBe('-')
+    })
+  })
+
   describe('getMenuElementsForRow', () => {
     it('should return deploy menu elements when deploymentStatusText matches toDeployLabel', () => {
       const result = RegularEntitiesListManager.getMenuElementsForRow(

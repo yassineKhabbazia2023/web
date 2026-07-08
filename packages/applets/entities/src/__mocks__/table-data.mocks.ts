@@ -27,6 +27,7 @@ export const mockTableData: RegularWalletData[] = [
     name: MockEntityData.BASIC.legalName,
     isFavorite: false,
     isCustomerRelation: false,
+    lastActivityDate: '2026-06-02T10:00:00',
   },
   {
     owner: {
@@ -50,5 +51,6 @@ export const mockTableData: RegularWalletData[] = [
     name: MockEntityData.LEGACY_GED.legalName,
     isFavorite: true,
     isCustomerRelation: false,
+    lastActivityDate: null,
   },
 ]

@@ -2,9 +2,12 @@ import type { AccessibleMenuItem } from '@entities/types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import type { MenuTranslations } from './regular-entity.list.types'
 import { filterAccessibleMenuItems } from '@entities/utils'
+import { formatDateToLocale } from '@entities/helpers'
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { RegularEntityAction } from './regular-entity.list.enums'
+import { LAST_ACTIVITY_DATE_FALLBACK_LABEL } from './regular-entity.list.consts'
 
 export class RegularEntitiesListManager {
   static buildDefaultMenuElements(translations: MenuTranslations): AccessibleMenuItem[] {
@@ -58,6 +61,13 @@ export class RegularEntitiesListManager {
       },
       ...RegularEntitiesListManager.buildDefaultMenuElements(translations),
     ]
+  }
+
+  static getLastActivityDateLabel(lastActivityDate: string | null): string {
+    if (isNullOrEmpty(lastActivityDate)) {
+      return LAST_ACTIVITY_DATE_FALLBACK_LABEL
+    }
+    return formatDateToLocale(lastActivityDate)
   }
 
   static getMenuElementsForRow(

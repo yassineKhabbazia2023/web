@@ -72,6 +72,7 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
   const defaultAccountRow: AccountRow = {
     ...commonAccountRow,
     isCustomerRelation: false,
+    lastActivityDate: null,
   }
 
   return {
@@ -85,6 +86,7 @@ export function getMockedAccountRowForEntity(entityKey: MockEntityKey, override:
   return {
     ...commonAccountRow,
     isCustomerRelation: false,
+    lastActivityDate: null,
     ...override,
   }
 }

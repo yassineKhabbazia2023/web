@@ -32,6 +32,7 @@ export interface RegularWalletData extends WalletDataBase {
   deploymentStatus: DeploymentStatus
   id: string
   isCustomerRelation: boolean
+  lastActivityDate: string | null
 }
 
 export interface ProspectWalletData extends WalletDataBase {

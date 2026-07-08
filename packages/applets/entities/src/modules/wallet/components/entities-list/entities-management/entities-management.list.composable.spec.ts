@@ -25,6 +25,7 @@ const buildRow = (overrides: Partial<RegularWalletData> = {}): RegularWalletData
   name: 'Test Entity',
   isFavorite: false,
   isCustomerRelation: false,
+  lastActivityDate: null,
   ...overrides,
 })
 

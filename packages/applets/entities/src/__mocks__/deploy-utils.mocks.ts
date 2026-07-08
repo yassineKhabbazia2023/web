@@ -76,6 +76,7 @@ export function getMockedMappedAccount(
     id: MockEntityData.BASIC.accountGlobalUniqueId,
     isFavorite: false,
     isCustomerRelation: false,
+    lastActivityDate: null,
     name: MockEntityData.BASIC.legalName,
     owner: {
       contactId: basicSignatory.contactId,

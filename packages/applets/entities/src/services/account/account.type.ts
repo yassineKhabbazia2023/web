@@ -89,6 +89,7 @@ export interface AccountRow {
   signatory: Signatory
   deployment: Deployment
   isCustomerRelation: boolean
+  lastActivityDate: string | null
 }
 
 export interface UpdateCustomerRelationRequest {

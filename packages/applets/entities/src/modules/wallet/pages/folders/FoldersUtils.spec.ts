@@ -112,6 +112,22 @@ describe('test FoldersUtils', () => {
       expect(mappedAccount).toMatchObject(expected)
     })
 
+    it('should map lastActivityDate when provided by the api', () => {
+      const account = getMockedAccountRow({ lastActivityDate: '2026-06-02T10:00:00' })
+
+      const mappedAccount = getMappedAccount(deploymentStatuses, account, 1)
+
+      expect(mappedAccount.lastActivityDate).toBe('2026-06-02T10:00:00')
+    })
+
+    it('should map lastActivityDate to null when the api returns null', () => {
+      const account = getMockedAccountRow({ lastActivityDate: null })
+
+      const mappedAccount = getMappedAccount(deploymentStatuses, account, 1)
+
+      expect(mappedAccount.lastActivityDate).toBeNull()
+    })
+
     it('should return the correctly mapped account when signatory, hub, and city are all undefined', () => {
       const account = {
         ...getMockedAccountRow(),

@@ -47,6 +47,7 @@ export function getMappedAccount(
     deployment,
     isFavorite,
     isCustomerRelation,
+    lastActivityDate,
   } = account
 
   const { contactId, firstName, lastName, email } = signatory ?? {}
@@ -74,6 +75,7 @@ export function getMappedAccount(
     name,
     isFavorite,
     isCustomerRelation,
+    lastActivityDate: lastActivityDate ?? null,
   }
 
   return mappedAccount

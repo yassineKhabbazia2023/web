@@ -34,6 +34,7 @@
       },
       "entitiesListRegular": {
         "city": "City",
+        "lastActivityDate": "Last activity",
         "status": "Status",
         "option": "Options",
         "deployThisFolder": "Deploy this folder",

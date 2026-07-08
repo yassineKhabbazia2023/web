@@ -27,4 +27,5 @@ export enum WalletSortColumn {
   LEADER = 'Dirigeant',
   EMAIL = 'Mail',
   CITY = 'Ville',
+  LAST_ACTIVITY_DATE = 'Dernière activité',
 }
