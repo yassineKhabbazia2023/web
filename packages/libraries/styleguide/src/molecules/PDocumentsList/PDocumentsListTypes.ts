@@ -28,4 +28,7 @@ export interface PDocumentsListProps {
   pStripe?: boolean
   pVisibleColumns?: PDocumentsListColumn[]
   pSelectable?: boolean
+  pEmptyText?: string
+  pEmptyIconName?: IconName
+  pEmptyActionLabel?: string
 }

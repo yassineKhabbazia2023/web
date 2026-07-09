@@ -2,7 +2,7 @@
   <PTable
     data-testid="pr-completion-time-table"
     :pData="props.items"
-    empty-text="Aucune PR complétée sur cette période"
+    pEmptyText="Aucune PR complétée sur cette période"
     class="width--100 border-radius--2"
   >
     <PTableColumn

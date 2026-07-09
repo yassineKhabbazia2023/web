@@ -63,11 +63,13 @@ tbody tr td .cell {
       .sort-caret.ascending {
         top: -0.3rem;
       }
+
       .sort-caret.descending {
         bottom: -0.2rem;
       }
 
     }
+
     tbody tr td.el-table__cell {
       border-bottom: unset;
     }
@@ -83,11 +85,13 @@ tbody tr td .cell {
       &.p-table__row--selected.el-table__row--striped {
         td.el-table__cell {
           background-color: var(--el-table-current-row-bg-color);
+
           &:first-child {
             border-color: var(--p-jungle-400);
           }
         }
       }
+
       &.p-table__row--disabled,
       &.p-table__row--disabled.el-table__row--striped {
         td.el-table__cell {
@@ -149,5 +153,11 @@ tbody tr td .cell {
       margin-left: -12px;
       margin-right: -12px;
     }
+  }
+
+  // Element-plus defaults the empty text block to a 50% width.
+  // Force full width so custom empty content (PTableNoData) spans the whole table.
+  .el-table__empty-text {
+    width: 100%;
   }
 }

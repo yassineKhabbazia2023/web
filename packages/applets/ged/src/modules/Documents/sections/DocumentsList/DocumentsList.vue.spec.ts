@@ -268,11 +268,10 @@ describe('documentList', () => {
         documentsListWithTableStructure: payloadWithZeroItems,
       })
 
-      const table = wrapper.findComponent({ name: 'PTable' })
-      const elTableStubEmptyTextValue = table.find('el-table-stub').attributes('emptytext')
       await nextTick()
+      const table = wrapper.findComponent({ name: 'PTable' })
 
-      expect(elTableStubEmptyTextValue).toBe('Aucun résultat')
+      expect(table.props('pEmptyText')).toBe('Aucun résultat')
     })
 
     describe('DocumentsList - Right-click a row should open toolbox', () => {

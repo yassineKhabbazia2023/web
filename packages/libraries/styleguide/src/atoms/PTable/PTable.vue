@@ -10,22 +10,37 @@
     :row-key="pRowKey"
   >
     <slot />
+    <template #empty>
+      <PTableNoData
+        :pEmptyText="pEmptyText"
+        :pIconName="pEmptyIconName"
+        :pActionLabel="pEmptyActionLabel"
+        @action-click="$emit('empty-action-click')"
+      />
+    </template>
   </ElTable>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElTable } from 'element-plus'
+import PTableNoData from '../PTableNoData'
 import type { PTableProps } from './PTableTypes'
 
 /* NOTE : un usage de pfit est fait dans la story et la question
 de son usage se pose car via cet emplacement ne se bind nul part */
 const table = ref<any>()
 
+defineEmits<{
+  (e: 'empty-action-click'): void
+}>()
+
 withDefaults(defineProps<PTableProps>(), {
   pStripe: false,
   pFit: true,
   pRowKey: undefined,
+  pEmptyText: 'Aucune donnée',
+  pEmptyIconName: 'infoCircle',
 })
 
 // handle row selection background color not implemented by element plus

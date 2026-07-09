@@ -3,6 +3,10 @@
     :pData="pData"
     :pStripe="pStripe"
     pRowKey="documentId"
+    :pEmptyText="pEmptyText"
+    :pEmptyIconName="pEmptyIconName"
+    :pEmptyActionLabel="pEmptyActionLabel"
+    @empty-action-click="$emit('empty-action-click')"
     @selection-change="onSelectionChange"
   >
     <PTableColumn
@@ -151,6 +155,7 @@ const emit = defineEmits<{
   download: [documentId: string]
   option: [event: string, documentId: string]
   'selection-change': [selected: DocumentsListItem[]]
+  'empty-action-click': []
 }>()
 
 const onSelectionChange = (selected: DocumentsListItem[]): void => {

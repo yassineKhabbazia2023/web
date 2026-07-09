@@ -1,7 +1,7 @@
 <template>
   <PResponsiveTable
     :pData="pennylaneDocuments"
-    :empty-text="t('noResult')"
+    :pEmptyText="t('noResult')"
     pStripe
     pCardClickable
     @cell-click="onClickCell"

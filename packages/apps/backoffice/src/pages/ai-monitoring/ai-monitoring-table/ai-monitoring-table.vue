@@ -24,7 +24,7 @@
       v-if="props.history.length > 0"
       data-testid="ai-monitoring-table"
       :pData="props.history"
-      empty-text="Aucun historique de recherche IA disponible"
+      pEmptyText="Aucun historique de recherche IA disponible"
       class="width--100 border-radius--2 ai-monitoring-table"
       pStripe
       :pCellStyle="{ padding: '12px 0px' }"

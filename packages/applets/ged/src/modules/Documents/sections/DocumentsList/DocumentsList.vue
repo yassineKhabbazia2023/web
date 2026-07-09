@@ -9,7 +9,7 @@
       data-testid="ged-documents-list"
       :rowClassName="tableRowClassName"
       currentRowKey="id"
-      :emptyText="t('noSearchData')"
+      :pEmptyText="t('noSearchData')"
       class="ged-documents-list"
       @sort-change="handleSortChange"
       @row-click="selectRow"

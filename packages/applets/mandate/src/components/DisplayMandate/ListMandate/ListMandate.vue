@@ -4,7 +4,7 @@
       v-if="mandateCollection !== undefined"
       :pData="mandateCollection"
       pStripe
-      :emptyText="t('no-data')"
+      :pEmptyText="t('no-data')"
       data-testid="mandate-table"
       @sort-change="sortColumnChange"
     >

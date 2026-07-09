@@ -2,7 +2,7 @@
   <PTable
     data-testid="app-settings-table"
     :pData="appSettings"
-    empty-text="Aucune variable d'environnement disponible"
+    pEmptyText="Aucune variable d'environnement disponible"
     class="width--100 border-radius--2"
   >
     <PTableColumn
