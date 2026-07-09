@@ -111,9 +111,9 @@ test.describe('EntitiesManagementList - toolbox menu', () => {
     await expect(getVisibleMenuItem(page, 'Déployer ce dossier')).toHaveCount(0)
   })
 
-  test('should NOT display "Se déclarer en relation client" menu item', async ({ page }) => {
+  test('should NOT display "Me déclarer en relation client" menu item', async ({ page }) => {
     await clickFirstRowToolbox(page)
-    await expect(getVisibleMenuItem(page, 'Se déclarer en relation client')).toHaveCount(0)
+    await expect(getVisibleMenuItem(page, 'Me déclarer en relation client')).toHaveCount(0)
   })
 
   test('should open the account rights drawer on "Gérer les droits du dossier" click', async ({ page }) => {

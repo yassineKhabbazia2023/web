@@ -45,8 +45,8 @@ test.describe('Folder page - Drawers', () => {
   })
 
   test('should open the Declare Customer Relation drawer', async ({ page }) => {
-    await clickToolboxAction(page, 'Se déclarer en relation client')
-    await expect(page.getByTestId('declare-customer-relation-entity-card')).toBeVisible()
+    await clickToolboxAction(page, 'Me déclarer en relation client')
+    await expect(page.getByTestId('bulk-customer-relation-drawer')).toBeVisible()
   })
 
   test('should open the Resend Activation Email drawer', async ({ page }) => {

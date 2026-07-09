@@ -209,9 +209,9 @@ test.describe('RegularEntityList - toolbox menu', () => {
     await expect(getVisibleMenuItem(page, "Relancer le mail d'activation").first()).toBeVisible()
   })
 
-  test('should display "Se déclarer en relation client" menu item', async ({ page }) => {
+  test('should display "Me déclarer en relation client" menu item', async ({ page }) => {
     await clickFirstRowToolbox(page)
-    await expect(getVisibleMenuItem(page, 'Se déclarer en relation client').first()).toBeVisible()
+    await expect(getVisibleMenuItem(page, 'Me déclarer en relation client').first()).toBeVisible()
   })
 
   test('should track "Accéder au dossier" menu action', async ({ page }) => {
@@ -240,8 +240,8 @@ test.describe('RegularEntityList - toolbox menu', () => {
     await expect(page.getByTestId('account-rights-company-card')).toBeVisible()
   })
 
-  test('should track "Se déclarer en relation client" menu action', async ({ page }) => {
-    await clickToolboxAction(page, 'Se déclarer en relation client')
+  test('should track "Me déclarer en relation client" menu action', async ({ page }) => {
+    await clickToolboxAction(page, 'Me déclarer en relation client')
 
     await expectAmplitudeEvent(page, 'Wallet Action Folder Menu Requested', {
       wallet_action_menu_value: 'Se déclarer en relation client',
@@ -249,8 +249,8 @@ test.describe('RegularEntityList - toolbox menu', () => {
   })
 
   test('should open the declare customer relation drawer', async ({ page }) => {
-    await clickToolboxAction(page, 'Se déclarer en relation client')
-    await expect(page.getByTestId('declare-customer-relation-entity-card')).toBeVisible()
+    await clickToolboxAction(page, 'Me déclarer en relation client')
+    await expect(page.getByTestId('bulk-customer-relation-drawer')).toBeVisible()
   })
 
   test('should open the offers drawer on "Déployer ce dossier" click', async ({ page }) => {
