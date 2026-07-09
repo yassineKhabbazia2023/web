@@ -4,6 +4,7 @@ import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } fr
 import type { WalletCustomFilterParams } from './wallet-tracking.types'
 import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
+import { LastActivityPeriodInDays } from '@entities/enums'
 
 const MISSION_TYPE_FILTER_VALUE: Record<string, WalletFilterValue> = {
   [MISSION_TYPE.TENUE]: WalletFilterValue.MISSION_TYPE_TENUE,
@@ -14,6 +15,12 @@ const DEPLOYMENT_STATUS_FILTER_VALUE: Record<string, WalletFilterValue> = {
   [EntityStatus.TO_DEPLOY]: WalletFilterValue.STATUS_TO_DEPLOY,
   [EntityStatus.IN_PROGRESS]: WalletFilterValue.STATUS_IN_PROGRESS,
   [EntityStatus.CONNECTED]: WalletFilterValue.STATUS_CONNECTED,
+}
+
+const LAST_ACTIVITY_PERIOD_FILTER_VALUE: Record<LastActivityPeriodInDays, WalletFilterValue> = {
+  [LastActivityPeriodInDays.LAST_TWO_WEEKS]: WalletFilterValue.LAST_ACTIVITY_TWO_WEEKS,
+  [LastActivityPeriodInDays.LAST_THIRTY_DAYS]: WalletFilterValue.LAST_ACTIVITY_THIRTY_DAYS,
+  [LastActivityPeriodInDays.LAST_NINETY_DAYS]: WalletFilterValue.LAST_ACTIVITY_NINETY_DAYS,
 }
 
 export class WalletTrackingManager {
@@ -95,6 +102,10 @@ export class WalletTrackingManager {
       activeFilters.push(
         filters.deploymentStatusFilter.map((status) => DEPLOYMENT_STATUS_FILTER_VALUE[status]).join(', '),
       )
+    }
+
+    if (filters.lastActivityPeriodFilter !== undefined) {
+      activeFilters.push(LAST_ACTIVITY_PERIOD_FILTER_VALUE[filters.lastActivityPeriodFilter])
     }
 
     return activeFilters

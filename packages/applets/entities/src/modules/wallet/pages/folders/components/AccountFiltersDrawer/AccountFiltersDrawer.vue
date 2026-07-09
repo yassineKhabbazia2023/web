@@ -68,6 +68,37 @@
           />
         </div>
       </PFormItem>
+      <PFormItem :pLabel="t('lastActivityPeriod')">
+        <PFilterOption
+          :pContent="t('all')"
+          pColor="default"
+          :pSelected="internalFilters.lastActivityPeriodFilter === undefined"
+          data-testid="filter-last-activity-period-all"
+          @update:p-selected="clearLastActivityPeriod"
+        />
+        <PDivider
+          pBorderStyle="solid"
+          pDirection="vertical"
+          pBorderColor="gray-200"
+        />
+        <div
+          class="
+            flex
+            flex--wrap
+            flex-gap--2
+          "
+        >
+          <PFilterOption
+            v-for="option in LAST_ACTIVITY_PERIOD_OPTIONS"
+            :key="option.value"
+            :pContent="t(option.labelKey)"
+            pColor="default"
+            :pSelected="internalFilters.lastActivityPeriodFilter === option.value"
+            :data-testid="`filter-last-activity-period-${option.value}`"
+            @update:p-selected="toggleLastActivityPeriod(option.value, $event)"
+          />
+        </div>
+      </PFormItem>
     </PForm>
     <template #footer>
       <PDrawerActions
@@ -90,7 +121,8 @@ import type { AccountFilters } from '@entities/types'
 import { storeToRefs } from 'pinia'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { getDefaultAccountFilters } from './account-filters-drawer.utils'
-import { MULTI_SELECT_FILTER_GROUPS } from './account-filters-drawer.consts'
+import { MULTI_SELECT_FILTER_GROUPS, LAST_ACTIVITY_PERIOD_OPTIONS } from './account-filters-drawer.consts'
+import type { LastActivityPeriodInDays } from '@entities/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -116,6 +148,10 @@ const { t } = useI18n({
       inProgress: 'In progress',
       connected: 'Connected',
       all: 'All',
+      lastActivityPeriod: 'Last activity',
+      lastTwoWeeks: 'Last 2 weeks',
+      lastThirtyDays: 'Last 30 days',
+      lastNinetyDays: 'Last 90 days',
     },
     'fr-FR': {
       filters: 'Filtres',
@@ -137,6 +173,10 @@ const { t } = useI18n({
       inProgress: 'En cours',
       connected: 'Connecté',
       all: 'Tout',
+      lastActivityPeriod: 'Dernière activité',
+      lastTwoWeeks: '2 dernières semaines',
+      lastThirtyDays: '30 derniers jours',
+      lastNinetyDays: '90 derniers jours',
     },
   },
 })
@@ -179,6 +219,14 @@ const toggleValue = (field: MultiSelectFilterField, value: string, isOn: boolean
     ? [...current, value]
     : current.filter(v => v !== value)
 }
+
+const toggleLastActivityPeriod = (period: LastActivityPeriodInDays, isOn: boolean) => {
+  internalFilters.value.lastActivityPeriodFilter = isOn ? period : undefined
+}
+
+const clearLastActivityPeriod = () => {
+  internalFilters.value.lastActivityPeriodFilter = undefined
+}
 // #endregion
 
 // #region Filter Actions
@@ -186,7 +234,8 @@ const hasAppliedAccountFilters = (filters: AccountFilters) =>
   filters.isFavoriteFilter ||
   filters.isCustomerRelationFilter ||
   (filters.missionTypeFilter?.length ?? 0) > 0 ||
-  (filters.deploymentStatusFilter?.length ?? 0) > 0
+  (filters.deploymentStatusFilter?.length ?? 0) > 0 ||
+  filters.lastActivityPeriodFilter !== undefined
 
 const applyAccountFilters = () => {
   WalletTrackingManager.trackCustomFilterValidated(internalFilters.value)

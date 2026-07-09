@@ -18,7 +18,7 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { registryServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
 import type { AccountOperations } from '@entities/services/registry'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
-import { TrackingLocalisation } from '@entities/enums'
+import { TrackingLocalisation, LastActivityPeriodInDays } from '@entities/enums'
 import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
@@ -1135,6 +1135,38 @@ describe('deploy', () => {
       const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
 
       expect(filterCountPastille.text()).toBe('2')
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        2,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
+    })
+
+    it('applies the last activity period filter to the account query', async () => {
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        lastActivityPeriodFilter: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
+      })
+      await nextTick()
+      await flushPromises()
+
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByLastActivityPeriodInDays: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
+        isCustomerRelationFilter: false,
+        isFavoriteFilter: false,
+        limit: 90,
+        search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
+      })
+      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+
+      expect(filterCountPastille.text()).toBe('1')
       expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
       expect(mockFetchWalletData).toHaveBeenNthCalledWith(
         2,

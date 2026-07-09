@@ -36,9 +36,13 @@ describe('usePermanentDelegations', () => {
     vi.mocked(deleteAccountDelegation).mockResolvedValue(deleteSuccessResponse)
   })
 
-  it('should initialize with provided data', () => {
-    const [result, app] = withSetup(() => usePermanentDelegations(delegationApiItems))
+  it('should load delegations on mount', async () => {
+    const [result, app] = withSetup(() => usePermanentDelegations())
 
+    expect(result.isLoading.value).toBe(true)
+    await flushPromises()
+
+    expect(vi.mocked(fetchPermanentDelegations)).toHaveBeenCalledOnce()
     expect(result.permanentDelegations.value).toHaveLength(2)
     expect(result.permanentDelegations.value[0].delegationId).toBe(100)
     expect(result.permanentDelegations.value[1].delegationId).toBe(200)
@@ -47,23 +51,29 @@ describe('usePermanentDelegations', () => {
     app.unmount()
   })
 
-  it('should initialize with empty array when no data provided', () => {
-    const [result, app] = withSetup(() => usePermanentDelegations([]))
+  it('should keep an empty list when the fetch fails on mount', async () => {
+    vi.mocked(fetchPermanentDelegations).mockRejectedValueOnce(new Error('Fetch error'))
+
+    const [result, app] = withSetup(() => usePermanentDelegations())
+    await flushPromises()
 
     expect(result.permanentDelegations.value).toEqual([])
+    expect(result.isLoading.value).toBe(false)
 
     app.unmount()
   })
 
   it('should remove a delegation and track success', async () => {
-    const [result, app] = withSetup(() => usePermanentDelegations(delegationApiItems))
+    const [result, app] = withSetup(() => usePermanentDelegations())
+    await flushPromises()
 
     const delegationToRemove = result.permanentDelegations.value[0]
     await result.removeDelegation(delegationToRemove)
     await flushPromises()
 
     expect(vi.mocked(deleteAccountDelegation)).toHaveBeenCalledWith(100, 42, 1)
-    expect(vi.mocked(fetchPermanentDelegations)).toHaveBeenCalledOnce()
+    // one fetch on mount, one refresh after the delete
+    expect(vi.mocked(fetchPermanentDelegations)).toHaveBeenCalledTimes(2)
     expect(vi.mocked(DelegationTrackingManager.trackPermanentDeleteCompleted)).toHaveBeenCalledWith('succeeded')
 
     app.unmount()
@@ -72,7 +82,8 @@ describe('usePermanentDelegations', () => {
   it('should throw when user is not available', async () => {
     userStoreMock.user = null as any
 
-    const [result, app] = withSetup(() => usePermanentDelegations(delegationApiItems))
+    const [result, app] = withSetup(() => usePermanentDelegations())
+    await flushPromises()
 
     await expect(result.removeDelegation(result.permanentDelegations.value[0]))
       .rejects.toThrow('User not available')
@@ -84,7 +95,8 @@ describe('usePermanentDelegations', () => {
   it('should throw and track failure on delete error', async () => {
     vi.mocked(deleteAccountDelegation).mockRejectedValueOnce(new Error('Delete error'))
 
-    const [result, app] = withSetup(() => usePermanentDelegations(delegationApiItems))
+    const [result, app] = withSetup(() => usePermanentDelegations())
+    await flushPromises()
 
     await expect(result.removeDelegation(result.permanentDelegations.value[0]))
       .rejects.toThrow('Delete error')
@@ -95,10 +107,10 @@ describe('usePermanentDelegations', () => {
   })
 
   it('should handle undefined API response after delete', async () => {
-    vi.mocked(fetchPermanentDelegations).mockResolvedValue(undefined as any)
+    const [result, app] = withSetup(() => usePermanentDelegations())
+    await flushPromises()
 
-    const [result, app] = withSetup(() => usePermanentDelegations(delegationApiItems))
-
+    vi.mocked(fetchPermanentDelegations).mockResolvedValueOnce(undefined as any)
     await result.removeDelegation(result.permanentDelegations.value[0])
     await flushPromises()
 

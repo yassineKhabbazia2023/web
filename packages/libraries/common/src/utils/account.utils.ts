@@ -1,6 +1,12 @@
 import type { FilterQueryParams, SearchCriteria } from '../types/account.types'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 
+function getLastActivityDateFrom(periodInDays: number): string {
+  const dateFrom = new Date()
+  dateFrom.setUTCDate(dateFrom.getUTCDate() - periodInDays)
+  return dateFrom.toISOString()
+}
+
 export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParams {
   return {
     pageNumber: searchCriteria.currentPage,
@@ -31,6 +37,10 @@ export function getSearchParams(searchCriteria: SearchCriteria, allAccounts: boo
     searchCriteria.filterByMissionType.forEach((missionType) => {
       searchParams.append('missionType', missionType)
     })
+  }
+
+  if (searchCriteria.filterByLastActivityPeriodInDays !== undefined) {
+    searchParams.append('lastActivityDateFrom', getLastActivityDateFrom(searchCriteria.filterByLastActivityPeriodInDays))
   }
 
   return `${allAccounts ? 'all' : 'currentuser'}?${searchParams}`

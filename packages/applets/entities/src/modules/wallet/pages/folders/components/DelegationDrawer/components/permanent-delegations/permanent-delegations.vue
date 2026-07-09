@@ -117,13 +117,11 @@ import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 import { usePermanentDelegations } from './permanent-delegations.composable'
 import DeleteDelegationModal from './components/delete-delegation-modal/delete-delegation-modal.vue'
 import { DelegationTrackingManager } from '@entities/managers/delegation-tracking/delegation-tracking.manager'
-import type { PermanentDelegationItem, PermanentDelegationsProps } from './permanent-delegations.types'
-
-const props = defineProps<PermanentDelegationsProps>()
+import type { PermanentDelegationItem } from './permanent-delegations.types'
 
 const { t } = useI18n()
 
-const { permanentDelegations, isLoading, removeDelegation } = usePermanentDelegations(props.initialData)
+const { permanentDelegations, isLoading, removeDelegation } = usePermanentDelegations()
 
 const isConfirmationDialogVisible = ref(false)
 const isDeleting = ref(false)

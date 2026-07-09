@@ -1,6 +1,7 @@
 import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
-import type { FilterGroupConfig } from './account-filters-drawer.types'
+import { LastActivityPeriodInDays } from '@entities/enums'
+import type { FilterGroupConfig, LastActivityPeriodOptionConfig } from './account-filters-drawer.types'
 
 export const MULTI_SELECT_FILTER_GROUPS: FilterGroupConfig[] = [
   {
@@ -21,4 +22,10 @@ export const MULTI_SELECT_FILTER_GROUPS: FilterGroupConfig[] = [
       { value: EntityStatus.CONNECTED.toString(), labelKey: 'connected' },
     ],
   },
+]
+
+export const LAST_ACTIVITY_PERIOD_OPTIONS: LastActivityPeriodOptionConfig[] = [
+  { value: LastActivityPeriodInDays.LAST_TWO_WEEKS, labelKey: 'lastTwoWeeks' },
+  { value: LastActivityPeriodInDays.LAST_THIRTY_DAYS, labelKey: 'lastThirtyDays' },
+  { value: LastActivityPeriodInDays.LAST_NINETY_DAYS, labelKey: 'lastNinetyDays' },
 ]

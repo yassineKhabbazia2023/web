@@ -1,4 +1,5 @@
 import type { AccountFilters } from '@entities/types'
+import type { LastActivityPeriodInDays } from '@entities/enums'
 
 export interface AccountFiltersDrawerProps {
   modelValue: boolean
@@ -17,4 +18,9 @@ export interface FilterGroupConfig {
   labelKey: string
   field: MultiSelectFilterField
   options: FilterOptionConfig[]
+}
+
+export interface LastActivityPeriodOptionConfig {
+  value: LastActivityPeriodInDays
+  labelKey: string
 }

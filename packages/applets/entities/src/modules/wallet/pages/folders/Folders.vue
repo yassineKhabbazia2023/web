@@ -370,12 +370,14 @@ const accountFiltersCount = computed(() => {
     isCustomerRelationFilter,
     missionTypeFilter,
     deploymentStatusFilter,
+    lastActivityPeriodFilter,
   } = accountFilters.value
 
   return (isFavoriteFilter ? 1 : 0) +
     (isCustomerRelationFilter ? 1 : 0) +
     (missionTypeFilter !== undefined && missionTypeFilter.length > 0 ? 1 : 0) +
-    (deploymentStatusFilter !== undefined && deploymentStatusFilter.length > 0 ? 1 : 0)
+    (deploymentStatusFilter !== undefined && deploymentStatusFilter.length > 0 ? 1 : 0) +
+    (lastActivityPeriodFilter !== undefined ? 1 : 0)
 })
 
 const applyAccountFilters = (appliedFilters: AccountFilters) => {
@@ -386,6 +388,7 @@ const applyAccountFilters = (appliedFilters: AccountFilters) => {
     isCustomerRelationFilter: appliedFilters.isCustomerRelationFilter,
     filterByMissionType: appliedFilters.missionTypeFilter,
     filterByDeploymentStatus: appliedFilters.deploymentStatusFilter,
+    filterByLastActivityPeriodInDays: appliedFilters.lastActivityPeriodFilter,
   }
   closeFiltersDrawer()
 }
@@ -398,6 +401,7 @@ const clearAllAccountFilters = () => {
     isCustomerRelationFilter: false,
     filterByMissionType: undefined,
     filterByDeploymentStatus: undefined,
+    filterByLastActivityPeriodInDays: undefined,
   }
   hasActiveFilters.value = false
   closeFiltersDrawer()
@@ -610,6 +614,7 @@ const searchCriteria = ref<SearchCriteria>({
   },
   filterByDeploymentStatus: undefined,
   filterByMissionType: undefined,
+  filterByLastActivityPeriodInDays: undefined,
   isFavoriteFilter: false,
   isCustomerRelationFilter: false,
 })

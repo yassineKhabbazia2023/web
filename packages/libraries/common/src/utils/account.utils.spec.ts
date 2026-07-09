@@ -85,5 +85,27 @@ describe('test account.utils', () => {
 
       expect(queryParams).toBe(expectedSearchParams)
     })
+
+    it('should append lastActivityDateFrom computed from the last activity period in days', () => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date('2026-07-07T10:00:00.000Z'))
+
+      const queryParams = getSearchParams({
+        currentPage: 1,
+        limit: 15,
+        filterByLastActivityPeriodInDays: 30,
+      })
+
+      vi.useRealTimers()
+
+      const expectedDateFrom = encodeURIComponent('2026-06-07T10:00:00.000Z')
+      expect(queryParams).toBe(`currentuser?pageNumber=1&pageSize=15&lastActivityDateFrom=${expectedDateFrom}`)
+    })
+
+    it('should not append lastActivityDateFrom when no last activity period is set', () => {
+      const queryParams = getSearchParams(searchCriteria)
+
+      expect(queryParams).not.toContain('lastActivityDateFrom')
+    })
   })
 })

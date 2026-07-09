@@ -3,6 +3,7 @@ import { WalletTrackingManager } from './wallet-tracking.manager'
 import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } from './wallet-tracking.enum'
 import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
+import { LastActivityPeriodInDays } from '@entities/enums'
 
 vi.mock('@pulse/common/services/amplitude')
 
@@ -92,6 +93,19 @@ describe('WalletTrackingManager', () => {
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
         'Wallet Action Custom Filter Validated',
         { wallet_action_filter_value: [`${WalletFilterValue.STATUS_TO_DEPLOY}, ${WalletFilterValue.STATUS_IN_PROGRESS}`] },
+      )
+    })
+
+    it('should track the last activity period filter when it is set', () => {
+      WalletTrackingManager.trackCustomFilterValidated({
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        lastActivityPeriodFilter: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
+      })
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
+        'Wallet Action Custom Filter Validated',
+        { wallet_action_filter_value: [WalletFilterValue.LAST_ACTIVITY_THIRTY_DAYS] },
       )
     })
 

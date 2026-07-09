@@ -1,3 +1,5 @@
+import type { LastActivityPeriodInDays } from '@entities/enums'
+
 export interface AccountRow {
   accountId: number
   name: string
@@ -10,4 +12,5 @@ export interface AccountFilters {
   isCustomerRelationFilter: boolean
   missionTypeFilter?: string[]
   deploymentStatusFilter?: string[]
+  lastActivityPeriodFilter?: LastActivityPeriodInDays
 }

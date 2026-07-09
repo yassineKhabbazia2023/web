@@ -37,7 +37,6 @@
     <!-- Full Flow: Tabs with all delegation options -->
     <template v-else>
       <PTabs
-        v-if="shouldShowDelegationRequestTabs || hasPermanentDelegations"
         v-model="activeTab"
         class="margin-bottom--6"
         @tab-click="handleTabChange"
@@ -93,10 +92,7 @@
         />
       </template>
 
-      <PermanentDelegationsTab
-        v-else-if="activeTab === DelegationTab.PERMANENT_DELEGATIONS"
-        :initialData="initialPermanentDelegations"
-      />
+      <PermanentDelegationsTab v-else-if="activeTab === DelegationTab.PERMANENT_DELEGATIONS" />
     </template>
 
     <template #footer>
@@ -131,15 +127,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PDrawerActions, PSteps, PTabPane, PTabs } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
-import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
-import type { AccountsDelegation, AccountsDelegationDetails, PermanentDelegationApiItem } from '@entities/services/account/account.type'
+import { delegateAccounts } from '@entities/services/account'
+import type { AccountsDelegation, AccountsDelegationDetails } from '@entities/services/account/account.type'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
@@ -184,8 +180,6 @@ const getDefaultTab = () => {
 
 const activeTab = ref<DelegationTab>(getDefaultTab())
 const previousTab = ref<DelegationTab>(getDefaultTab())
-const hasPermanentDelegations = ref(false)
-const initialPermanentDelegations = ref<PermanentDelegationApiItem[]>([])
 const activeStep = ref<number>(0)
 const hasPennylaneAccess = ref(false)
 const delegationDetails = ref<DelegationDetails[]>([])
@@ -358,20 +352,5 @@ const handleCloseDrawer = () => {
   emit('update:modelValue', false)
 }
 
-async function loadInitialPermanentDelegations() {
-  try {
-    const response = await fetchPermanentDelegations()
-    initialPermanentDelegations.value = response?.items ?? []
-    hasPermanentDelegations.value = initialPermanentDelegations.value.length > 0
-  } catch {
-    hasPermanentDelegations.value = false
-  }
-}
-
-onMounted(() => {
-  if (isSpecificDelegationFlowType.value === false) {
-    loadInitialPermanentDelegations()
-  }
-})
 </script>
 

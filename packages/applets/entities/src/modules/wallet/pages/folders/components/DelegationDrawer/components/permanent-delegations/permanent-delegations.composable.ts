@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { logger } from '@pulse/toolbox'
 import { useUserStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
@@ -7,11 +7,11 @@ import { DelegationTrackingManager } from '@entities/managers/delegation-trackin
 import type { PermanentDelegationItem } from './permanent-delegations.types'
 import type { PermanentDelegationApiItem } from '@entities/services/account/account.type'
 
-export function usePermanentDelegations(initialData: PermanentDelegationApiItem[]) {
+export function usePermanentDelegations() {
   const userStore = useUserStore()
   const { user } = storeToRefs(userStore)
 
-  const permanentDelegations = ref<PermanentDelegationItem[]>(initialData.map(mapApiItemToModel))
+  const permanentDelegations = ref<PermanentDelegationItem[]>([])
   const isLoading = ref(false)
 
   function mapApiItemToModel(item: PermanentDelegationApiItem): PermanentDelegationItem {
@@ -59,6 +59,10 @@ export function usePermanentDelegations(initialData: PermanentDelegationApiItem[
       throw error
     }
   }
+
+  onMounted(() => {
+    refreshDelegations()
+  })
 
   return {
     permanentDelegations,

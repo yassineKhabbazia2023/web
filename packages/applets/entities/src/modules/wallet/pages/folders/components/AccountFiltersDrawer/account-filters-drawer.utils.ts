@@ -5,4 +5,5 @@ export const getDefaultAccountFilters = (): AccountFilters => ({
   isCustomerRelationFilter: false,
   missionTypeFilter: undefined,
   deploymentStatusFilter: undefined,
+  lastActivityPeriodFilter: undefined,
 })

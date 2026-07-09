@@ -8,6 +8,7 @@ import type { AccountFilters } from '@entities/types'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
+import { LastActivityPeriodInDays } from '@entities/enums'
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 const userStoreMock = getStoreMock(useUserStore)
@@ -122,6 +123,39 @@ describe('AccountFiltersDrawer.vue', () => {
     })
   })
 
+  it('keeps only the latest selected last activity period', async () => {
+    const wrapper = createWrapper()
+
+    await findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_TWO_WEEKS}`)!.vm.$emit('update:p-selected', true)
+    await findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_NINETY_DAYS}`)!.vm.$emit('update:p-selected', true)
+
+    expect(findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_TWO_WEEKS}`)?.props('pSelected')).toBe(false)
+    expect(findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_NINETY_DAYS}`)?.props('pSelected')).toBe(true)
+
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    await drawerActions.vm.$emit('click-primary-cta')
+
+    expect(wrapper.emitted('apply-filters')![0][0]).toEqual({
+      isFavoriteFilter: false,
+      isCustomerRelationFilter: false,
+      missionTypeFilter: undefined,
+      deploymentStatusFilter: undefined,
+      lastActivityPeriodFilter: LastActivityPeriodInDays.LAST_NINETY_DAYS,
+    })
+  })
+
+  it('clears the last activity period when "all" is selected', async () => {
+    const wrapper = createWrapper()
+
+    await findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_THIRTY_DAYS}`)!.vm.$emit('update:p-selected', true)
+    expect(findFilterOptionByTestId(wrapper, 'filter-last-activity-period-all')?.props('pSelected')).toBe(false)
+
+    await findFilterOptionByTestId(wrapper, 'filter-last-activity-period-all')!.vm.$emit('update:p-selected', true)
+
+    expect(findFilterOptionByTestId(wrapper, 'filter-last-activity-period-all')?.props('pSelected')).toBe(true)
+    expect(findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_THIRTY_DAYS}`)?.props('pSelected')).toBe(false)
+  })
+
   it('deselects all filter checkboxes on close when no active filters', async () => {
     const wrapper = createWrapper()
 
@@ -130,8 +164,10 @@ describe('AccountFiltersDrawer.vue', () => {
     wrapper.findComponent({ name: 'PDrawer' }).vm.$emit('close')
     await nextTick()
 
+    // the last activity period "all" option is selected when no period filter is set
     const childFilterOptions = wrapper.findAllComponents({ name: 'PFilterOption' })
-      .filter(c => c.attributes('data-testid') !== undefined)
+      .filter(c => c.attributes('data-testid') !== undefined
+        && c.attributes('data-testid') !== 'filter-last-activity-period-all')
     childFilterOptions.forEach((option) => {
       expect(option.props('pSelected')).toBe(false)
     })

@@ -8,6 +8,7 @@ export interface SearchCriteria {
   accountNumber?: string
   filterByDeploymentStatus?: string[]
   filterByMissionType?: string[]
+  filterByLastActivityPeriodInDays?: number
   isFavoriteFilter?: boolean
   isCustomerRelationFilter?: boolean
 }
