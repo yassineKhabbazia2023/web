@@ -37,11 +37,11 @@ export const patchContact = async (
 
 export const inviteCustomers = async (
   customerIDs: number[],
-  accountNumber: string,
+  accountId: number,
   entityType: AccountType,
 ): Promise<number[] | undefined> => {
   const response = await api.gateway.post(
-    `${API_PREFIXES.CONTACT}/customers/bulk-invite/${accountNumber}`,
+    `${API_PREFIXES.CONNECT}/customers/bulk-invite/${accountId}`,
     customerIDs,
     {
       params: { entityType },

@@ -4,6 +4,7 @@ import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
 import { getMockedUser, getMockedUserContext } from '../../__mocks__'
 
 import { CurrentUserService } from './current-user.service'
+import { API_PREFIXES } from '@common/constants'
 
 vi.mock('../../api', () => ({
   api: {
@@ -40,7 +41,7 @@ describe('test current-user.service', () => {
   })
   describe('getCurrentUserContext', () => {
     it('should return context-current-user', async () => {
-      const expectedUrl = 'connect/api/get-user-information'
+      const expectedUrl = `${API_PREFIXES.CONNECT}/get-user-information`
       const userMock = getMockedUserContext()
       apiGatewayGetMock.mockResolvedValueOnce({
         data: userMock,

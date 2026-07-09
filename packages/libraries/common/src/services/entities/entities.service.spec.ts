@@ -4,6 +4,7 @@ import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
 import { getMockedEntitySummary, getMockedFavoriteEntities } from '../../__mocks__'
 
 import { DEFAULT_ENTITIES, fetchEntities, fetchEntityById } from './entities.service'
+import { API_PREFIXES } from '@common/constants'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
@@ -24,7 +25,7 @@ const testEntities: Entity[] = getMockedFavoriteEntities()
 describe('entities.service', () => {
   describe('fetchEntityById', () => {
     it('should return entity data when API call succeeds', async () => {
-      const expectedUrl = `connect/api/accounts/${entityIdMock}/summary`
+      const expectedUrl = `${API_PREFIXES.CONNECT}/accounts/${entityIdMock}/summary`
 
       apiGatewayGetMock.mockResolvedValueOnce({
         data: entitySummaryMock,

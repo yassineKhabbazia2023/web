@@ -27,7 +27,7 @@ export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Enti
 }
 
 export async function fetchEntityById(entityId: number) {
-  const { data } = await api.gateway.get<EntitySummary>(`connect/api/accounts/${entityId}/summary`)
+  const { data } = await api.gateway.get<EntitySummary>(`${API_PREFIXES.CONNECT}/accounts/${entityId}/summary`)
 
   return data
 }

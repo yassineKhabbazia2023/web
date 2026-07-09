@@ -14,7 +14,6 @@ import {
 const mockedAccountId = 125
 const mockedCustomerIDs = [1, 2, 3]
 const mockedContact = getMockedCustomer()
-const mockedAccountNumber = '2323232323232'
 
 const mocks = vi.hoisted(() => ({
   get: vi.fn(),
@@ -73,10 +72,10 @@ describe('contact', () => {
   })
   describe('inviteCustomers', () => {
     it('should return a list of invited customer IDs and pass the entityType query param', async () => {
-      await inviteCustomers(mockedCustomerIDs, mockedAccountNumber, AccountType.PROSPECT)
+      await inviteCustomers(mockedCustomerIDs, mockedAccountId, AccountType.PROSPECT)
 
       expect(mocks.post).toHaveBeenCalledWith(
-        `contact/api/customers/bulk-invite/${mockedAccountNumber}`,
+        `${API_PREFIXES.CONNECT}/customers/bulk-invite/${mockedAccountId}`,
         mockedCustomerIDs,
         {
           params: { entityType: AccountType.PROSPECT },

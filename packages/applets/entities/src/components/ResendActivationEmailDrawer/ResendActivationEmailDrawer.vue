@@ -157,7 +157,7 @@ const handleRetryMassActivationEmail = async () => {
   try {
     const invitedCustomerIDs = await inviteCustomers(
       selectedUsersIds.value,
-      props.selectedAccount.accountNumber,
+      props.selectedAccount.accountId,
       props.accountType,
     )
     if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
@@ -176,6 +176,7 @@ const handleRetryMassActivationEmail = async () => {
     isLoading.value = false
   }
 }
+
 const getStatus = (status: string): UserStatus => {
   switch (status) {
     case 'Declared':

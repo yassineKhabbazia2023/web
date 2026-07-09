@@ -6,7 +6,7 @@ import { API_PREFIXES } from '@pulse/common/constants'
 export class CurrentUserService {
   static async getCurrentUserContext(): Promise<UserContextInfo | undefined> {
     try {
-      const url = 'connect/api/get-user-information'
+      const url = `${API_PREFIXES.CONNECT}/get-user-information`
       const { data } = await api.gateway.get(url)
       const {
         contact,
