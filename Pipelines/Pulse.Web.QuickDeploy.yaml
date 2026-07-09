@@ -15,13 +15,9 @@ parameters:
   type: boolean
   default: false
 - name: deployToItg
-  type: string
   displayName: 'Déployer sur ITG'
-  values:
-  - no
-  - itg01
-  - itg02
-  default: 'no'
+  type: boolean
+  default: true
 - name: deployToRec
   displayName: 'Déployer sur REC'
   type: boolean
