@@ -3,6 +3,8 @@ import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin, ViteDevServer } from 'vite'
+import { createProxyMiddleware } from '../proxy/middleware.ts'
+import type { ProxyMode } from '../types/proxy.type.ts'
 import type { E2EPluginOptions } from '../types'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -192,6 +194,28 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       return html
     },
     configureServer(server: ViteDevServer) {
+      // Mount the recording/replay proxy first so it can intercept API requests before fixtures
+      // Explicitly opt-in via VITE_PROXY_ENABLED so a plain `dev` never mounts it, even though
+      // vite.config.ts provides a default target.
+      const proxyTarget = process.env.VITE_PROXY_TARGET ?? options.proxy?.target
+      if (process.env.VITE_PROXY_ENABLED === 'true' && proxyTarget !== undefined && proxyTarget !== '') {
+        const envMode = process.env.VITE_PROXY_MODE
+        const defaultMode: ProxyMode = isProxyModeEnv(envMode) ? envMode : (options.proxy?.defaultMode ?? 'hybrid')
+        const recordedDir = options.proxy?.recordedDir
+          ?? path.resolve(__dirname, '../../recorded')
+        server.middlewares.use(createProxyMiddleware({
+          target: proxyTarget,
+          recordedDir,
+          defaultMode,
+          pathPrefix: options.proxy?.pathPrefix ?? '/proxy-api',
+          recordOnHybridMiss: options.proxy?.recordOnHybridMiss ?? true,
+        }))
+        /* eslint-disable-next-line no-console */
+        console.log(`[proxy] mounted on ${options.proxy?.pathPrefix ?? '/proxy-api'} -> ${proxyTarget} (mode=${defaultMode})`)
+        /* eslint-disable-next-line no-console */
+        console.log(`[proxy] devtools UI: http://localhost:${server.config.server.port ?? 9000}/__proxy__`)
+      }
+
       if (isE2E === false && isDevMocks === false) {
         return
       }
@@ -218,4 +242,8 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       })
     },
   }
+}
+
+function isProxyModeEnv(value: string | undefined): value is ProxyMode {
+  return value === 'passthrough' || value === 'mock' || value === 'hybrid'
 }

@@ -25,7 +25,8 @@
     "./fixtures/env-vars-backoffice": "./src/fixtures/env-vars.backoffice.e2e.js",
     "./fixtures/styles": "./src/fixtures/styles.e2e.css",
     "./dev-mocks": "./src/dev-mocks/dev.handlers.ts",
-    "./dev-mocks/bootstrap": "./src/dev-mocks/bootstrap.ts"
+    "./dev-mocks/bootstrap": "./src/dev-mocks/bootstrap.ts",
+    "./proxy": "./src/proxy/index.ts"
   },
   "scripts": {
     "lint": "eslint .",

@@ -1,0 +1,4 @@
+# Recorded mocks captured by the proxy in passthrough/hybrid mode
+recorded/
+# Persisted current mode (per dev machine)
+.proxy-mode.json
