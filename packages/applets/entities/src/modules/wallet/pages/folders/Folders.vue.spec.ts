@@ -286,6 +286,37 @@ describe('deploy', () => {
     },
   )
 
+  it.each([
+    {
+      targetCustomerRelationStatus: true,
+    },
+    {
+      targetCustomerRelationStatus: false,
+    },
+  ])(
+    'opens the bulk customer relation drawer with one folder for a row customer relation action targeting $targetCustomerRelationStatus',
+    async ({ targetCustomerRelationStatus }) => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const targetedFolder = mockedQueryResult.items[0]
+
+      const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+      tableData.vm.$emit('displayCustomerRelationDrawer', targetedFolder, targetCustomerRelationStatus)
+      await nextTick()
+
+      const drawer = wrapper.findComponent(BulkCustomerRelationDrawer)
+      expect(drawer.exists()).toBe(true)
+      expect(drawer.props('targetCustomerRelationStatus')).toBe(targetCustomerRelationStatus)
+      expect(drawer.props('selectedFolders')).toStrictEqual([{
+        accountNumber: targetedFolder.accountNumber,
+        id: targetedFolder.accountId,
+        name: targetedFolder.name,
+        avatarColor: targetedFolder.owner.avatarColor,
+        isCustomerRelation: targetedFolder.isCustomerRelation,
+      }])
+    },
+  )
+
   it('refreshes the wallet and selected statuses after a bulk customer relation update', async () => {
     const wrapper = createWrapper()
     await flushPromises()

@@ -14,6 +14,7 @@ export enum WalletMenuActionValue {
   ACCESS_FOLDER = 'Accéder au dossier',
   RESEND_ACTIVATION_EMAIL = 'Relancer le mail d\'activation',
   DECLARE_CUSTOMER_RELATION = 'Se déclarer en relation client',
+  REMOVE_CUSTOMER_RELATION = 'Ne plus être en relation client',
 }
 
 export enum WalletFavoriteActivation {

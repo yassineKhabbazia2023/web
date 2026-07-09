@@ -43,7 +43,8 @@
         "resendActivationEmail": "Relancer le mail d'activation",
         "toDeploy": "A déployer",
         "manageAccountRights": "Gérer les droits du dossier",
-        "declareCustomerRelation": "Se déclarer en relation client",
+        "declareCustomerRelation": "Me déclarer en relation client",
+        "removeCustomerRelation": "Ne plus être en relation client",
         "removeCurrentUserFromThisFolder": "Me retirer de ce dossier"
       },
       "entitiesListProspects": {

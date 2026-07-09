@@ -94,9 +94,10 @@
       <BulkCustomerRelationDrawer
         v-if="isBulkCustomerRelationDrawerOpened"
         v-model="isBulkCustomerRelationDrawerOpened"
-        :selectedFolders="selectedFolders"
+        :selectedFolders="customerRelationDrawerFolders"
         :targetCustomerRelationStatus="targetCustomerRelationStatus"
         @updated="handleBulkCustomerRelationUpdated"
+        @update:model-value="handleBulkCustomerRelationDrawerVisibilityUpdate"
       />
     </div>
     <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
@@ -161,7 +162,7 @@
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
-        @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
+        @display-customer-relation-drawer="handleDisplayCustomerRelationDrawer"
         @display-delegation-drawer="handleDisplayDelegationDrawer"
         @display-remove-current-user-from-folder-modal="handleDisplayRemoveCurrentUserFromFolderModal"
         @sort-account="handleSortAccount"
@@ -179,13 +180,6 @@
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>
-      <DeclareCustomerRelationDrawer
-        v-if="isDeclareCustomerRelationDrawerVisible && selectedAccount"
-        v-model="isDeclareCustomerRelationDrawerVisible"
-        :selectedAccount="selectedAccount"
-        :isCustomerRelation="selectedAccount.isCustomerRelation"
-        @update-account-table="handleUpdateCustomerRelationship"
-      />
       <ResendActivationEmailDrawer
         v-if="isResendActivationEmailDrawerVisible && selectedAccount"
         v-model="isResendActivationEmailDrawerVisible"
@@ -268,7 +262,6 @@ import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import { getDefaultAccountFilters } from './components/AccountFiltersDrawer/account-filters-drawer.utils'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
-import DeclareCustomerRelationDrawer from './components/DeclareCustomerRelationDrawer'
 import type { AccountFilters, AccountRow } from '@entities/types'
 import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/enums'
@@ -347,28 +340,6 @@ const isLoading = ref(true)
 const selectedCompanyName = ref('')
 
 const isManageAccessDrawerOpened = ref(false)
-
-// #region DeclareCustomerRelationDrawer
-const isDeclareCustomerRelationDrawerVisible = ref(false)
-
-const openDeclareCustomerRelationDrawer = () => {
-  isDeclareCustomerRelationDrawerVisible.value = true
-}
-
-const closeDeclareCustomerRelationDrawer = () => {
-  isDeclareCustomerRelationDrawerVisible.value = false
-}
-
-const handleDeclareCustomerRelationDrawer = (account: AccountRow) => {
-  selectedAccount.value = account
-  openDeclareCustomerRelationDrawer()
-}
-
-const handleUpdateCustomerRelationship = () => {
-  fetchAccountList()
-  closeDeclareCustomerRelationDrawer()
-}
-// #endregion
 
 // #region ResendActivationEmail
 const selectedAccount = ref<AccountRow>()
@@ -456,6 +427,10 @@ const openSelectedFoldersDelegationDrawer = () => {
 
 const isBulkCustomerRelationDrawerOpened = ref(false)
 const targetCustomerRelationStatus = ref(false)
+const rowCustomerRelationFolder = ref<SelectedFolder>()
+const customerRelationDrawerFolders = computed<SelectedFolder[]>(() =>
+  rowCustomerRelationFolder.value !== undefined ? [rowCustomerRelationFolder.value] : selectedFolders.value,
+)
 
 function openBulkCustomerRelationDrawer(targetStatus: boolean) {
   targetCustomerRelationStatus.value = targetStatus
@@ -471,7 +446,22 @@ async function handleBulkCustomerRelationUpdated(succeededAccountIds: number[]) 
       : folder.isCustomerRelation,
   }))
   isBulkCustomerRelationDrawerOpened.value = false
+  rowCustomerRelationFolder.value = undefined
   await fetchTableDataAndFavorites()
+}
+
+function handleBulkCustomerRelationDrawerVisibilityUpdate(isOpened: boolean) {
+  if (isOpened === false) {
+    rowCustomerRelationFolder.value = undefined
+  }
+}
+
+const handleDisplayCustomerRelationDrawer = (
+  row: RegularWalletData,
+  targetStatus: boolean,
+) => {
+  rowCustomerRelationFolder.value = getSelectedFolderFromRow(row)
+  openBulkCustomerRelationDrawer(targetStatus)
 }
 
 const handleDisplayDelegationDrawer = (row: RegularWalletData) => {

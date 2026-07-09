@@ -11,7 +11,7 @@ export type EntitiesListRegularEmit = {
   (e: 'access', accountId: number): void
   (e: 'add-favorite', accountId: number, isFavorite: boolean): void
   (e: 'displayResendActivationEmailDrawer', row: RegularWalletData): void
-  (e: 'displayDeclareCustomerRelationDrawer', row: RegularWalletData): void
+  (e: 'displayCustomerRelationDrawer', row: RegularWalletData, targetCustomerRelationStatus: boolean): void
   (e: 'displayDelegationDrawer', row: RegularWalletData): void
   (e: 'displayRemoveCurrentUserFromFolderModal', row: RegularWalletData): void
   (e: 'sort-account', sortingCriteria: SortingCriteria): void
@@ -23,6 +23,7 @@ export interface MenuTranslations {
   delegateThisFolder: string
   resendActivationEmail: string
   declareCustomerRelation: string
+  removeCustomerRelation: string
   removeCurrentUserFromThisFolder: string
   toDeploy: string
 }

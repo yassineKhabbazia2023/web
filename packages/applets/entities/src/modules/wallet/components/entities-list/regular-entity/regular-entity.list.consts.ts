@@ -15,4 +15,5 @@ export const MENU_ACTION_TRACKING_MAP: Record<string, WalletMenuActionValue> = {
   access: WalletMenuActionValue.ACCESS_FOLDER,
   retryMassActivationEmail: WalletMenuActionValue.RESEND_ACTIVATION_EMAIL,
   declareCustomerRelation: WalletMenuActionValue.DECLARE_CUSTOMER_RELATION,
+  removeCustomerRelation: WalletMenuActionValue.REMOVE_CUSTOMER_RELATION,
 }

@@ -232,13 +232,29 @@ describe('useRegularEntitiesList', () => {
       app.unmount()
     })
 
-    it('emits displayDeclareCustomerRelationDrawer for declareCustomerRelation action', () => {
+    it('emits displayCustomerRelationDrawer for declareCustomerRelation action', () => {
       const { result, app, emit } = setupComposable()
 
       result.onToolboxItemClicked(RegularEntityAction.DECLARE_CUSTOMER_RELATION, row)
 
       expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.DECLARE_CUSTOMER_RELATION)
-      expect(emit).toHaveBeenCalledWith('displayDeclareCustomerRelationDrawer', row)
+      expect(emit).toHaveBeenCalledWith('displayCustomerRelationDrawer', row, true)
+
+      app.unmount()
+    })
+
+    it('emits displayCustomerRelationDrawer for removeCustomerRelation action', () => {
+      const customerRelationRow = buildRow({ isCustomerRelation: true })
+      const { result, app, emit } = setupComposable()
+
+      result.onToolboxItemClicked(RegularEntityAction.REMOVE_CUSTOMER_RELATION, customerRelationRow)
+
+      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.REMOVE_CUSTOMER_RELATION)
+      expect(emit).toHaveBeenCalledWith(
+        'displayCustomerRelationDrawer',
+        customerRelationRow,
+        false,
+      )
 
       app.unmount()
     })

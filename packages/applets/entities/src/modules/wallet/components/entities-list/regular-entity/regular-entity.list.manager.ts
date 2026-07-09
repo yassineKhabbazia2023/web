@@ -10,7 +10,10 @@ import { RegularEntityAction } from './regular-entity.list.enums'
 import { LAST_ACTIVITY_DATE_FALLBACK_LABEL } from './regular-entity.list.consts'
 
 export class RegularEntitiesListManager {
-  static buildDefaultMenuElements(translations: MenuTranslations): AccessibleMenuItem[] {
+  static buildDefaultMenuElements(
+    translations: MenuTranslations,
+    isCustomerRelation: boolean,
+  ): AccessibleMenuItem[] {
     return [
       {
         pIconName: 'folder',
@@ -38,7 +41,14 @@ export class RegularEntitiesListManager {
         pValue: translations.declareCustomerRelation,
         pActionName: RegularEntityAction.DECLARE_CUSTOMER_RELATION,
         pState: 'default',
-        display: true,
+        display: isCustomerRelation === false,
+      },
+      {
+        pIconName: 'personSlash',
+        pValue: translations.removeCustomerRelation,
+        pActionName: RegularEntityAction.REMOVE_CUSTOMER_RELATION,
+        pState: 'default',
+        display: isCustomerRelation === true,
       },
       {
         pIconName: 'personRemove',
@@ -50,7 +60,10 @@ export class RegularEntitiesListManager {
     ]
   }
 
-  static buildMenuToDeployElements(translations: MenuTranslations): AccessibleMenuItem[] {
+  static buildMenuToDeployElements(
+    translations: MenuTranslations,
+    isCustomerRelation: boolean,
+  ): AccessibleMenuItem[] {
     return [
       {
         pIconName: 'arrowUpCircle',
@@ -59,7 +72,7 @@ export class RegularEntitiesListManager {
         pState: 'default',
         display: true,
       },
-      ...RegularEntitiesListManager.buildDefaultMenuElements(translations),
+      ...RegularEntitiesListManager.buildDefaultMenuElements(translations, isCustomerRelation),
     ]
   }
 
@@ -74,9 +87,16 @@ export class RegularEntitiesListManager {
     deploymentStatusText: string,
     toDeployLabel: string,
     translations: MenuTranslations,
+    isCustomerRelation: boolean,
   ): PToolboxItemProps[] {
     return deploymentStatusText === toDeployLabel
-      ? filterAccessibleMenuItems(RegularEntitiesListManager.buildMenuToDeployElements(translations))
-      : filterAccessibleMenuItems(RegularEntitiesListManager.buildDefaultMenuElements(translations))
+      ? filterAccessibleMenuItems(RegularEntitiesListManager.buildMenuToDeployElements(
+        translations,
+        isCustomerRelation,
+      ))
+      : filterAccessibleMenuItems(RegularEntitiesListManager.buildDefaultMenuElements(
+        translations,
+        isCustomerRelation,
+      ))
   }
 }

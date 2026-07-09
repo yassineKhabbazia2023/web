@@ -181,7 +181,7 @@
         <template #default="scope">
           <PToolbox
             trigger="click"
-            :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
+            :pElements="menuElementsCollaborator(scope.row)"
             data-testid="wallet-actions-toolbox"
             @visible-change="onToolboxVisibleChange"
             @p-toolbox-item-clicked="($event: RegularEntityAction) => onToolboxItemClicked($event, scope.row)"
@@ -255,7 +255,7 @@
       >
         <PToolbox
           trigger="click"
-          :pElements="menuElementsCollaborator(row.deploymentStatus.text)"
+          :pElements="menuElementsCollaborator(row)"
           data-testid="wallet-actions-toolbox-mobile"
           @visible-change="onToolboxVisibleChange"
           @p-toolbox-item-clicked="($event: RegularEntityAction) => onToolboxItemClicked($event, row)"

@@ -11,7 +11,9 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 vi.mock('@entities/utils')
 
-vi.mocked(filterAccessibleMenuItems).mockImplementation((items) => items as PToolboxItemProps[])
+vi.mocked(filterAccessibleMenuItems).mockImplementation((items) =>
+  items.filter(({ display }) => display) as PToolboxItemProps[],
+)
 
 const translations: MenuTranslations = {
   accessThisFolder: 'Access this folder',
@@ -19,56 +21,78 @@ const translations: MenuTranslations = {
   delegateThisFolder: 'Delegate this folder',
   resendActivationEmail: 'Resend activation email',
   declareCustomerRelation: 'Declare customer relation',
+  removeCustomerRelation: 'Remove customer relation',
   removeCurrentUserFromThisFolder: 'Remove myself from this folder',
   toDeploy: 'To deploy',
 }
 
 describe('RegularEntitiesListManager', () => {
-  describe('buildDefaultMenuElements', () => {
-    it('should return 5 menu items with correct action names', () => {
-      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
+  beforeEach(() => {
+    hasPermissionMock.mockReturnValue(true)
+  })
 
-      expect(result).toHaveLength(5)
+  describe('buildDefaultMenuElements', () => {
+    it('should return 6 menu items with correct action names', () => {
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations, false)
+
+      expect(result).toHaveLength(6)
       expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
       expect(result[1].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
       expect(result[2].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
       expect(result[3].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
-      expect(result[4].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
+      expect(result[4].pActionName).toBe(RegularEntityAction.REMOVE_CUSTOMER_RELATION)
+      expect(result[5].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
+    })
+
+    it('should display only the declare action when the user has no customer relation', () => {
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations, false)
+
+      expect(result[3].display).toBe(true)
+      expect(result[4].display).toBe(false)
+    })
+
+    it('should display only the remove relation action when the user has a customer relation', () => {
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations, true)
+
+      expect(result[3].display).toBe(false)
+      expect(result[4].display).toBe(true)
     })
 
     it('should check ACTIVATE_OFFER permission for resend email item', () => {
-      RegularEntitiesListManager.buildDefaultMenuElements(translations)
+      RegularEntitiesListManager.buildDefaultMenuElements(translations, false)
 
       expect(hasPermissionMock).toHaveBeenCalledWith(ACTION_PERMISSIONS.ACTIVATE_OFFER)
     })
 
     it('should use translation values for menu labels', () => {
-      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations, false)
 
       expect(result[0].pValue).toBe('Access this folder')
       expect(result[1].pValue).toBe('Delegate this folder')
       expect(result[2].pValue).toBe('Resend activation email')
       expect(result[3].pValue).toBe('Declare customer relation')
-      expect(result[4].pValue).toBe('Remove myself from this folder')
+      expect(result[4].pValue).toBe('Remove customer relation')
+      expect(result[5].pValue).toBe('Remove myself from this folder')
     })
   })
 
   describe('buildMenuToDeployElements', () => {
     it('should return 6 items with deploy action first', () => {
-      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
+      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations, false)
 
-      expect(result).toHaveLength(6)
+      expect(result).toHaveLength(7)
       expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
     })
 
     it('should include default menu items after deploy', () => {
-      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
+      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations, false)
 
       expect(result[1].pActionName).toBe(RegularEntityAction.ACCESS)
       expect(result[2].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
       expect(result[3].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
       expect(result[4].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
-      expect(result[5].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
+      expect(result[5].pActionName).toBe(RegularEntityAction.REMOVE_CUSTOMER_RELATION)
+      expect(result[6].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
     })
   })
 
@@ -88,6 +112,7 @@ describe('RegularEntitiesListManager', () => {
         translations.toDeploy,
         translations.toDeploy,
         translations,
+        false,
       )
 
       expect(result).toHaveLength(6)
@@ -99,6 +124,7 @@ describe('RegularEntitiesListManager', () => {
         'Active',
         translations.toDeploy,
         translations,
+        false,
       )
 
       expect(result).toHaveLength(5)
@@ -110,6 +136,7 @@ describe('RegularEntitiesListManager', () => {
         'Active',
         translations.toDeploy,
         translations,
+        false,
       )
 
       expect(filterAccessibleMenuItems).toHaveBeenCalled()

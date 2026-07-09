@@ -36,6 +36,7 @@ export function useRegularEntitiesList(
     delegateThisFolder: t(`${I18N_REGULAR_KEY}.delegateThisFolder`),
     resendActivationEmail: t(`${I18N_REGULAR_KEY}.resendActivationEmail`),
     declareCustomerRelation: t(`${I18N_REGULAR_KEY}.declareCustomerRelation`),
+    removeCustomerRelation: t(`${I18N_REGULAR_KEY}.removeCustomerRelation`),
     removeCurrentUserFromThisFolder: t(`${I18N_REGULAR_KEY}.removeCurrentUserFromThisFolder`),
     toDeploy: t(`${I18N_REGULAR_KEY}.toDeploy`),
   }))
@@ -48,11 +49,12 @@ export function useRegularEntitiesList(
     emit('add-favorite', accountId, isFavorite)
   }
 
-  const menuElementsCollaborator = (status: string) => {
+  const menuElementsCollaborator = (row: RegularWalletData) => {
     return RegularEntitiesListManager.getMenuElementsForRow(
-      status,
+      row.deploymentStatus.text,
       t(`${I18N_REGULAR_KEY}.toDeploy`),
       menuTranslations.value,
+      row.isCustomerRelation === true,
     )
   }
 
@@ -93,8 +95,15 @@ export function useRegularEntitiesList(
       emit('displayDelegationDrawer', row)
     } else if (action === RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL) {
       emit('displayResendActivationEmailDrawer', row)
-    } else if (action === RegularEntityAction.DECLARE_CUSTOMER_RELATION) {
-      emit('displayDeclareCustomerRelationDrawer', row)
+    } else if (
+      action === RegularEntityAction.DECLARE_CUSTOMER_RELATION ||
+      action === RegularEntityAction.REMOVE_CUSTOMER_RELATION
+    ) {
+      emit(
+        'displayCustomerRelationDrawer',
+        row,
+        action === RegularEntityAction.DECLARE_CUSTOMER_RELATION,
+      )
     } else if (action === RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER) {
       emit('displayRemoveCurrentUserFromFolderModal', row)
     }

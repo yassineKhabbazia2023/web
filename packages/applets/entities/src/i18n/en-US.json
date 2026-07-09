@@ -44,6 +44,7 @@
         "toDeploy": "To Deploy",
         "manageAccountRights": "Manage folder permissions",
         "declareCustomerRelation": "Declare customer relationship",
+        "removeCustomerRelation": "Leave the customer relationship",
         "removeCurrentUserFromThisFolder": "Remove myself from this folder"
       },
       "entitiesListProspects": {
