@@ -3,6 +3,8 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import { getMockedEntitySummary } from '@pulse/common/mocks'
 import { ConformityPaymentType } from '@entities/enums'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 import Payment from './payment.vue'
 
 // Seeds the current entity (used as accountId and signatory flag) and stubs the API so the
@@ -12,6 +14,10 @@ function mockPaymentPreference(paymentType: ConformityPaymentType | null, isSign
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   ConformityPaymentService.setOtherPaymentPreference = () => Promise.resolve()
   ConformityPaymentService.resetPaymentPreference = () => Promise.resolve()
+  ProspectsService.fetchOnboardingStep = () => Promise.resolve({
+    id: OnboardingStep.PaymentMethod,
+    status: paymentType === null ? OnboardingStepStatus.ToDo : OnboardingStepStatus.Completed,
+  })
 }
 
 const renderWithState = ({

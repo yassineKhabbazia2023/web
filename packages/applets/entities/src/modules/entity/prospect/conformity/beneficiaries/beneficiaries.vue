@@ -28,7 +28,7 @@
         <template #label>
           <span>{{ t('entities.prospect.conformity.beneficiaries.tabLabel', { index: index + 1 }) }}</span>
           <PLoader
-            v-if="isRefreshing && activeBeneficiaryId === beneficiary.beneficiaryId"
+            v-if="(isRefreshing || isRefreshingStatus) && activeBeneficiaryId === beneficiary.beneficiaryId"
             pSize="12"
             class="margin-left--2"
           />
@@ -169,7 +169,7 @@ import { BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS } from './beneficiaries.cons
 import { buildBeneficiaryFormRules } from './beneficiaries.validation'
 import { useBeneficiaries } from './beneficiaries.composable'
 import { BeneficiariesManager } from './beneficiaries.manager'
-import type { BeneficiariesProps, UseBeneficiariesEmits } from './beneficiaries.types'
+import type { UseBeneficiariesEmits } from './beneficiaries.types'
 import { OnboardingStepStatus } from '../prospect-conformity.enums'
 import BeneficiaryActions from './components/beneficiary-actions/beneficiary-actions.vue'
 import BeneficiaryDocumentUpload from './components/beneficiary-document-upload/beneficiary-document-upload.vue'
@@ -179,13 +179,13 @@ const { t } = useI18n()
 
 const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
-const props = defineProps<BeneficiariesProps>()
-
 const emits = defineEmits<UseBeneficiariesEmits>()
 
 const {
   isLoading,
+  beneficiaryStepStatus,
   isRefreshing,
+  isRefreshingStatus,
   isSaving,
   isValidatingAll,
   currentEntityId,
@@ -239,7 +239,7 @@ const activeTab = computed<string>({
 })
 
 const isBeneficiaryStepNotCompleted = computed(
-  () => props.beneficiaryStepStatus !== OnboardingStepStatus.Completed,
+  () => beneficiaryStepStatus.value !== OnboardingStepStatus.Completed,
 )
 
 const documentTypeOptions = computed<PDropdownOption[]>(() =>

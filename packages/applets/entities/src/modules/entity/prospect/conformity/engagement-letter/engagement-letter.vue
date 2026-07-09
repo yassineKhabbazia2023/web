@@ -7,8 +7,21 @@
       margin-top--4
     "
   >
+    <div
+      v-if="isRefreshingStatus"
+      class="
+        flex
+        flex--justify-content-center
+        padding-y--6
+      "
+    >
+      <PLoader
+        pType="primary"
+        pSize="48"
+      />
+    </div>
     <ConformitySectionSkeleton
-      v-if="isLoading"
+      v-else-if="isLoadingStatus"
       :variant="skeletonVariant"
     />
     <PAlert
@@ -28,7 +41,7 @@
     <EngagementLetterCollab
       v-else-if="isCollab"
       :isCompleted="isCompleted"
-      @sent="emit('sent')"
+      @sent="onSent"
     />
   </div>
 </template>
@@ -38,15 +51,14 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
-import { PAlert } from '@pulse/styleguide/components'
-import { OnboardingStepStatus } from '../prospect-conformity.enums'
+import { PAlert, PLoader } from '@pulse/styleguide/components'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
+import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import EngagementLetterCustomer from './engagement-letter-customer/engagement-letter-customer.vue'
 import EngagementLetterCollab from './engagement-letter-collab/engagement-letter-collab.vue'
-import type { EngagementLetterEmits, EngagementLetterProps } from './engagement-letter.types'
-
-const props = defineProps<EngagementLetterProps>()
+import type { EngagementLetterEmits } from './engagement-letter.types'
 
 const emit = defineEmits<EngagementLetterEmits>()
 
@@ -54,11 +66,23 @@ const { t } = useI18n()
 
 const { isCollab, isCustomer } = storeToRefs(useUserStore())
 
-const isCompleted = computed(() => props.status === OnboardingStepStatus.Completed)
+const {
+  status,
+  isLoadingStatus,
+  isRefreshingStatus,
+  reloadStatus,
+} = useOnboardingStepStatus(OnboardingStep.EngagementLetter)
 
-// The skeleton only shows on first load, before the stepper status is known (it comes from
-// the same fetch as isLoading), so it always reserves an in-progress shape: an information
-// alert for the customer, an upload zone for the collaborator.
+const isCompleted = computed(() => status.value === OnboardingStepStatus.Completed)
+
+// Refresh this section's own status, then let the parent refresh the stepper.
+const onSent = async (): Promise<void> => {
+  await reloadStatus()
+  emit('sent')
+}
+
+// The skeleton only shows on first load, before this step's status is known, so it always
+// reserves an in-progress shape: an information alert for the customer, an upload zone for the collaborator.
 const skeletonVariant = computed(() =>
   isCustomer.value
     ? ConformitySkeletonVariant.InfoAlert

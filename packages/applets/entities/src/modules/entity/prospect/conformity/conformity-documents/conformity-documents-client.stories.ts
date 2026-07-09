@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { OnboardingStepStatus } from '../prospect-conformity.enums'
 import ConformityDocuments from './conformity-documents.vue'
 import { createRenderWithState } from './conformity-documents.stories.helpers'
 
@@ -9,13 +8,6 @@ const meta: Meta<typeof ConformityDocuments> = {
   title: 'Applets/Entities/Prospect/Conformity/ConformityDocuments/Client',
   component: ConformityDocuments,
   tags: ['autodocs'],
-  // A completed step makes both sections read-only (save CTA disabled).
-  argTypes: {
-    supportingStepStatus: {
-      control: 'select',
-      options: Object.values(OnboardingStepStatus),
-    },
-  },
   render: renderWithState('partial'),
 }
 

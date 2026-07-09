@@ -9,12 +9,6 @@ const meta: Meta<typeof ConformityDocuments> = {
   title: 'Applets/Entities/Prospect/Conformity/ConformityDocuments/Collaborator',
   component: ConformityDocuments,
   tags: ['autodocs'],
-  argTypes: {
-    supportingStepStatus: {
-      control: 'select',
-      options: Object.values(OnboardingStepStatus),
-    },
-  },
   render: renderWithState('partial'),
 }
 
@@ -38,10 +32,7 @@ export const AllUploaded: Story = {
 
 // Step completed: both sections are read-only (save CTA disabled, no delete action).
 export const Completed: Story = {
-  args: {
-    supportingStepStatus: OnboardingStepStatus.Completed,
-  },
-  render: renderWithState('filled'),
+  render: renderWithState('filled', OnboardingStepStatus.Completed),
 }
 
 // The shared /supporting-documents request failed: both sections show the error alert.

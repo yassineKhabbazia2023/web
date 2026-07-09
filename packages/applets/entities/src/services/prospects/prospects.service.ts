@@ -13,7 +13,6 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import type { BeneficiariesResponse, BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
 import { OnboardingStep } from '@entities/modules/entity/prospect/conformity/prospect-conformity.enums'
 import type { OnboardingStepResponse } from './prospects.types'
-
 export class ProspectsService {
   static async fetchProspectsAccounts(searchParams?: URLSearchParams): Promise<PaginationResponse<ProspectAccountRow>> {
     const query = searchParams ? `?${searchParams}` : ''
@@ -115,6 +114,13 @@ export class ProspectsService {
   static async fetchOnboardingSteps(accountId: number): Promise<OnboardingStepResponse[]> {
     const response = await api.gateway.get<OnboardingStepResponse[]>(
       `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps`,
+    )
+    return response.data
+  }
+
+  static async fetchOnboardingStep(accountId: number, stepId: OnboardingStep): Promise<OnboardingStepResponse> {
+    const response = await api.gateway.get<OnboardingStepResponse>(
+      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps/${stepId}`,
     )
     return response.data
   }

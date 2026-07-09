@@ -14,7 +14,7 @@ import {
 } from '@entities/__mocks__/beneficiaries.mocks'
 import { useBeneficiaries } from './beneficiaries.composable'
 import { BENEFICIARIES_I18N_KEYS } from './beneficiaries.constants'
-import { OnboardingStep } from '../prospect-conformity.enums'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 
 vi.mock('@entities/services/prospects/prospects.service')
 vi.mock('@pulse/styleguide')
@@ -28,6 +28,7 @@ vi.mock('vue-i18n', () => ({
 const fetchBeneficiariesMock = vi.mocked(ProspectsService.fetchBeneficiaries)
 const uploadBeneficiaryDocumentsMock = vi.mocked(ProspectsService.uploadBeneficiaryDocuments)
 const completeOnboardingStepMock = vi.mocked(ProspectsService.completeOnboardingStep)
+const fetchOnboardingStepMock = vi.mocked(ProspectsService.fetchOnboardingStep)
 const displayNotificationMock = vi.mocked(displayNotification)
 
 const prospectIdMock = 602
@@ -57,6 +58,7 @@ describe('beneficiaries.composable', () => {
         getBeneficiaryMock({ beneficiaryId: secondBeneficiaryIdMock, firstName: 'Marc', lastName: 'Martin' }),
       ],
     }))
+    fetchOnboardingStepMock.mockResolvedValue({ id: OnboardingStep.Beneficiary, status: OnboardingStepStatus.ToDo })
   })
 
   describe('initial loading on mount', () => {
@@ -77,6 +79,19 @@ describe('beneficiaries.composable', () => {
         files: [],
       })
       expect(result.isLoading.value).toBe(false)
+    })
+
+    it('should fetch the beneficiary step status on mount and expose it', async () => {
+      fetchOnboardingStepMock.mockResolvedValue({
+        id: OnboardingStep.Beneficiary,
+        status: OnboardingStepStatus.InReview,
+      })
+
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.Beneficiary)
+      expect(result.beneficiaryStepStatus.value).toBe(OnboardingStepStatus.InReview)
     })
 
     it('should not fetch beneficiaries when there is no account id', async () => {
@@ -124,6 +139,8 @@ describe('beneficiaries.composable', () => {
       expect(completeOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.Beneficiary)
       expect(displayNotificationMock).toHaveBeenCalledWith('success', BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS)
       expect(result.isValidatingAll.value).toBe(false)
+      // Reloads its own status (mount + after validation), then asks the parent to refresh the stepper.
+      expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(2)
       expect(emitMock).toHaveBeenCalledWith('refresh-steps')
     })
 
@@ -182,6 +199,7 @@ describe('beneficiaries.composable', () => {
       expect(result.isDeleteDialogOpen.value).toBe(false)
       expect(result.isRefreshing.value).toBe(false)
       expect(fetchBeneficiariesMock).toHaveBeenCalledTimes(2)
+      expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -204,6 +222,7 @@ describe('beneficiaries.composable', () => {
       )
       expect(displayNotificationMock).toHaveBeenCalledWith('success', BENEFICIARIES_I18N_KEYS.SAVE_SUCCESS)
       expect(fetchBeneficiariesMock).toHaveBeenCalledTimes(2)
+      expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(2)
       expect(result.activeBeneficiaryId.value).toBe(firstBeneficiaryIdMock)
       expect(result.isSaving.value).toBe(false)
       expect(emitMock).toHaveBeenCalledWith('refresh-steps')

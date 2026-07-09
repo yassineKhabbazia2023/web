@@ -1,3 +1,4 @@
+import { flushPromises } from '@vue/test-utils'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
@@ -6,6 +7,7 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useCommercialProposal } from './commercial-proposal.composable'
 import { COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES } from './commercial-proposal.consts'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -42,6 +44,27 @@ const buildPdfFile = (sizeInBytes?: number): File => {
 describe('useCommercialProposal', () => {
   beforeEach(() => {
     setEntityId(entityId)
+  })
+
+  describe('onboarding step status', () => {
+    it('should fetch the commercial proposal step status on mount', async () => {
+      vi.mocked(ProspectsService.fetchOnboardingStep).mockResolvedValue({
+        id: OnboardingStep.CommercialProposal,
+        status: OnboardingStepStatus.Completed,
+      })
+      const { result } = mountComposable()
+
+      expect(result.isLoading.value).toBe(true)
+
+      await flushPromises()
+
+      expect(vi.mocked(ProspectsService.fetchOnboardingStep)).toHaveBeenCalledWith(
+        entityId,
+        OnboardingStep.CommercialProposal,
+      )
+      expect(result.isLoading.value).toBe(false)
+      expect(result.status.value).toBe(OnboardingStepStatus.Completed)
+    })
   })
 
   describe('file selection', () => {
@@ -147,6 +170,22 @@ describe('useCommercialProposal', () => {
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', `${I18N_KEY}.sendSuccess`)
       expect(emit).toHaveBeenCalledWith('sent')
       expect(result.isSending.value).toBe(false)
+    })
+
+    it('should refresh its own status after a successful send', async () => {
+      const file = buildPdfFile()
+      vi.mocked(ProspectsService.uploadCommercialProposal).mockResolvedValueOnce(undefined)
+      vi.mocked(ProspectsService.fetchOnboardingStep)
+        .mockResolvedValueOnce({ id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.ToDo })
+        .mockResolvedValueOnce({ id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.Completed })
+      const { result } = mountComposable()
+      await flushPromises()
+      expect(result.status.value).toBe(OnboardingStepStatus.ToDo)
+      result.onFilesSelected([file])
+
+      await result.sendCommercialProposalToCustomer()
+
+      expect(result.status.value).toBe(OnboardingStepStatus.Completed)
     })
 
     it('should do nothing without a selected file', async () => {

@@ -22,11 +22,24 @@
         :pColor="AppColors.JUNGLE_400"
         pSize="16"
       />
-      <span class="margin-left--1">{{ isLoading ? fallbackTitle : title }}</span>
+      <span class="margin-left--1">{{ isSectionLoading ? fallbackTitle : title }}</span>
     </h2>
 
+    <div
+      v-if="isRefreshingStatus"
+      class="
+        flex
+        flex--justify-content-center
+        padding-y--6
+      "
+    >
+      <PLoader
+        pType="primary"
+        pSize="48"
+      />
+    </div>
     <ConformitySectionSkeleton
-      v-if="isLoading"
+      v-else-if="isSectionLoading"
       :variant="skeletonVariant"
     />
     <template v-else>
@@ -164,11 +177,12 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { PAlert, PButton, PIcon, PTag } from '@pulse/styleguide/components'
+import { PAlert, PButton, PIcon, PLoader, PTag } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityPaymentType } from '@entities/enums'
-import { OnboardingStepStatus } from '../prospect-conformity.enums'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
+import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import OtherPaymentMethodConfirmationModal from './components/other-payment-method-confirmation-modal.vue'
@@ -199,6 +213,13 @@ const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
 const accountId = currentEntityId.value!
 
 const {
+  status,
+  isLoadingStatus,
+  isRefreshingStatus,
+  reloadStatus,
+} = useOnboardingStepStatus(OnboardingStep.PaymentMethod)
+
+const {
   paymentType,
   isLoading,
   isSaving,
@@ -209,8 +230,16 @@ const {
 } = usePayment(accountId, {
   updateErrorMessage: t(`${PAYMENT_I18N_BASE}.updateError`),
   downloadErrorMessage: t(`${PAYMENT_I18N_BASE}.downloadError`),
-  onPaymentPreferenceChanged: () => emit('payment-preference-changed'),
+  onPaymentPreferenceChanged: async () => {
+    // Refresh this section's own status, then let the parent refresh the stepper.
+    await reloadStatus()
+    emit('payment-preference-changed')
+  },
 })
+
+// Skeleton stays until both the payment preference and this step's status are known,
+// so the skeleton variant (which depends on the status) never flashes the wrong shape.
+const isSectionLoading = computed(() => isLoading.value || isLoadingStatus.value)
 
 const isNotSelected = computed(() => paymentType.value === null)
 const isSepaMandate = computed(() => paymentType.value === ConformityPaymentType.MandateSepa)
@@ -220,10 +249,10 @@ const isSignatory = computed(() => currentEntity.value?.isSignatory === true)
 // Non-signatory clients (like collaborators) get a read-only "pending" alert instead of the action buttons.
 const canManagePayment = computed(() => isClient.value && isSignatory.value)
 
-// The stepper status is resolved before this body loads. Completed shows the mandate summary;
-// otherwise a managing user gets the benefits/actions layout and everyone else a pending alert.
+// Completed shows the mandate summary; otherwise a managing user gets the benefits/actions
+// layout and everyone else a pending alert.
 const skeletonVariant = computed(() => {
-  if (props.status === OnboardingStepStatus.Completed) {
+  if (status.value === OnboardingStepStatus.Completed) {
     return ConformitySkeletonVariant.PaymentCompleted
   }
   return canManagePayment.value

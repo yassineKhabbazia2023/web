@@ -6,6 +6,8 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import { OnboardingStep } from '../prospect-conformity.enums'
+import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import {
   COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE,
   COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES,
@@ -17,6 +19,13 @@ const I18N_KEY = 'entities.prospect.conformity.proposal'
 export function useCommercialProposal(emit: CommercialProposalEmits) {
   const { t } = useI18n()
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
+
+  const {
+    status,
+    isLoadingStatus: isLoading,
+    isRefreshingStatus,
+    reloadStatus,
+  } = useOnboardingStepStatus(OnboardingStep.CommercialProposal)
 
   const selectedCommercialProposalFile = ref<File | null>(null)
   const isDownloading = ref(false)
@@ -64,7 +73,8 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
       await ProspectsService.uploadCommercialProposal(currentEntityId.value!, selectedCommercialProposalFile.value)
       selectedCommercialProposalFile.value = null
       displayNotification('success', t(`${I18N_KEY}.sendSuccess`))
-      // Let the parent refresh the stepper and this step status from the backend
+      // Refresh this section's own status, then let the parent refresh the stepper.
+      await reloadStatus()
       emit('sent')
     } catch (error) {
       logger.error('Error sending commercial proposal to customer', error)
@@ -75,6 +85,9 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
   }
 
   return {
+    status,
+    isLoading,
+    isRefreshingStatus,
     isDownloading,
     isSending,
     hasSelectedFile,

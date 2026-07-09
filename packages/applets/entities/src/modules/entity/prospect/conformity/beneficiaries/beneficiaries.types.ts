@@ -1,6 +1,5 @@
 import type { FormItemRule } from 'element-plus'
 import type { BeneficiaryDocument, BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
-import type { OnboardingStepStatus } from '../prospect-conformity.enums'
 
 export interface BeneficiaryFormState {
   documentType: BeneficiaryDocumentType | null
@@ -18,8 +17,4 @@ export interface BeneficiaryDocumentDeletionTarget {
 
 export interface UseBeneficiariesEmits {
   (e: 'refresh-steps'): void
-}
-
-export interface BeneficiariesProps {
-  beneficiaryStepStatus?: OnboardingStepStatus
 }

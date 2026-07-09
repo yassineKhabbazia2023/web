@@ -292,6 +292,23 @@ describe('ProspectsService', () => {
     })
   })
 
+  describe('fetchOnboardingStep', () => {
+    it('should GET the individual onboarding step of the account and return the data', async () => {
+      const responseData: OnboardingStepResponse = {
+        id: OnboardingStep.CommercialProposal,
+        status: OnboardingStepStatus.InProgress,
+      }
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchOnboardingStep(accountId, OnboardingStep.CommercialProposal)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/steps/${OnboardingStep.CommercialProposal}`,
+      )
+      expect(result).toEqual(responseData)
+    })
+  })
+
   describe('completeOnboardingStep', () => {
     it('should PUT the step complete endpoint with the account id and unchanged step name body', async () => {
       await ProspectsService.completeOnboardingStep(accountId, OnboardingStep.CommercialProposal)

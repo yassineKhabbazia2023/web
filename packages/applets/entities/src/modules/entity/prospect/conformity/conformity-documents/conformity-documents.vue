@@ -54,27 +54,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert } from '@pulse/styleguide/components'
 import ConformityStepCard from '../components/conformity-step-card/conformity-step-card.vue'
-import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
+import { OnboardingStep } from '../prospect-conformity.enums'
 import { PROSPECT_CONFORMITY_STEP_SLUGS } from '../prospect-conformity.consts'
 import SupportingDocuments from './components/supporting-documents/supporting-documents.vue'
 import ComplementaryDocuments from './components/complementary-documents/complementary-documents.vue'
 import { useConformityDocuments } from './conformity-documents.composable'
-import type { ConformityDocumentsEmits, ConformityDocumentsProps } from './conformity-documents.types'
+import type { ConformityDocumentsEmits } from './conformity-documents.types'
 
 const { t } = useI18n()
 
-const props = defineProps<ConformityDocumentsProps>()
 const emit = defineEmits<ConformityDocumentsEmits>()
-
-// Once the supporting-documents step is completed, both sections become read-only.
-const isCompleted = computed(() => props.supportingStepStatus === OnboardingStepStatus.Completed)
 
 const {
   isLoading,
+  isCompleted,
   hasError,
   predefinedItems,
   complementaryDocuments,

@@ -6,16 +6,25 @@ import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
 import type { SupportingDocumentItem } from '@entities/services/conformity-documents'
 import { PROSPECT_DOCUMENT_DEFAULT_MAX_FILES } from '@entities/modules/entity/prospect/prospect.constants'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
+import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import type { ConformityDocumentsEmits } from './conformity-documents.types'
 
 export function useConformityDocuments(emit: ConformityDocumentsEmits) {
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-  const isLoading = ref(true)
+  const { status, isLoadingStatus, reloadStatus } = useOnboardingStepStatus(OnboardingStep.SupportingDocuments)
+
+  const isLoadingSupportingDocuments = ref(true)
   // True when the shared /supporting-documents fetch failed, so both sections show an alert.
   const hasError = ref(false)
   // Single source of truth: the /supporting-documents response, split below per child.
   const items = ref<SupportingDocumentItem[]>([])
+
+  // Once the supporting-documents step is completed, both sections become read-only.
+  const isCompleted = computed(() => status.value === OnboardingStepStatus.Completed)
+  // Skeleton stays until both the documents and this step's status are known.
+  const isLoading = computed(() => isLoadingSupportingDocuments.value || isLoadingStatus.value)
 
   const predefinedItems = computed(() =>
     items.value.filter((item) => item.type !== SupportingDocumentType.COMPLEMENTARY),
@@ -40,10 +49,10 @@ export function useConformityDocuments(emit: ConformityDocumentsEmits) {
 
   const loadSupportingDocuments = async () => {
     if (currentEntityId.value === undefined) {
-      isLoading.value = false
+      isLoadingSupportingDocuments.value = false
       return
     }
-    isLoading.value = true
+    isLoadingSupportingDocuments.value = true
     hasError.value = false
     try {
       const response = await ConformityDocumentsService.getSupportingDocuments(currentEntityId.value)
@@ -52,16 +61,17 @@ export function useConformityDocuments(emit: ConformityDocumentsEmits) {
       logger.error('Error fetching supporting documents', error)
       hasError.value = true
     } finally {
-      isLoading.value = false
+      isLoadingSupportingDocuments.value = false
     }
   }
 
   const reload = () => loadSupportingDocuments()
 
   // Saving/deleting required documents can change the backend step status,
-  // so reload the local list and let the parent re-sync the onboarding steps.
+  // so reload the local list and this step's status, then let the parent re-sync the onboarding steps.
   const onSupportingDocumentsChanged = async () => {
     await loadSupportingDocuments()
+    await reloadStatus()
     emit('refresh-steps')
   }
 
@@ -69,6 +79,7 @@ export function useConformityDocuments(emit: ConformityDocumentsEmits) {
 
   return {
     isLoading,
+    isCompleted,
     hasError,
     predefinedItems,
     complementaryDocuments,

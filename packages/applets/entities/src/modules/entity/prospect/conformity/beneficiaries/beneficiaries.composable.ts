@@ -6,6 +6,7 @@ import { displayNotification } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { OnboardingStep } from '../prospect-conformity.enums'
+import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import { BeneficiariesManager } from './beneficiaries.manager'
 import { BENEFICIARIES_I18N_KEYS } from './beneficiaries.constants'
 import type { Beneficiary, BeneficiaryDocument } from '@entities/modules/entity/prospect/types'
@@ -19,13 +20,23 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const { t } = useI18n()
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-  const isLoading = ref(true)
+  const {
+    status: beneficiaryStepStatus,
+    isLoadingStatus,
+    isRefreshingStatus,
+    reloadStatus,
+  } = useOnboardingStepStatus(OnboardingStep.Beneficiary)
+
+  const isLoadingBeneficiaries = ref(true)
   const isRefreshing = ref(false)
   const isSaving = ref(false)
   const isValidatingAll = ref(false)
   const beneficiaries = ref<Beneficiary[]>([])
   const activeBeneficiaryId = ref<string>()
   const formStateByBeneficiaryId = ref<Record<string, BeneficiaryFormState>>({})
+
+  // Skeleton stays until both the beneficiaries and this step's status are known.
+  const isLoading = computed(() => isLoadingBeneficiaries.value || isLoadingStatus.value)
 
   const activeBeneficiary = computed<Beneficiary | undefined>(() =>
     beneficiaries.value.find((b) => b.beneficiaryId === activeBeneficiaryId.value),
@@ -53,12 +64,12 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
 
   const loadBeneficiaries = async () => {
     if (currentEntityId.value === undefined || currentEntityId.value === null) {
-      isLoading.value = false
+      isLoadingBeneficiaries.value = false
       isRefreshing.value = false
       return
     }
     // Show skeleton on first load, spinner on refresh
-    if (isLoading.value === false) {
+    if (isLoadingBeneficiaries.value === false) {
       isRefreshing.value = true
     }
     try {
@@ -82,7 +93,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
       displayNotification('error', t('entities.prospect.conformity.beneficiaries.fetchError'))
       beneficiaries.value = []
     } finally {
-      isLoading.value = false
+      isLoadingBeneficiaries.value = false
       isRefreshing.value = false
     }
   }
@@ -107,6 +118,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const onDocumentDeleted = async () => {
     documentPendingDeletion.value = undefined
     await loadBeneficiaries()
+    await reloadStatus()
     emit('refresh-steps')
   }
 
@@ -149,6 +161,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
         }),
       )
       await loadBeneficiaries()
+      await reloadStatus()
       emit('refresh-steps')
     } catch (error) {
       logger.error('Error uploading beneficiary documents', error)
@@ -167,6 +180,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     try {
       await ProspectsService.completeOnboardingStep(currentEntityId.value, OnboardingStep.Beneficiary)
       displayNotification('success', t(BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS))
+      await reloadStatus()
       emit('refresh-steps')
     } catch (error) {
       logger.error('Failed to validate beneficiaries', error)
@@ -180,7 +194,9 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
 
   return {
     isLoading,
+    beneficiaryStepStatus,
     isRefreshing,
+    isRefreshingStatus,
     isSaving,
     isValidatingAll,
     currentEntityId,

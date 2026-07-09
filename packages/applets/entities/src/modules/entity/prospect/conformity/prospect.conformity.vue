@@ -64,7 +64,6 @@
           <!-- The conformity-documents parent renders its own supporting documents + complementary cards. -->
           <ConformityDocuments
             v-if="step.id === OnboardingStep.SupportingDocuments"
-            :supportingStepStatus="stepStatusById.get(OnboardingStep.SupportingDocuments)"
             @refresh-steps="loadOnboardingSteps"
           />
           <ConformityStepCard
@@ -75,26 +74,20 @@
           >
             <Beneficiaries
               v-if="step.id === OnboardingStep.Beneficiary"
-              :beneficiaryStepStatus="stepStatusById.get(OnboardingStep.Beneficiary)"
               @refresh-steps="loadOnboardingSteps"
             />
             <CommercialProposal
               v-else-if="step.id === OnboardingStep.CommercialProposal"
-              :status="stepStatusById.get(OnboardingStep.CommercialProposal)"
-              :isLoading="isLoadingSteps"
               @sent="loadOnboardingSteps"
             />
             <EngagementLetter
               v-else-if="step.id === OnboardingStep.EngagementLetter"
-              :status="stepStatusById.get(OnboardingStep.EngagementLetter)"
-              :isLoading="isLoadingSteps"
               @sent="loadOnboardingSteps"
             />
             <Payment
               v-else-if="step.id === OnboardingStep.PaymentMethod"
               :isCollaborator="isCollab"
               :fallbackTitle="t(step.labelKey)"
-              :status="stepStatusById.get(OnboardingStep.PaymentMethod)"
               @payment-preference-changed="loadOnboardingSteps"
             />
             <p

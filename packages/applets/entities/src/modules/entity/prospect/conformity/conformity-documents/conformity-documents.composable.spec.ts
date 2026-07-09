@@ -4,18 +4,22 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import {
   getSupportingDocumentItemMock,
   getSupportingDocumentsResponseMock,
 } from '@entities/__mocks__'
 import { useConformityDocuments } from './conformity-documents.composable'
 import { PROSPECT_DOCUMENT_DEFAULT_MAX_FILES } from '@entities/modules/entity/prospect/prospect.constants'
+import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 
 vi.mock('@entities/services/conformity-documents')
+vi.mock('@entities/services/prospects/prospects.service')
 vi.mock('@pulse/toolbox')
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const getSupportingDocumentsMock = vi.mocked(ConformityDocumentsService.getSupportingDocuments)
+const fetchOnboardingStepMock = vi.mocked(ProspectsService.fetchOnboardingStep)
 
 const emitMock = vi.fn()
 
@@ -26,6 +30,10 @@ describe('conformity-documents.composable', () => {
     vi.clearAllMocks()
     currentEntityStoreMock.currentEntityId = accountIdMock
     getSupportingDocumentsMock.mockResolvedValue(getSupportingDocumentsResponseMock())
+    fetchOnboardingStepMock.mockResolvedValue({
+      id: OnboardingStep.SupportingDocuments,
+      status: OnboardingStepStatus.ToDo,
+    })
   })
 
   describe('initial loading on mount', () => {
@@ -87,18 +95,43 @@ describe('conformity-documents.composable', () => {
       await result.reload()
 
       expect(getSupportingDocumentsMock).toHaveBeenCalledTimes(2)
+      // reload only refreshes the documents, not the step status.
+      expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('onSupportingDocumentsChanged', () => {
-    it('should reload the documents and ask the parent to refresh the onboarding steps', async () => {
+    it('should reload the documents and step status, then ask the parent to refresh the onboarding steps', async () => {
       const [result] = withSetup(() => useConformityDocuments(emitMock))
       await flushPromises()
 
       await result.onSupportingDocumentsChanged()
 
       expect(getSupportingDocumentsMock).toHaveBeenCalledTimes(2)
+      expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(2)
       expect(emitMock).toHaveBeenCalledWith('refresh-steps')
+    })
+  })
+
+  describe('supporting step status', () => {
+    it('should fetch the step status on mount and expose isCompleted', async () => {
+      fetchOnboardingStepMock.mockResolvedValue({
+        id: OnboardingStep.SupportingDocuments,
+        status: OnboardingStepStatus.Completed,
+      })
+
+      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.SupportingDocuments)
+      expect(result.isCompleted.value).toBe(true)
+    })
+
+    it('should keep isCompleted false while the step is not completed', async () => {
+      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      await flushPromises()
+
+      expect(result.isCompleted.value).toBe(false)
     })
   })
 
