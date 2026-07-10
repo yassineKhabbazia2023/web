@@ -590,7 +590,8 @@
       "documentsConsultDrawer": {
         "title": "Documents",
         "alert": "Retrouvez ici vos documents.",
-        "close": "Fermer"
+        "close": "Fermer",
+        "noDocuments": "Aucun document déposé pour le moment."
       },
       "deleteDocumentDialog": {
         "title": "Supprimer le document",

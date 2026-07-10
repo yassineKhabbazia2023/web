@@ -16,6 +16,7 @@
     :pData="documentsListItems"
     :pVisibleColumns="visibleColumns"
     :pSelectable="selectable"
+    :pEmptyText="t('entities.prospect.documentsConsultDrawer.noDocuments')"
     pStripe
     @download="downloadDocument"
     @selection-change="onSelectionChange"
@@ -24,12 +25,15 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { PDocumentsList, PLoader } from '@pulse/styleguide/components'
 import type { DocumentsListItem } from '@pulse/styleguide/types'
 import { useDocumentsList } from './documents-list.composable'
 import type { DocumentsListProps } from './documents-list.types'
 
 defineProps<DocumentsListProps>()
+
+const { t } = useI18n()
 
 const selectedDocuments = defineModel<DocumentsListItem[]>('selectedDocuments', { default: () => [] })
 
