@@ -66,7 +66,7 @@ describe('WalletTrackingManager', () => {
 
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
         'Wallet Action Custom Filter Validated',
-        { wallet_action_filter_value: [`${WalletFilterValue.MISSION_TYPE_TENUE}, ${WalletFilterValue.MISSION_TYPE_REVISION}`] },
+        { wallet_action_filter_value: [WalletFilterValue.MISSION_TYPE] },
       )
     })
 
@@ -79,7 +79,7 @@ describe('WalletTrackingManager', () => {
 
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
         'Wallet Action Custom Filter Validated',
-        { wallet_action_filter_value: [WalletFilterValue.MISSION_TYPE_TENUE] },
+        { wallet_action_filter_value: [WalletFilterValue.MISSION_TYPE] },
       )
     })
 
@@ -92,7 +92,7 @@ describe('WalletTrackingManager', () => {
 
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
         'Wallet Action Custom Filter Validated',
-        { wallet_action_filter_value: [`${WalletFilterValue.STATUS_TO_DEPLOY}, ${WalletFilterValue.STATUS_IN_PROGRESS}`] },
+        { wallet_action_filter_value: [WalletFilterValue.STATUS] },
       )
     })
 
@@ -122,8 +122,8 @@ describe('WalletTrackingManager', () => {
         {
           wallet_action_filter_value: [
             WalletFilterValue.FAVORITES,
-            `${WalletFilterValue.MISSION_TYPE_TENUE}, ${WalletFilterValue.MISSION_TYPE_REVISION}`,
-            WalletFilterValue.STATUS_CONNECTED,
+            WalletFilterValue.MISSION_TYPE,
+            WalletFilterValue.STATUS,
           ],
         },
       )

@@ -1,14 +1,11 @@
 export enum WalletFilterValue {
   FAVORITES = 'favoris',
   CUSTOMER_RELATION = 'en relation client',
-  MISSION_TYPE_TENUE = 'Tenue',
-  MISSION_TYPE_REVISION = 'Révision',
-  STATUS_TO_DEPLOY = 'A déployer',
-  STATUS_IN_PROGRESS = 'En cours',
-  STATUS_CONNECTED = 'Connectés',
   LAST_ACTIVITY_TWO_WEEKS = '2 dernières semaines',
   LAST_ACTIVITY_THIRTY_DAYS = '30 derniers jours',
   LAST_ACTIVITY_NINETY_DAYS = '90 derniers jours',
+  MISSION_TYPE = 'type de mission',
+  STATUS = 'statut dossier',
   NONE = 'none',
 }
 

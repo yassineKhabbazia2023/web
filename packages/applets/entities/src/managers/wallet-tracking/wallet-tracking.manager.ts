@@ -2,20 +2,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { AmplitudeEvent } from '@pulse/common/enums'
 import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } from './wallet-tracking.enum'
 import type { WalletCustomFilterParams } from './wallet-tracking.types'
-import { MISSION_TYPE } from '@entities/constants'
-import { EntityStatus } from '@entities/modules/wallet/enums'
 import { LastActivityPeriodInDays } from '@entities/enums'
-
-const MISSION_TYPE_FILTER_VALUE: Record<string, WalletFilterValue> = {
-  [MISSION_TYPE.TENUE]: WalletFilterValue.MISSION_TYPE_TENUE,
-  [MISSION_TYPE.REVISION]: WalletFilterValue.MISSION_TYPE_REVISION,
-}
-
-const DEPLOYMENT_STATUS_FILTER_VALUE: Record<string, WalletFilterValue> = {
-  [EntityStatus.TO_DEPLOY]: WalletFilterValue.STATUS_TO_DEPLOY,
-  [EntityStatus.IN_PROGRESS]: WalletFilterValue.STATUS_IN_PROGRESS,
-  [EntityStatus.CONNECTED]: WalletFilterValue.STATUS_CONNECTED,
-}
 
 const LAST_ACTIVITY_PERIOD_FILTER_VALUE: Record<LastActivityPeriodInDays, WalletFilterValue> = {
   [LastActivityPeriodInDays.LAST_TWO_WEEKS]: WalletFilterValue.LAST_ACTIVITY_TWO_WEEKS,
@@ -93,15 +80,11 @@ export class WalletTrackingManager {
     }
 
     if (filters.missionTypeFilter !== undefined && filters.missionTypeFilter.length > 0) {
-      activeFilters.push(
-        filters.missionTypeFilter.map((missionType) => MISSION_TYPE_FILTER_VALUE[missionType]).join(', '),
-      )
+      activeFilters.push(WalletFilterValue.MISSION_TYPE)
     }
 
     if (filters.deploymentStatusFilter !== undefined && filters.deploymentStatusFilter.length > 0) {
-      activeFilters.push(
-        filters.deploymentStatusFilter.map((status) => DEPLOYMENT_STATUS_FILTER_VALUE[status]).join(', '),
-      )
+      activeFilters.push(WalletFilterValue.STATUS)
     }
 
     if (filters.lastActivityPeriodFilter !== undefined) {
