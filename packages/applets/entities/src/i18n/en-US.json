@@ -10,6 +10,9 @@
         "technicalError": "The operation failed due to a technical error. Please try again later."
       }
     },
+    "addCustomerDrawer": {
+      "errorMessage": "An error occurred while granting rights"
+    },
     "wallet": {
       "folders": "Wallet",
       "hello": "Hello",

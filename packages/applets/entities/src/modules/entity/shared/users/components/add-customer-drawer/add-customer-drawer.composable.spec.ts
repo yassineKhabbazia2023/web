@@ -1,4 +1,4 @@
-import { ADD_CUSTOMER_USER_DRAWER_STEPS, ADD_PROSPECT_USER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_USER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { hasContactRoleOnCommonAccount } from '@entities/services/account'
 import { AccountManager } from '@entities/managers/account/account.manager'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
@@ -315,13 +315,13 @@ describe('add-customer-drawer.composable', () => {
         updateUserPermissionsSuccessfully: true,
         expectedIsSuccess: false,
         expectedAddCustomerDrawerStepIndex: 1,
-        contactId: undefined,
+        forcedContactId: undefined,
         reason: 'contactId is undefined',
       }, {
         updateUserPermissionsSuccessfully: false,
         expectedIsSuccess: false,
         expectedAddCustomerDrawerStepIndex: 1,
-        targetEntityId: targetEntityIdMock,
+        forcedContactId: contactIdMock,
         reason: 'update user permissions failed',
       }]
       it.each(tests)('should return $expected when $reason', async ({
@@ -344,37 +344,29 @@ describe('add-customer-drawer.composable', () => {
         expect(addCustomerDrawerStepIndex.value).toBe(expectedAddCustomerDrawerStepIndex)
         expect(isSuccess).toBe(expectedIsSuccess)
       })
-    })
-  })
 
-  describe('prospect flow without the manage rights step', () => {
-    const prospectInitializationParameters = {
-      ...initializationParamaters,
-      addCustomerDrawerSteps: ADD_PROSPECT_USER_DRAWER_STEPS,
-    }
+      it('should display error notification when saveUserPermissions fails', async () => {
+        displayNotificationMock.mockClear()
+        saveUserPermissionsMock.mockResolvedValue(false)
 
-    it('goes straight from ADD_EMAIL to FORM_SENT without saving any permissions', async () => {
-      hasContactRoleOnCommonAccountMock.mockResolvedValue(false)
-      createOrAddCustomerToAccountMock.mockResolvedValue(contactIdMock)
-      saveUserPermissionsMock.mockClear()
+        const {
+          addCustomerDrawerStepIndex,
+          contactId,
+          submitForm,
+          isNextButtonLoading,
+        } = useAddCustomerDrawer(initializationParamaters)
 
-      const {
-        newContact,
-        addCustomerDrawerStep,
-        isLastStep,
-        submitForm,
-      } = useAddCustomerDrawer(prospectInitializationParameters)
+        contactId.value = contactIdMock
+        addCustomerDrawerStepIndex.value = 1
 
-      newContact.value.email = correctEmailMock
-      newContact.value.firstname = 'toto'
-      newContact.value.lastname = 'toto'
+        const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
 
-      const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, AccountType.PROSPECT)
-
-      expect(isSuccess).toBe(true)
-      expect(addCustomerDrawerStep.value).toBe(AddCustomerDrawerStep.FORM_SENT)
-      expect(isLastStep.value).toBe(true)
-      expect(saveUserPermissionsMock).not.toHaveBeenCalled()
+        expect(isSuccess).toBe(false)
+        expect(addCustomerDrawerStepIndex.value).toBe(1) // Step should not advance
+        expect(isNextButtonLoading.value).toBe(false) // Loading should be reset
+        expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith('error', 'entities.addCustomerDrawer.errorMessage')
+        expect(saveUserPermissionsMock).toHaveBeenCalledOnce() // Verify saveUserPermissions was actually called
+      })
     })
   })
 })

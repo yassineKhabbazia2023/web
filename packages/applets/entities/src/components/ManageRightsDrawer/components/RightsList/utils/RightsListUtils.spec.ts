@@ -111,6 +111,58 @@ describe('rightsListUtils', () => {
 
       expect(authorizationState).toStrictEqual(expectedAuthorizationState)
     })
+
+    it('should include defaultCheckedRights that exist in available actions', () => {
+      const authorizationState = getAuthorizationState(
+        mockedActions,
+        [
+          CollaboratorPermission.ACCEDER_CALENDRIER, // exists in actions but disabled
+          CollaboratorPermission.RETIRER_UTILISATEUR_CLIENT_DOSSIER, // exists but disabled
+          'NON_EXISTENT_CODE' as any, // does not exist in actions
+        ],
+      )
+
+      expect(authorizationState).toStrictEqual({
+        actions: [
+          CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION,
+          CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
+          CollaboratorPermission.ACCEDER_CALENDRIER,
+          CollaboratorPermission.RETIRER_UTILISATEUR_CLIENT_DOSSIER,
+        ],
+        isActive: true,
+      })
+    })
+
+    it('should filter out defaultCheckedRights that do not exist in available actions', () => {
+      const authorizationState = getAuthorizationState(
+        mockedActions,
+        ['NON_EXISTENT_CODE_1' as any, 'NON_EXISTENT_CODE_2' as any],
+      )
+
+      expect(authorizationState).toStrictEqual(expectedAuthorizationState)
+    })
+
+    it('should deduplicate when defaultCheckedRights overlap with enabled actions', () => {
+      const authorizationState = getAuthorizationState(
+        mockedActions,
+        [
+          CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION, // already enabled
+          CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE, // already enabled
+          CollaboratorPermission.ACCEDER_CALENDRIER, // disabled, will be added
+        ],
+      )
+
+      expect(authorizationState).toStrictEqual({
+        actions: [
+          CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION,
+          CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
+          CollaboratorPermission.ACCEDER_CALENDRIER,
+        ],
+        isActive: true,
+      })
+      // Verify no duplicates
+      expect(authorizationState.actions.length).toBe(3)
+    })
   })
 
   describe('getPennylaneDropdownOptions(', () => {

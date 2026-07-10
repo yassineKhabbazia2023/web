@@ -6,6 +6,7 @@ export interface AddCustomerContentProps {
   contactId?: number
   entityId: number
   accountNumber: string
+  isProspect: boolean
   hasFormSubmissionFailed: boolean
   emailErrorMessage: string
   firstNameErrorMessage: string
@@ -14,5 +15,4 @@ export interface AddCustomerContentProps {
   addCustomerDrawerStepIndex: number
   addCustomerDrawerStep: AddCustomerDrawerStep
   stepperSteps: AddCustomerDrawerStep[]
-  isProspect: boolean
 }

@@ -115,6 +115,8 @@ const { t } = useI18n({
       mirrorView: 'Customer mirror view',
       manage: 'File management',
       prod: 'Business production',
+      conformityJourney: 'Conformity Journey',
+      documents: 'Documents',
       thisAccount: 'this folder',
       thisUser: 'this user',
       rightsNote: 'Select the rights you want to grant to {rightsType}:',
@@ -136,6 +138,8 @@ const { t } = useI18n({
       mirrorView: 'Vue miroir client',
       manage: 'Gestion des dossiers',
       prod: 'Production métier',
+      conformityJourney: 'Parcours Conformité',
+      documents: 'Documents',
       thisAccount: 'ce dossier',
       thisUser: 'cet utilisateur',
       rightsNote: 'Sélectionnez les droits que vous souhaitez accorder à {rightsType} :',
@@ -168,6 +172,8 @@ const RIGHT_CATEGORIES = {
   CLTESC: t('accountingManagement'),
   CLTGS: t('socialManagement'),
   CLTPILOTAGE: t('management'),
+  CLTPCONF: t('conformityJourney'),
+  CLTPDOCP: t('documents'),
 }
 
 const ACTION_ORDER: Record<string, string[]> = {
@@ -303,7 +309,7 @@ onMounted(async () => {
     authorizationsConfig.value.forEach(
       (authConfig: AuthorizationConfigMapped) => {
         internalAuthorizationState.value[authConfig.category.code] =
-          getAuthorizationState(authConfig.actions)
+          getAuthorizationState(authConfig.actions, props.defaultCheckedRights)
       },
     )
   } catch (error) {

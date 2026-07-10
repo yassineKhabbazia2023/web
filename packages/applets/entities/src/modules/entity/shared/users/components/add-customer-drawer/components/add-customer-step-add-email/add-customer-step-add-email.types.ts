@@ -6,5 +6,4 @@ export interface AddCustomerStepAddEmailProps {
   firstNameErrorMessage: string
   lastNameErrorMessage: string
   shouldEnableNames: boolean
-  isProspect: boolean
 }

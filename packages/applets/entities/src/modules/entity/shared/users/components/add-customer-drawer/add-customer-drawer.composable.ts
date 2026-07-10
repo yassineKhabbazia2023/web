@@ -11,7 +11,8 @@ import { saveUserPermissions, getPennylaneRoleLabelByCode } from '@entities/comp
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import type { PennylaneAvailableRole } from '@pulse/common/types'
-import type { AccountType } from '@pulse/common/enums'
+import { AccountType } from '@pulse/common/enums'
+import { i18n } from '@pulse/common/i18n'
 
 function amplitudeTrack(result: 'failed' | 'succeeded') {
   AmplitudeService.track('Onboarding Started', {
@@ -138,6 +139,8 @@ export function useAddCustomerDrawer({
       }
     } catch (e) {
       logger.error(e)
+      displayNotification('error', i18n.global.t('entities.addCustomerDrawer.errorMessage'))
+      return false
     }
   }
 
@@ -149,17 +152,25 @@ export function useAddCustomerDrawer({
       logger.error('Unmanaged case, contactId is not set')
       return false
     }
-    const roleLabel = getPennylaneRoleLabel()
-    await saveUserPermissions({
-      contactId: contactId.value,
-      entityId: targetEntityId,
-      authorizationsState,
-      additionalOptionByActionCode: additionalOptionByActionCode.value,
-      additionalOptionByActionCodeOrigin: additionalOptionByActionCodeOrigin.value,
-      localisation: TRACKING_LOCALISATION.ADD_NEW_USER,
-      roleLabel,
-    })
-    return true
+    isNextButtonLoading.value = true
+    try {
+      const roleLabel = getPennylaneRoleLabel()
+      const isSuccess = await saveUserPermissions({
+        contactId: contactId.value,
+        entityId: targetEntityId,
+        authorizationsState,
+        additionalOptionByActionCode: additionalOptionByActionCode.value,
+        additionalOptionByActionCodeOrigin: additionalOptionByActionCodeOrigin.value,
+        localisation: TRACKING_LOCALISATION.ADD_NEW_USER,
+        roleLabel,
+      })
+      if (isSuccess === false) {
+        throw new Error('Failed to save user permissions')
+      }
+      return true
+    } finally {
+      isNextButtonLoading.value = false
+    }
   }
 
   function getPennylaneRoleLabel(): string | undefined {

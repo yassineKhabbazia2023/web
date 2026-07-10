@@ -2,7 +2,7 @@
   <PDrawer
     v-model="isDrawerOpened"
     pSize="50%"
-    :pTitle="drawerTitle"
+    :pTitle="t('addUser')"
     @close-drawer-button="isDrawerOpened = false"
   >
     <template #header-prefix>
@@ -24,6 +24,7 @@
       :newContact="newContact"
       :entityId="targetEntityId"
       :accountNumber="targetEntityNumber"
+      :isProspect="isProspect"
       :contactId="contactId"
       :hasFormSubmissionFailed="hasFormSubmissionFailed"
       :emailErrorMessage="emailErrorMessage"
@@ -33,21 +34,20 @@
       :addCustomerDrawerStepIndex="addCustomerDrawerStepIndex"
       :addCustomerDrawerStep="addCustomerDrawerStep"
       :stepperSteps="stepperSteps"
-      :isProspect="isProspect"
       @update:email="onUpdateEmail"
       @update:first-name="onUpdateFirstName"
       @update:last-name="onUpdateLastName"
     />
     <template #footer>
       <PDrawerActions
-        v-if="isLastStep === false"
+        v-if="shouldShowDrawerActions"
         :pBackCTA="backCTA"
         :pPrimaryCTA="primaryCTA"
         @click-primary-cta="onClickNext"
         @click-back-cta="onClickPrevious"
       />
       <PButton
-        v-if="isLastStep === true"
+        v-if="shouldShowCloseButton"
         pPlain
         pType="primary"
         data-testid="add-customer-cancel-button"
@@ -69,7 +69,7 @@ import {
 } from '@pulse/styleguide/components'
 import type { AddCustomerDrawerProps } from './add-customer-drawer.types'
 import AddCustomerContent from './components/add-customer-content/add-customer-content.vue'
-import { ADD_CUSTOMER_USER_DRAWER_STEPS, ADD_PROSPECT_USER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_USER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
 import { AccountType } from '@pulse/common/enums'
@@ -83,7 +83,6 @@ const { t } = useI18n({
       nextLabel: 'Next',
       addUser: 'Add a user',
       previousLabel: 'Cancel',
-      userAdded: 'User added',
       incorrectEmail: 'Email format is not valid',
       alreadyAddedToAccount: 'This user has already been added to this account',
       noRights: 'Do not grant any rights',
@@ -96,7 +95,6 @@ const { t } = useI18n({
       nextLabel: 'Suivant',
       addUser: 'Ajouter un utilisateur',
       previousLabel: 'Annuler',
-      userAdded: 'Utilisateur ajouté',
       incorrectEmail: 'L\'adresse mail n\'est pas conforme',
       alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté sur cette entité',
       noRights: 'Ne pas donner de droit',
@@ -115,15 +113,9 @@ const emit = defineEmits<{
 
 const isProspect = computed(() => props.targetEntityAccountType === AccountType.PROSPECT)
 
-const addCustomerDrawerSteps = computed(() =>
-  isProspect.value
-    ? ADD_PROSPECT_USER_DRAWER_STEPS
-    : ADD_CUSTOMER_USER_DRAWER_STEPS,
-)
-
 // Steps shown in the stepper header (the final confirmation step is never displayed there)
 const stepperSteps = computed(() =>
-  addCustomerDrawerSteps.value.filter((step) => step !== AddCustomerDrawerStep.FORM_SENT),
+  ADD_CUSTOMER_USER_DRAWER_STEPS.filter((step) => step !== AddCustomerDrawerStep.FORM_SENT),
 )
 
 const {
@@ -135,7 +127,6 @@ const {
   isNextButtonDisabled,
   newContact,
   contactId,
-  isAddContactSucceeded,
   emailErrorMessage,
   firstNameErrorMessage,
   lastNameErrorMessage,
@@ -154,10 +145,8 @@ const {
   requiredInputMessage: t('requiredInput'),
   alreadyAddedToAccountMessage: t('alreadyAddedToAccount'),
   addCustomerFailedMessage: t('addCustomerFailed'),
-  addCustomerDrawerSteps,
+  addCustomerDrawerSteps: ADD_CUSTOMER_USER_DRAWER_STEPS,
 })
-
-const drawerTitle = computed(() => isAddContactSucceeded.value ? t('userAdded') : t('addUser'))
 
 const nextLabelKey = computed(() => {
   switch (addCustomerDrawerStep.value) {
@@ -186,6 +175,12 @@ const primaryCTA = computed(() => ({
   pLoading: isNextButtonLoading.value,
   pTestId: 'nextButton',
 }))
+
+const shouldShowDrawerActions = computed(() => isLastStep.value === false)
+
+const shouldShowCloseButton = computed(() =>
+  addCustomerDrawerStep.value === AddCustomerDrawerStep.FORM_SENT,
+)
 
 const isDrawerOpened = computed({
   get() {

@@ -5,4 +5,5 @@ export interface AddCustomerStepManageRightsProps {
   contactId: number
   entityId: number
   accountNumber: string
+  isProspect: boolean
 }

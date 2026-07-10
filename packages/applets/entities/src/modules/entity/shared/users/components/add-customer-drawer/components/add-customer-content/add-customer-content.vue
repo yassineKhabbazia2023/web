@@ -3,7 +3,7 @@
     v-if="isStepperVisible"
     :addCustomerDrawerStepIndex="addCustomerDrawerStepIndex"
     :steps="stepperSteps"
-    class="margin-bottom--10"
+    class="margin-bottom--6"
   />
   <AddCustomerStepAddEmail
     v-if="addCustomerDrawerStep === AddCustomerDrawerStep.ADD_EMAIL"
@@ -12,7 +12,6 @@
     :firstNameErrorMessage="firstNameErrorMessage"
     :lastNameErrorMessage="lastNameErrorMessage"
     :shouldEnableNames="shouldEnableNames"
-    :isProspect="isProspect"
     @update:email="emit('update:email', $event)"
     @update:first-name="emit('update:first-name', $event)"
     @update:last-name="emit('update:last-name', $event)"
@@ -27,6 +26,7 @@
     :contactId="contactId"
     :entityId="entityId"
     :accountNumber="accountNumber"
+    :isProspect="isProspect"
   />
   <AddCustomerStepFormSent
     v-if="addCustomerDrawerStep === AddCustomerDrawerStep.FORM_SENT"

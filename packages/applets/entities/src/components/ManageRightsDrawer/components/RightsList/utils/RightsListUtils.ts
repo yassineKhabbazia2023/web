@@ -38,13 +38,22 @@ export const getAuthorizationsConfigMapped = ({
 
 export const getAuthorizationState = (
   actions: Action[],
+  defaultCheckedRights: Permission[] = [],
 ): AuthorizationState => {
   const enabledActions = actions
     .filter((action) => action.enabled)
     .map(({ code }) => code)
+
+  const availableActionCodes = new Set(actions.map(({ code }) => code))
+  const defaultActionsToCheck = defaultCheckedRights.filter((code) =>
+    availableActionCodes.has(code),
+  )
+
+  const allEnabledActions = [...new Set([...enabledActions, ...defaultActionsToCheck])]
+
   return {
-    actions: enabledActions,
-    isActive: enabledActions.length > 0,
+    actions: allEnabledActions,
+    isActive: allEnabledActions.length > 0,
   }
 }
 

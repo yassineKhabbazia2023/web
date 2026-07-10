@@ -406,14 +406,12 @@ function handleToolboxClick(userRow: User) {
   toolboxItems.value.length = 0
   const items: PToolboxItemProps[] = []
 
-  if (isProspectEntity.value === false) {
-    items.push({
-      pIconName: 'pencilSquare',
-      pValue: t('modifyRights'),
-      pActionName: UserActions.MODIFY_RIGHTS,
-      pState: 'default',
-    })
-  }
+  items.push({
+    pIconName: 'pencilSquare',
+    pValue: t('modifyRights'),
+    pActionName: UserActions.MODIFY_RIGHTS,
+    pState: 'default',
+  })
 
   if (canAssignSignatory.value) {
     items.unshift(...getSignatoryToolboxItems(userRow))

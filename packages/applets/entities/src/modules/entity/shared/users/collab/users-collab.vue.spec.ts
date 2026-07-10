@@ -322,10 +322,10 @@ describe('usersCollab', () => {
       wrapper.vm.handleToolboxClick(mockedCustomersCollab[1])
       await nextTick()
 
-      expect(wrapper.vm.toolboxItems).toStrictEqual([removeUserToolboxItem])
+      expect(wrapper.vm.toolboxItems).toStrictEqual([modifyToolboxItem, removeUserToolboxItem])
     })
 
-    it('should hide the "modify rights" action for a prospect entity user', async () => {
+    it('should show both "modify rights" and "remove user" actions for a prospect entity user', async () => {
       currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
       hasPermissionMock.mockReturnValue(true)
       wrapper = createWrapper()
@@ -334,7 +334,7 @@ describe('usersCollab', () => {
       wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
       await nextTick()
 
-      expect(wrapper.vm.toolboxItems).toStrictEqual([removeUserToolboxItem])
+      expect(wrapper.vm.toolboxItems).toStrictEqual([modifyToolboxItem, removeUserToolboxItem])
     })
 
     it('should hide the actions menu entirely for a prospect user without the remove permission', async () => {
