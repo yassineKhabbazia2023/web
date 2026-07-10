@@ -1,0 +1,2 @@
+export const DESKTOP_FOLDERS_PAGE_SIZE = 30
+export const MOBILE_FOLDERS_PAGE_SIZE = 5

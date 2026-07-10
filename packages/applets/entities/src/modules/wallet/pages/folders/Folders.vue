@@ -167,19 +167,14 @@
         @display-remove-current-user-from-folder-modal="handleDisplayRemoveCurrentUserFromFolderModal"
         @sort-account="handleSortAccount"
       />
-      <PPagination
-        v-model:p-page-size="searchCriteria.limit"
+      <PSamePagePagination
+        v-if="hasMoreResults"
+        :pLabel="t('showMoreResults')"
+        :pLoading="isLoadingMore"
         class="margin-top--6"
-        :pCurrentPage="searchResult.currentPage"
-        :pTotal="searchResult.totalItems"
-        :pPageSizes="pageSizes"
-        pPageSizeSelectorSuffix=""
-        pShowTotalPageCounter
-        @on-page-range-changed="handlePageRangeChanged"
-        @update:p-current-page="onUpdateCurrentPage"
-      >
-        <p>{{ paginationLabel }}</p>
-      </PPagination>
+        pTestIdRoot="folders"
+        @load-more="loadMoreResults"
+      />
       <ResendActivationEmailDrawer
         v-if="isResendActivationEmailDrawerVisible && selectedAccount"
         v-model="isResendActivationEmailDrawerVisible"
@@ -224,8 +219,8 @@ import {
   PLoader,
   PButton,
   PPastille,
-  PPagination,
   PIcon,
+  PSamePagePagination,
 } from '@pulse/styleguide/components'
 import { displayNotification, useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
@@ -238,9 +233,8 @@ import { storeToRefs } from 'pinia'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
-import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
-import { PAGE_SIZES, LARGE_PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { fetchWalletData } from './FoldersUtils'
 import type {
@@ -270,6 +264,7 @@ import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/registry'
 import { useSort } from '@pulse/common/composables/sort'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
+import { DESKTOP_FOLDERS_PAGE_SIZE, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -287,6 +282,7 @@ const { t } = useI18n({
       delegation: 'My delegations | Delegate my folder | Delegate my folders',
       createTestAccount: 'Create a test account',
       manageAccess: 'Manage access',
+      showMoreResults: 'Show more results',
       removeFromFoldersCheckError: 'The withdrawal action could not be prepared. Please try again in a few moments.',
       removeFromFoldersSuccessSingle: 'You removed yourself from the selected folder.',
       removeFromFoldersSuccessMultiple: 'You removed yourself from the {count} selected folders.',
@@ -308,6 +304,7 @@ const { t } = useI18n({
       delegation: 'Mes délégations | Déléguer le dossier | Déléguer les dossiers',
       createTestAccount: 'Créer un compte de test',
       manageAccess: 'Gérer les accès',
+      showMoreResults: 'Afficher plus de résultats',
       removeFromFoldersCheckError: 'L’action de retrait n’a pas pu être préparée. Réessayez dans quelques instants.',
       removeFromFoldersSuccessSingle: 'Vous vous êtes retiré du dossier sélectionné.',
       removeFromFoldersSuccessMultiple: 'Vous vous êtes retiré des {count} dossiers sélectionnés.',
@@ -329,14 +326,14 @@ const { isMobile } = useResponsive()
 const searchPlaceholder = computed(() =>
   isMobile.value ? t('searchShort') : t('search'),
 )
-
-const pageSizes = computed(() =>
-  isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : LARGE_PAGE_SIZES,
+const currentFoldersPageSize = computed(() =>
+  isMobile.value ? MOBILE_FOLDERS_PAGE_SIZE : DESKTOP_FOLDERS_PAGE_SIZE,
 )
-const currentPageSize = computed((): number => isMobile.value === true ? pageSizes.value[0] : pageSizes.value[2])
 
 const searchBar = ref()
 const isLoading = ref(true)
+const isLoadingMore = ref(false)
+const shouldAppendNextFetch = ref(false)
 const selectedCompanyName = ref('')
 
 const isManageAccessDrawerOpened = ref(false)
@@ -606,7 +603,7 @@ const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
 
 const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
-  limit: currentPageSize.value,
+  limit: currentFoldersPageSize.value,
   search: '',
   sorting: {
     field: '',
@@ -669,18 +666,9 @@ const handleSearchValueSubmitted = (searchValue: string) => {
   searchCriteria.value.search = searchValue
 }
 
-const handlePageRangeChanged = (pageRange: number) => {
-  WalletTrackingManager.trackPaginationSizeChanged(pageRange)
-  searchCriteria.value.currentPage = 1
-  searchCriteria.value.limit = pageRange
-}
-
-const paginationLabel = computed(() => getPaginationLabel(t('on'), {
-  currentPage: searchCriteria.value.currentPage,
-  limit: searchCriteria.value.limit,
-  data: searchResult.value.items,
-  totalItems: searchResult.value.totalItems,
-}))
+const hasMoreResults = computed(() =>
+  searchResult.value.items.length < searchResult.value.totalItems,
+)
 
 const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
   // map from updated store
@@ -692,19 +680,31 @@ const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
   userStore.setFavoriteEntities(entitiesInFavorite)
 }
 
-async function fetchAccountList() {
-  isLoading.value = true
-  try {
-    const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value)
+async function fetchAccountList(shouldAppendResults = false) {
+  if (shouldAppendResults) {
+    isLoadingMore.value = true
+  } else {
+    isLoading.value = true
+  }
 
-    searchResult.value.items = queryResult.items
+  try {
+    const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, { ...searchCriteria.value })
+
+    searchResult.value.items = shouldAppendResults
+      ? [...searchResult.value.items, ...queryResult.items]
+      : queryResult.items
     searchResult.value.currentPage = queryResult.currentPage
     searchResult.value.totalPage = queryResult.totalPage
     searchResult.value.totalItems = queryResult.totalItems
   } catch (e) {
     logger.error('Error while fetching data', e)
+  } finally {
+    if (shouldAppendResults) {
+      isLoadingMore.value = false
+    } else {
+      isLoading.value = false
+    }
   }
-  isLoading.value = false
 }
 
 async function onManageAccessButtonClick() {
@@ -729,9 +729,17 @@ const handleAddFavorite = async (accountId: number, isFavorite: boolean) => {
   await fetchTableDataAndFavorites()
 }
 
-function onUpdateCurrentPage(currentPage: number) {
-  WalletTrackingManager.trackPaginationPageClicked(currentPage)
-  searchCriteria.value.currentPage = currentPage
+function loadMoreResults() {
+  if (isLoadingMore.value === true || hasMoreResults.value === false) {
+    return
+  }
+
+  const nextPage = searchCriteria.value.currentPage + 1
+
+  shouldAppendNextFetch.value = true
+  isLoadingMore.value = true
+  WalletTrackingManager.trackPaginationPageClicked(nextPage)
+  searchCriteria.value.currentPage = nextPage
 }
 
 const manageAccessCount = ref<number>()
@@ -769,8 +777,15 @@ onMounted(async () => {
 })
 
 watch(searchCriteria, async () => {
-  await fetchAccountList()
+  const shouldAppendResults = shouldAppendNextFetch.value
+  shouldAppendNextFetch.value = false
+  await fetchAccountList(shouldAppendResults)
 }, { deep: true })
+
+watch(currentFoldersPageSize, (limit) => {
+  searchCriteria.value.currentPage = 0
+  searchCriteria.value.limit = limit
+})
 
 const openOffersDrawer = ref(false)
 const hasOffersDrawer = ref(false)
@@ -793,7 +808,7 @@ const onClickFolder = (entityId: number) => {
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   searchCriteria.value = {
     currentPage: 0,
-    limit: pageSizes.value[0],
+    limit: currentFoldersPageSize.value,
     filterByDeploymentStatus: [filterValue.toString()],
     sorting: {
       field: '',
@@ -805,7 +820,7 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
 const handleRemoveFilter = () => {
   searchCriteria.value = {
     currentPage: 0,
-    limit: pageSizes.value[0],
+    limit: currentFoldersPageSize.value,
     sorting: {
       field: '',
       descending: false,
@@ -828,6 +843,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
   // Prevents layout shift when dynamic UI elements like the "Clear" button are shown.
   min-height: 44px;
 }
+
 // Ensures a smooth transition when the filter count disappears
 .fade-enter-active,
 .fade-leave-active {

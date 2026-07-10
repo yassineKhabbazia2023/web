@@ -11,7 +11,7 @@ import {
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { nextTick, reactive } from 'vue'
-import { getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/__mocks__/deploy-utils.mocks'
+import { getMockedMappedAccount, getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/__mocks__/deploy-utils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { loggerMock } from '@pulse/toolbox/mocks'
@@ -27,6 +27,7 @@ import ManageWalletButton from './components/ManageWalletButton/ManageWalletButt
 import { MISSION_TYPE } from '@entities/constants'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
+import { DESKTOP_FOLDERS_PAGE_SIZE, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
 
 import Folders from './Folders.vue'
 
@@ -40,14 +41,20 @@ vi.mock('@pulse/toolbox', () => ({
 }))
 
 const displayNotificationMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@pulse/styleguide')>()
-
-  return {
-    ...actual,
-    displayNotification: displayNotificationMock,
-  }
-})
+const isMobileMock = vi.hoisted(() => ({
+  value: false,
+  __v_isRef: true,
+}))
+vi.mock('@pulse/styleguide', () => ({
+  AvatarRoles: {
+    CLIENT: 'client',
+    COLLAB: 'collaborator',
+    PROSPECT: 'prospect',
+  },
+  displayNotification: displayNotificationMock,
+  getAvatarColorFromKey: () => 'persian',
+  useResponsive: () => ({ isMobile: isMobileMock }),
+}))
 
 vi.mock('@entities/services/registry', () => registryServiceMock)
 
@@ -190,6 +197,7 @@ describe('deploy', () => {
     const userMock = getMockedUserInfo()
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
+    isMobileMock.value = false
     hasPermissionMock.mockReturnValue(false)
     isManageWalletMenuActivatedMock.mockReturnValue(true)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
@@ -203,6 +211,10 @@ describe('deploy', () => {
     })
     mockFetchWalletData
       .mockResolvedValue(mockedQueryResult)
+  })
+
+  afterEach(() => {
+    isMobileMock.value = false
   })
 
   it('should call setFavoriteEntities', async () => {
@@ -738,15 +750,62 @@ describe('deploy', () => {
     expect(manageFavoriteEntitiesMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId, true)
   })
 
-  it('should update the current page when it changes', async () => {
+  it('should progressively append folders when loading more results multiple times', async () => {
+    const firstFolder = getMockedMappedAccount({ accountId: 1, accountNumber: '1' })
+    const secondFolder = getMockedMappedAccount({ accountId: 2, accountNumber: '2' })
+    const thirdFolder = getMockedMappedAccount({ accountId: 3, accountNumber: '3' })
+    mockFetchWalletData
+      .mockResolvedValueOnce(getMockedWalletQueryResult({
+        currentPage: 0,
+        items: [firstFolder],
+        totalItems: 3,
+        totalPage: 3,
+      }))
+      .mockResolvedValueOnce(getMockedWalletQueryResult({
+        currentPage: 1,
+        items: [secondFolder],
+        totalItems: 3,
+        totalPage: 3,
+      }))
+      .mockResolvedValueOnce(getMockedWalletQueryResult({
+        currentPage: 2,
+        items: [thirdFolder],
+        totalItems: 3,
+        totalPage: 3,
+      }))
+
     const wrapper = createWrapper()
     await flushPromises()
 
-    const pagination = wrapper.findComponent({ name: 'PPagination' })
-    pagination.vm.$emit('update:pCurrentPage', 5)
-    await nextTick()
+    const samePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
+    samePagePagination.vm.$emit('load-more')
+    await flushPromises()
+    samePagePagination.vm.$emit('load-more')
+    await flushPromises()
 
-    expect(wrapper.vm.searchCriteria.currentPage).toBe(5)
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+
+    expect(table.props()).toEqual(expect.objectContaining({
+      data: [firstFolder, secondFolder, thirdFolder],
+    }))
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expect.objectContaining({
+        currentPage: 1,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
+      }),
+    )
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      3,
+      expect.anything(),
+      expect.objectContaining({
+        currentPage: 2,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
+      }),
+    )
+    expect(wrapper.findComponent({ name: 'PSamePagePagination' }).exists()).toBe(false)
   })
 
   it('should call api when user search', async () => {
@@ -763,7 +822,38 @@ describe('deploy', () => {
       filterByMissionType: undefined,
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
-      limit: 90,
+      limit: DESKTOP_FOLDERS_PAGE_SIZE,
+      search: SEARCH_VALUE,
+      sorting: {
+        descending: false,
+        field: '',
+      },
+    })
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expectedSearchCriteria,
+    )
+  })
+
+  it('should use mobile page size when user searches on mobile', async () => {
+    isMobileMock.value = true
+    const wrapper = createWrapper()
+    const SEARCH_VALUE = 'customSearchValue'
+
+    const formSearch = wrapper.findComponent({ name: 'FormSearch' })
+    formSearch.vm.$emit('search-value-submitted', SEARCH_VALUE)
+    await nextTick()
+
+    const expectedSearchCriteria = getMockedSearchCriteria({
+      currentPage: 1,
+      filterByDeploymentStatus: undefined,
+      filterByMissionType: undefined,
+      isCustomerRelationFilter: false,
+      isFavoriteFilter: false,
+      limit: MOBILE_FOLDERS_PAGE_SIZE,
       search: SEARCH_VALUE,
       sorting: {
         descending: false,
@@ -898,17 +988,21 @@ describe('deploy', () => {
     await nextTick()
     await flushPromises()
 
-    const expectedSearchCriteria = getMockedSearchCriteria({
+    const expectedSearchCriteria = {
       currentPage: 0,
       filterByDeploymentStatus: [EntityStatus.TO_DEPLOY.toString()],
-      limit: 30,
-    })
+      limit: DESKTOP_FOLDERS_PAGE_SIZE,
+      sorting: {
+        descending: false,
+        field: '',
+      },
+    }
     // base call + filter call
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(mockFetchWalletData).toHaveBeenNthCalledWith(
       2,
       expect.anything(),
-      expectedSearchCriteria,
+      expect.objectContaining(expectedSearchCriteria),
     )
   })
 
@@ -922,16 +1016,20 @@ describe('deploy', () => {
     tags.vm.$emit('removeFilter')
     await flushPromises()
 
-    const expectedSearchCriteria = getMockedSearchCriteria({
+    const expectedSearchCriteria = {
       currentPage: 0,
-      limit: 30,
-    })
+      limit: DESKTOP_FOLDERS_PAGE_SIZE,
+      sorting: {
+        descending: false,
+        field: '',
+      },
+    }
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(mockFetchWalletData).toHaveBeenNthCalledWith(
       2,
       expect.anything(),
-      expectedSearchCriteria,
+      expect.objectContaining(expectedSearchCriteria),
     )
   })
 
@@ -969,7 +1067,7 @@ describe('deploy', () => {
       filterByMissionType: undefined,
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
-      limit: 90,
+      limit: DESKTOP_FOLDERS_PAGE_SIZE,
       search: expectedSearchValue,
       sorting: {
         descending: false,
@@ -1125,7 +1223,7 @@ describe('deploy', () => {
         filterByMissionType: [MISSION_TYPE.TENUE],
         isCustomerRelationFilter: false,
         isFavoriteFilter: false,
-        limit: 90,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
           descending: false,
@@ -1157,7 +1255,7 @@ describe('deploy', () => {
         filterByLastActivityPeriodInDays: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
         isCustomerRelationFilter: false,
         isFavoriteFilter: false,
-        limit: 90,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
           descending: false,
@@ -1187,7 +1285,7 @@ describe('deploy', () => {
         filterByMissionType: undefined,
         isCustomerRelationFilter: true,
         isFavoriteFilter: false,
-        limit: 90,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
           descending: false,
@@ -1246,7 +1344,7 @@ describe('deploy', () => {
         filterByMissionType: undefined,
         isCustomerRelationFilter: false,
         isFavoriteFilter: false,
-        limit: 90,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
           descending: false,
