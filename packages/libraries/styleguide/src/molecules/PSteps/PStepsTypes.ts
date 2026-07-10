@@ -8,6 +8,7 @@ export interface PStepsItem {
   pDescription?: string
   pIcon?: string | Component
   pStatus?: PStepStatus
+  pDataTestId?: string
   class?: unknown
   style?: StyleValue
 }

@@ -31,6 +31,7 @@
         max-width-500
         margin-bottom--3
       "
+      data-testid="prospect-search-input"
       @search-value-submitted="handleSearchValueSubmitted"
     />
     <div
@@ -69,6 +70,7 @@
         :pPageSizes="pageSizes"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
+        data-testid="prospect-pagination"
         @on-page-range-changed="handlePageRangeChanged"
         @update:p-current-page="onUpdateCurrentPage"
       >

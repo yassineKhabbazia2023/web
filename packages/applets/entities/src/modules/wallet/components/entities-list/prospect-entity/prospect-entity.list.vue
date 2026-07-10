@@ -6,6 +6,7 @@
     pStripe
     tableLayout="fixed"
     pCardClickable
+    data-testid="prospect-table"
     @sort-change="handleSort"
     @row-click="onRowClick"
   >
@@ -149,7 +150,7 @@
         <PToolbox
           trigger="click"
           :pElements="menuElements"
-          data-testid="wallet-actions-toolbox"
+          data-testid="prospect-table-toolbox"
           @p-toolbox-item-clicked="($event: ProspectAction) => onToolboxItemClicked($event, scope.row)"
         >
           <PButton

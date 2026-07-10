@@ -3,6 +3,7 @@
     :pActive="stepIndex"
     :pFinishStatus="PStepStatus.SUCCESS"
     :pSteps="stepItems"
+    data-testid="prospect-stepper"
   />
 </template>
 
@@ -38,6 +39,12 @@ const props = defineProps<ProspectCreationStepsProps>()
 
 const { isMobile } = useResponsive()
 
+const stepTestIds: Record<ProspectCreationDrawerStep, string> = {
+  [ProspectCreationDrawerStep.INFORMATION]: 'prospect-stepper-step-information',
+  [ProspectCreationDrawerStep.COMPANY]: 'prospect-stepper-step-company',
+  [ProspectCreationDrawerStep.CONTACT]: 'prospect-stepper-step-contact',
+}
+
 const stepItems = computed<PStepsItem[]>(() => {
   return PROSPECT_CREATION_DRAWER_STEPS.map((step, index) => {
     // On mobile, only show the active step label: all labels at once don't fit the drawer width
@@ -46,6 +53,7 @@ const stepItems = computed<PStepsItem[]>(() => {
     return {
       pTitle: isLabelVisible ? t(step) : undefined,
       class: 'flex--basis-40',
+      pDataTestId: stepTestIds[step],
     }
   })
 })

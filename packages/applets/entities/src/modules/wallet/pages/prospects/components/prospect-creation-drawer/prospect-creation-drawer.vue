@@ -3,6 +3,7 @@
     v-model="isDrawerOpened"
     pSize="50%"
     :beforeClose="requestExit"
+    data-testid="prospect-drawer"
     @close-drawer-button="requestExit"
   >
     <template #header-prefix>
@@ -92,10 +93,10 @@ const nextLabel = computed(() => isLastStep.value ? t('submit') : t('next'))
 
 const isAwaitingValidation = ref(false)
 
-const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'previousButton' }))
+const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'prospect-drawer-btn-back' }))
 const primaryCTA = computed(() => ({
   pLabel: nextLabel.value,
-  pTestId: 'nextButton',
+  pTestId: isLastStep.value ? 'prospect-drawer-btn-submit' : 'prospect-drawer-btn-next',
   pLoading: isAwaitingValidation.value || props.isSubmitting === true,
 }))
 

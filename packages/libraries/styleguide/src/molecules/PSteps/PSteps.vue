@@ -17,6 +17,7 @@
       :icon="stepItem.pIcon"
       :class="stepItem.class"
       :style="stepItem.style"
+      :data-testid="stepItem.pDataTestId"
     />
   </ElSteps>
 </template>
