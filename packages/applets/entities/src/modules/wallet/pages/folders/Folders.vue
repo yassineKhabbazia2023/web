@@ -734,7 +734,7 @@ function loadMoreResults() {
     return
   }
 
-  const nextPage = searchCriteria.value.currentPage + 1
+  const nextPage = searchResult.value.currentPage + 1
 
   shouldAppendNextFetch.value = true
   isLoadingMore.value = true
