@@ -8,6 +8,8 @@
       padding--4
     "
   >
+    <!-- Content grafted above the header (e.g. a completion alert). -->
+    <slot name="pre-header" />
     <div
       v-if="pTitle !== undefined"
       class="p-completion-tracker__header"

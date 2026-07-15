@@ -2,7 +2,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useElementSize, useEventListener, useScroll } from '@vueuse/core'
 import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
-import { PROSPECT_CONFORMITY_STEPS } from './prospect-conformity.consts'
+import type { ProspectConformityStep } from './prospect-conformity.types'
 
 const SCROLL_LOCK_DURATION_MS = 800
 const SCROLLSPY_ROOT_MARGIN = '-15% 0px -80% 0px'
@@ -33,13 +33,18 @@ function updateHash(stepId: string, mode: 'push' | 'replace'): void {
 
 export function useProspectConformity(
   scrollContainerRef: Ref<HTMLElement | null>,
+  getSteps: () => readonly ProspectConformityStep[],
   getFirstIncompleteStepId?: () => string | null | undefined,
 ) {
+  // The steps load asynchronously, so the hash can only be resolved against
+  // them later; capture it now before any programmatic hash update.
   const initialHash = globalThis.location.hash.replaceAll('#', '')
-  const isKnownStep = PROSPECT_CONFORMITY_STEPS.some((step) => step.slug === initialHash)
-  const fallbackId = PROSPECT_CONFORMITY_STEPS[0]?.slug ?? ''
-  const selectedId = ref(isKnownStep ? initialHash : fallbackId)
-  const shouldRestoreScroll = isKnownStep === true && initialHash !== ''
+  const selectedId = ref('')
+
+  const stepSlugs = computed(() => getSteps().map((step) => step.slug))
+  // Watch key insensitive to array identity: a reload returning the same steps
+  // (a new array with identical content) must not re-run the DOM sync.
+  const stepsKey = computed(() => stepSlugs.value.join(','))
 
   let observer: IntersectionObserver | null = null
   let isScrollLocked = false
@@ -49,7 +54,11 @@ export function useProspectConformity(
   // statuses that load late can't move the user off the step they chose.
   let hasUserNavigated = false
   let hasAutoFocused = false
+  // The initial selection (hash restore or first-step fallback) happens on the
+  // first non-empty steps list, exactly once.
+  let hasResolvedInitialSelection = false
   let stopAutoFocusWatch: (() => void) | null = null
+  let stopStepsWatch: (() => void) | null = null
   let initialScrollTimer: ReturnType<typeof setTimeout> | null = null
 
   const cancelScrollLock = (): void => {
@@ -99,7 +108,7 @@ export function useProspectConformity(
     if (newHash === '' || newHash === selectedId.value) {
       return
     }
-    const isKnown = PROSPECT_CONFORMITY_STEPS.some((step) => step.slug === newHash)
+    const isKnown = stepSlugs.value.includes(newHash)
     if (isKnown === false) {
       return
     }
@@ -130,7 +139,7 @@ export function useProspectConformity(
     updateHash(stepId, 'replace')
   }
 
-  const lastStepId = PROSPECT_CONFORMITY_STEPS.at(-1)?.slug ?? ''
+  const lastStepId = computed(() => stepSlugs.value.at(-1) ?? '')
 
   // The last (often shortest) card cannot be scrolled to the very top when the
   // remaining content below it is smaller than the viewport. A trailing spacer
@@ -149,7 +158,7 @@ export function useProspectConformity(
   // user keep scrolling past the point where the last card's top reaches the container's top edge.
   const spacerHeight = computed(() => {
     const container = scrollContainerRef.value
-    if (container === null) {
+    if (container === null || stepSlugs.value.length === 0) {
       return 0
     }
     const { rowGap, paddingBottom } = getComputedStyle(container)
@@ -173,17 +182,21 @@ export function useProspectConformity(
       // Guard against a non-scrollable container, whose arrivedState.bottom
       // reads as true even though no scrolling can ever happen.
       const isScrollable = container !== null && container.scrollHeight > container.clientHeight
+      // useScroll also measures the arrived state on mount, which can flag the
+      // bottom before the steps have loaded; ignore it until the initial
+      // selection exists, since there is nothing to select yet.
       if (
         isAtBottom === false ||
         isScrollable === false ||
         isScrollLocked === true ||
-        lastStepId === '' ||
-        selectedId.value === lastStepId
+        hasResolvedInitialSelection === false ||
+        lastStepId.value === '' ||
+        selectedId.value === lastStepId.value
       ) {
         return
       }
-      selectedId.value = lastStepId
-      updateHash(lastStepId, 'replace')
+      selectedId.value = lastStepId.value
+      updateHash(lastStepId.value, 'replace')
     },
     { flush: 'sync' },
   )
@@ -239,7 +252,9 @@ export function useProspectConformity(
   }
 
   const setupObserver = (): void => {
-    if (scrollContainerRef.value === null) {
+    observer?.disconnect()
+    observer = null
+    if (scrollContainerRef.value === null || stepSlugs.value.length === 0) {
       return
     }
     observer = new IntersectionObserver(handleIntersections, {
@@ -247,27 +262,29 @@ export function useProspectConformity(
       rootMargin: SCROLLSPY_ROOT_MARGIN,
       threshold: 0,
     })
-    PROSPECT_CONFORMITY_STEPS.forEach((step) => {
-      const element = document.getElementById(`step-${step.slug}`)
+    stepSlugs.value.forEach((slug) => {
+      const element = document.getElementById(`step-${slug}`)
       if (element !== null) {
         observer?.observe(element)
       }
     })
   }
 
-  onMounted(async () => {
-    await nextTick()
-    if (shouldRestoreScroll === true) {
+  // Once the loaded steps are known, restore the deep-linked hash if it points
+  // to one of them; otherwise land on the first available step, without
+  // scrolling. Only then arm the auto-focus, so it resolves against real steps.
+  const resolveInitialSelection = (): void => {
+    hasResolvedInitialSelection = true
+    const isKnownInitialHash = initialHash !== '' && stepSlugs.value.includes(initialHash)
+    if (isKnownInitialHash === true) {
       // Lock the scrollspy so the initial intersection burst doesn't
       // overwrite the hash-based selection while the smooth scroll runs.
       lockScrollSync()
-    }
-    setupObserver()
-    lastStepCard.value = document.getElementById(`step-${lastStepId}`)
-    if (shouldRestoreScroll === true) {
+      selectedId.value = initialHash
       scrollToStepAfterContentSettles(initialHash)
       return
     }
+    selectedId.value = stepSlugs.value[0] ?? ''
     if (getFirstIncompleteStepId !== undefined) {
       stopAutoFocusWatch = watch(getFirstIncompleteStepId, focusFirstIncompleteStep, { immediate: true })
       // The immediate run may have already focused (statuses loaded synchronously);
@@ -277,12 +294,28 @@ export function useProspectConformity(
         stopAutoFocusWatch = null
       }
     }
+  }
+
+  const handleStepsChange = async (): Promise<void> => {
+    if (hasResolvedInitialSelection === false && stepSlugs.value.length > 0) {
+      resolveInitialSelection()
+    }
+    // Let the v-for render the current step cards before wiring the
+    // DOM-dependent pieces (scrollspy targets and spacer measurement).
+    await nextTick()
+    setupObserver()
+    lastStepCard.value = document.getElementById(`step-${lastStepId.value}`)
+  }
+
+  onMounted(() => {
+    stopStepsWatch = watch(stepsKey, handleStepsChange, { immediate: true })
   })
 
   onBeforeUnmount(() => {
     cancelScrollLock()
     cancelInitialScroll()
     stopAutoFocusWatch?.()
+    stopStepsWatch?.()
     observer?.disconnect()
     observer = null
   })

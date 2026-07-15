@@ -346,6 +346,10 @@
       "conformity": {
         "title": "Steps",
         "description": "This space lets you easily track your onboarding, complete the required information, and move forward step by step with your expert.",
+        "completedAlert": {
+          "title": "Your file is complete",
+          "description": "Your expert will get back to you shortly to activate the mission and provide you with your client account"
+        },
         "sections": {
           "identity": "Identity",
           "documents": "Documents",

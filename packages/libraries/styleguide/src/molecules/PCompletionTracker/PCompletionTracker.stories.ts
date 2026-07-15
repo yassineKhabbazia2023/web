@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { computed, ref } from 'vue'
 import PCompletionTracker from './PCompletionTracker.vue'
+import PAlert from '../../atoms/PAlert'
 import PCompletionTrackerList from '../../atoms/PCompletionTrackerList/PCompletionTrackerList.vue'
 import PCompletionTrackerListItem from '../../atoms/PCompletionTrackerListItem/PCompletionTrackerListItem.vue'
 import type { PCompletionTrackerListItemStatus } from '../../atoms/PCompletionTrackerListItem/PCompletionTrackerListItemTypes'
@@ -88,6 +89,42 @@ export const Default: Story = {
               :pSecondaryText="step.secondaryText"
               @select="selectedId = step.id"
             />
+          </PCompletionTrackerList>
+        </PCompletionTracker>
+      </div>
+    `,
+  }),
+}
+
+export const WithPreHeaderAlert: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Le slot `pre-header` permet de greffer du contenu au-dessus du titre, par exemple une alerte de complétion.',
+      },
+    },
+  },
+  args: {
+    pCurrent: 4,
+    pTotal: 4,
+  },
+  render: (args) => ({
+    components: { PCompletionTracker, PCompletionTrackerList, PCompletionTrackerListItem, PAlert },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div style="width: 440px;">
+        <PCompletionTracker v-bind="args">
+          <template #pre-header>
+            <PAlert pType="success">
+              <template #bold-text>Votre dossier est complet :</template>
+              Votre expert reviendra prochainement vers vous
+            </PAlert>
+          </template>
+          <PCompletionTrackerList pTitle="Les bases">
+            <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="completed" />
+            <PCompletionTrackerListItem pLabel="Informations Entité(s)" pStatus="completed" />
           </PCompletionTrackerList>
         </PCompletionTracker>
       </div>

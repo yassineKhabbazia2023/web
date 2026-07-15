@@ -23,28 +23,16 @@
       "
     >
       <aside class="prospect-conformity__tracker padding-bottom--6">
-        <PCompletionTracker
-          :pCurrent="completedCount"
-          :pTotal="totalCount"
-          :pTitle="title"
-          :pDescription="description"
-          class="bg--white"
-        >
-          <PCompletionTrackerList
-            v-for="section in sections"
-            :key="section.key"
-            :pTitle="section.title"
-          >
-            <PCompletionTrackerListItem
-              v-for="step in section.steps"
-              :key="step.id"
-              :pLabel="step.label"
-              :pStatus="step.status"
-              :pSelected="selectedId === step.slug"
-              @select="onStepClick(step.slug)"
-            />
-          </PCompletionTrackerList>
-        </PCompletionTracker>
+        <ConformityStepper
+          :isLoading="isLoadingSteps"
+          :steps="availableSteps"
+          :stepStatusById="stepStatusById"
+          :completedCount="completedCount"
+          :totalCount="totalCount"
+          :areAllStepsCompleted="areAllStepsCompleted"
+          :selectedId="selectedId"
+          @select="onStepClick"
+        />
       </aside>
       <div
         ref="contentRef"
@@ -57,58 +45,82 @@
           padding-bottom--6
         "
       >
-        <template
-          v-for="step in steps"
-          :key="step.id"
+        <PSkeleton
+          v-if="isLoadingSteps === true"
+          pAnimated
         >
-          <!-- The conformity-documents parent renders its own supporting documents + complementary cards. -->
-          <ConformityDocuments
-            v-if="step.id === OnboardingStep.SupportingDocuments"
-            @refresh-steps="loadOnboardingSteps"
-          />
-          <ConformityStepCard
-            v-else
-            :pStepId="step.slug"
-            :pTitle="t(step.labelKey)"
-            :pHideTitle="step.id === OnboardingStep.PaymentMethod"
-          >
-            <Beneficiaries
-              v-if="step.id === OnboardingStep.Beneficiary"
-              @refresh-steps="loadOnboardingSteps"
-            />
-            <CommercialProposal
-              v-else-if="step.id === OnboardingStep.CommercialProposal"
-              @sent="loadOnboardingSteps"
-            />
-            <EngagementLetter
-              v-else-if="step.id === OnboardingStep.EngagementLetter"
-              @sent="loadOnboardingSteps"
-            />
-            <Payment
-              v-else-if="step.id === OnboardingStep.PaymentMethod"
-              :isCollaborator="isCollab"
-              :fallbackTitle="t(step.labelKey)"
-              @payment-preference-changed="loadOnboardingSteps"
-            />
-            <p
-              v-else
+          <template #template>
+            <div
               class="
-                prospect-conformity__step-description
-                font-size--14
-                margin--0
+                flex
+                flex--direction-column
+                flex-gap--6
               "
             >
-              {{ t('entities.prospect.conformity.stepPlaceholderTitle', { label: t(step.labelKey) }) }}<br>
-              {{ t('entities.prospect.conformity.stepPlaceholderHint') }}
-            </p>
-          </ConformityStepCard>
+              <PSkeletonItem
+                v-for="card in 3"
+                :key="card"
+                pVariant="rect"
+                pWidth="100%"
+                :pHeight="160"
+              />
+            </div>
+          </template>
+        </PSkeleton>
+        <template v-else>
+          <template
+            v-for="step in availableSteps"
+            :key="step.id"
+          >
+            <!-- The conformity-documents parent renders its own supporting documents + complementary cards. -->
+            <ConformityDocuments
+              v-if="step.id === OnboardingStep.SupportingDocuments"
+              @refresh-steps="loadOnboardingSteps"
+            />
+            <ConformityStepCard
+              v-else
+              :pStepId="step.slug"
+              :pTitle="t(step.labelKey)"
+              :pHideTitle="step.id === OnboardingStep.PaymentMethod"
+            >
+              <Beneficiaries
+                v-if="step.id === OnboardingStep.Beneficiary"
+                @refresh-steps="loadOnboardingSteps"
+              />
+              <CommercialProposal
+                v-else-if="step.id === OnboardingStep.CommercialProposal"
+                @sent="loadOnboardingSteps"
+              />
+              <EngagementLetter
+                v-else-if="step.id === OnboardingStep.EngagementLetter"
+                @sent="loadOnboardingSteps"
+              />
+              <Payment
+                v-else-if="step.id === OnboardingStep.PaymentMethod"
+                :isCollaborator="isCollab"
+                :fallbackTitle="t(step.labelKey)"
+                @payment-preference-changed="loadOnboardingSteps"
+              />
+              <p
+                v-else
+                class="
+                  prospect-conformity__step-description
+                  font-size--14
+                  margin--0
+                "
+              >
+                {{ t('entities.prospect.conformity.stepPlaceholderTitle', { label: t(step.labelKey) }) }}<br>
+                {{ t('entities.prospect.conformity.stepPlaceholderHint') }}
+              </p>
+            </ConformityStepCard>
+          </template>
+          <!-- Artificial trailing space so the last card can reach the top on click. -->
+          <div
+            class="prospect-conformity__spacer"
+            :style="{ height: `${spacerHeight}px` }"
+            aria-hidden="true"
+          />
         </template>
-        <!-- Artificial trailing space so the last card can reach the top on click. -->
-        <div
-          class="prospect-conformity__spacer"
-          :style="{ height: `${spacerHeight}px` }"
-          aria-hidden="true"
-        />
       </div>
     </div>
 
@@ -123,28 +135,22 @@ import { onBeforeRouteLeave } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import {
-  PCompletionTracker,
-  PCompletionTrackerList,
-  PCompletionTrackerListItem,
   PEntityHeader,
+  PSkeleton,
+  PSkeletonItem,
 } from '@pulse/styleguide/components'
-import type { PCompletionTrackerListItemStatus } from '@pulse/styleguide/types'
 import { OnboardingStep, OnboardingStepStatus } from './prospect-conformity.enums'
 import CommercialProposal from './commercial-proposal/commercial-proposal.vue'
 import EngagementLetter from './engagement-letter/engagement-letter.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import ConformityStepCard from './components/conformity-step-card/conformity-step-card.vue'
+import ConformityStepper from './components/conformity-stepper/conformity-stepper.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import { useOnboardingSteps } from './onboarding-steps.composable'
 import Beneficiaries from './beneficiaries/beneficiaries.vue'
 import Payment from './payment/payment.vue'
 import DocumentsConsultDrawer from '../documents/documents-consult-drawer/documents-consult-drawer.vue'
 import { useDocumentsConsultDrawerStore } from '../documents/documents-consult-drawer/documents-consult-drawer.store'
-import {
-  PROSPECT_CONFORMITY_SECTION_ORDER,
-  PROSPECT_CONFORMITY_SECTION_TITLE_KEYS,
-  PROSPECT_CONFORMITY_STEPS,
-} from './prospect-conformity.consts'
 
 const { t } = useI18n()
 
@@ -162,13 +168,13 @@ const contentRef = useTemplateRef<HTMLElement>('contentRef')
 
 const {
   stepStatusById,
+  availableSteps,
   completedCount,
   totalCount,
+  areAllStepsCompleted,
   isLoadingSteps,
   reload: loadOnboardingSteps,
 } = useOnboardingSteps(() => currentEntityId.value)
-
-const steps = PROSPECT_CONFORMITY_STEPS
 
 // First step still to complete, in display order. Returns null while statuses
 // are loading (nothing to focus yet) or once every step is completed.
@@ -176,7 +182,7 @@ const firstIncompleteStepId = computed(() => {
   if (isLoadingSteps.value === true) {
     return null
   }
-  const firstIncomplete = steps.find(
+  const firstIncomplete = availableSteps.value.find(
     (step) => stepStatusById.value.get(step.id) !== OnboardingStepStatus.Completed,
   )
   return firstIncomplete?.slug ?? null
@@ -184,30 +190,8 @@ const firstIncompleteStepId = computed(() => {
 
 const { selectedId, onStepClick, spacerHeight } = useProspectConformity(
   contentRef,
+  () => availableSteps.value,
   () => firstIncompleteStepId.value,
-)
-
-const toTrackerStatus = (
-  status: OnboardingStepStatus | undefined,
-): PCompletionTrackerListItemStatus =>
-  status === OnboardingStepStatus.Completed ? 'completed' : 'incomplete'
-
-const title = t('entities.prospect.conformity.title')
-const description = t('entities.prospect.conformity.description')
-
-const sections = computed(() =>
-  PROSPECT_CONFORMITY_SECTION_ORDER.map((key) => ({
-    key,
-    title: t(PROSPECT_CONFORMITY_SECTION_TITLE_KEYS[key]),
-    steps: steps
-      .filter((step) => step.section === key)
-      .map((step) => ({
-        id: step.id,
-        slug: step.slug,
-        label: t(step.labelKey),
-        status: toTrackerStatus(stepStatusById.value.get(step.id)),
-      })),
-  })),
 )
 </script>
 

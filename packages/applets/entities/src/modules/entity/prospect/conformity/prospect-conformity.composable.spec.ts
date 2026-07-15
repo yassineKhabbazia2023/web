@@ -4,7 +4,12 @@ import { useElementSize } from '@vueuse/core'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { useProspectConformity } from './prospect-conformity.composable'
 import { OnboardingStep } from './prospect-conformity.enums'
-import { PROSPECT_CONFORMITY_STEP_SLUGS } from './prospect-conformity.consts'
+import { PROSPECT_CONFORMITY_STEP_SLUGS, PROSPECT_CONFORMITY_STEPS } from './prospect-conformity.consts'
+import type { ProspectConformityStep } from './prospect-conformity.types'
+
+// Most tests exercise a page whose steps are already loaded: a getter over the
+// full static list mirrors an API returning every step.
+const getAllSteps = () => PROSPECT_CONFORMITY_STEPS
 
 // Keep the rest of VueUse real (useScroll drives the bottom-detection tests),
 // only stub useElementSize since jsdom has no ResizeObserver.
@@ -109,7 +114,7 @@ describe('useProspectConformity', () => {
   })
 
   it('initializes selectedId with the first step when location hash is empty', () => {
-    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
 
     expect(selectedId.value).toBe(FIRST_STEP_ID)
   })
@@ -117,7 +122,7 @@ describe('useProspectConformity', () => {
   it('initializes selectedId from the URL hash when it matches a known step', () => {
     setHash(`#${KNOWN_STEP_ID}`)
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
 
     expect(selectedId.value).toBe(KNOWN_STEP_ID)
   })
@@ -125,7 +130,7 @@ describe('useProspectConformity', () => {
   it('falls back to the first step when the URL hash is unknown', () => {
     setHash('#non-existing-step')
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
 
     expect(selectedId.value).toBe(FIRST_STEP_ID)
   })
@@ -133,7 +138,7 @@ describe('useProspectConformity', () => {
   it('updates selectedId, location hash and scrolls when onStepClick is called', () => {
     const target = createStepElement(KNOWN_STEP_ID, 0)
 
-    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
     onStepClick(KNOWN_STEP_ID)
 
     expect(selectedId.value).toBe(KNOWN_STEP_ID)
@@ -142,7 +147,7 @@ describe('useProspectConformity', () => {
   })
 
   it('does not throw when onStepClick targets a step without a matching DOM element', () => {
-    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
 
     expect(() => onStepClick(KNOWN_STEP_ID)).not.toThrow()
     expect(selectedId.value).toBe(KNOWN_STEP_ID)
@@ -152,7 +157,7 @@ describe('useProspectConformity', () => {
     setHash(`#${KNOWN_STEP_ID}`)
     const target = createStepElement(KNOWN_STEP_ID, 0)
 
-    withSetup(() => useProspectConformity(createScrollContainer()))
+    withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
     await vi.runAllTimersAsync()
 
     expect(target.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
@@ -163,7 +168,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(null)
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -184,7 +189,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(OTHER_STEP_ID)
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
 
     // The step is selected as soon as onMounted runs, but without advancing
@@ -205,7 +210,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(OTHER_STEP_ID)
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -220,7 +225,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(null)
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -242,7 +247,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(null)
 
     const [{ selectedId, onStepClick }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     // The watcher is armed but idle while the statuses are still loading (null).
     await vi.runAllTimersAsync()
@@ -272,7 +277,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(null)
 
     const [{ selectedId, onStepClick }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -297,7 +302,7 @@ describe('useProspectConformity', () => {
     const firstIncompleteStepId = ref<string | null>(null)
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(createScrollContainer(), () => firstIncompleteStepId.value),
+      useProspectConformity(createScrollContainer(), getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -322,7 +327,7 @@ describe('useProspectConformity', () => {
     const container = createScrollContainer()
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(container, () => firstIncompleteStepId.value),
+      useProspectConformity(container, getAllSteps, () => firstIncompleteStepId.value),
     )
     // The watcher is armed but idle while the statuses are still loading (null).
     await vi.runAllTimersAsync()
@@ -344,7 +349,7 @@ describe('useProspectConformity', () => {
     const container = createScrollContainer()
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(container, () => firstIncompleteStepId.value),
+      useProspectConformity(container, getAllSteps, () => firstIncompleteStepId.value),
     )
     await vi.runAllTimersAsync()
 
@@ -363,7 +368,7 @@ describe('useProspectConformity', () => {
     const container = createScrollContainer()
 
     const [{ selectedId }] = withSetup(() =>
-      useProspectConformity(container, () => firstIncompleteStepId.value),
+      useProspectConformity(container, getAllSteps, () => firstIncompleteStepId.value),
     )
 
     // Auto-focus selects the step and arms the deferred scroll, but it has not fired yet.
@@ -386,7 +391,7 @@ describe('useProspectConformity', () => {
     const container = createScrollContainer()
 
     const [{ selectedId, onStepClick }] = withSetup(() =>
-      useProspectConformity(container, () => firstIncompleteStepId.value),
+      useProspectConformity(container, getAllSteps, () => firstIncompleteStepId.value),
     )
 
     // Auto-focus arms the deferred scroll to the incomplete step.
@@ -409,7 +414,7 @@ describe('useProspectConformity', () => {
     const thirdElement = createStepElement(OTHER_STEP_ID, 500)
     const container = createScrollContainer()
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
     const observer = observerInstances[0]
 
@@ -428,7 +433,7 @@ describe('useProspectConformity', () => {
     const otherElement = createStepElement(OTHER_STEP_ID, 200)
     const container = createScrollContainer()
 
-    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId, onStepClick }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
     const observer = observerInstances[0]
 
@@ -451,7 +456,7 @@ describe('useProspectConformity', () => {
     const otherElement = createStepElement(OTHER_STEP_ID, 100)
     const container = createScrollContainer()
 
-    const [{ onStepClick }] = withSetup(() => useProspectConformity(container))
+    const [{ onStepClick }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
     const observer = observerInstances[0]
 
@@ -470,7 +475,7 @@ describe('useProspectConformity', () => {
     const targetElement = createStepElement(KNOWN_STEP_ID, 0)
     const container = createScrollContainer()
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
 
     setHash(`#${KNOWN_STEP_ID}`)
@@ -483,7 +488,7 @@ describe('useProspectConformity', () => {
   it('ignores hashchange events when the hash does not match a known step', async () => {
     const container = createScrollContainer()
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
     const initialSelected = selectedId.value
 
@@ -494,11 +499,12 @@ describe('useProspectConformity', () => {
   })
 
   it('selects the last step when the scroll container reaches the bottom', async () => {
-    const container = createScrollContainer({ scrollTop: 900, clientHeight: 100, scrollHeight: 1000 })
+    const container = createScrollContainer({ scrollTop: 0, clientHeight: 100, scrollHeight: 1000 })
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
 
+    container.value!.scrollTop = 900
     container.value!.dispatchEvent(new Event('scroll'))
 
     expect(selectedId.value).toBe(LAST_STEP_ID)
@@ -508,7 +514,7 @@ describe('useProspectConformity', () => {
   it('does not select the last step on scroll when not at the bottom', async () => {
     const container = createScrollContainer({ scrollTop: 200, clientHeight: 100, scrollHeight: 1000 })
 
-    const [{ selectedId }] = withSetup(() => useProspectConformity(container))
+    const [{ selectedId }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
     const initialSelected = selectedId.value
 
@@ -522,7 +528,7 @@ describe('useProspectConformity', () => {
     const lastCardHeight = ref(0)
     mockElementSizes(containerHeight, lastCardHeight)
 
-    const [{ spacerHeight }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ spacerHeight }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
     await vi.runAllTimersAsync()
 
     expect(spacerHeight.value).toBe(0)
@@ -542,7 +548,7 @@ describe('useProspectConformity', () => {
     container.value!.style.paddingBottom = '20px'
     container.value!.style.rowGap = '30px'
 
-    const [{ spacerHeight }] = withSetup(() => useProspectConformity(container))
+    const [{ spacerHeight }] = withSetup(() => useProspectConformity(container, getAllSteps))
     await vi.runAllTimersAsync()
 
     expect(spacerHeight.value).toBe(550)
@@ -551,19 +557,164 @@ describe('useProspectConformity', () => {
   it('clamps the spacer height to zero when the last card is taller than the container', async () => {
     mockElementSizes(ref(100), ref(500))
 
-    const [{ spacerHeight }] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [{ spacerHeight }] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
     await vi.runAllTimersAsync()
 
     expect(spacerHeight.value).toBe(0)
   })
 
   it('disconnects the observer when the component unmounts', async () => {
-    const [, app] = withSetup(() => useProspectConformity(createScrollContainer()))
+    const [, app] = withSetup(() => useProspectConformity(createScrollContainer(), getAllSteps))
     await vi.runAllTimersAsync()
     const observer = observerInstances[0]
 
     app.unmount()
 
     expect(observer.disconnect).toHaveBeenCalled()
+  })
+
+  describe('dynamic steps list', () => {
+    it('keeps no selection and creates no observer while the steps list is still empty', async () => {
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+
+      expect(selectedId.value).toBe('')
+      expect(observerInstances).toHaveLength(0)
+    })
+
+    it('selects the first available step once the steps load, without scrolling', async () => {
+      const firstElement = createStepElement(FIRST_STEP_ID, 0)
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+
+      steps.value = PROSPECT_CONFORMITY_STEPS
+      await vi.runAllTimersAsync()
+
+      expect(selectedId.value).toBe(FIRST_STEP_ID)
+      expect(firstElement.scrollIntoView).not.toHaveBeenCalled()
+    })
+
+    it('restores the hash selection once the loaded steps contain it', async () => {
+      setHash(`#${KNOWN_STEP_ID}`)
+      const target = createStepElement(KNOWN_STEP_ID, 0)
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+      expect(selectedId.value).toBe('')
+
+      steps.value = PROSPECT_CONFORMITY_STEPS
+      await vi.runAllTimersAsync()
+
+      expect(selectedId.value).toBe(KNOWN_STEP_ID)
+      expect(target.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+    })
+
+    it('falls back to the first available step without scrolling when the hash targets a step absent from the API', async () => {
+      setHash(`#${LAST_STEP_ID}`)
+      const stepsWithoutLast = PROSPECT_CONFORMITY_STEPS.filter((step) => step.slug !== LAST_STEP_ID)
+      const firstElement = createStepElement(FIRST_STEP_ID, 0)
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      const [{ selectedId }] = withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      steps.value = stepsWithoutLast
+      await vi.runAllTimersAsync()
+
+      expect(selectedId.value).toBe(FIRST_STEP_ID)
+      expect(firstElement.scrollIntoView).not.toHaveBeenCalled()
+    })
+
+    it('observes the step elements rendered after the steps load', async () => {
+      const firstElement = createStepElement(FIRST_STEP_ID, 0)
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+      expect(observerInstances).toHaveLength(0)
+
+      steps.value = PROSPECT_CONFORMITY_STEPS
+      await vi.runAllTimersAsync()
+
+      expect(observerInstances).toHaveLength(1)
+      expect(observerInstances[0].observe).toHaveBeenCalledWith(firstElement)
+    })
+
+    it('disconnects the previous observer and re-attaches when the step list changes', async () => {
+      const steps = ref<readonly ProspectConformityStep[]>(PROSPECT_CONFORMITY_STEPS)
+
+      withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+      expect(observerInstances).toHaveLength(1)
+
+      steps.value = PROSPECT_CONFORMITY_STEPS.slice(0, 2)
+      await vi.runAllTimersAsync()
+
+      expect(observerInstances[0].disconnect).toHaveBeenCalled()
+      expect(observerInstances).toHaveLength(2)
+    })
+
+    it('does not re-attach the observer when a reload yields the same step list', async () => {
+      const steps = ref<readonly ProspectConformityStep[]>(PROSPECT_CONFORMITY_STEPS)
+
+      withSetup(() => useProspectConformity(createScrollContainer(), () => steps.value))
+      await vi.runAllTimersAsync()
+      expect(observerInstances).toHaveLength(1)
+
+      // A reload typically returns a new array with the same content.
+      steps.value = [...PROSPECT_CONFORMITY_STEPS]
+      await vi.runAllTimersAsync()
+
+      expect(observerInstances).toHaveLength(1)
+    })
+
+    it('selects the last available step when reaching the bottom', async () => {
+      const stepsWithoutLast = PROSPECT_CONFORMITY_STEPS.filter((step) => step.slug !== LAST_STEP_ID)
+      const lastAvailableStepId = stepsWithoutLast.at(-1)?.slug ?? ''
+      const container = createScrollContainer({ scrollTop: 0, clientHeight: 100, scrollHeight: 1000 })
+
+      const [{ selectedId }] = withSetup(() => useProspectConformity(container, () => stepsWithoutLast))
+      await vi.runAllTimersAsync()
+
+      container.value!.scrollTop = 900
+      container.value!.dispatchEvent(new Event('scroll'))
+
+      expect(selectedId.value).toBe(lastAvailableStepId)
+      expect(window.location.hash).toBe(`#${lastAvailableStepId}`)
+    })
+
+    it('arms the auto-focus only once the steps have loaded', async () => {
+      const target = createStepElement(OTHER_STEP_ID, 0)
+      const firstIncompleteStepId = ref<string | null>(null)
+      const steps = ref<readonly ProspectConformityStep[]>([])
+
+      const [{ selectedId }] = withSetup(() =>
+        useProspectConformity(createScrollContainer(), () => steps.value, () => firstIncompleteStepId.value),
+      )
+
+      // The statuses resolve before the steps list: nothing must move yet.
+      firstIncompleteStepId.value = OTHER_STEP_ID
+      await vi.runAllTimersAsync()
+      expect(selectedId.value).toBe('')
+      expect(target.scrollIntoView).not.toHaveBeenCalled()
+
+      steps.value = PROSPECT_CONFORMITY_STEPS
+      await vi.runAllTimersAsync()
+
+      expect(selectedId.value).toBe(OTHER_STEP_ID)
+      expect(target.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+    })
+
+    it('returns a zero spacer while no step is rendered', async () => {
+      mockElementSizes(ref(800), ref(0))
+
+      const [{ spacerHeight }] = withSetup(() => useProspectConformity(createScrollContainer(), () => []))
+      await vi.runAllTimersAsync()
+
+      expect(spacerHeight.value).toBe(0)
+    })
   })
 })

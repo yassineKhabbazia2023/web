@@ -66,5 +66,14 @@ describe('pCompletionTracker', () => {
 
       expect(wrapper.find('.test-list').exists()).toBe(true)
     })
+
+    it('should render pre-header slot content above the header', () => {
+      const wrapper = createWrapper({ ...defaultProps, pTitle: 'Etapes' }, {
+        'pre-header': '<div class="test-alert">Alert content</div>',
+      })
+
+      expect(wrapper.find('.test-alert').exists()).toBe(true)
+      expect(wrapper.html().indexOf('test-alert')).toBeLessThan(wrapper.html().indexOf('p-completion-tracker__header'))
+    })
   })
 })

@@ -346,6 +346,10 @@
       "conformity": {
         "title": "Étapes",
         "description": "Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert.",
+        "completedAlert": {
+          "title": "Votre dossier est complet",
+          "description": "Votre expert reviendra prochainement vers vous pour activer la mission et vous transmettre votre compte client"
+        },
         "sections": {
           "identity": "Identité(s)",
           "documents": "Documents",
