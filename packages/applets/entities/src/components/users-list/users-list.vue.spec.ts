@@ -28,25 +28,27 @@ const toolBoxElementsWithoutPermissions = [
   },
 ]
 
-const createWrapper = (): VueWrapper<any> =>
-  shallowMount(UsersList, {
-    props: {
-      data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
-        initials: getInitials(firstName, lastName),
-        fullName: `${firstName} ${lastName}`,
-        firstName,
-        lastName,
-        isSignatory: false,
-        isOwner: false,
-        isLoggedUser: false,
-        type: ContactType.CUSTOMER,
-        status: 'Declared',
-        globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
-        ...rest,
-      })),
-      isInAnEntityPage: true,
-      canManageUsers: true,
-    },
+const createWrapper = (): VueWrapper<any> => {
+  const props = {
+    data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
+      initials: getInitials(firstName, lastName),
+      fullName: `${firstName} ${lastName}`,
+      firstName,
+      lastName,
+      isSignatory: false,
+      isOwner: false,
+      isLoggedUser: false,
+      type: ContactType.CUSTOMER,
+      status: 'Declared',
+      globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
+      ...rest,
+    })),
+    isInAnEntityPage: true,
+    canManageUsers: true,
+  }
+
+  return shallowMount(UsersList, {
+    props,
     global: {
       stubs: {
         PResponsiveTable: {
@@ -82,6 +84,7 @@ const createWrapper = (): VueWrapper<any> =>
       },
     },
   })
+}
 
 describe('users-list', () => {
   beforeEach(() => {
@@ -136,6 +139,32 @@ describe('users-list', () => {
     expect(pToolbox.props('pElements')).toStrictEqual(
       toolBoxElementsWithoutPermissions,
     )
+  })
+
+  it('should display modify rights when user has permission', () => {
+    hasPermissionMock.mockReturnValue(true)
+    wrapper = createWrapper()
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    expect(pToolbox.props('pElements')).toContainEqual({
+      pIconName: 'pencilSquare',
+      pValue: 'Modify rights',
+      pActionName: 'modifyRights',
+      pState: 'default',
+    })
+  })
+
+  it('should hide modify rights when user has no permission', () => {
+    hasPermissionMock.mockReturnValue(false)
+    wrapper = createWrapper()
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    expect(pToolbox.props('pElements')).not.toContainEqual({
+      pIconName: 'pencilSquare',
+      pValue: 'Modify rights',
+      pActionName: 'modifyRights',
+      pState: 'default',
+    })
   })
 
   describe('events', () => {

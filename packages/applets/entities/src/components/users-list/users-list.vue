@@ -212,9 +212,7 @@ const { d, t } = useI18n({
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
-const props = withDefaults(defineProps<UsersListProps>(), {
-  canModifyRights: true,
-})
+const props = defineProps<UsersListProps>()
 const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
@@ -228,6 +226,7 @@ const {
   removeUser,
   userInformation,
 } = MENU_ACTIONS_NAME
+
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
@@ -243,8 +242,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pActionName: modifyRights,
       pState: 'default',
       display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MODIFY_RIGHTS_USER)
-        && props.isInAnEntityPage
-        && props.canModifyRights,
+        && props.isInAnEntityPage,
     },
     {
       pIconName: 'personRemove',
@@ -285,4 +283,3 @@ const handleSort = (data: SortChangeEventData) => {
   })
 }
 </script>
-

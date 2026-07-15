@@ -9,7 +9,7 @@ import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/types'
 import type { UsersClientProps } from '../types/users-client.types'
 import { getMockedUser, getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 
@@ -35,7 +35,9 @@ const mockedEntity = getMockedEntity()
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
 vi.mock('@entities/services/wallet')
-vi.mock('@pulse/common/managers')
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
 function createWrapper(entityId?: number) {
   const props: UsersClientProps = {
     entityId,
@@ -200,5 +202,6 @@ describe('test UsersClient', () => {
       expect(fetchAccountContactsSpy).toHaveBeenCalledOnce()
       expect(fetchAccountContactsSpy).toHaveBeenNthCalledWith(1, entityId, urlSearchParams)
     })
+
   })
 })
