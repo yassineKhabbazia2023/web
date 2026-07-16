@@ -9,6 +9,7 @@ import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { initProductFruitsAuthenticatedCollab, stopProductFruits, getProductFruitsUser } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
+import { OpenFeatureService } from '@pulse/common/services/open-feature'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
@@ -40,6 +41,12 @@ vi.mock('@pulse/common/managers', async (importOriginal) => {
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
+}))
+vi.mock('@pulse/common/services/open-feature', () => ({
+  OpenFeatureService: {
+    setUserContext: vi.fn(),
+    clearUserContext: vi.fn(),
+  },
 }))
 
 vi.mock('@pulse/booking/managers', () => ({
@@ -344,51 +351,61 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       userStoreMock.getUser.mockReturnValue(userMock.contact)
     })
 
-    it('should initialize ProductFruits and Amplitude for Collab', () => {
-      CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
+    it('should initialize ProductFruits and Amplitude for Collab', async () => {
+      await CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
 
       expect(initProductFruitsAuthenticatedCollab).toHaveBeenCalled()
       expect(AmplitudeService.identifyCollaborator).toHaveBeenCalled()
     })
 
-    it('should return early when user is not defined', () => {
+    it('should set the OpenFeature user context with the user email', async () => {
+      await CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
+
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledWith(userMock.contact.email)
+    })
+
+    it('should return early when user is not defined', async () => {
       userStoreMock.getUser.mockReturnValue(undefined)
 
-      CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
+      await CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
 
       expect(initProductFruitsAuthenticatedCollab).not.toHaveBeenCalled()
       expect(AmplitudeService.identifyCollaborator).not.toHaveBeenCalled()
     })
 
-    it('should return early when userId is not defined', () => {
+    it('should return early when userId is not defined', async () => {
       userStoreMock.getUserId.mockReturnValue(undefined)
 
-      CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
+      await CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()
 
       expect(initProductFruitsAuthenticatedCollab).not.toHaveBeenCalled()
       expect(AmplitudeService.identifyCollaborator).not.toHaveBeenCalled()
     })
 
-    it('should NOT throw (and lock the UX) if third parties are broken', () => {
+    it('should NOT throw (and lock the UX) if third parties are broken', async () => {
       vi.mocked(getProductFruitsUser).mockImplementation(() => {
         throw new Error('ProductFruits error')
       })
 
-      expect(() => CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()).not.toThrow()
+      await expect(CollaboratorAuthenticatedFlowManager.initAuthenticatedThirdParties()).resolves.not.toThrow()
     })
   })
 
   describe('exitAuthenticatedFlow', () => {
-    it('should call stopProductFruits', () => {
-      CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()
+    it('should call stopProductFruits', async () => {
+      await CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()
       expect(stopProductFruits).toHaveBeenCalled()
     })
-    it('should NOT throw (and lock the UX) if third parties are broken', () => {
+    it('should clear the OpenFeature user context', async () => {
+      await CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()
+      expect(OpenFeatureService.clearUserContext).toHaveBeenCalled()
+    })
+    it('should NOT throw (and lock the UX) if third parties are broken', async () => {
       vi.mocked(stopProductFruits).mockImplementation(() => {
         throw new Error('ProductFruits error')
       })
 
-      expect(() => CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()).not.toThrow()
+      await expect(CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()).resolves.not.toThrow()
     })
   })
 

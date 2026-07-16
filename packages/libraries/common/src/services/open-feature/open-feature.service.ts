@@ -70,6 +70,28 @@ export class OpenFeatureService {
     return OpenFeatureService.extractValue(details)
   }
 
+  /**
+   * Sets the authenticated user's email as the evaluation context, so ConfigCat
+   * can target flags per-user (targeting rules, percentage rollouts).
+   * @see https://configcat.com/docs/sdk-reference/openfeature/js/
+   */
+  static async setUserContext(email: string): Promise<void> {
+    if (OpenFeatureService.initialized === false) {
+      return
+    }
+
+    await OpenFeature.setContext({ targetingKey: email, email })
+  }
+
+  /** Clears the user evaluation context (e.g. on logout). */
+  static async clearUserContext(): Promise<void> {
+    if (OpenFeatureService.initialized === false) {
+      return
+    }
+
+    await OpenFeature.clearContext()
+  }
+
   /** @internal Resets state for testing purposes only. */
   static resetForTesting(): void {
     OpenFeatureService.initialized = false

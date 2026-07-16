@@ -7,6 +7,7 @@ import { SQUAD_ROUTE_PATHS, COLLABORATOR_BASE_PATH } from '@pulse/common/constan
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentUserService } from '@pulse/common/services/current-user'
+import { OpenFeatureService } from '@pulse/common/services/open-feature'
 import {
   initProductFruitsAuthenticatedCustomer,
   getProductFruitsUser,
@@ -46,7 +47,7 @@ export class CustomerAuthenticatedFlowManager {
       return
     }
 
-    this.initAuthenticatedThirdParties()
+    await this.initAuthenticatedThirdParties()
     await this.initEntities()
     // Silent eligibility check: UI reads store state without a loading indicator.
     await BookingManager.setupBookingForCustomer()
@@ -164,7 +165,7 @@ export class CustomerAuthenticatedFlowManager {
     }
   }
 
-  static initAuthenticatedThirdParties() {
+  static async initAuthenticatedThirdParties() {
     const userStore = useUserStore()
     const userId = userStore.getUserId()
     const user = userStore.getUser()
@@ -180,19 +181,21 @@ export class CustomerAuthenticatedFlowManager {
 
       AmplitudeService.identifyCustomer()
       AmplitudeService.setUserId(userId.toString())
+      await OpenFeatureService.setUserContext(user.email)
     } catch (error) {
       logger.error('Anonymous - initAuthenticatedThirdParties - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail
     }
   }
 
-  static exitAuthenticatedFlow() {
+  static async exitAuthenticatedFlow() {
     this.hasFlowExecuted = false
 
     try {
       // we stop the ProductFruits plugin but we will start it again
       // within the anonymous workspace
       stopProductFruits()
+      await OpenFeatureService.clearUserContext()
     } catch (error) {
       logger.error('Authenticated - exitAuthenticatedFlow - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail
