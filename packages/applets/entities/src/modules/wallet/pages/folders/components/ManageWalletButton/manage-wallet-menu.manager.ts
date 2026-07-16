@@ -12,18 +12,11 @@ export class ManageWalletMenuManager {
 
     return [
       {
-        pIconName: 'inbox',
-        pValue: translations.delegateWallet,
-        pActionName: ManageWalletAction.DELEGATE_WALLET,
+        pIconName: 'clockHistory',
+        pValue: translations.pendingDelegations,
+        pActionName: ManageWalletAction.PENDING_DELEGATIONS,
         pState: 'default',
-        display: true,
-      },
-      {
-        pIconName: 'person',
-        pValue: translations.viewPermanentDelegations,
-        pActionName: ManageWalletAction.VIEW_PERMANENT_DELEGATIONS,
-        pState: 'default',
-        display: true,
+        display: isDelegationRequestActivated,
       },
       {
         pIconName: 'arrowLeftRight',
@@ -33,14 +26,21 @@ export class ManageWalletMenuManager {
         display: isDelegationRequestActivated,
       },
       {
-        pIconName: 'clockHistory',
-        pValue: translations.pendingDelegations,
-        pActionName: ManageWalletAction.PENDING_DELEGATIONS,
+        pIconName: 'folderMove',
+        pValue: translations.delegateWallet,
+        pActionName: ManageWalletAction.DELEGATE_WALLET,
         pState: 'default',
-        display: isDelegationRequestActivated,
+        display: true,
       },
       {
-        pIconName: 'fileText',
+        pIconName: 'personCheck',
+        pValue: translations.viewPermanentDelegations,
+        pActionName: ManageWalletAction.VIEW_PERMANENT_DELEGATIONS,
+        pState: 'default',
+        display: true,
+      },
+      {
+        pIconName: 'pencilSquare',
         pValue: translations.createTestAccount,
         pActionName: ManageWalletAction.CREATE_TEST_ACCOUNT,
         pState: 'default',

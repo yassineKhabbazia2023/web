@@ -48,10 +48,10 @@ describe('ManageWalletMenuManager', () => {
     isDelegationRequestTabsActivatedMock.mockReturnValue(true)
 
     expect(getActions(0)).toEqual([
+      ManageWalletAction.PENDING_DELEGATIONS,
+      ManageWalletAction.REQUEST_DELEGATION,
       ManageWalletAction.DELEGATE_WALLET,
       ManageWalletAction.VIEW_PERMANENT_DELEGATIONS,
-      ManageWalletAction.REQUEST_DELEGATION,
-      ManageWalletAction.PENDING_DELEGATIONS,
     ])
   })
 
