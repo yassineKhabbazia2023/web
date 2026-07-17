@@ -1,5 +1,7 @@
+export type PRadioValue = string | number | boolean
+
 export interface PRadioProps {
-  pLabel?: string | number | boolean
+  pLabel?: PRadioValue
   pDisabled?: boolean
   pBorder?: boolean
   pSize?: 'large' | 'default' | 'small'

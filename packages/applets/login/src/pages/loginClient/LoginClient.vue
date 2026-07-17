@@ -10,7 +10,6 @@
 
     <PForm
       pRequireAsteriskPosition="right"
-      pLabelPosition="top"
       @submit.prevent="onSubmit"
     >
       <PFormItem

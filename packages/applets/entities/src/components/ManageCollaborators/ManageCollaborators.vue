@@ -29,7 +29,6 @@
       </template>
       <template #suffix>
         <PForm
-          pLabelPosition="top"
           pHideRequiredAsterisk
           @submit.prevent
         >

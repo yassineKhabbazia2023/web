@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="font-semibold margin-y--6">
+    <p class="font-semibold margin-y--2">
       {{ t('collaboratorsSubscription') }}
     </p>
     <ul class="list-style-none">

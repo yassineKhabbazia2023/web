@@ -1,11 +1,16 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-@use '../../pegase/shadow' as *;
-
 $timeline: (
   'node-size-normal': 10px,
   'node-size-large': 30px,
   'node-color': var(--p-gray-200),
 );
+
+// Element Plus 2.14 scopes the timeline layout under its mode class (`is-start`
+// by default): it pads the list by 40px and raises the specificity of the
+// tail/wrapper offsets. The `is-start`/`el-timeline(-item)` classes in the
+// selectors below are only there to win over these Element Plus rules.
+.p-timeline.el-timeline.is-start {
+  padding-left: 0;
+}
 
 .p-timeline-item {
   $self: &;
@@ -17,7 +22,7 @@ $timeline: (
     padding-bottom: 0;
     margin-bottom: -10px;
 
-    .el-timeline-item__tail {
+    &.is-start .el-timeline-item__tail {
       left: 3px;
     }
 
@@ -44,7 +49,7 @@ $timeline: (
     }
   }
 
-  .el-timeline-item__wrapper {
+  &.el-timeline-item.is-start .el-timeline-item__wrapper {
     padding-left: 22px;
   }
 }

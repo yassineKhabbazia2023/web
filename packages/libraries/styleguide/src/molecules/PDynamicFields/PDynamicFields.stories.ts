@@ -99,7 +99,7 @@ export const CompanyIdentification: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Company Identification</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
@@ -147,7 +147,7 @@ export const CompanyContact: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Company Contact Information</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
@@ -199,7 +199,7 @@ export const CompanyAddress: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Company Address</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
@@ -253,7 +253,7 @@ export const AccountingInformation: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Accounting and Tax Information</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
@@ -301,7 +301,7 @@ export const ReadonlyMode: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Readonly Mode</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
@@ -367,7 +367,7 @@ export const CompleteForm: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Complete Company Form</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <div v-for="(section, index) in sections" :key="index" 
                style="margin-bottom: 32px; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h3 style="margin: 0 0 20px 0; color: #333;">{{ section.title }}</h3>
@@ -420,7 +420,7 @@ export const EmptyDynamicFields: Story = {
     template: `
       <div style="padding: 20px;">
         <h2>Empty Dynamic Fields</h2>
-        <PForm pLabelPosition="top">
+        <PForm>
           <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"

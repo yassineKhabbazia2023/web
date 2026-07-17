@@ -55,7 +55,7 @@ describe('pTimePicker', () => {
       defaultValue: propsValue.pDefaultValue,
       id: propsValue.pId,
       name: propsValue.pName,
-      label: propsValue.pLabel,
+      ariaLabel: propsValue.pLabel,
       disabledHours: propsValue.pDisabledHours,
       disabledMinutes: propsValue.pDisabledMinutes,
       disabledSeconds: propsValue.pDisabledSeconds,
@@ -80,7 +80,7 @@ describe('pTimePicker', () => {
     expect(componentVM.defaultValue).toBe(propsValue.pDefaultValue)
     expect(componentVM.id).toBe(propsValue.pId)
     expect(componentVM.name).toBe(propsValue.pName)
-    expect(componentVM.label).toBe(propsValue.pLabel)
+    expect(componentVM.ariaLabel).toBe(propsValue.pLabel)
     expect(componentVM.disabledHours).toBe(propsValue.pDisabledHours)
     expect(componentVM.disabledMinutes).toBe(propsValue.pDisabledMinutes)
     expect(componentVM.disabledSeconds).toBe(propsValue.pDisabledSeconds)

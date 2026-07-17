@@ -17,14 +17,19 @@
  * - button-primary-surface-default (deeply nested)
  */
 
+@use 'sass:meta';
 @use 'color.variables.scss' as color-variables;
 @use 'legacy.variables.scss' as legacy-variables;
 
 @mixin generate-color-classes($map, $prefix: '') {
   @each $key, $value in $map {
-    $path: if($prefix == '', $key, '#{$prefix}-#{$key}');
+    $path: $key;
+
+    @if $prefix != '' {
+      $path: '#{$prefix}-#{$key}';
+    }
     
-    @if type-of($value) == 'color' {
+    @if meta.type-of($value) == 'color' {
       // Generate utility classes for this color
       .bg--#{$path},
       .hover-bg--#{$path}:hover {
@@ -34,7 +39,7 @@
       .hover-text-color--#{$path}:hover {
         color: $value !important;
       }
-    } @else if type-of($value) == 'map' {
+    } @else if meta.type-of($value) == 'map' {
       // Recurse into nested map
       @include generate-color-classes($value, $path);
     }

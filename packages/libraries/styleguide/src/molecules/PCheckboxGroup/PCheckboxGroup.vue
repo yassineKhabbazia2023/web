@@ -14,6 +14,6 @@ import { ElCheckboxGroup } from 'element-plus'
 import type { PCheckboxGroupProps } from './PCheckboxGroupTypes'
 
 withDefaults(defineProps<PCheckboxGroupProps>(), {
-  pDisabled: false,
+  pDisabled: undefined,
 })
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="margin-top--6">
+  <div class="margin-top--2">
     <PAlert
       v-if="isCollab"
       id="entity-information-alert"
@@ -17,7 +17,6 @@
     <PForm
       v-else
       :pModel="currentAccount"
-      pLabelPosition="top"
       class="entity-information__form margin-top--6"
       aria-describedby="entity-information-alert"
       data-testid="folder-information-form"

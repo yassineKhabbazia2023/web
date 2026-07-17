@@ -1,4 +1,4 @@
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import type { DigitalSafeCustomer, InvoicesFullFormModel } from '../types'
 
 export const getDigitalSafeCustomerMock = (

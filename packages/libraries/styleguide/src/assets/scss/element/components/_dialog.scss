@@ -1,17 +1,11 @@
 // css3 var in packages/theme-chalk/src/dialog.scss
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
 @use '../../pegase/breakpoints' as breakpoints;
 
 $dialog: (
-  'width': 50%,
-  'margin-top': 15vh,
-  'bg-color': var(--el-bg-color),
-  'box-shadow': var(--el-box-shadow),
   'title-font-size': 2.4rem,
-  'content-font-size': 1.4rem,
-  'font-line-height': var(--el-font-line-height-primary),
-  'padding-primary': 20px,
-  'background': var(--p-white)
+  // Element Plus 2.14 puts its default 16px padding on the dialog root; the raw
+  // .p-dialog rules below own all the spacing instead.
+  'padding-primary': 0,
 );
 
 .el-overlay-dialog:has(.p-dialog:not(.is-fullscreen)) {
@@ -21,14 +15,14 @@ $dialog: (
 
 .p-dialog {
   &:not(.is-fullscreen) {
-    max-height: calc(100vh - 48px);
     display: flex;
     flex-direction: column;
+    max-height: calc(100vh - 48px);
 
     .el-dialog__body {
-      overflow: auto;
       flex: 1;
       min-height: 0;
+      overflow: auto;
     }
   }
 
@@ -36,16 +30,19 @@ $dialog: (
     box-shadow: none;
   }
 
-  .el-dialog__header {
+  .el-dialog__header,
+  .el-dialog__header.show-close {
     padding: 2.4rem 2.4rem 0;
-    margin: 0;
   }
 
   .el-dialog__headerbtn {
+    top: 1.6rem;
+    right: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 44px;
+    width: 2.4rem;
+    height: 2.4rem;
 
     .el-dialog__close {
       color: var(--el-text-color-regular);
@@ -53,10 +50,8 @@ $dialog: (
   }
 
   .el-dialog__title {
-    display: flex;
-    color: var(--p-black-rock-900);
+    display: block;
     padding-right: 44px;
-    word-break: break-word;
     font-weight: 600;
   }
 
@@ -72,7 +67,7 @@ $dialog: (
   .el-dialog__footer {
     padding: 0 2.4rem 2.4rem;
 
-    .el-button  + .el-button {
+    .el-button + .el-button {
       margin-left: 1.2rem;
     }
   }

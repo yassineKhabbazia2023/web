@@ -37,9 +37,10 @@ import { globalDecorators } from './decorators/decorator.manager'
 import '../packages/libraries/styleguide/src/assets/fonts/index.css'
 import '../packages/libraries/styleguide/src/assets/scss/index.scss'
 
-// Initialize MSW worker
+// MSW worker base path — the worker is started via the loader below, so it is
+// active before any story's onMounted fires (avoids the cold-start race where
+// the first request escapes MSW and hits the network).
 const mswBasePath = import.meta.env.DEV === true ? '' : '/storybook'
-initializeWorker(mswBasePath)
 
 // Setup dayjs
 dayjs.Ls.en.weekStart = 1
@@ -73,6 +74,14 @@ setup((app) => {
 })
 
 const preview: Preview = {
+  // Ensure the MSW worker is started and controlling the page before any story
+  // renders. initializeWorker is idempotent, so this is a no-op after the first run.
+  loaders: [
+    async () => {
+      await initializeWorker(mswBasePath)
+      return {}
+    },
+  ],
   decorators: globalDecorators,
   parameters: {
     controls: {

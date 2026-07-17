@@ -7,6 +7,7 @@
     :placement="pPlacement"
     :popperOptions="pPopperOptions"
     :strategy="pStrategy"
+    :arrowOffset="pArrowOffset"
   >
     <slot />
   </ElPopperContent>
@@ -24,5 +25,6 @@ withDefaults(defineProps<PPopperContentProps>(), {
   pPlacement: 'bottom',
   pPopperOptions: () => ({}),
   pStrategy: 'absolute',
+  pArrowOffset: 5,
 })
 </script>

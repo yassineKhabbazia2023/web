@@ -1,5 +1,5 @@
 <template>
-  <div class="margin-top--4">
+  <div class="margin-top--2">
     <SubscriptionStatusFilters
       v-model="activeStatusCodes"
       :offer-codes="offerCodes"

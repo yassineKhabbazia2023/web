@@ -3,7 +3,6 @@
     ref="formRef"
     :pModel="formModel"
     :pRules="rules"
-    pLabelPosition="top"
     pRequireAsteriskPosition="right"
   >
     <p class="invoices-form-step__subtitle margin-top--4">
@@ -56,7 +55,7 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import {
   PButton,
   PCheckbox,

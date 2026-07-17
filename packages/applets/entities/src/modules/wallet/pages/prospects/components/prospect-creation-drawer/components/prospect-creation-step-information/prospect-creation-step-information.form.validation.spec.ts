@@ -1,5 +1,5 @@
 import { nextTick, ref } from 'vue'
-import type { FormInstance, FormItemRule } from 'element-plus'
+import type { FormInstance, FormItemRule } from '@pulse/styleguide/types'
 import type { ProspectSignatory } from '@entities/modules/wallet/types'
 import { useProspectCreationStepInformationValidation } from './prospect-creation-step-information.form.validation'
 import {

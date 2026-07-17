@@ -1,7 +1,7 @@
 // css3 var in packages/theme-chalk/src/upload.scss
 $upload: (
-  'dragger-padding-horizontal': 10px,
-  'dragger-padding-vertical': 12px,
+  'dragger-padding-horizontal': 3.2rem,
+  'dragger-padding-vertical': 2.4rem,
 );
 
 .p-upload {
@@ -22,8 +22,10 @@ $upload: (
         }
         .el-upload-dragger {
           cursor: default;
-          background: var(--p-gray-50);
           border-color: var(--p-gray-200);
+          // Element Plus 2.14 paints disabled draggers with --el-disabled-bg-color;
+          // Pulse keeps the resting background when disabled.
+          background-color: var(--p-white);
         }
 
         #{$self}__input {
@@ -48,13 +50,14 @@ $upload: (
         }
       }
       .el-upload-dragger {
-        padding: 2.4rem 3.2rem;
         border-radius: var(--el-border-radius-base);
         border-color: var(--p-gray-300);
         text-align: left;
 
+        // Element Plus thickens the dragover border to 2px and compensates with
+        // a -1px padding; Pulse keeps the 1px border and the resting padding.
         &.is-dragover {
-          padding: 2.4rem 3.2rem;
+          padding: var(--el-upload-dragger-padding-vertical) var(--el-upload-dragger-padding-horizontal);
           border-width: 1px;
           border-color: var(--p-jungle-700);
           background: var(--p-tranquil-50);
@@ -99,7 +102,9 @@ $upload: (
       border-bottom: 1px solid transparent;
       border-radius: 0;
 
-      &:hover {
+      // :focus-within matches Element Plus 2.14, which highlights the item on both.
+      &:hover,
+      &:focus-within {
         background: inherit;
       }
 

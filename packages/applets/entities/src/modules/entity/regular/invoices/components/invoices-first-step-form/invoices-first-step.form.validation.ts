@@ -1,4 +1,4 @@
-import type { FormRules } from 'element-plus'
+import type { FormRules } from '@pulse/styleguide/types'
 import { validationRules } from '@pulse/styleguide/utils/validators'
 import type { InvoicesFormModel } from '../../types'
 

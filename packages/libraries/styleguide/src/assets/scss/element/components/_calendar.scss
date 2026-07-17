@@ -1,13 +1,5 @@
 // css3 var in packages/theme-chalk/src/calendar.scss
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 $calendar: (
-  'border':
-    var(
-      --el-table-border,
-      1px solid #{var(--el-border-color-lighter)}
-    ),
-  'header-border-bottom': var(--el-calendar-border),
   'selected-bg-color': var(--p-white),
   'cell-width': calc(100% / 7),
 );

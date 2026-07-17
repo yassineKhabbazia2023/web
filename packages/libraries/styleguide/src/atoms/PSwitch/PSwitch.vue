@@ -1,7 +1,8 @@
 <template>
   <ElSwitch
     :id="pId"
-    :disabled="pDisabled"
+    v-model="modelValue"
+    :disabled="isDisabled"
     :loading="pLoading"
     :size="pSize"
     :width="pWidth"
@@ -18,7 +19,7 @@
     :validateEvent="pValidateEvent"
     :beforeChange="pBeforeChange"
     :tabIndex="pTabIndex"
-    :label="pLabel"
+    :ariaLabel="pLabel"
     :style="cssStyle"
   />
 </template>
@@ -29,7 +30,7 @@ import { computed } from 'vue'
 import type { PSwitchProps } from './PSwitchTypes'
 
 const props = withDefaults(defineProps<PSwitchProps>(), {
-  pDisabled: false,
+  pDisabled: undefined,
   pLoading: false,
   pSize: '',
   pWidth: '',
@@ -52,6 +53,12 @@ const props = withDefaults(defineProps<PSwitchProps>(), {
   pTabIndex: undefined,
   pLabel: undefined,
 })
+
+const modelValue = defineModel<boolean>({ default: false })
+
+// pLoading always forces disabled; otherwise fall through to pDisabled (which may be
+// undefined) so ElSwitch's own form-context cascade can still apply when neither is set.
+const isDisabled = computed(() => (props.pLoading === true ? true : props.pDisabled))
 
 const cssStyle = computed(() => {
   const styles = [

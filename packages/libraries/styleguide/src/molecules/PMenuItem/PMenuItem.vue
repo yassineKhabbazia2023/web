@@ -32,7 +32,6 @@ import type { PMenuItemProps } from './PMenuItemTypes'
 
 const slots = useSlots()
 withDefaults(defineProps<PMenuItemProps>(), {
-  pIndex: undefined,
   pRoute: undefined,
   pDisabled: false,
 })

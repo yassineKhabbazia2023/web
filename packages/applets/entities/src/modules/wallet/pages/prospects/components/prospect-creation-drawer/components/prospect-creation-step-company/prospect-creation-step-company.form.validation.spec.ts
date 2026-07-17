@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { FormInstance, FormItemRule } from 'element-plus'
+import type { FormInstance, FormItemRule } from '@pulse/styleguide/types'
 import { useProspectCreationStepCompanyValidation } from './prospect-creation-step-company.form.validation'
 
 const REQUIRED_FIELDS_ALERT_KEY = 'entities.wallet.prospect.form.requiredFieldsAlert'

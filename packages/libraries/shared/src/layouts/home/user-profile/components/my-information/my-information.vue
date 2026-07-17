@@ -1,12 +1,17 @@
 <template>
   <div>
-    <p class="h4 margin-y--6">
+    <p
+      class="
+        h4
+        margin-top--2
+        margin-bottom--6
+      "
+    >
       {{ user.firstName }} <span class="text-uppercase">{{ user.lastName }}</span>
     </p>
     <PForm
       ref="formRef"
       :pModel="formValues"
-      pLabelPosition="top"
       pRequireAsteriskPosition="right"
     >
       <div

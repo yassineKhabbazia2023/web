@@ -1,13 +1,13 @@
 import { ref, watch, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FormItemRule, FormRules } from 'element-plus'
+import type { FormItemRule, FormRules } from '@pulse/styleguide/types'
 import { validationRules } from '@pulse/styleguide/utils/validators'
 import type { ProspectFormData, ProspectSignatory } from '@entities/modules/wallet/types'
 import type { ProspectCreationStepInformationValidationParams } from './prospect-creation-step-information.types'
 
 const REQUIRED_FIELDS_ALERT_KEY = 'entities.wallet.prospect.form.requiredFieldsAlert'
 
-// Explicit return type required: element-plus's FormRules<ProspectFormData> inferred
+// Explicit return type required: the inferred FormRules<ProspectFormData>
 // type exceeds the compiler's serialization limit (TS7056) and breaks build:types.
 export function useProspectCreationStepInformationValidation(
   params: ProspectCreationStepInformationValidationParams,

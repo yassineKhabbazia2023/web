@@ -54,6 +54,36 @@ export const Basic: Story = {
   }),
 }
 
+// Overflowing tabs: the selected tab must be scrolled into view on mount
+export const Overflow: Story = {
+  args: {
+    modelValue: '12',
+  },
+  render: (args) => ({
+    components: { PTabs, PTabPane },
+    setup() {
+      const active = ref(args.modelValue)
+      const onUpdate = (v: string) => (active.value = v)
+      const tabNames = Array.from({ length: 15 }, (_, index) => `${index + 1}`)
+      return { args, active, onUpdate, tabNames }
+    },
+    template: `
+      <div style="width: 640px;">
+        <PTabs v-bind="args" v-model="active" @update:model-value="onUpdate">
+          <PTabPane
+            v-for="tabName in tabNames"
+            :key="tabName"
+            :pLabel="'Onglet numéro ' + tabName"
+            :pName="tabName"
+          >
+            Contenu {{ tabName }}
+          </PTabPane>
+        </PTabs>
+      </div>
+    `,
+  }),
+}
+
 // Tabs with counter
 export const WithCounter: Story = {
   render: (args) => ({

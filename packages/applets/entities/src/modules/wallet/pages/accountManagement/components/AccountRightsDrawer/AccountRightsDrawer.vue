@@ -27,7 +27,7 @@
         :key="tab.name"
         :pLabel="tab.label"
         :pName="tab.name"
-        class="margin-bottom--6"
+        class="margin-bottom--2"
       />
       <div
         v-if="isLoading"

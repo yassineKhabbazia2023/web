@@ -38,7 +38,7 @@ withDefaults(defineProps<PFormProps>(), {
   pModel: undefined,
   pRules: undefined,
   pInline: false,
-  pLabelPosition: 'right',
+  pLabelPosition: 'top',
   pLabelWidth: '',
   pLabelSuffix: '',
   pHideRequiredAsterisks: false,

@@ -1,9 +1,5 @@
-@use 'element-plus/theme-chalk/src/mixins/function.scss' as *;
-
 $menu: (
   'active-color': var(--p-black-rock-900),
-  'text-color': var(--p-black-rock-900),
-  'hover-text-color': var(--p-jungle-400),
   'bg-color': transparent,
   'hover-bg-color': var(--p-jungle-75),
   'item-height': 36px,
@@ -19,113 +15,10 @@ $menu: (
 
 
 .el-menu {
-  &.el-menu--navbar {
-    height: 100%;
-    padding: 16px 9px 16px 10px;
-    background-color: var(--p-gray-700);
-
-    @media screen and (width <= 992px) {
-      flex-direction: row-reverse;
-    }
-
-    &.el-menu--collapse {
-      width: 50px;
-
-      .el-menu-item {
-        &:hover {
-          background: transparent;
-
-          .p-navbar__icon {
-            border-color: var(--p-gray-900);
-            background-color: var(--p-gray-900);
-          }
-        }
-      }
-    }
-
-    &:not(.el-menu--collapse) {
-      .el-menu-item {
-        &--title {
-          .p-menu-name-title {
-            font-size: 1.6rem;
-          }
-        }
-      }
-
-      .menu-item-entity {
-        padding-left: 3px;
-      }
-
-      .p-menu-name {
-        font-size: 1.2rem;
-        margin-left: 9px;
-      }
-    }
-
-    .el-divider--horizontal {
-      border-color: var(--p-gray-500);
-    }
-
-    .el-menu-item {
-      margin-bottom: 13px;
-      margin-left: -3px;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.16);
-      }
-
-      &.el-menu-item--title {
-        cursor: default;
-        margin-left: 0;
-
-        &:hover,
-        &:focus {
-          background: transparent;
-        }
-
-        .p-icon-collapse {
-          margin-left: auto;
-          width: 30px;
-          height: 30px;
-          cursor: pointer;
-
-          &:hover {
-            background-color: var(--p-gray-900);
-          }
-        }
-      }
-
-      .p-navbar__icon {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-        margin-left: 3px;
-        background-color: var(--p-gray-500);
-      }
-
-      &.p-menu-item-entity {
-        .p-menu-name {
-          max-width: 170px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-
-          @media screen and (width >= 768px) and (width <= 991px) {
-            max-width: 500px;
-          }
-        }
-      }
-    }
-  }
-
   &--popup {
     .el-menu-item {
       &.is-active {
         font-weight: 600;
-      }
-
-      .el-menu-item-content {
-        display: flex;
-        align-items: center;
       }
 
       [class^="el-icon"] {

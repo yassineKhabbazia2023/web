@@ -1,4 +1,4 @@
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import type { SubmitFormResult } from './invoices-first-step.form.types'
 import { InvoicesTracking } from '../../services/invoices.tracking.service'
 

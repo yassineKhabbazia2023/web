@@ -15,10 +15,12 @@ function createWrapper<T>(props: PFieldProps<T>) {
         PDatePicker: {
           name: 'PDatePicker',
           template: '<div><slot /></div>',
+          props: ['pDisabled'],
         },
         PDropdown: {
           name: 'PDropdown',
           template: '<div><slot /></div>',
+          props: ['pPlaceholder', 'pDisabled'],
         },
         PFormItem: {
           name: 'PFormItem',
@@ -28,10 +30,12 @@ function createWrapper<T>(props: PFieldProps<T>) {
         PInput: {
           name: 'PInput',
           template: '<div><slot /></div>',
+          props: ['pDisabled'],
         },
         PRadio: {
           name: 'PRadio',
           template: '<div><slot /></div>',
+          props: ['pDisabled'],
         },
         PCheckbox: {
           name: 'PCheckbox',
@@ -85,7 +89,17 @@ describe('test PField', () => {
 
       pInput.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
+    })
+    it('should not force disabled prop when pDisabled is not provided', () => {
+      const {
+        pDisabled: _pDisabled,
+        ...propsWithoutDisabled
+      } = props
+      const wrapper = createWrapper<string>(propsWithoutDisabled)
+      const pInput = wrapper.findComponent({ name: 'PInput' })
+
+      expect(pInput.props('pDisabled')).toBeUndefined()
     })
   })
   describe('with email input field', () => {
@@ -112,7 +126,7 @@ describe('test PField', () => {
 
       pEmailInputField.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
     })
   })
   describe('with dropdrop field', () => {
@@ -121,6 +135,11 @@ describe('test PField', () => {
       pLabel,
       50,
       pDropdownOptions,
+      false,
+      false,
+      undefined,
+      'Tout afficher',
+      pPlaceholder,
     )
     let pDropDown: VueWrapper
     beforeEach(() => {
@@ -130,12 +149,35 @@ describe('test PField', () => {
     it('should render PDropdown', () => {
       expect(pDropDown.exists()).toBeTruthy()
     })
+    it('should pass placeholder to PDropdown', () => {
+      expect((pDropDown.props() as { pPlaceholder?: string }).pPlaceholder).toBe(pPlaceholder)
+    })
+    it('should not override default dropdown placeholder when no placeholder is provided', () => {
+      const {
+        pPlaceholder: _pPlaceholder,
+        ...propsWithoutPlaceholder
+      } = props
+      const wrapper = createWrapper<number | undefined>(propsWithoutPlaceholder)
+      const pDropDown = wrapper.findComponent({ name: 'PDropdown' })
+
+      expect(pDropDown.props('pPlaceholder')).toBeUndefined()
+    })
+    it('should not force disabled prop when pDisabled is not provided', () => {
+      const {
+        pDisabled: _pDisabled,
+        ...propsWithoutDisabled
+      } = props
+      const wrapper = createWrapper<number | undefined>(propsWithoutDisabled)
+      const pDropDown = wrapper.findComponent({ name: 'PDropdown' })
+
+      expect(pDropDown.props('pDisabled')).toBeUndefined()
+    })
     it('should emit update:model-value when enter value', () => {
       const otherValue = 'b'
 
       pDropDown.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
     })
   })
   describe('with dropdrop field multiple', () => {
@@ -163,7 +205,7 @@ describe('test PField', () => {
       const otherValue = ['b']
 
       pDropDown.vm.$emit('update:model-value', otherValue)
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
     })
   })
   describe('with date field', () => {
@@ -187,7 +229,17 @@ describe('test PField', () => {
 
       pDatePicker.vm.$emit('update:model-value', otherDate)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherDateIso]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherDateIso]])
+    })
+    it('should not force disabled prop when pDisabled is not provided', () => {
+      const {
+        pDisabled: _pDisabled,
+        ...propsWithoutDisabled
+      } = props
+      const wrapper = createWrapper<string>(propsWithoutDisabled)
+      const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
+
+      expect(pDatePicker.props('pDisabled')).toBeUndefined()
     })
   })
   describe('with checkbox field', () => {
@@ -240,7 +292,7 @@ describe('test PField', () => {
 
       pCheckbox.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
     })
   })
   describe('with radio field', () => {
@@ -262,7 +314,17 @@ describe('test PField', () => {
 
       pRadio.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
+    })
+    it('should not force disabled prop when pDisabled is not provided', () => {
+      const {
+        pDisabled: _pDisabled,
+        ...propsWithoutDisabled
+      } = props
+      const wrapper = createWrapper<string | string[]>(propsWithoutDisabled)
+      const pRadio = wrapper.findComponent({ name: 'PRadio' })
+
+      expect(pRadio.props('pDisabled')).toBeUndefined()
     })
   })
   describe('with radio field multiple', () => {
@@ -302,12 +364,12 @@ describe('test PField', () => {
       expected,
     }) => {
       await nextTick()
-      expect(wrapper.emitted('update:model-value')).toBeUndefined()
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
 
       pCheckboxes[optionIndex].vm.$emit('update:model-value', isChecked)
       await nextTick()
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expected]])
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[expected]])
     })
 
     const tests2 = [{
@@ -326,7 +388,7 @@ describe('test PField', () => {
       pCheckboxes[optionIndex].vm.$emit('update:model-value', isChecked)
       await nextTick()
 
-      expect(wrapper.emitted('update:model-value')).toBeUndefined()
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
     })
   })
 })

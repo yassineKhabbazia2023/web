@@ -29,7 +29,7 @@
           margin-bottom--4
         "
         >
-          <PSwitch v-model="hasOnlyFavouritesDisplayed" />
+          <PSwitch v-model="hasOnlyFavouritesDisplayedSwitchValue" />
           <span class="text-color--neutral-gray-900 padding-left--4 font-semibold">
             {{ t('feedCenter.settingsDrawer.favouritesOnly') }}
           </span>
@@ -151,6 +151,15 @@ const {
   hasUnsavedChanges,
   markAsSaved,
 } = useNotificationSettings()
+
+const hasOnlyFavouritesDisplayedSwitchValue = computed({
+  get() {
+    return hasOnlyFavouritesDisplayed.value ?? false
+  },
+  set(value: boolean) {
+    hasOnlyFavouritesDisplayed.value = value
+  },
+})
 
 function closeDrawer() {
   isNotificationSettingsDrawerOpened.value = false

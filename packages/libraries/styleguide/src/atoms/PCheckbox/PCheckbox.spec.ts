@@ -59,4 +59,16 @@ describe('pCheckbox', () => {
 
     expect(wrapper.emitted('update:modelValue')).toBeUndefined()
   })
+
+  it('should pass undefined to ElCheckbox disabled by default', () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).props('disabled')).toBeUndefined()
+  })
+
+  it('should pass pDisabled to ElCheckbox disabled', () => {
+    const wrapper: VueWrapper<any> = createWrapper({ pDisabled: true })
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).props('disabled')).toBe(true)
+  })
 })

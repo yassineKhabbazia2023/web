@@ -2,7 +2,6 @@
   <div>
     <PForm
       :pModel="internalModel"
-      pLabelPosition="top"
       pHideRequiredAsterisk
     >
       <PFormItem

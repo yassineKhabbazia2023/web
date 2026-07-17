@@ -6,7 +6,7 @@
       :pLabel="tab.label"
       :pName="tab.name"
     />
-    <div v-if="subscriptionDetails" class="margin-top--6">
+    <div v-if="subscriptionDetails" class="margin-top--2">
       <ServicesDetails
         v-if="activeTab === RecapTabs.SERVICES"
         :subscriptionOfferDetails="subscriptionDetails?.offer"

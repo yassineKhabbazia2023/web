@@ -5,4 +5,5 @@ export interface PCollapseItemTypes {
   pTitleCollapseItem: string
   pIconName?: IconName
   pFullBody?: boolean
+  pDisabled?: boolean
 }

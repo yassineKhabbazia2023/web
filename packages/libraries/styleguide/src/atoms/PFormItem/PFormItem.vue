@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<PFormItemProps>(), {
   pRules: undefined,
   pError: undefined,
   pShowMessage: true,
-  pInlineMessage: '',
+  pInlineMessage: false,
   pSize: '',
   pFor: undefined,
   pValidateStatus: undefined,

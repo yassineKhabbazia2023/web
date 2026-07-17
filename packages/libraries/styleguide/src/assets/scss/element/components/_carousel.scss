@@ -1,16 +1,10 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 // css3 var in packages/theme-chalk/src/carousel.scss
 $carousel: (
-  'arrow-font-size': 12px,
-  'arrow-size': 36px,
   'arrow-background': var(--p-white),
   'arrow-hover-background': var(--p-white),
   'indicator-width': 6px,
   'indicator-height': 6px,
-  'indicator-padding-horizontal': 4px,
   'indicator-padding-vertical': 58px,
-  'indicator-out-color': var(--el-border-color-hover),
 );
 
 //custom css override
@@ -37,10 +31,6 @@ $carousel: (
           background: var(--p-white);
         }
       }
-    }
-
-    > .el-carousel__button {
-      color: var(--p-gray-100);
     }
   }
 }

@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<PInputProps>(), {
   pFormatter: undefined,
   pParser: undefined,
   pShowPassword: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pSize: undefined,
   pRows: 2,
   pAutosize: false,

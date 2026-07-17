@@ -8,7 +8,7 @@ type ValidationCallback = (error?: Error | string) => void
  * Creates a validator for the new password field
  * Validates both presence and password strength
  * @param translations - Localized error messages
- * @returns Validator function compatible with Element Plus pRules
+ * @returns Validator function compatible with styleguide pRules
  */
 export function createNewPasswordValidator(
   translations: PasswordValidationTranslations,
@@ -34,7 +34,7 @@ export function createNewPasswordValidator(
  * Validates both presence and match with new password
  * @param translations - Localized error messages
  * @param getNewPassword - Function that returns the new password value for comparison
- * @returns Validator function compatible with Element Plus pRules
+ * @returns Validator function compatible with styleguide pRules
  */
 export function createConfirmPasswordValidator(
   translations: PasswordValidationTranslations,

@@ -38,7 +38,7 @@
     <template v-else>
       <PTabs
         v-model="activeTab"
-        class="margin-bottom--6"
+        class="margin-bottom--2"
         @tab-click="handleTabChange"
       >
         <template v-if="shouldShowDelegationRequestTabs">

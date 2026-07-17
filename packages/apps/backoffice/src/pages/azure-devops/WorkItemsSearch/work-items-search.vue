@@ -8,7 +8,7 @@
       Entrez les IDs de commits pour récupérer les work items liés aux commits dans cette plage.
     </p>
 
-    <PForm pLabelPosition="top">
+    <PForm>
       <div class="flex flex-gap--4 flex--align-items-center">
         <PFormItem
           class="work-items-search__input"

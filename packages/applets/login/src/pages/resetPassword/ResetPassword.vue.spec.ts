@@ -1,7 +1,7 @@
 import type { Mock } from 'vitest'
 
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import { flushPromises, mount } from '@vue/test-utils'
 import { apiGatewayPostMock } from '@pulse/common/mocks/vitest'
 import { PNotification } from '@pulse/styleguide'

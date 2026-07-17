@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import type { FormItemRule } from 'element-plus'
+import type { FormItemRule } from '@pulse/styleguide/types'
 import type { AppointmentDetails } from './booking-appointment-configuration.types'
 import { useBookingAppointmentValidation } from './booking-appointment-configuration.validation'
 

@@ -1,5 +1,3 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 // css3 var packages/theme-chalk/src/date-picker/var.scss
 $datepicker: (
   'icon-color': var(--el-text-color-regular),
@@ -11,9 +9,6 @@ $datepicker: (
 
 $date-editor: (
   'width': 100%,
-  'monthrange-width': 300px,
-  'daterange-width': 350px,
-  'datetimerange-width': 400px,
 );
 
 
@@ -98,27 +93,14 @@ table.el-year-table {
     padding: 0;
     width: 26px;
     height: 26px;
+  }
+}
 
-    &.current:not(.disabled)  {
-      .cell {
-        background: var(--p-jungle-400);
-        color: var(--p-white);
-        font-weight: 600;
-      }
-    }
-
-    .cell {
-      border-radius: var(--el-border-radius-small);
-      line-height: 32px;
-
-      &:hover {
-        border-color: var(--p-jungle-100);
-        background: var(--p-jungle-100);
-        font-weight: 600; 
-        color: var(--p-jungle-400);
-      }
-    }
-
+// Element Plus 2.14 renamed month/year table cells from `.cell` to
+// `.el-date-table-cell` (48px cells): the day-cell sizing and state colors
+// below must stay scoped to the day table to avoid squashing month/year cells.
+table.el-date-table {
+  td {
     .el-date-table-cell {
       padding: 0;
       height: 26px;
@@ -141,26 +123,18 @@ table.el-year-table {
     }
 
     &.today {
-      .el-date-table-cell__text,
-      .cell {
+      .el-date-table-cell__text {
         border: 1px solid var(--p-jungle-400);
         font-weight: 600;
-      }
-
-      &:hover {
-        .cell {
-          border-color: var(--p-jungle-100);
-        }
       }
     }
 
     &.disabled {
      .el-date-table-cell {
         background: none;
-      } 
+      }
 
-      .el-date-table-cell__text,
-      .cell {
+      .el-date-table-cell__text {
         background-color: var(--p-gray-50);
         border-radius: var(--el-border-radius-small);
         color: var(--p-gray-300);
@@ -168,8 +142,7 @@ table.el-year-table {
     }
 
     &.in-range {
-      .el-date-table-cell__text,
-      .cell {
+      .el-date-table-cell__text {
         color: var(--p-jungle-400);
       }
     }
@@ -181,8 +154,7 @@ table.el-year-table {
         border-bottom-left-radius: var(--el-border-radius-small);
       }
       
-      .el-date-table-cell__text,
-      .cell {
+      .el-date-table-cell__text {
         border-radius: var(--el-border-radius-small) 0 0 var(--el-border-radius-small);
         color: var(--p-white);
         font-weight: 600;
@@ -195,8 +167,7 @@ table.el-year-table {
         border-bottom-right-radius: var(--el-border-radius-small);
       }
 
-      .el-date-table-cell__text,
-      .cell {
+      .el-date-table-cell__text {
         border-radius: 0 var(--el-border-radius-small) var(--el-border-radius-small) 0;
         color: var(--p-white);
         font-weight: 600;
@@ -205,18 +176,8 @@ table.el-year-table {
   }
 }
 
-table.el-month-table {
-  td.start-date div {
-    border-top-left-radius: var(--el-border-radius-small);
-    border-bottom-left-radius: var(--el-border-radius-small);
-  }
-
-  td.end-date div {
-    border-top-right-radius: var(--el-border-radius-small);
-    border-bottom-right-radius: var(--el-border-radius-small);
-  }
-}
-
+// Element Plus gives the panel content a 15px margin on every side; the header already provides
+// the top spacing, so drop the content's own top margin to keep the panel compact.
 div.el-picker-panel__content {
   margin-top: 0;
 }
@@ -227,8 +188,6 @@ div.el-date-range-picker__header div {
 }
 
 div.el-date-picker__header {
-  margin-bottom: 0;
-
   .el-date-picker__header-label {
     font-weight: 600;
     font-size: 14px;
@@ -244,7 +203,6 @@ div.el-date-picker__header {
     border-radius: var(--el-border-radius-small);
 
     &:hover {
-      color: var(--p-jungle-400);
       background: var(--p-jungle-50);
     }
   }

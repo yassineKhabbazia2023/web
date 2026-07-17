@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden margin-top--6">
+  <div class="overflow-hidden margin-top--2">
     <PBlockHeader
       :pTitle="headerTitle"
       :pDescription="headerSubtitle"

@@ -1,6 +1,6 @@
 import { computed, ref, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FormRules } from 'element-plus'
+import type { FormRules } from '@pulse/styleguide/types'
 import type { AppointmentDetails } from './booking-appointment-configuration.types'
 import { validationRules } from '@pulse/styleguide/utils/validators'
 

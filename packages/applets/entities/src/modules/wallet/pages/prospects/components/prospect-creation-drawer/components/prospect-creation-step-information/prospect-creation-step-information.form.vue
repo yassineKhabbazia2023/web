@@ -8,7 +8,6 @@
     :pModel="prospectFormData"
     :pRules="rules"
     :pShowMessage="false"
-    pLabelPosition="top"
     pRequireAsteriskPosition="right"
     :pInline="true"
   >
@@ -76,7 +75,7 @@
 
       <PFormLine>
         <PFormItem
-          class="margin-bottom--6"
+          class="margin-bottom--6 flex--basis-0"
           pProp="signatory.jobTitle"
           :pLabel="t('entities.wallet.prospect.form.jobTitle')"
         >
@@ -88,7 +87,7 @@
         </PFormItem>
 
         <PFormItem
-          class="margin-bottom--6"
+          class="margin-bottom--6 flex--basis-0"
           pProp="signatory.department"
           :pLabel="t('entities.wallet.prospect.form.department')"
         >
@@ -103,7 +102,7 @@
 
       <PFormLine>
         <PFormItem
-          class="margin-bottom--6"
+          class="margin-bottom--6 flex--basis-0"
           pProp="signatory.companyRole"
           :pLabel="t('entities.wallet.prospect.form.companyRole')"
         >
@@ -116,7 +115,7 @@
         </PFormItem>
 
         <PFormItem
-          class="margin-bottom--6"
+          class="margin-bottom--6 flex--basis-0"
           pProp="signatory.contactTypes"
           :pLabel="t('entities.wallet.prospect.form.contactType')"
         >
@@ -201,8 +200,11 @@
             data-testid="prospect-entity-search-input"
             @select="onEntitySelect"
           >
-            <template #default="{ item }: { item: ProspectEntitySearchResult }">
-              <span>{{ item.legalName }} <span class="text-color--text-neutral">({{ item.siret }})</span></span>
+            <template #default="{ item }">
+              <span>
+                {{ asSearchResult(item).legalName }}
+                <span class="text-color--text-neutral">({{ asSearchResult(item).siret }})</span>
+              </span>
             </template>
           </PAutocomplete>
         </PFormItem>
@@ -233,7 +235,7 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import {
   PAlert,
   PAutocomplete,
@@ -263,6 +265,9 @@ const prospectFormData = defineModel<ProspectFormData>({ required: true })
 
 const formRef = useTemplateRef<FormInstance>('formRef')
 const alertRef = useTemplateRef<HTMLElement>('alertRef')
+
+// The autocomplete #default slot item is typed as a plain record.
+const asSearchResult = (item: unknown) => item as ProspectEntitySearchResult
 
 const {
   entitySearchQuery,

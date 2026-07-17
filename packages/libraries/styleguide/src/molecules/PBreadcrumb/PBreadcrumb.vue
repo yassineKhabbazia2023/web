@@ -1,5 +1,9 @@
 <template>
-  <ElBreadcrumb :separatorIcon="ArrowRight" :class="['p-breadcrumb', breadCrumpSize]">
+  <ElBreadcrumb
+    data-testid="breadcrumb"
+    :separatorIcon="ArrowRight"
+    :class="['p-breadcrumb', breadCrumpSize]"
+  >
     <ElBreadcrumbItem
       v-for="(item, index) in items"
       :key="index"

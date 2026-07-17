@@ -1,5 +1,4 @@
 // css3 var in packages/theme-chalk/src/switch.scss
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $switch: (
   'on-color': var(--p-surface-state-active),
@@ -16,15 +15,15 @@ div.el-switch {
   &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--p-jungle-200);
     --el-switch-off-color: var(--p-gray-50);
+  }
 
+  // The gray thumb only applies to the disabled-off state: disabled-on keeps the default white one.
+  &.is-disabled:not(.is-checked) > .el-switch__core .el-switch__action {
     background-color: var(--p-gray-300);
   }
 
   &.is-checked > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--p-jungle-200);
-    --el-switch-off-color: var(--p-gray-100);
-
-    background-color: var(--p-white);
   }
 
   &:not(.is-checked, .is-disabled) {
@@ -34,11 +33,6 @@ div.el-switch {
 
     &:focus {
       --el-switch-off-color: var(--p-jungle-400);
-    }
-
-    &:hover > .el-switch__core > .el-switch__action,
-    &:focus > .el-switch__core > .el-switch__action {
-      background-color: var(--p-white);
     }
   }
 

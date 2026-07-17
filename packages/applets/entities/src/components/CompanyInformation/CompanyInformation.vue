@@ -62,7 +62,6 @@
       v-if="providerName && internalAccount && !isLoading"
       ref="companyForm"
       :pModel="internalAccount"
-      pLabelPosition="top"
       class="company-information__form"
       aria-describedby="company-info-note company-info-alert"
     >

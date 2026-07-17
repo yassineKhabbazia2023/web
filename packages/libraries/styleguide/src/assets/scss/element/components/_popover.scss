@@ -1,14 +1,12 @@
 $popover: (
   'font-size': 12px,
   'title-font-size': 1.4rem,
-  'title-text-color': var(--p-black-rock-900),
 );
 
 .el-popover {
   &.el-popper-popover {
     &.p-popover--shadow {
       box-shadow: var(--el-box-shadow-dark);
-      text-align: unset;
       padding: 16px;
       border-radius: 0;
       border: none;
@@ -17,7 +15,6 @@ $popover: (
     .el-popover__title {
       font-weight: 600;
       margin-bottom: 4px;
-      color: var(--p-black-rock-900);
     }
 
     .el-popover__content {

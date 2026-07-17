@@ -16,7 +16,7 @@
     :format="pFormat"
     :defaultValue="pDefaultValue"
     :name="pName"
-    :label="pLabel"
+    :ariaLabel="pLabel"
     :disabledHours="pDisabledHours"
     :disabledMinutes="pDisabledMinutes"
     :disabledSeconds="pDisabledSeconds"
@@ -31,7 +31,7 @@ import type { PTimePickerProps } from './PTimePickerTypes'
 
 withDefaults(defineProps<PTimePickerProps>(), {
   pReadonly: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pEditable: true,
   pClearable: true,
   pSize: undefined,

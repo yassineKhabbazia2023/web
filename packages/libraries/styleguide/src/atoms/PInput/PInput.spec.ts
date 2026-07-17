@@ -163,6 +163,16 @@ describe('pInput', () => {
       expect(wrapper.find('.el-input-group__append').exists()).toBeFalsy()
       expect(wrapper.find('.el-input-group__prepend').exists()).toBeFalsy()
     })
+    it('should not force disabled prop when pDisabled is not provided', () => {
+      const {
+        pDisabled: _pDisabled,
+        ...propsWithoutDisabled
+      } = propsValue
+      const wrapper = createWrapper(propsWithoutDisabled)
+      const elInput = wrapper.findComponent({ name: 'ElInput' })
+
+      expect(elInput.props('disabled')).toBeUndefined()
+    })
     it('should add and remove p-input--focus accordingly base on focus and blur event', async () => {
       const wrapper = createWrapper({
         ...propsValue,

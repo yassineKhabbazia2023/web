@@ -108,7 +108,6 @@
       <PForm
         ref="bankForm"
         :pModel="bankDetails"
-        pLabelPosition="top"
         pRequireAsteriskPosition="right"
         class="margin-top--4"
       >
@@ -242,7 +241,7 @@
 
 <script setup lang="ts">
 import { computed, useTemplateRef, watch } from 'vue'
-import type { FormInstance, FormItemRule } from 'element-plus'
+import type { FormInstance, FormItemRule } from '@pulse/styleguide/types'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFormItem, PInput, PLoader, PTag, PUpload } from '@pulse/styleguide/components'
 import { PUploadType } from '@pulse/styleguide/types'
@@ -280,7 +279,7 @@ const {
 // Report validity up so the drawer footer can enable/disable the "Continue" button.
 watch(isGeneralInformationValid, (isValid) => emit('update:valid', isValid), { immediate: true })
 
-// Localized required rule — trims whitespace and avoids element-plus's English default message.
+// Localized required rule — trims whitespace and avoids the default English message.
 const requiredRule = computed<FormItemRule[]>(() => [
   validationRules.requiredTextInput(t(`${I18N}.requiredField`)),
 ])
@@ -295,7 +294,7 @@ const ibanBicRules = computed<FormItemRule[]>(() => [
 
 const bankForm = useTemplateRef<FormInstance>('bankForm')
 
-// The mismatch is symmetric, so revalidate both fields whenever either changes — element-plus only
+// The mismatch is symmetric, so revalidate both fields whenever either changes — the form only
 // revalidates the field that emitted the event, which would otherwise leave the sibling stale.
 const revalidateBankPair = (): void => {
   void bankForm.value?.validateField(['iban', 'bic'], () => {})

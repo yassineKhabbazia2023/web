@@ -28,15 +28,21 @@ const propsValue: PSwitchProps = {
   pTabIndex: 0,
   pLabel: 'label',
 }
-const createWrapper = () => mount(PSwitch, {
-  props: propsValue,
+const createWrapperWithProps = (props: Partial<PSwitchProps> = {}, modelValue = false) => mount(PSwitch, {
+  props: {
+    ...propsValue,
+    ...props,
+    modelValue,
+  },
 })
 
 describe('pSwitch', () => {
   it('should render correctly', () => {
-    const wrapper: VueWrapper<any> = createWrapper()
+    const wrapper: VueWrapper<any> = createWrapperWithProps({}, false)
     const component = wrapper.findComponent({ name: 'ElSwitch' })
     const expectedProps = {
+      modelValue: false,
+      disabled: propsValue.pDisabled,
       loading: propsValue.pLoading,
       size: propsValue.pSize,
       width: propsValue.pWidth,
@@ -53,13 +59,16 @@ describe('pSwitch', () => {
       validateEvent: propsValue.pValidateEvent,
       beforeChange: propsValue.pBeforeChange,
       id: propsValue.pId,
+      ariaLabel: propsValue.pLabel,
     }
 
     expect(component.props()).toMatchObject(expectedProps)
 
+    expect(wrapper.find('.el-switch__input').attributes('aria-label'))
+      .toBe(propsValue.pLabel)
+
     expect(wrapper.find('.el-switch').attributes('tabindex'))
       .toBe(propsValue.pTabIndex?.toString())
-    expect(wrapper.find('.el-switch__input').attributes('aria-label')).toBe(propsValue.pLabel)
 
     const { pBorderColor: border, pActiveColor: on, pInactiveColor: off } = propsValue
     const pfx = '--el-switch-'
@@ -67,5 +76,26 @@ describe('pSwitch', () => {
 
     const expectedStyle = `${pfx}border${sfx}: ${border}; ${pfx}on${sfx}: ${on}; ${pfx}off${sfx}: ${off};`
     expect(wrapper.attributes('style')).toBe(expectedStyle)
+  })
+
+  it('should disable switch when loading', () => {
+    const wrapper: VueWrapper<any> = createWrapperWithProps({
+      pDisabled: false,
+      pLoading: true,
+    })
+
+    const component = wrapper.findComponent({ name: 'ElSwitch' })
+
+    expect(component.props('loading')).toBe(true)
+    expect(component.props('disabled')).toBe(true)
+  })
+
+  it('should emit model update from ElSwitch', async () => {
+    const wrapper: VueWrapper<any> = createWrapperWithProps({}, false)
+    const component = wrapper.findComponent({ name: 'ElSwitch' })
+
+    await component.vm.$emit('update:modelValue', true)
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([[true]])
   })
 })

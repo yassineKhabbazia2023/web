@@ -60,7 +60,6 @@
             :pModel="formStateByBeneficiaryId[beneficiary.beneficiaryId]"
             :pRules="beneficiaryFormRules"
             :pShowMessage="false"
-            pLabelPosition="top"
             pRequireAsteriskPosition="right"
           >
             <PFormLine>
@@ -147,7 +146,6 @@
 import { computed, ref } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FormInstance, UploadFile, UploadRawFile } from 'element-plus'
 import {
   PAlert,
   PDropdown,
@@ -160,7 +158,7 @@ import {
   PTabs,
   PLoader,
 } from '@pulse/styleguide/components'
-import type { PDropdownOption } from '@pulse/styleguide/types'
+import type { FormInstance, PDropdownOption, UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'

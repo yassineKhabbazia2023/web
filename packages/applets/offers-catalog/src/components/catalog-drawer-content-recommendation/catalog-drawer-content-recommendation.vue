@@ -2,7 +2,7 @@
   <div class="catalog-drawer-content-recommendation">
     <PAlert
       pType="info"
-      class="margin-y--6"
+      class="margin-top--2 margin-bottom--6"
     >
       {{ t('alert') }}
     </PAlert>

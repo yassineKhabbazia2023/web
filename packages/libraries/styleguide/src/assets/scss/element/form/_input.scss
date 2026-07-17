@@ -1,28 +1,20 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 // css3 var in packages/theme-chalk/src/input.scss
 $input: (
-  'border-radius': var(--el-border-radius-small),
-  'icon-color': var(--p-icon-neutral),
   'clear-hover-color': var(--p-stroke-default-secondary),
   'border-color': var(--p-white),
   'hover-border-color': var(--p-white)
 );
 
 $input-padding-horizontal: (
-  'large': 16px,
   'default': 14px,
   'small': 9px,
 );
 
 $input-font-size: (
   'default': 1.2rem,
-  'small': 1.2rem,
 );
 
 div.el-textarea {
-  --el-input-border-radius: var(--el-border-radius-base);
-
   box-shadow: none;
   border-bottom: 2px solid var(--p-stroke-default-secondary);
   &:hover {
@@ -97,22 +89,19 @@ div.el-textarea {
     }
   }
 
-  div {
-    &#{$self}__wrapper {
-      &.is-focus {
-        box-shadow: none;
-        border-bottom-color: var(--p-stroke-press);
-      }
-    }
+  // Pulse inputs use the underline style: the focus/disabled rings are
+  // disabled through the CSS variables Element Plus reads in its own
+  // box-shadow rules on .el-input__wrapper. Declared on the wrapper itself
+  // because Element Plus re-declares this variable on .el-input later in the
+  // cascade, which would override a declaration made here.
+  #{$self}__wrapper {
+    --el-input-focus-border-color: transparent;
   }
+
   &.is-disabled {
+    --el-disabled-border-color: transparent;
+
     border-bottom-color: var(--p-stroke-darker);
-    div {
-      &#{$self}__wrapper {
-        box-shadow: none;
-        background-color: var(--p-surface-state-disabled);
-      }
-    }
   }
 
   &.el-date-editor.el-date-editor--date {
@@ -121,8 +110,6 @@ div.el-textarea {
 }
 
 .el-autocomplete {
-  width: 100%;
-
   .el-input__prefix {
     color: var(--p-icon-secondary);
   }

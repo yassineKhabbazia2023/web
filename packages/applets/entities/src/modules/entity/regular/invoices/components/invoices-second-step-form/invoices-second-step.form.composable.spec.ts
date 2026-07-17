@@ -1,6 +1,6 @@
 import { ref, shallowRef } from 'vue'
 import { flushPromises } from '@vue/test-utils'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { useInvoicesSecondStepForm } from './invoices-second-step.form.composable'
 import { InvoicesSecondStepFormManager } from './invoices-second-step.form.manager'

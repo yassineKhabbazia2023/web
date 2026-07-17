@@ -30,8 +30,7 @@ export interface PSelectProps {
   pPersistent?: boolean
   pAutomaticDropdown?: boolean
   pFitInputWidth?: boolean
-  pSuffixTransition?: boolean
-  pTagType?: '' | 'success' | 'info' | 'warning' | 'danger'
+  pTagType?: 'primary' | 'success' | 'info' | 'warning' | 'danger'
   pValidateEvent?: boolean
   pPlacement?: PlacementOptions
   pMaxCollapseTags?: number

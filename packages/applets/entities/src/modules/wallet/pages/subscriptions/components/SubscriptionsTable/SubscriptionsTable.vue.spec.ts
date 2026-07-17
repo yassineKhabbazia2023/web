@@ -149,7 +149,7 @@ describe('subscriptionsTable', () => {
   })
 
   afterEach(() => {
-    // Flush any pending debounced timers (e.g. element-plus doLayout) before unmount
+    // Flush any pending debounced timers (e.g. the table's doLayout) before unmount
     // to prevent "requestAnimationFrame is not defined" errors after environment teardown
     vi.runAllTimers()
     wrapper.unmount()

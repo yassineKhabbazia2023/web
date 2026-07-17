@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import type { Ref, ShallowRef } from 'vue'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import type { InvoicesFullFormModel } from '../../types'
 
 interface UseInvoicesFirstStepFormParams {

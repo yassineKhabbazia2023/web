@@ -1,4 +1,5 @@
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import { viteConfigBase, DEFAULT_EXTERNALS } from './vite.config.base'
 
@@ -20,7 +21,7 @@ export function createLibraryConfig(options: LibraryConfigOptions) {
   } = options
 
   const libName = packageName.split('/')[1]
-  const resolvedRootDir = path.dirname(new URL(rootDir).pathname)
+  const resolvedRootDir = path.dirname(fileURLToPath(rootDir))
 
   return defineConfig(
     mergeConfig(viteConfigBase({ mode }), {

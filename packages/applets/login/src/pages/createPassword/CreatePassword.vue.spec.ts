@@ -7,7 +7,7 @@ import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
 import { LoginService } from '@pulse/common/services/login'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 
 import CreatePassword from './CreatePassword.vue'
 

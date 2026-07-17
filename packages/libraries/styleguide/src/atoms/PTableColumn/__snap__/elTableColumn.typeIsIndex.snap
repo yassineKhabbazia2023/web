@@ -2,6 +2,7 @@
   "align": "left",
   "className": "",
   "columnKey": "",
+  "filterClassName": undefined,
   "filterMethod": undefined,
   "filterMultiple": false,
   "filterPlacement": "top",
@@ -25,6 +26,7 @@
   "sortMethod": [Function],
   "sortOrders": [],
   "sortable": false,
+  "tooltipFormatter": undefined,
   "type": "index",
   "width": "",
 }

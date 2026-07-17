@@ -9,4 +9,5 @@ export interface PPopperContentProps {
   pPlacement?: PlacementOptions
   pPopperOptions?: object
   pStrategy?: 'fixed' | 'absolute'
+  pArrowOffset?: number
 }

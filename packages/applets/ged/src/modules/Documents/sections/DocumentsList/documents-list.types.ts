@@ -16,3 +16,9 @@ export interface GetRowClassNameParameters {
 export interface DocumentListTableColumn {
   label: string
 }
+
+export interface TableInstance<T> {
+  clearSelection: () => void
+  toggleRowSelection: (row: T, selected?: boolean) => void
+  setCurrentRow: (row?: T) => void
+}

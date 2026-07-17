@@ -10,7 +10,7 @@
       v-model="selectedCountry"
       filterable
       :filterMethod="onFilterCountries"
-      :disabled="pDisabled || pCountryDisabled"
+      :disabled="pCountryDisabled === true ? true : pDisabled"
       class="p-phone-input__country-select"
       popperClass="p-phone-input__country-popper"
       data-testid="phone-country-select"
@@ -59,7 +59,7 @@ import { usePhoneInput } from './p-phone-input.composable'
 
 const props = withDefaults(defineProps<PPhoneInputProps>(), {
   pDefaultCountry: 'FR',
-  pDisabled: false,
+  pDisabled: undefined,
   pCountryDisabled: false,
   pPlaceholder: '',
   pPreferredCountries: () => [],
@@ -89,6 +89,10 @@ defineExpose({
   &__country-select {
     width: 110px;
     flex-shrink: 0;
+
+    [class^='flag:'] {
+      font-size: var(--el-font-size-base);
+    }
   }
 
   &__country-option {

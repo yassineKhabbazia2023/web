@@ -108,6 +108,12 @@ describe('pBreadcrumb', () => {
       expect(wrapper.find('[data-testid="breadcrumb-ellipsis-trigger"]').exists()).toBeFalsy()
       expect(wrapper.text()).toContain('Documents')
     })
+
+    it('should expose a stable breadcrumb test id', () => {
+      const wrapper = createWrapper()
+
+      expect(wrapper.find('[data-testid="breadcrumb"]').exists()).toBeTruthy()
+    })
   })
   describe('events', () => {
     it('should emit p-breadcrumb-item-click on breadcrumb item click', async () => {

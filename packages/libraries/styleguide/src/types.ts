@@ -1,5 +1,5 @@
 // Export types
-export type { FormInstance, FormRules, UploadStatus, UploadFile, UploadRawFile, TabsPaneContext } from 'element-plus'
+export type { DropdownInstance, FormInstance, FormItemRule, FormRules, TableColumnCtx, UploadStatus, UploadFile, UploadRawFile, TabsPaneContext } from 'element-plus'
 export * from './atoms/PAlert/PAlertTypes'
 export * from './atoms/PAside/PAsideTypes'
 export * from './atoms/PAvatar/PAvatarTypes'

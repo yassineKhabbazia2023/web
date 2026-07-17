@@ -27,7 +27,9 @@ const createWrapper = (props = defaultProps) =>
           template: '<div class="el-select"><slot /></div>',
           props: [
             'pOptions',
+            'pPlaceholder',
             'pPlacement',
+            'pPopperClass',
             'modelValue',
           ],
         },
@@ -68,7 +70,10 @@ describe('pPagination', () => {
     it('should set page range selector postion to "top"', () => {
       const wrapper = createWrapper()
       const select = wrapper.findComponent({ name: 'PDropdown' })
+
+      expect(select.props('pPlaceholder')).toBe('100 documents')
       expect(select.props('pPlacement')).toBe('top')
+      expect(select.props('pPopperClass')).toBe('p-pagination__popper')
       expect(select.props('modelValue')).toBe(100)
     })
 

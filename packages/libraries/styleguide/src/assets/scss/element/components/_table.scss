@@ -1,48 +1,19 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 $table: (
   'border-color': 0,
   'border': 1px solid var(--p-gray-100),
-  'text-color': var(--el-fill-color-darker),
   'header-text-color': var(--el-fill-color),
   'row-hover-bg-color': var(--p-jungle-50),
   'current-row-bg-color': var(--p-jungle-75),
-  'header-bg-color': var(--el-bg-color),
-  'fixed-box-shadow': var(--el-box-shadow-light),
-  'bg-color': var(--p-white),
-  'tr-bg-color': var(--p-white),
-  'expanded-cell-bg-color': var(--p-white),
-  'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 0.15),
-  'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 0.15),
 );
 
 $table-font-size: (
-  'large': var(--el-font-size-base),
-  'default': 1.4rem,
   'small': 1.2rem,
-);
-
-$table-padding: (
-  'large': 1.2rem 0,
-  'default': 1.2rem 0,
-  'small': 0.4rem 0,
-);
-
-$table-cell-padding: (
-  'large': 0 1.6rem,
-  'default': 0 1.2rem,
-  'small': 0 0.8rem,
 );
 
 
 /**
 * Change the styles in tables.
 */
-
-tbody tr td .cell {
-  font-weight: 400;
-  font-family: var(--el-font-family)
-}
 
 .el-table .cell .caret-wrapper {
   height: 1.3rem;
@@ -57,7 +28,6 @@ tbody tr td .cell {
   table {
     thead tr th.el-table__cell {
       font-weight: 400;
-      min-height: 40px;
       padding: 0;
 
       .sort-caret.ascending {
@@ -112,10 +82,6 @@ tbody tr td .cell {
           background-color: var(--p-jungle-50);
         }
       }
-    }
-
-    .el-table__row {
-      min-height: 40px;
     }
 
     .el-table__cell {

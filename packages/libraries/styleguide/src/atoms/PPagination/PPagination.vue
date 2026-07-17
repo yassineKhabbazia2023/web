@@ -4,9 +4,10 @@
       v-if="!pHidePageSize"
       v-model="modelPageSize"
       :pOptions="pageSizeOptions"
+      :pPlaceholder="pageSizePlaceholder"
       pPlacement="top"
       :data-testid="`${pTestIdRoot}-pagination-select`"
-      popper-class="p-pagination__popper"
+      p-popper-class="p-pagination__popper"
       class="p-pagination__select"
     />
 
@@ -14,6 +15,7 @@
       v-model:current-page="currentPage"
       v-model:page-size="modelPageSize"
       background
+      size="small"
       :pageSizes="pPageSizes"
       :total="pTotal"
       layout="prev, pager, next"
@@ -50,6 +52,14 @@ const pageSizeOptions = computed<PDropdownProps['pOptions']>(() => (
       pGroupLabel: props.pPageSizeSelectorGroupLabel,
     }))
 ))
+
+const pageSizePlaceholder = computed(() => {
+  if (props.pPageSize === undefined) {
+    return undefined
+  }
+
+  return `${props.pPageSize} ${props.pPageSizeSelectorSuffix}`
+})
 
 const currentPage = computed({
   get() {

@@ -20,7 +20,7 @@
         :pLabel="t(tab.title)"
         :pCount="tab.count"
         :name="tab.route"
-        class="margin-bottom--6"
+        class="margin-bottom--2"
       />
       <router-view />
     </PTabs>
@@ -58,7 +58,7 @@ const handleTabClick = (tab: TabsPaneContext) => {
 
   if (clickedTab) {
     AmplitudeService.track('Feature Consulted', {
-      feature_name: tab.props.label.toLowerCase(),
+      feature_name: t(clickedTab.title).toLowerCase(),
     })
     router.push({ name: clickedTab.route })
   }

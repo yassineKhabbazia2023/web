@@ -1,5 +1,5 @@
 <template>
-  <ElTimeline>
+  <ElTimeline class="p-timeline">
     <slot />
   </ElTimeline>
 </template>

@@ -29,7 +29,6 @@
       v-else
       ref="entityCreatorForm"
       :pModel="newTestAccount"
-      pLabelPosition="top"
       class="entity-creator__form margin-top--6"
       aria-describedby="entity-creator-user-card"
       data-testid="entity-creator-form"

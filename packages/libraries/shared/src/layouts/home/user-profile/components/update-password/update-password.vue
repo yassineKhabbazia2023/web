@@ -4,7 +4,6 @@
       ref="formRef"
       :pModel="formModel"
       :pRules="rules"
-      pLabelPosition="top"
       @submit.prevent="handleSubmit"
     >
       <PasswordFields

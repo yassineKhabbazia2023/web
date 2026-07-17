@@ -129,7 +129,7 @@ export const StringInput: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value" 
             v-bind="args"
@@ -162,7 +162,7 @@ export const NumberDropdown: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value"
             v-bind="args"
@@ -196,7 +196,7 @@ export const MultipleDropdown: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value"
             v-bind="args"
@@ -232,7 +232,7 @@ export const DatePicker: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value"
             v-bind="args"
@@ -266,7 +266,7 @@ export const RadioButtons: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value"
             v-bind="args"
@@ -304,7 +304,7 @@ export const EmailInput: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField
             v-model="value"
             v-bind="args"
@@ -342,7 +342,7 @@ export const CheckboxField: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PField 
             v-model="value"
             v-bind="args"
@@ -372,7 +372,7 @@ export const DisabledStates: Story = {
         getMockedInputField('firstname', 'First Name', 'John', 50, true),
       )
       const dropdownField = reactive<PFieldPropsDropdown<number | undefined>>(
-        getDropdownField('range', 'Range', 50, dropdownOptions, true),
+        getDropdownField('range', 'Range', 50, dropdownOptions, true, false, undefined, 'Tout afficher', 'Select'),
       )
       const dateField = reactive<PFieldPropsDate<string>>(
         getDateField('date', 'Date', 'Select date', 50, 'DD/MM/YYYY', 'YYYY-MM-DD', true),
@@ -396,7 +396,7 @@ export const DisabledStates: Story = {
     template: `
       <div style="padding: 20px;">
         <h3>Disabled Field States</h3>
-        <PForm pLabelPosition="top">
+        <PForm>
           <div style="display: grid; gap: 20px;">
             <PField v-bind="stringField" />
             <PField v-bind="dropdownField" />
@@ -425,7 +425,7 @@ export const WithValidation: Story = {
     template: `
       <div style="padding: 20px;">
         <h3>Fields with Validation</h3>
-        <PForm pLabelPosition="top">
+        <PForm>
           <div style="display: grid; gap: 20px;">
             <PField
               v-model="valueMail"
@@ -484,7 +484,7 @@ export const AllFieldTypes: Story = {
     template: `
       <div style="padding: 20px;">
         <h3>All Field Types</h3>
-        <PForm pLabelPosition="top">
+        <PForm>
           <div style="display: grid; gap: 20px; max-width: 500px;">
             <PField 
               v-model="value"
@@ -498,6 +498,7 @@ export const AllFieldTypes: Story = {
               pFieldType="dropdown"
               pFieldKey="dropdown"
               pLabel="Dropdown"
+              pPlaceholder="Select"
               :pDropdownOptions="dropdownOptions"
             />
             <PField 

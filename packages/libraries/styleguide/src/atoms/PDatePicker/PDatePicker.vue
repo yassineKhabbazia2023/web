@@ -45,7 +45,7 @@ import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 const props = withDefaults(defineProps<PDatePickerProps<T>>(), {
   pCalendarLite: false,
   pReadonly: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pClearable: true,
   pType: 'date',
   pFormat: 'YYYY-MM-DD',
@@ -57,20 +57,12 @@ const props = withDefaults(defineProps<PDatePickerProps<T>>(), {
 
 const emit = defineEmits<{
   'selected-date': [string]
-  'update:modelValue': [T]
   'calendar-change': [[Date, Date]]
   'panel-change': [T]
   'change': [T]
 }>()
 
-const datepickerModel = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const datepickerModel = defineModel<T>()
 const panelDate = ref<PDatePickerModelValue>()
 
 watch(() => props.modelValue, () => {
@@ -145,23 +137,34 @@ const prefixIcon = computed(() => getIconComponent('calendarEvent'))
     font-weight: 600;
   }
   .el-date-picker__header {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    span:nth-child(1) {
+    justify-content: center;
+    gap: 0;
+    padding: 0 26px;
+    margin-bottom: 7px;
+
+    .el-date-picker__prev-btn,
+    .el-date-picker__next-btn {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .el-date-picker__prev-btn {
+      left: 0;
+    }
+
+    > span:nth-child(2) {
+      order: 2;
+    }
+
+    > span:nth-child(3) {
       order: 1;
     }
-    span:nth-child(2) {
-      order: 3;
-      flex-grow: 2;
-      text-align: left;
-    }
-    span:nth-child(3) {
-      order: 2;
-      flex-grow: 2;
-      text-align: right;
-    }
-    span:nth-child(4) {
-      order: 4;
+
+    .el-date-picker__next-btn {
+      right: 0;
     }
   }
   &--is-last-week-hidden .el-picker-panel__content {

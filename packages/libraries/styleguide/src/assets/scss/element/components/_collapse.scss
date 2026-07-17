@@ -1,10 +1,8 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
 @use '../../pegase/radius' as *;
 @use '../../pegase/shadow' as *;
 
 // css3 var in packages/theme-chalk/src/collapse.scss
 $collapse: (
-  'border-color': var(--el-border-color-lighter),
   'header-height': 49px,
   'header-text-color': var(--p-gray-900),
   'header-font-size': 1.4rem,
@@ -132,21 +130,24 @@ div.el-collapse {
     }
   }
 
-  .el-collapse-item {
-    &__header {
-      padding: 0 16px;
-      font-weight: 600;
-      line-height: 1.2;
+  // The extra .el-collapse-item on the root is needed so the header padding wins by specificity
+  // over Element Plus 2.14's ".el-collapse-icon-position-right .el-collapse-item__header".
+  &.el-collapse-item .el-collapse-item__header {
+    padding: 0 16px;
+    font-weight: 600;
+    line-height: 1.2;
 
-      &:hover,
-      &.is-active .el-collapse-item__arrow {
-        color: var(--p-jungle-400);
-      }
+    &.is-active .el-collapse-item__arrow {
+      color: var(--p-jungle-400);
     }
+  }
 
+  &.el-collapse-item:not(.is-disabled) .el-collapse-item__header:hover {
+    color: var(--p-jungle-400);
+  }
+
+  .el-collapse-item {
     &__arrow {
-      margin: 0 0 0 auto;
-      flex-grow: 0;
       flex-shrink: 0;
     }
 

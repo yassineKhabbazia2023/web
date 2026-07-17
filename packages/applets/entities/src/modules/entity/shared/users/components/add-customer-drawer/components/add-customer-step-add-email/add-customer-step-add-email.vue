@@ -13,7 +13,6 @@
     >
       <template #suffix>
         <PForm
-          pLabelPosition="top"
           pRequireAsteriskPosition="right"
         >
           <PFormItem

@@ -159,7 +159,7 @@ onMounted(fetchDocuments)
   max-width: 100%;
 
   @media (min-width: 768px) {
-    max-width: 20%;
+    width: 250px;
   }
 }
 </style>

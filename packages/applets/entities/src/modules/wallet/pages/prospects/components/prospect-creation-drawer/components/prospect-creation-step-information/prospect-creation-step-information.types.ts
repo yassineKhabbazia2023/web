@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 import type { ProspectCreationDropdownContent, ProspectFormData } from '@entities/modules/wallet/types'
 
 export interface ProspectCreationStepInformationProps {

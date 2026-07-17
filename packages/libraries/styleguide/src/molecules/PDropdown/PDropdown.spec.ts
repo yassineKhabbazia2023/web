@@ -38,7 +38,6 @@ function getPropsValue(pOptions: PDropdownOption[], pCheckAllLabel = '') {
     pPersistent: true,
     pAutomaticDropdown: false,
     pFitInputWidth: false,
-    pSuffixTransition: true,
     pTagType: 'info',
     pValidateEvent: true,
     pPlacement: 'bottom-start',
@@ -79,6 +78,32 @@ describe('test PDropdown', () => {
 
       expect(optionCheckboxes).toHaveLength(pOptions.length)
     })
+    it('should normalize a non-array modelValue to an empty array when multiple is enabled', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pMultiple: true,
+        modelValue: '',
+      })
+
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[[]]])
+    })
+    it('should NOT normalize modelValue when it is already an array', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pMultiple: true,
+        modelValue: ['a'],
+      })
+
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+    })
+    it('should NOT normalize modelValue when multiple is disabled', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        modelValue: '',
+      })
+
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+    })
     it('should display selected option checkbox as checked when multiple is enabled', () => {
       const wrapper = createWrapper({
         ...propsValue,
@@ -88,6 +113,53 @@ describe('test PDropdown', () => {
       const checkedCheckboxes = wrapper.findAll('.p-dropdown__option-item__checkbox .is-checked')
 
       expect(checkedCheckboxes).toHaveLength(1)
+    })
+    it('should display joined values when modelValue is an array on a simple select', async () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        modelValue: ['a', 'b'],
+      })
+
+      await nextTick()
+
+      expect(wrapper.find('.el-select__placeholder').text()).toContain('a,b')
+    })
+    it('should NOT display joined values when allowCreate is enabled', async () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pAllowCreate: true,
+        modelValue: ['a', 'b'],
+      })
+
+      await nextTick()
+
+      expect(wrapper.find('.el-select__placeholder').text()).toContain('placeholder')
+      expect(wrapper.find('.p-dropdown--selected-value-display').exists()).toBeFalsy()
+    })
+    it('should NOT apply selected value display style when modelValue is empty', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        modelValue: '',
+      })
+
+      expect(wrapper.find('.p-dropdown--selected-value-display').exists()).toBeFalsy()
+    })
+    it('should NOT apply selected value display style when dropdown is disabled', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pDisabled: true,
+        modelValue: 'a',
+      })
+
+      expect(wrapper.find('.p-dropdown--selected-value-display').exists()).toBeFalsy()
+    })
+    it('should apply selected value display style when needed', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        modelValue: 'a',
+      })
+
+      expect(wrapper.find('.p-dropdown--selected-value-display').exists()).toBeTruthy()
     })
     it('should render correctly', () => {
       const component = wrapper.findComponent({ name: 'ElSelect' })
@@ -121,7 +193,6 @@ describe('test PDropdown', () => {
         persistent: propsValue.pPersistent,
         automaticDropdown: propsValue.pAutomaticDropdown,
         fitInputWidth: propsValue.pFitInputWidth,
-        suffixTransition: propsValue.pSuffixTransition,
         tagType: propsValue.pTagType,
         validateEvent: propsValue.pValidateEvent,
         placement: propsValue.pPlacement,
@@ -133,7 +204,7 @@ describe('test PDropdown', () => {
 
       expect(component.props()).toMatchObject(expectedProps)
       expect(pCheckbox.exists()).toBeFalsy()
-      expect(wrapper.find('.el-input__inner').attributes('aria-label')).toBe(propsValue.pAriaLabel)
+      expect(wrapper.find('.el-select__input').attributes('aria-label')).toBe(propsValue.pAriaLabel)
     })
   })
   describe('with groups', () => {
@@ -184,13 +255,12 @@ describe('test PDropdown', () => {
       expect(componentVM.persistent).toBe(propsValue.pPersistent)
       expect(componentVM.automaticDropdown).toBe(propsValue.pAutomaticDropdown)
       expect(componentVM.fitInputWidth).toBe(propsValue.pFitInputWidth)
-      expect(componentVM.suffixTransition).toBe(propsValue.pSuffixTransition)
       expect(componentVM.tagType).toBe(propsValue.pTagType)
       expect(componentVM.validateEvent).toBe(propsValue.pValidateEvent)
       expect(componentVM.placement).toBe(propsValue.pPlacement)
       expect(componentVM.maxCollapseTags).toBe(propsValue.pMaxCollapseTags)
       expect(componentVM.popperOptions).toStrictEqual(propsValue.pPopperOptions)
-      expect(wrapper.find('.el-input__inner').attributes('aria-label')).toBe(propsValue.pAriaLabel)
+      expect(wrapper.find('.el-select__input').attributes('aria-label')).toBe(propsValue.pAriaLabel)
     })
   })
 

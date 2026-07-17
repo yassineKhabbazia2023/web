@@ -14,7 +14,7 @@
 
     <div class="padding-x--6 padding-top--6">
       <div class="azure-devops-page__pat-section">
-        <PForm pLabelPosition="top">
+        <PForm>
           <PFormItem pLabelFor="pat-input">
             <template #label>
               <div class="flex flex--align-items-center">
@@ -73,7 +73,7 @@
       v-if="isPatValidated"
       class="padding-x--6 padding-top--6"
     >
-      <PForm pLabelPosition="top">
+      <PForm>
         <PFormItem pLabel="Repository">
           <div class="azure-devops-page__repo-select">
             <PDropdown

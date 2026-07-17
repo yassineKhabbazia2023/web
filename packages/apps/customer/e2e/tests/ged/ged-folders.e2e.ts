@@ -17,7 +17,7 @@ test.describe('GED - Breadcrumb Navigation', () => {
     await navigateToGed(page)
     await selectFolder(page, 'Dépôt')
 
-    const breadcrumb = page.getByRole('navigation', { name: 'Breadcrumb' })
+    const breadcrumb = page.getByTestId('breadcrumb')
     await expect(breadcrumb).toBeVisible()
     await expect(breadcrumb.getByText('Documents')).toBeVisible()
   })

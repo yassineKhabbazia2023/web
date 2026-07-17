@@ -1,18 +1,7 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-@use '../../pegase/shadow' as *;
 @use '../../pegase/breakpoints' as *;
-
-$drawer: (
-  'bg-color':
-    var(--el-dialog-bg-color, #{var(--el-bg-color)}),
-  'padding-primary': var(--el-dialog-padding-primary, 20px),
-);
 
 div.el-overlay:not(.p-drawer--mini) {
   background: rgba(14, 15, 48, 0.6);
-  box-shadow: 0px 0px 2px 0px rgba(32, 32, 32, 0.1), 0px 1px 2px 0px rgba(32, 32, 32, 0.05), 0px 2px 4px 0px rgba(32, 32, 32, 0.08), 0px 3px 4px 0px rgba(32, 32, 32, 0.1);
-  backdrop-filter: blur(0); // no backdrop blur
-  -webkit-backdrop-filter: blur(0);
   transition-timing-function: linear;
 }
 
@@ -106,6 +95,9 @@ div.el-overlay:not(.p-drawer--mini) {
 
   .el-drawer__footer {
     position: relative;
+    // Element Plus 2.14 sets overflow: hidden on the footer, which would clip
+    // the ::before fade gradient rendered above the footer box.
+    overflow: visible;
     padding: 2.4rem;
     color: var(--p-text-body);
 
@@ -181,6 +173,10 @@ div.el-overlay:not(.p-drawer--mini) {
   .el-drawer__body {
     margin: 0;
     padding: 0;
+  }
+
+  .el-drawer__header {
+    overflow: visible;
   }
 
   &__header,

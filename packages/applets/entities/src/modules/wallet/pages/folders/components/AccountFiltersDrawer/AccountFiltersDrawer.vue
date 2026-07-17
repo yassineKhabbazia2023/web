@@ -12,7 +12,6 @@
   >
     <PForm
       :pModel="internalFilters"
-      pLabelPosition="top"
       @submit.prevent
     >
       <PFormItem :pLabel="t('favorites')">

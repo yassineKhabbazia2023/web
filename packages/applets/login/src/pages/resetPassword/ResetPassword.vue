@@ -10,7 +10,6 @@
       ref="formRef"
       :pRules="rules"
       :pModel="formValues"
-      pLabelPosition="top"
       pRequireAsteriskPosition="right"
       @submit.prevent="handleSubmit"
     >
@@ -59,7 +58,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import { useRouter } from 'vue-router'
 import { api } from '@pulse/common/api'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'

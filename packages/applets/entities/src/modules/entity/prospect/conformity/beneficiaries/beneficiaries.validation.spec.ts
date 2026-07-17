@@ -1,9 +1,9 @@
-import type { FormItemRule } from 'element-plus'
+import type { FormItemRule } from '@pulse/styleguide/types'
 import { buildBeneficiaryFormRules } from './beneficiaries.validation'
 
 const REQUIRED_ERROR_MESSAGE = 'Champ obligatoire'
 
-// element-plus validators are callback-based and synchronous: run one and
+// Form rule validators are callback-based and synchronous: run one and
 // return the error it reports, if any
 const runValidator = (rule: FormItemRule, value: unknown): Error | undefined => {
   let reportedError: Error | undefined

@@ -1,35 +1,57 @@
 import { shallowMount } from '@vue/test-utils'
-import PButton from './'
+import PButton from '.'
 
+const createWrapper = (props = {}) => shallowMount(PButton, {
+  props,
+  global: {
+    stubs: {
+      ElButton: {
+        name: 'ElButton',
+        template: '<button><slot /></button>',
+        props: ['type', 'circle', 'disabled', 'loading', 'size', 'class', 'tag'],
+      },
+      PIcon: {
+        name: 'PIcon',
+        template: '<i />',
+      },
+    },
+  },
+})
 
 describe('test for PButton', () => {
   it('render correctly', () => {
-    const wrapper = shallowMount(PButton)
+    const wrapper = createWrapper()
+    const elButton = wrapper.findComponent({ name: 'ElButton' })
 
-    const PButtonElement = wrapper.findComponent({ name: 'PButton' })
-    expect(PButtonElement.exists()).toBeTruthy()
+    expect(elButton.exists()).toBeTruthy()
   })
+
   it('render with props', () => {
-    const wrapper = shallowMount(PButton, {
-      props: {
-        pCircle: true,
-        pDisabled: true,
-        pLoading: true,
-        pSize: 'small',
-        pIconOnly: true,
-        pIsActive: true,
-      },
+    const wrapper = createWrapper({
+      pCircle: true,
+      pDisabled: true,
+      pLoading: true,
+      pSize: 'small',
+      pIconOnly: true,
+      pIsActive: true,
     })
 
-    const pButtonElement = wrapper.findComponent({ name: 'PButton' })
-    const pButtonAttributes = pButtonElement.attributes()
+    const elButton = wrapper.findComponent({ name: 'ElButton' })
 
-    expect(pButtonElement.exists()).toBeTruthy()
-    expect(pButtonAttributes.round).toBeTruthy()
-    expect(pButtonAttributes.size).toBe('small')
-    expect(pButtonAttributes.loading).toBeTruthy()
-    expect(pButtonAttributes.disabled).toBeTruthy()
-    expect(pButtonAttributes.class).toBe('p-button p-button--icon p-button--is-active')
+    expect(elButton.props()).toMatchObject({
+      circle: true,
+      disabled: true,
+      loading: true,
+      size: 'small',
+    })
+    expect(elButton.props('class')).toBe('p-button p-button--icon p-button--is-active')
+  })
+
+  it('should not force disabled prop when pDisabled is not provided', () => {
+    const wrapper = createWrapper()
+    const elButton = wrapper.findComponent({ name: 'ElButton' })
+
+    expect(elButton.props('disabled')).toBeUndefined()
   })
   it('applies the active type class', () => {
     const wrapper = shallowMount(PButton, {

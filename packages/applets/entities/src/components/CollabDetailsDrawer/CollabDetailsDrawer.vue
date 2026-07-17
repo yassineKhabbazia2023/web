@@ -37,7 +37,6 @@
       ref="formRef"
       :pModel="formValues"
       :pRules="formRules"
-      pLabelPosition="top"
       @submit.prevent="handleCollaboratorUpdate"
     >
       <PFormItem prop="lastName" :pLabel="t('lastName')">

@@ -24,7 +24,6 @@
 @use './components/menu';
 @use './components/notification';
 @use './components/pagination';
-@use './components/popper';
 @use './components/popover';
 @use './components/skeleton';
 @use './components/steps';
@@ -50,7 +49,6 @@
   $border-radius: border.$border-radius,
   $box-shadow: box-shadow.$box-shadow,
   $button-border-radius: buttons.$button-border-radius,
-  $button-font-size: buttons.$button-font-size,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button: buttons.$button,
@@ -64,7 +62,6 @@
   $date-editor: datepicker.$date-editor,
   $dialog: dialog.$dialog,
   $disabled: colors.$disabled,
-  $drawer: drawer.$drawer,
   $fill-color: colors.$fill-color,
   $font-family: typography.$font-family,
   $font-size: typography.$font-size,
@@ -86,15 +83,14 @@
   $radio: radio.$radio,
   $select-dropdown: select.$select-dropdown,
   $select-group: select.$select-group,
+  $select-near-margin-left: select.$select-near-margin-left,
   $select-option: select.$select-option,
-  $select-tags-prefix-padding: select.$select-tags-prefix-padding,
   $select: select.$select,
   $skeleton: skeleton.$skeleton,
   $switch: switch.$switch,
-  $table-cell-padding: table.$table-cell-padding,
   $table-font-size: table.$table-font-size,
-  $table-padding: table.$table-padding,
   $table: table.$table,
+  $tag: tag.$tag,
   $tag-height: tag.$tag-height,
   $tag-padding: tag.$tag-padding,
   $text-color: colors.$text-color,
@@ -104,10 +100,11 @@
   $upload: upload.$upload
 );
 
-@forward 'element-plus/theme-chalk/src/form.scss' with (
+@forward 'element-plus/theme-chalk/src/form-item.scss' with (
   $form-item-error-padding-top: form.$form-item-error-padding-top,
   $form-item-label-top-line-height: form.$form-item-label-top-line-height,
-  $form-item-label-top-margin-bottom: form.$form-item-label-top-margin-bottom
+  $form-item-label-top-margin-bottom: form.$form-item-label-top-margin-bottom,
+  $form-item-margin-bottom: form.$form-item-margin-bottom
 );
 
 // @use Call after forward, files who need files from element plus
@@ -119,8 +116,15 @@
 @use 'element-plus/theme-chalk/src/autocomplete.scss' as *;
 @use 'element-plus/theme-chalk/src/avatar.scss' as *;
 @use 'element-plus/theme-chalk/src/base.scss' as *;
-@use 'element-plus/theme-chalk/src/button.scss' as *;
+@use 'element-plus/theme-chalk/src/button.scss' as * with (
+  $button-icon-span-gap: (
+    'large': 0,
+    'default': 0,
+    'small': 0,
+  )
+);
 @use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
+@use 'element-plus/theme-chalk/src/breadcrumb-item.scss' as *;
 @use 'element-plus/theme-chalk/src/calendar.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
@@ -129,6 +133,7 @@
 @use 'element-plus/theme-chalk/src/collapse.scss' as *;
 @use 'element-plus/theme-chalk/src/collapse-item.scss' as *;
 @use 'element-plus/theme-chalk/src/container.scss' as *;
+@use 'element-plus/theme-chalk/src/date-picker-panel.scss' as *;
 @use 'element-plus/theme-chalk/src/date-picker.scss' as *;
 @use 'element-plus/theme-chalk/src/dialog.scss' as *;
 @use 'element-plus/theme-chalk/src/display.scss' as *;
@@ -136,6 +141,7 @@
 @use 'element-plus/theme-chalk/src/drawer.scss' as *;
 @use 'element-plus/theme-chalk/src/footer.scss' as *;
 @use 'element-plus/theme-chalk/src/form.scss' as *;
+@use 'element-plus/theme-chalk/src/form-item.scss' as *;
 @use 'element-plus/theme-chalk/src/header.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
 @use 'element-plus/theme-chalk/src/input.scss' as *;

@@ -1,7 +1,6 @@
 import { onMounted, ref } from 'vue'
 import type { Ref, ShallowRef } from 'vue'
-import type { FormInstance } from 'element-plus'
-import type { PDropdownOption } from '@pulse/styleguide/types'
+import type { FormInstance, PDropdownOption } from '@pulse/styleguide/types'
 import type { InvoicesSecondStepFormModel } from './invoices-second-step.form.types'
 import { InvoicesSecondStepFormManager } from './invoices-second-step.form.manager'
 

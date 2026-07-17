@@ -1,7 +1,11 @@
 import type { PlacementOptions } from '../../constants/placementOptions'
-import type { Filters } from 'element-plus/es/components/table/src/table-column/defaults'
 import type { TableOverflowTooltipOptions } from 'element-plus/es/components/table/src/util'
 import type { VNode } from 'vue'
+
+type PTableColumnFilters = {
+  text: string
+  value: string
+}[]
 
 export interface PTableColumnProps {
   pType?: 'selection' | 'index' | 'expand'
@@ -30,7 +34,7 @@ export interface PTableColumnProps {
   pLabelClassName?: string
   pSelectable?: (_row: any, _index: number) => boolean
   pReserveSelection?: boolean
-  pFilters?: Filters
+  pFilters?: PTableColumnFilters
   pFilterPlacement?: PlacementOptions
   pFilterMultiple?: boolean
   pFilterMethod?: (_value: any, _row: any, _column: any) => void

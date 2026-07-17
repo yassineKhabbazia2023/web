@@ -36,6 +36,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { RouteName } from '@pulse/common/enums'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
+import type { TabsPaneContext } from '@pulse/styleguide/types'
 import { getProspectTabAuthorizations, getProspectTabs } from './prospect-overview.helper'
 import type { ProspectTabName, ProspectTab } from './prospect-overview.type'
 
@@ -88,13 +89,14 @@ const navigateToDefaultTab = () => {
   }
 }
 
-const handleTabClick = (tab: { props: { label: string }, paneName: string }) => {
-  AmplitudeService.track('Feature Consulted', {
-    feature_name: tab.props.label.toLowerCase(),
-  })
-  router.push({
-    name: tab.paneName,
-  })
+const handleTabClick = (tab: TabsPaneContext) => {
+  const clickedTab = tabsList.value.find(t => t.name === tab.paneName)
+  if (clickedTab) {
+    AmplitudeService.track('Feature Consulted', {
+      feature_name: clickedTab.title.toLowerCase(),
+    })
+    router.push({ name: clickedTab.name })
+  }
 }
 
 watch(

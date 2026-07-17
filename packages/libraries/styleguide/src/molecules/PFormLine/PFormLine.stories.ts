@@ -42,7 +42,7 @@ export const Basic: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm :pModel="formValues" pLabelPosition="top" style="max-width: 720px;">
+        <PForm :pModel="formValues" style="max-width: 720px;">
           <PFormLine>
             <PFormItem pLabel="Owner" pProp="owner">
               <PDropdown
@@ -82,7 +82,7 @@ export const WithFixedSize: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm :pModel="formValues" pLabelPosition="top" style="max-width: 720px;">
+        <PForm :pModel="formValues" style="max-width: 720px;">
           <PFormLine>
             <PFormItem pLabel="Owner" pProp="owner" pWidth="300px">
               <PDropdown
@@ -121,7 +121,7 @@ export const InlineForm: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm :pModel="formValues" pInline pLabelPosition="top" style="max-width: 720px;">
+        <PForm :pModel="formValues" pInline style="max-width: 720px;">
           <PFormLine>
             <PFormItem pLabel="Owner" pProp="owner">
               <PDropdown

@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { TableColumnCtx } from 'element-plus'
+import type { TableColumnCtx } from '@pulse/styleguide/types'
 import { logger } from '@pulse/toolbox'
 import { PResponsiveTable, PTableColumn, PIcon, PToolbox, PButton, PTooltip } from '@pulse/styleguide/components'
 import type {

@@ -36,7 +36,7 @@ import type { PAutocompleteProps } from './PAutocompleteTypes'
 const props = withDefaults(defineProps<PAutocompleteProps>(), {
   pPlaceholder: undefined,
   pClearable: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pMinLength: 0,
   pValueKey: 'value',
   pPlacement: 'bottom-start',

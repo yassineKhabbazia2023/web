@@ -5,7 +5,8 @@
       'p-checkbox--rounded': pRounded,
       'p-checkbox--label-left': pLabelLeft
     }"
-    :label="pLabel"
+    :value="pLabel"
+    :disabled="pDisabled"
     :model-value="model"
     @update:model-value="onUpdateModelValue"
   >
@@ -25,6 +26,7 @@ const model = defineModel<boolean>({
 withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
   pLabelLeft: false,
+  pDisabled: undefined,
 })
 
 const onUpdateModelValue = (value: CheckboxValueType) => {

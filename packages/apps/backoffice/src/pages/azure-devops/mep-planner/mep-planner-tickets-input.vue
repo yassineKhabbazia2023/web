@@ -1,6 +1,6 @@
 <template>
   <div class="mep-planner-tickets-input">
-    <PForm pLabelPosition="top">
+    <PForm>
       <PFormItem>
         <template #label>
           <span>Work Item IDs</span>

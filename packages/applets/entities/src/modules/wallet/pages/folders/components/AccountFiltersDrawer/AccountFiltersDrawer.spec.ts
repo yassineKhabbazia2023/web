@@ -19,7 +19,7 @@ const stubs = {
     props: ['modelValue', 'pSize', 'pTitle', 'destroyOnClose'],
     emits: ['update:modelValue', 'close', 'open', 'close-drawer-button'],
   },
-  PForm: { name: 'PForm', template: '<form><slot /></form>', props: ['pModel', 'pLabelPosition'] },
+  PForm: { name: 'PForm', template: '<form><slot /></form>', props: ['pModel'] },
   PFormItem: { name: 'PFormItem', template: '<div><slot /></div>', props: ['pLabel'] },
   PFilterOption: {
     name: 'PFilterOption',

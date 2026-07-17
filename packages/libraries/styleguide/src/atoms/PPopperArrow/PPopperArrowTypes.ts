@@ -1,3 +1,1 @@
-export interface PPopperArrowProps {
-  pArrowOffset?: number
-}
+export type PPopperArrowProps = Record<string, never>

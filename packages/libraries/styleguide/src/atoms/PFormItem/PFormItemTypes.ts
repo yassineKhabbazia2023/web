@@ -9,7 +9,7 @@ export interface PFormItemProps {
   pRules?: Arrayable<FormItemRule>
   pError?: string
   pShowMessage?: boolean
-  pInlineMessage?: boolean | string
+  pInlineMessage?: boolean
   pSize?: '' | 'large' | 'default' | 'small'
   pFor?: string
   pValidateStatus?: '' | 'error' | 'validating' | 'success'

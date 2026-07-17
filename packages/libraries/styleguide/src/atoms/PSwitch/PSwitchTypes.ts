@@ -1,5 +1,7 @@
 import type { Component } from 'vue'
 
+export type PSwitchValue = boolean | string | number
+
 export interface PSwitchProps {
   pDisabled?: boolean
   pLoading?: boolean
@@ -12,8 +14,8 @@ export interface PSwitchProps {
   pInactiveActionIcon?: string | Component
   pActiveText?: string
   pInactiveText?: string
-  pActiveValue?: boolean | string | number
-  pInactiveValue?: boolean | string | number
+  pActiveValue?: PSwitchValue
+  pInactiveValue?: PSwitchValue
   pActiveColor?: string
   pInactiveColor?: string
   pBorderColor?: string

@@ -16,7 +16,6 @@
     <PForm
       v-show="!isUploading && !isUploaded"
       pRequireAsteriskPosition="right"
-      pLabelPosition="top"
     >
       <PRow :pGutter="48">
         <PCol :pSpan="24" :pMd="12">

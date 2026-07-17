@@ -114,7 +114,7 @@ const pClassMapper = computed(() => ({
     color: var(--p-text-disabled);
     cursor: not-allowed;
 
-    &__icon {
+    #{$self}__icon {
       fill: var(--p-text-disabled);
     }
   }

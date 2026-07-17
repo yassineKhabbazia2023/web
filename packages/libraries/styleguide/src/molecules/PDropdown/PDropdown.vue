@@ -1,6 +1,7 @@
 <template>
   <ElSelect
     v-model="internalModelValue"
+    :class="{ 'p-dropdown--selected-value-display': shouldDisplaySelectedValueAsPlaceholder }"
     :multiple="pMultiple"
     :disabled="pDisabled"
     :valueKey="pValueKey"
@@ -12,7 +13,7 @@
     :name="pName"
     :effect="pEffect"
     :autocomplete="pAutocomplete"
-    :placeholder="pPlaceholder"
+    :placeholder="displayedPlaceholder"
     :filterable="pFilterable"
     :allowCreate="pAllowCreate"
     :filterMethod="pFilterMethod"
@@ -30,7 +31,6 @@
     :persistent="pPersistent"
     :automaticDropdown="pAutomaticDropdown"
     :fitInputWidth="pFitInputWidth"
-    :suffixTransition="pSuffixTransition"
     :tagType="pTagType"
     :validateEvent="pValidateEvent"
     :placement="pPlacement"
@@ -162,7 +162,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { ElSelect, ElOptionGroup, ElOption } from 'element-plus'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+import { ElSelect, ElOptionGroup, ElOption, useFormDisabled } from 'element-plus'
 import PCheckbox from '../../atoms/PCheckbox'
 import PRadio from '../../atoms/PRadio'
 import type { PDropdownProps } from './PDropdownTypes'
@@ -183,7 +184,7 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pCollapseTags: false,
   pCollapseTagsTooltip: false,
   pDefaultFirstOption: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pEffect: 'light',
   pFilterable: false,
   pFilterMethod: undefined,
@@ -199,13 +200,12 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pPersistent: true,
   pPlaceholder: undefined,
   pPlacement: 'bottom-start',
-  pPoppperClass: '',
+  pPopperClass: '',
   pRemote: false,
   pRemoteMethod: undefined,
   pRemoteShowSuffix: false,
   pReserveKeyword: true,
   pSize: undefined,
-  pSuffixTransition: true,
   pTagType: 'info',
   pTeleported: true,
   pValidateEvent: true,
@@ -218,8 +218,45 @@ const emit = defineEmits<{
   'change': [any]
 }>()
 
+// Element Plus 2.4 normalized a non-array modelValue to [] in multiple mode; 2.14 no longer does
+// and would keep the scalar around (e.g. castArray('') giving [''] on the first selection).
+if (props.pMultiple === true && Array.isArray(props.modelValue) === false) {
+  emit('update:modelValue', [])
+}
+
 const groups = computed(() => getDropdownGroups(props.pOptions))
 const hasGroups = computed(() => getHasGroups(groups.value))
+const hasArrayModelValue = computed(() => (
+  Array.isArray(props.modelValue)
+  && props.modelValue.length > 0
+))
+const hasScalarModelValue = computed(() => (
+  Array.isArray(props.modelValue) === false
+  && isNotNullNorEmpty(props.modelValue)
+))
+// pDisabled may be undefined so the disabled state can also come from the ElForm context.
+const isEffectivelyDisabled = useFormDisabled(computed(() => props.pDisabled))
+const shouldDisplaySelectedValueAsPlaceholder = computed(() => {
+  const isDisabled = isEffectivelyDisabled.value
+  const isMultiple = props.pMultiple
+
+  if (isDisabled === true || isMultiple === true) {
+    return false
+  }
+
+  const hasScalarSelectedValue = hasScalarModelValue.value
+  const hasNonCreatableArraySelectedValue = props.pAllowCreate === false
+    && hasArrayModelValue.value
+
+  return hasScalarSelectedValue || hasNonCreatableArraySelectedValue
+})
+const displayedPlaceholder = computed(() => {
+  if (hasArrayModelValue.value && props.pAllowCreate === false) {
+    return props.modelValue.join(',')
+  }
+
+  return props.pPlaceholder
+})
 const internalIsCheckAll = computed({
   get: () => getIsCheckAll(props.pOptions, props.modelValue),
   set: (isCheckAll: boolean) => {

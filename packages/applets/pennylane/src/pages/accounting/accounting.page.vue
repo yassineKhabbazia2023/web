@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
+import type { TabsPaneContext } from '@pulse/styleguide/types'
 import { useI18n } from 'vue-i18n'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useCurrentEntityStore } from '@pulse/common/stores'

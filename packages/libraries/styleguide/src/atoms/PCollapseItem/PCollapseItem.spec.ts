@@ -12,7 +12,7 @@ const defaultProps = {
 }
 
 function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
-  const { pType, pTitleCollapseItem, pIconName, pFullBody } = {
+  const { pType, pTitleCollapseItem, pIconName, pFullBody, pDisabled } = {
     ...defaultProps,
     ...overridenProps,
   }
@@ -24,6 +24,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
         :pTitleCollapseItem="pTitleCollapseItem"
         :pIconName="pIconName"
         :pFullBody="pFullBody"
+        :pDisabled="pDisabled"
       />
     </PCollapse>
     `,
@@ -33,6 +34,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
         pTitleCollapseItem,
         pIconName,
         pFullBody,
+        pDisabled,
       }
     },
   }
@@ -116,6 +118,18 @@ describe('pCollapseItem', () => {
       })
 
       expect(wrapper.find('.p-collapse-item--fullbody').exists()).toBeTruthy()
+    })
+
+    it('should pass undefined to ElCollapseItem disabled by default', () => {
+      const wrapper = createWrapper()
+
+      expect(wrapper.findComponent({ name: 'ElCollapseItem' }).props('disabled')).toBeUndefined()
+    })
+
+    it('should pass pDisabled to ElCollapseItem disabled', () => {
+      const wrapper = createWrapper({ pDisabled: true })
+
+      expect(wrapper.findComponent({ name: 'ElCollapseItem' }).props('disabled')).toBe(true)
     })
   })
 })

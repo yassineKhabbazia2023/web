@@ -1,6 +1,6 @@
 import { InvoicesFirstStepFormManager } from './invoices-first-step.form.manager'
 import { InvoicesTracking } from '../../services/invoices.tracking.service'
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from '@pulse/styleguide/types'
 
 beforeEach(() => {
   vi.spyOn(InvoicesTracking, 'trackDigitizationInitializedSuccess').mockImplementation(() => undefined)

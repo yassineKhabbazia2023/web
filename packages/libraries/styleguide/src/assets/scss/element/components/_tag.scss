@@ -1,8 +1,6 @@
 // css3 var in packages/theme-chalk/src/tag.scss
 $tag-height: (
-  'large': 32px,
   'default': 22px,
-  'small': 20px,
 );
 
 $tag-padding: (
@@ -11,10 +9,13 @@ $tag-padding: (
   'small': 9px,
 );
 
+$tag: (
+  'border-radius': 0,
+);
+
 // CSS for component Tag
 .el-tag {
   $self: &;
-  --el-tag-border-radius: 0px !important;
 
   &#{$self}--light { // same as default color
     --el-tag-bg-color: var(--p-jungle-100);
@@ -22,7 +23,11 @@ $tag-padding: (
     --el-tag-hover-color: var(--p-jungle-700);
     --el-tag-text-color: var(--p-jungle-700);
 
-    &#{$self}--default {
+    // Element Plus 2.14 defaults an untyped tag to type="primary", so el-tag--primary
+    // must share the Pulse default look (keep it before the other color variants so
+    // an explicit pColor still wins the cascade).
+    &#{$self}--default,
+    &#{$self}--primary {
       --el-tag-bg-color: var(--p-jungle-100);
       --el-tag-border-color: var(--p-jungle-100);
       --el-tag-hover-color: var(--p-jungle-700);
@@ -184,10 +189,6 @@ $tag-padding: (
     }
   }
 
-  &__close {
-    cursor: pointer;
-  }
-
   &__content {
     display: flex;
     align-items: center;
@@ -195,9 +196,10 @@ $tag-padding: (
   }
 }
 
-.el-select__tags,
-.el-select__collapse-tag {
-  // For tags in select
+.el-select__selection,
+.el-select__selected-item {
+  // For tags rendered by select
+  .el-tag.el-tag--info.el-tag--light,
   .el-tag.el-tag--info.el-tag--default.el-tag--light {
     background-color: var(--p-gray-100);
     border-color: var(--p-gray-100);

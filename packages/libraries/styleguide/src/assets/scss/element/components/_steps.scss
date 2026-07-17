@@ -1,5 +1,3 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 div.el-step {
   &.is-horizontal {
     display: flex;
@@ -24,10 +22,6 @@ div.el-step {
       &__line,
       &__description {
         display: none;
-      }
-
-      &__icon {
-        margin-right: 12px;
       }
 
       &__main {
@@ -56,7 +50,6 @@ div.el-step {
       left: 50%;
       width: 1px;
       height: calc(100% - 48px);
-      background: var(--p-gray-300);
       transform: translate(-50%, -50%);
 
       .el-step__line-inner {
@@ -66,31 +59,16 @@ div.el-step {
   }
 
   &.is-simple {
+    // Consumed by the generic `.el-step__icon.is-icon` sizing below, whose
+    // specificity beats Element Plus' own `.el-step.is-simple .el-step__icon` rule.
     --p-step-simple-icon-size: 16px;
     --p-step-simple-icon-font-size: 12px;
     --p-step-simple-icon-gap: 10px;
 
-    .el-step__head {
-      width: auto;
-      font-size: 0;
-      padding-right: var(--p-step-simple-icon-gap);
-    }
-
     .el-step__icon {
-      width: var(--p-step-simple-icon-size);
-      height: var(--p-step-simple-icon-size);
       margin-right: var(--p-step-simple-icon-gap);
       border: none;
       border-radius: 50%;
-      font-size: var(--p-step-simple-icon-font-size);
-    }
-
-    .el-step__main {
-      position: relative;
-      display: flex;
-      align-items: stretch;
-      flex-grow: 1;
-      width: auto;
     }
 
     .el-step__icon.is-icon {
@@ -103,16 +81,8 @@ div.el-step {
     }
 
     .el-step__title {
-      display: block;
-      width: auto;
       padding-right: 0;
-      font-size: 1.6rem;
-      line-height: 2rem;
       white-space: nowrap;
-
-      &::after {
-        display: none;
-      }
     }
   }
 
@@ -175,10 +145,6 @@ div.el-step {
         }
       }
 
-      &.is-text {
-        font-weight: 700;
-      }
-
       .el-step__icon-inner.is-status {
         transform: none;
       }
@@ -205,10 +171,6 @@ div.el-step {
 
       &.is-error {
         color: var(--p-red-800);
-      }
-
-      &.is-wait {
-        color: var(--p-gray-300);
       }
     }
   }

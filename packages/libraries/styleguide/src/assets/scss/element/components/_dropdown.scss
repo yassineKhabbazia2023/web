@@ -1,21 +1,5 @@
-$dropdown: (
-  'menu-box-shadow': var(--el-box-shadow-light),
-  'menu-index': 10,
-);
-
-.el-dropdown {
-  outline: none;
-}
-
 .el-tooltip {
   &__trigger {
-    outline: none;
-  }
-}
-
-.el-dropdown-menu {
-  &__item {
-    border: none;
     outline: none;
   }
 }

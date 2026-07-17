@@ -1,20 +1,16 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 $radio: (
-  'font-size': 1.4rem,
   'font-weight': 400,
-  'input-height': 14px,
-  'input-width': 14px,
   'input-border-color': var(--p-gray-300),
+  'input-border-color-hover': var(--p-jungle-700),
 );
 
 $radio-disabled: (
   'input-border-color': var(--p-gray-300),
   'input-fill': var(--p-white),
   'icon-color': var(--p-white),
-  'checked-input-border-color': var(--p-jungle-200),
+  'checked-input-border-color': var(--p-gray-300),
   'checked-input-fill': var(--p-white),
-  'checked-icon-color': var(--p-white),
+  'checked-icon-color': var(--p-gray-300),
 );
 
 $radio-checked: (
@@ -24,38 +20,31 @@ $radio-checked: (
 );
 
 $radio-bordered-input-height: (
-  'large': 14px,
   'default': 14px,
-  'small': 12px,
 );
 
 $radio-bordered-input-width: (
-  'large': 14px,
   'default': 14px,
-  'small': 12px,
 );
 
 .el-radio {
   $self: &;
 
-  &:hover,
-  &:focus {
+  // Element Plus only reacts when the 14px circle itself is hovered; Pulse
+  // highlights it when hovering anywhere on the component (label included).
+  &:hover {
     #{$self}__inner {
-      border-color: var(--p-jungle-700);
+      border-color: var(--el-radio-input-border-color-hover);
     }
   }
 
   #{$self}__input {
     &.is-checked {
-      #{$self}__inner:after {
-        transform: scale(1);
-      }
-
-      &.is-disabled {
-        #{$self}__inner {
-          border-color: var(--p-gray-300);
-          &:after {
-              background: var(--p-gray-300); }
+      #{$self}__inner {
+        &:after {
+          background: var(--p-black-rock-900);
+          position: initial;
+          transform: scale(1);
         }
       }
 
@@ -63,15 +52,11 @@ $radio-bordered-input-width: (
         #{$self}__inner {
           border-color: var(--p-jungle-700);
           &:after {
-              background: var(--p-jungle-700);
-            }
+            background: var(--p-jungle-700);
+            position: initial;
+            transform: scale(1);
+          }
         }
-      }
-    }
-
-    &.is-disabled {
-      + span#{$self}__label {
-        color: var(--p-gray-300);
       }
     }
 

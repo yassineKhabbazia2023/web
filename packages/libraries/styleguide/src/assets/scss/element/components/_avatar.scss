@@ -1,18 +1,7 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 // css3 var in packages/theme-chalk/src/avatar.scss
-$avatar: (
-  'text-color': var(--p-white),
-  'bg-color': var(--el-text-color-disabled),
-  'text-size': 14px,
-  'icon-size': 18px,
-  'border-radius': var(--el-border-radius-base),
-);
-
 $avatar-size: (
   'xlarge': 56px,
   'large': 48px,
-  'default': 40px,
   'small': 32px,
   'xsmall': 24px,
 );

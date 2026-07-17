@@ -1,5 +1,5 @@
 <template>
-  <div class="margin-top--6">
+  <div class="margin-top--2">
     <AddCollaboratorsDrawer
       v-if="currentEntityId && isAddCollaboratorsDrawerOpened"
       v-model="isAddCollaboratorsDrawerOpened"
@@ -207,9 +207,9 @@ import {
   reactive,
   ref,
   toRaw,
+  useTemplateRef,
   watch,
 } from 'vue'
-import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@pulse/common/stores'
@@ -284,7 +284,7 @@ const isCollabDetailsDrawerOpened = ref(false)
 const route = useRoute()
 const currentEntityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
-const selectedRow = ref<InstanceType<typeof ElTable>>()
+const selectedRow = useTemplateRef<InstanceType<typeof PTable>>('selectedRow')
 
 const state: any = reactive({
   currentPage: 1,

@@ -37,7 +37,6 @@
       </i18n-t>
       <PForm
         ref="formRef"
-        pLabelPosition="top"
         pRequireAsteriskPosition="right"
         :pModel="reasonForRefusal"
         :pRules="rules"

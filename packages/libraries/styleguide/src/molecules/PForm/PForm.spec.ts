@@ -8,7 +8,7 @@ const propsValue: PFormProps = {
   pModel: {},
   pRules: undefined,
   pInline: false,
-  pLabelPosition: 'right',
+  pLabelPosition: 'top',
   pLabelWidth: '200px',
   pLabelSuffix: 'suffix',
   pHideRequiredAsterisk: false,
@@ -47,7 +47,7 @@ describe('pForm', () => {
       size: propsValue.pSize,
       disabled: propsValue.pDisabled,
       scrollToError: propsValue.pScrollToError,
-      scrollIntoViewOptions: propsValue.pScrollIntoViewOptions,
+      scrollIntoViewOptions: true,
     }
 
     expect(component.props()).toMatchObject(expectedProps)

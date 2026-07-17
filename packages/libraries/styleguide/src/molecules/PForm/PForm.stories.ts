@@ -47,7 +47,7 @@ const meta: Meta<typeof PForm> = {
       description: 'Position of form labels',
       table: {
         type: { summary: "'left' | 'right' | 'top'" },
-        defaultValue: { summary: 'right' },
+        defaultValue: { summary: 'top' },
       },
     },
     pLabelWidth: {
@@ -296,7 +296,6 @@ export const Basic: Story = {
   }),
   args: {
     pRequireAsteriskPosition: 'right',
-    pLabelPosition: 'top',
   },
 }
 
@@ -354,76 +353,7 @@ export const InlineForm: Story = {
   }),
   args: {
     pInline: true,
-    pLabelPosition: 'top',
   },
-}
-
-export const LabelPositions: Story = {
-  render: () => ({
-    components: { PForm, PFormItem, PInput },
-    setup() {
-      const formValues = reactive({
-        name: 'John Doe',
-        email: 'john@example.com',
-        phone: '+1234567890',
-      })
-
-      return {
-        formValues,
-      }
-    },
-    template: `
-      <div style="padding: 20px;">
-        <h3>Label Position Examples</h3>
-        
-        <div style="margin-bottom: 32px;">
-          <h4>Top Labels</h4>
-          <PForm :pModel="formValues" pLabelPosition="top" style="max-width: 400px;">
-            <PFormItem pLabel="Name">
-              <PInput v-model="formValues.name" />
-            </PFormItem>
-            <PFormItem pLabel="Email">
-              <PInput v-model="formValues.email" />
-            </PFormItem>
-            <PFormItem pLabel="Phone">
-              <PInput v-model="formValues.phone" />
-            </PFormItem>
-          </PForm>
-        </div>
-        
-        <div style="margin-bottom: 32px;">
-          <h4>Left Labels</h4>
-          <PForm :pModel="formValues" pLabelPosition="left" pLabelWidth="80px" style="max-width: 400px;">
-            <PFormItem pLabel="Name">
-              <PInput v-model="formValues.name" />
-            </PFormItem>
-            <PFormItem pLabel="Email">
-              <PInput v-model="formValues.email" />
-            </PFormItem>
-            <PFormItem pLabel="Phone">
-              <PInput v-model="formValues.phone" />
-            </PFormItem>
-          </PForm>
-        </div>
-        
-        <div>
-          <h4>Right Labels</h4>
-          <PForm :pModel="formValues" pLabelPosition="right" pLabelWidth="80px" style="max-width: 400px;">
-            <PFormItem pLabel="Name">
-              <PInput v-model="formValues.name" />
-            </PFormItem>
-            <PFormItem pLabel="Email">
-              <PInput v-model="formValues.email" />
-            </PFormItem>
-            <PFormItem pLabel="Phone">
-              <PInput v-model="formValues.phone" />
-            </PFormItem>
-          </PForm>
-        </div>
-      </div>
-    `,
-  }),
-  args: {},
 }
 
 export const RequiredAsteriskPositions: Story = {
@@ -453,7 +383,7 @@ export const RequiredAsteriskPositions: Story = {
         
         <div style="margin-bottom: 32px;">
           <h4>Asterisk on Left (Default)</h4>
-          <PForm :pModel="formValues" :pRules="rules" pRequireAsteriskPosition="left" pLabelPosition="top" style="max-width: 400px;">
+          <PForm :pModel="formValues" :pRules="rules" pRequireAsteriskPosition="left" style="max-width: 400px;">
             <PFormItem pLabel="First Name" pProp="firstName" pRequired>
               <PInput v-model="formValues.firstName" pPlaceholder="Enter first name" />
             </PFormItem>
@@ -468,7 +398,7 @@ export const RequiredAsteriskPositions: Story = {
         
         <div>
           <h4>Asterisk on Right</h4>
-          <PForm :pModel="formValues" :pRules="rules" pRequireAsteriskPosition="right" pLabelPosition="top" style="max-width: 400px;">
+          <PForm :pModel="formValues" :pRules="rules" pRequireAsteriskPosition="right" style="max-width: 400px;">
             <PFormItem pLabel="First Name" pProp="firstName" pRequired>
               <PInput v-model="formValues.firstName" pPlaceholder="Enter first name" />
             </PFormItem>
@@ -506,7 +436,7 @@ export const FormSizes: Story = {
         
         <div style="margin-bottom: 32px;">
           <h4>Large Size</h4>
-          <PForm :pModel="formValues" pSize="large" pLabelPosition="top" style="max-width: 400px;">
+          <PForm :pModel="formValues" pSize="large" style="max-width: 400px;">
             <PFormItem pLabel="Large Input">
               <PInput v-model="formValues.input1" />
             </PFormItem>
@@ -518,7 +448,7 @@ export const FormSizes: Story = {
         
         <div style="margin-bottom: 32px;">
           <h4>Default Size</h4>
-          <PForm :pModel="formValues" pSize="default" pLabelPosition="top" style="max-width: 400px;">
+          <PForm :pModel="formValues" pSize="default" style="max-width: 400px;">
             <PFormItem pLabel="Default Input">
               <PInput v-model="formValues.input2" />
             </PFormItem>
@@ -530,7 +460,7 @@ export const FormSizes: Story = {
         
         <div>
           <h4>Small Size</h4>
-          <PForm :pModel="formValues" pSize="small" pLabelPosition="top" style="max-width: 400px;">
+          <PForm :pModel="formValues" pSize="small" style="max-width: 400px;">
             <PFormItem pLabel="Small Input">
               <PInput v-model="formValues.input3" />
             </PFormItem>
@@ -562,7 +492,7 @@ export const DisabledForm: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <PForm v-bind="args" pLabelPosition="top" style="max-width: 400px;">
+        <PForm v-bind="args" style="max-width: 400px;">
           <PFormItem pLabel="Name">
             <PInput v-model="formValues.name" />
           </PFormItem>

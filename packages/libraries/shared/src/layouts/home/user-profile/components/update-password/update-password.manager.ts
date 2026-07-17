@@ -133,7 +133,7 @@ export class UpdatePasswordManager {
    * @param translations - Localized error messages
    * @param getServerError - Function that returns current server error message
    * @param isRequired - Whether the field is required (default: true)
-   * @returns Validator function compatible with Element Plus pRules
+   * @returns Validator function compatible with styleguide pRules
    */
   static createCurrentPasswordValidator(
     translations: PasswordValidationTranslations,

@@ -14,7 +14,6 @@
       </p>
       <PForm
         class="form-password"
-        pLabelPosition="top"
         pHideRequiredAsterisk
       >
         <PFormItem

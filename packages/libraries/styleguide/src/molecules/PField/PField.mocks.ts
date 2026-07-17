@@ -122,6 +122,7 @@ export function getDropdownField(
   pMultiple?: boolean,
   pTestId?: string,
   pCheckAllLabel: string = 'Tout afficher',
+  pPlaceholder: string = '',
 ): PFieldPropsDropdown<number | undefined> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -129,6 +130,7 @@ export function getDropdownField(
     modelValue: undefined,
     pFieldKey,
     pLabel,
+    pPlaceholder,
     pFieldType: 'dropdown',
     pCssClass,
     pDisabled,

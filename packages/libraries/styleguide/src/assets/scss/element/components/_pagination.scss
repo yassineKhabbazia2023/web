@@ -1,9 +1,11 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
 @use '../../pegase/breakpoints' as *;
 
+// PPagination renders with size="small": the 12px font and 24px buttons come
+// from Element Plus' own font-size-small/button-width-small defaults.
 $pagination: (
-  'font-size': 12px,
-  'border-radius': var(--el-border-radius-small)
+  'border-radius': var(--el-border-radius-small),
+  'text-color': var(--p-gray-900),
+  'button-bg-color': var(--p-white),
 );
 
 .p-pagination {
@@ -20,30 +22,38 @@ $pagination: (
   &__total-page-counter {
     color: var(--p-gray-400);
     font-weight: 400;
+    white-space: nowrap;
   }
 
+  .el-select.p-pagination__select,
   &__select {
-    max-width: 81px;
+    width: 78px;
+    max-width: 78px;
+    border-bottom: none;
 
     @include media(xs) {
       display: none;
     }
 
-    .el-input {
+    &:hover,
+    &:has(.el-select__wrapper.is-focused),
+    &:has(.el-select__wrapper.is-disabled) {
       border-bottom: none;
-      font-size: 1.2rem;
-
-      &:hover {
-        border-bottom: none;
-      }
-
-      .el-select__caret.el-icon {
-        color: var(--p-gray-900);
-      }
     }
 
-    .el-input__wrapper {
+    .el-select__wrapper {
       height: 30px;
+      min-height: 30px;
+    }
+
+    .el-select__placeholder,
+    .el-select__placeholder span {
+      font-size: 12px;
+      text-overflow: clip;
+    }
+
+    .el-select__caret {
+      color: var(--p-gray-900);
     }
   }
 }
@@ -52,17 +62,11 @@ $pagination: (
   $self: &;
 
   height: 24px;
-  color: var(--p-gray-900);
 
   &.is-background {
     .el-pager {
       li.number,
       li.more {
-        min-width: 24px;
-        height: 24px;
-        background-color: var(--p-white);
-        color: var(--p-black-rock-900);
-
         @include media(xs) {
           display: none;
         }
@@ -89,8 +93,17 @@ $pagination: (
         }
       }
 
-      li.more {
-        background-color: white;
+
+      @include media(xs) {
+        li.number {
+          display: none;
+
+          &.is-active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
       }
     }
 
@@ -101,10 +114,6 @@ $pagination: (
 
       &.btn-prev,
       &.btn-next {
-        width: 2.4rem;
-        height: 2.4rem;
-        min-width: 0;
-        background-color: var(--p-white);
         color: var(--p-gray-900);
 
         &:hover {

@@ -1,5 +1,5 @@
 <template>
-  <div class="margin-top--6">
+  <div class="margin-top--2">
     <PAlert
       id="information-details-alert"
       data-testid="subscription-details-information-alert"
@@ -16,7 +16,6 @@
     <PForm
       v-else
       :pModel="accountModel"
-      pLabelPosition="top"
       class="information-details__form margin-top--6"
       aria-describedby="information-details-alert"
       data-testid="subscription-details-information-form"

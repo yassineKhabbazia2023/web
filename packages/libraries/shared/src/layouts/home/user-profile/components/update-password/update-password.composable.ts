@@ -1,6 +1,5 @@
 import { ref, computed, reactive, watch } from 'vue'
-import type { FormRules } from 'element-plus'
-import type { FormInstance } from '@pulse/styleguide/types'
+import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type { PasswordFieldsExposed, PasswordValidationTranslations } from '@pulse/shared/types'
 import {
   createNewPasswordValidator,

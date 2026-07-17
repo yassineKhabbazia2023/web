@@ -30,7 +30,6 @@
       <PForm
         ref="formRef"
         :pModel="form"
-        pLabelPosition="top"
         pRequireAsteriskPosition="right"
       >
         <PFormItem

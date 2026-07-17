@@ -1,13 +1,9 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 // css3 var in packages/theme-chalk/src/button.scss
 $button: (
-'font-weight': var(--el-font-weight-primary),
 'border-color': var(--p-gray-100),
 'text-color': var(--p-gray-500),
 'disabled-text-color': var(--p-gray-100),
 'disabled-border-color': var(--p-gray-100),
-'divide-border-color': rgba(var(--p-white-rgb), 0.5),
 'hover-text-color': var(--p-gray-500),
 'hover-bg-color': var(--p-white),
 'hover-border-color': var(--p-gray-300),
@@ -19,26 +15,20 @@ $button: (
 'active-color': var(--p-text-color-primary),
 );
 
-$button-font-size: (
-'large': var(--el-font-size-base),
-'default': var(--el-font-size-base),
-'small': 12px,
-);
-
 $button-border-radius: (
 'small': var(--el-border-radius-base),
 );
 
+// Element Plus subtracts the 1px border when it renders these paddings.
 $button-padding-vertical: (
 'large': 20px,
 'default': 13px,
-'small': 9px,
+'small': 10px,
 );
 
 $button-padding-horizontal: (
-'large': 20px,
 'default': 13px,
-'small': 8px,
+'small': 9px,
 );
 
 // Custom css el-button
@@ -68,24 +58,12 @@ $button-padding-horizontal: (
     }
   }
   
-  & i[class*=el-icon] + span {
-    margin-left: 0px;
-  }
-  
   &#{$self} {
     .el-icon {
       font-size: 16px;
     }
     
     &--small {
-      --el-button-size: 32px;
-      
-      height: 32px;
-      padding-left: 8px;
-      padding-right: 8px;
-      padding-top: 9px;
-      padding-bottom: 9px;
-      
       #{$self}__icon {
         &--left {
           margin-right: 8px;
@@ -114,32 +92,32 @@ $button-padding-horizontal: (
       }
     }
     
+    // Variants are themed through the --el-button-* variables consumed by
+    // Element Plus base/hover/active/disabled rules. The press state
+    // (:focus / .p-button--is-active) keeps raw rules because Element Plus
+    // has no focus/press variable channel; the :not(.is-disabled) guard
+    // keeps the disabled state winning over the press state.
     &--default {
-      background: transparent;
-      border-color: transparent;
-      color: var(--p-black-rock-900);
-      
-      &:hover {
-        background: transparent;
-        border-color: transparent;
-        color: var(--p-jungle-700);
-      }
-      
-      &:focus,
-      &.p-button--is-active {
+      --el-button-text-color: var(--p-black-rock-900);
+      --el-button-bg-color: transparent;
+      --el-button-border-color: transparent;
+      --el-button-hover-text-color: var(--p-jungle-700);
+      --el-button-hover-bg-color: transparent;
+      --el-button-hover-border-color: transparent;
+      --el-button-active-text-color: var(--p-jungle-800);
+      --el-button-active-bg-color: transparent;
+      --el-button-active-border-color: transparent;
+      --el-button-disabled-text-color: var(--p-gray-400);
+      --el-button-disabled-bg-color: transparent;
+      --el-button-disabled-border-color: transparent;
+
+      &:focus:not(.is-disabled),
+      &.p-button--is-active:not(.is-disabled) {
         background: transparent;
         border-color: transparent;
         color: var(--p-jungle-800);
       }
-      
-      &.is-disabled,
-      &.is-disabled:hover,
-      &.is-disabled:focus {
-        background: transparent;
-        border-color: transparent;
-        color: var(--p-gray-400);
-      }
-      
+
       #{$self}__icon {
         &--left {
           margin-right: 12px;
@@ -153,165 +131,135 @@ $button-padding-horizontal: (
   }
   
   &#{$self}--primary {
-    background: var(--p-button-primary-surface-default);
-    border-color: var(--p-button-primary-surface-default);
-    color: var(--p-button-primary-text);
-    
-    &:hover {
-      background: var(--p-button-primary-surface-hover);
-      border-color: var(--p-button-primary-surface-hover);
-      color: var(--p-button-primary-text);
-    }
-    
-    &:focus,
-    &.p-button--is-active {
+    --el-button-text-color: var(--p-button-primary-text);
+    --el-button-bg-color: var(--p-button-primary-surface-default);
+    --el-button-border-color: var(--p-button-primary-surface-default);
+    --el-button-hover-text-color: var(--p-button-primary-text);
+    --el-button-hover-bg-color: var(--p-button-primary-surface-hover);
+    --el-button-hover-border-color: var(--p-button-primary-surface-hover);
+    --el-button-active-text-color: var(--p-white);
+    --el-button-active-bg-color: var(--p-button-primary-surface-press);
+    --el-button-active-border-color: var(--p-button-primary-surface-press);
+    --el-button-disabled-text-color: var(--p-button-disabled-text);
+    --el-button-disabled-bg-color: var(--p-button-disabled-surface);
+    --el-button-disabled-border-color: var(--p-button-disabled-surface);
+
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: var(--p-button-primary-surface-press);
       border-color: var(--p-button-primary-surface-press);
       color: var(--p-white);
     }
-    
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--p-button-disabled-surface);
-      border-color: var(--p-button-disabled-surface);
-      color: var(--p-button-disabled-text);
-    }
   }
 
   &.p-button--active {
-    background: var(--p-surface-state-active);
-    border-color: var(--p-surface-state-active);
-    color: var(--p-white);
+    --el-button-text-color: var(--p-white);
+    --el-button-bg-color: var(--p-surface-state-active);
+    --el-button-border-color: var(--p-surface-state-active);
+    --el-button-hover-text-color: var(--p-white);
+    --el-button-hover-bg-color: var(--p-surface-state-action-hover);
+    --el-button-hover-border-color: var(--p-surface-state-action-hover);
+    --el-button-active-text-color: var(--p-white);
+    --el-button-active-bg-color: var(--p-surface-state-action-press);
+    --el-button-active-border-color: var(--p-surface-state-action-press);
+    --el-button-disabled-text-color: var(--p-white);
+    --el-button-disabled-bg-color: var(--p-surface-state-active-disabled);
+    --el-button-disabled-border-color: var(--p-surface-state-active-disabled);
 
-    &:hover {
-      background: var(--p-surface-state-action-hover);
-      border-color: var(--p-surface-state-action-hover);
-      color: var(--p-white);
-    }
-
-    &:focus,
-    &.p-button--is-active {
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: var(--p-surface-state-action-press);
       border-color: var(--p-surface-state-action-press);
-      color: var(--p-white);
-    }
-
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--p-surface-state-active-disabled);
-      border-color: var(--p-surface-state-active-disabled);
       color: var(--p-white);
     }
   }
 
   &.p-button--secondary {
-    background: var(--p-button-secondary-surface-default);
-    border-color: var(--p-button-secondary-surface-default);
-    color: var(--p-button-secondary-text);
-    
-    &:hover {
-      background: var(--p-button-secondary-surface-hover);
-      border-color: var(--p-button-secondary-surface-hover);
-      color: var(--p-button-secondary-text);
-    }
-    
-    &:focus,
-    &.p-button--is-active {
+    --el-button-text-color: var(--p-button-secondary-text);
+    --el-button-bg-color: var(--p-button-secondary-surface-default);
+    --el-button-border-color: var(--p-button-secondary-surface-default);
+    --el-button-hover-text-color: var(--p-button-secondary-text);
+    --el-button-hover-bg-color: var(--p-button-secondary-surface-hover);
+    --el-button-hover-border-color: var(--p-button-secondary-surface-hover);
+    --el-button-active-text-color: var(--p-black-rock-900);
+    --el-button-active-bg-color: var(--p-button-secondary-surface-press);
+    --el-button-active-border-color: var(--p-button-secondary-surface-press);
+    --el-button-disabled-text-color: var(--p-button-disabled-text);
+    --el-button-disabled-bg-color: var(--p-button-disabled-surface);
+    --el-button-disabled-border-color: var(--p-button-disabled-surface);
+
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: var(--p-button-secondary-surface-press);
       border-color: var(--p-button-secondary-surface-press);
       color: var(--p-black-rock-900);
     }
-    
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--p-button-disabled-surface);
-      border-color: var(--p-button-disabled-surface);
-      color: var(--p-button-disabled-text);
-    }
   }
   
   &.p-button--tertiary {
-    background: transparent;
-    border-color: transparent;
-    color: var(--p-button-tertiary-text-default);
-    
-    &:hover {
-      background: transparent;
-      border-color: transparent;
-      color: var(--p-button-tertiary-text-hover);
-    }
-    
-    &:focus,
-    &.p-button--is-active {
+    --el-button-text-color: var(--p-button-tertiary-text-default);
+    --el-button-bg-color: transparent;
+    --el-button-border-color: transparent;
+    --el-button-hover-text-color: var(--p-button-tertiary-text-hover);
+    --el-button-hover-bg-color: transparent;
+    --el-button-hover-border-color: transparent;
+    --el-button-active-text-color: var(--p-button-tertiary-text-press);
+    --el-button-active-bg-color: transparent;
+    --el-button-active-border-color: transparent;
+    --el-button-disabled-text-color: var(--p-gray-400);
+    --el-button-disabled-bg-color: transparent;
+    --el-button-disabled-border-color: transparent;
+
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: transparent;
       border-color: transparent;
       color: var(--p-button-tertiary-text-press);
-    }
-    
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: transparent;
-      border-color: transparent;
-      color: var(--p-gray-400);
     }
   }
   
   // Not using functional colors here as it will be removed
   &.p-button--white {
-    border-color: var(--p-white);
-    background: var(--p-white);
-    color: var(--p-jungle-400);
-    
-    &:hover {
-      background: var(--p-jungle-75);
-      border-color: var(--p-jungle-75);
-      color: var(--p-jungle-700);
-    }
-    
-    &:focus,
-    &.p-button--is-active {
+    --el-button-text-color: var(--p-jungle-400);
+    --el-button-bg-color: var(--p-white);
+    --el-button-border-color: var(--p-white);
+    --el-button-hover-text-color: var(--p-jungle-700);
+    --el-button-hover-bg-color: var(--p-jungle-75);
+    --el-button-hover-border-color: var(--p-jungle-75);
+    --el-button-active-text-color: var(--p-jungle-800);
+    --el-button-active-bg-color: var(--p-jungle-100);
+    --el-button-active-border-color: var(--p-jungle-100);
+    --el-button-disabled-text-color: var(--p-gray-400);
+    --el-button-disabled-bg-color: var(--p-gray-100);
+    --el-button-disabled-border-color: var(--p-gray-100);
+
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: var(--p-jungle-100);
       border-color: var(--p-jungle-100);
       color: var(--p-jungle-800);
     }
-    
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--p-gray-100);
-      border-color: var(--p-gray-100);
-      color: var(--p-gray-400);
-    }
   }
   
   &#{$self}--danger {
-    border-color: var(--p-white);
-    background: var(--p-white);
-    color: var(--p-button-danger-text-default);
-    
-    &:hover {
-      background: var(--p-button-danger-surface-hover);
-      border-color: var(--p-button-danger-surface-hover);
-      color: var(--p-button-danger-text-hover);
-    }
-    
-    &:focus,
-    &.p-button--is-active {
+    --el-button-text-color: var(--p-button-danger-text-default);
+    --el-button-bg-color: var(--p-white);
+    --el-button-border-color: var(--p-white);
+    --el-button-hover-text-color: var(--p-button-danger-text-hover);
+    --el-button-hover-bg-color: var(--p-button-danger-surface-hover);
+    --el-button-hover-border-color: var(--p-button-danger-surface-hover);
+    --el-button-active-text-color: var(--p-button-danger-text-press);
+    --el-button-active-bg-color: var(--p-button-danger-surface-hover);
+    --el-button-active-border-color: var(--p-button-danger-surface-hover);
+    --el-button-disabled-text-color: var(--p-button-disabled-text);
+    --el-button-disabled-bg-color: var(--p-button-disabled-surface);
+    --el-button-disabled-border-color: var(--p-button-disabled-surface);
+
+    &:focus:not(.is-disabled),
+    &.p-button--is-active:not(.is-disabled) {
       background: var(--p-button-danger-surface-hover);
       border-color: var(--p-button-danger-surface-hover);
       color: var(--p-button-danger-text-press);
-    }
-    
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--p-button-disabled-surface);
-      border-color: var(--p-button-disabled-surface);
-      color: var(--p-button-disabled-text);
     }
   }
 }

@@ -1,10 +1,7 @@
 // css3 var in packages/theme-chalk/src/tree.scss
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
-
 $tree: (
     'node-content-height': 34px,
     'node-hover-bg-color': var(--p-jungle-50),
-    'text-color': var(--p-gray-900),
     'expand-icon-color': var(--p-gray-900),
 );
 

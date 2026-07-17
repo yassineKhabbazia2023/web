@@ -157,9 +157,9 @@ export const Advanced: Story = {
 
         <PTableColumn pLabel="Boutons" pWidth="300">
           <template #default>
-            <PButton type="primary" size="small" plain class="margin-right--2">Bouton</PButton>
-            <PButton type="primary" size="small" plain class="margin-right--2">Bouton</PButton>
-            <PButton type="primary" size="small" class="margin-right--2">Bouton</PButton>
+            <PButton pType="primary" pSize="small" class="margin-right--2">Bouton</PButton>
+            <PButton pType="primary" pSize="small" class="margin-right--2">Bouton</PButton>
+            <PButton pType="primary" pSize="small" class="margin-right--2">Bouton</PButton>
           </template>
         </PTableColumn>
       </PTable>

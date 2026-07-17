@@ -67,7 +67,7 @@ export function useDocumentsDragAndDrop(
     event.dataTransfer.setData(String(currentService.value), 'serviceId')
   }
 
-  // There's nothing to handle Drag & Drop in the Table component nativaly (Element Plus)
+  // There's nothing to handle Drag & Drop in the Table component natively
   // This is why i'm doing attribute binding based on rows classes of selectedFolders
   watch(selectedFolders, (newDocuments, previousDocuments) => {
     if (hasLengthDifferenceMoreThanOne(newDocuments, previousDocuments)) {

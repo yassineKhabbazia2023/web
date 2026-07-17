@@ -1,4 +1,3 @@
-@use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 // css3 var in packages/theme-chalk/src/form.scss
 $form: (
@@ -23,9 +22,14 @@ $form-item-error-padding-top: (
   'small': 8px,
 );
 
+$form-item-margin-bottom: (
+  'large': 16px,
+  'default': 16px,
+  'small': 16px,
+);
+
 .el-form {
   .el-form-item {
-    margin-bottom: 16px;
     &--no-margin {
       margin-bottom: 0;
     }
@@ -43,14 +47,6 @@ $form-item-error-padding-top: (
         }
       .el-input {
         border-bottom: 2px solid var(--p-red-500);
-        box-shadow: none;
-        div {
-          &.el-input__wrapper {
-            &.is-focus {
-              box-shadow: none;
-            }
-          }
-        }
       }
     }
     .el-form-item__label {
@@ -59,7 +55,12 @@ $form-item-error-padding-top: (
   }
   .el-form-item__content .el-form-item__error {
     display: flex;
-    border-color: var(--p-white);
+    // Element Plus positions the error absolutely (top: 100%), letting it overlap whatever
+    // follows the form item. With Element Plus 2.4 the error effectively rendered with its
+    // --inline modifier (relative, in flow), so forms reserved the message height: keep that.
+    position: relative;
+    top: auto;
+    left: auto;
     &::before {
       content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIiBmaWxsPSJub25lIj4NCiAgPHBhdGggZD0iTTYgMTEuMjVDMy4xMDA1MSAxMS4yNSAwLjc1IDguODk5NSAwLjc1IDZDMC43NSAzLjEwMDUxIDMuMTAwNTEgMC43NSA2IDAuNzVDOC44OTk1IDAuNzUgMTEuMjUgMy4xMDA1MSAxMS4yNSA2QzExLjI1IDguODk5NSA4Ljg5OTUgMTEuMjUgNiAxMS4yNVpNNiAxMkM5LjMxMzcxIDEyIDEyIDkuMzEzNzEgMTIgNkMxMiAyLjY4NjI5IDkuMzEzNzEgMCA2IDBDMi42ODYyOSAwIDAgMi42ODYyOSAwIDZDMCA5LjMxMzcxIDIuNjg2MjkgMTIgNiAxMloiIGZpbGw9IiNGRjAwMDAiLz4NCiAgPHBhdGggZD0iTTMuNDg0ODQgMy40ODQ4NEMzLjYzMTI4IDMuMzM4MzkgMy44Njg3MiAzLjMzODM5IDQuMDE1MTYgMy40ODQ4NEw2IDUuNDY5NjdMNy45ODQ4MyAzLjQ4NDg0QzguMTMxMjggMy4zMzgzOSA4LjM2ODcyIDMuMzM4MzkgOC41MTUxNyAzLjQ4NDg0QzguNjYxNjEgMy42MzEyOCA4LjY2MTYxIDMuODY4NzIgOC41MTUxNyA0LjAxNTE2TDYuNTMwMzMgNkw4LjUxNTE3IDcuOTg0ODNDOC42NjE2MSA4LjEzMTI4IDguNjYxNjEgOC4zNjg3MiA4LjUxNTE3IDguNTE1MTdDOC4zNjg3MiA4LjY2MTYxIDguMTMxMjggOC42NjE2MSA3Ljk4NDgzIDguNTE1MTdMNiA2LjUzMDMzTDQuMDE1MTYgOC41MTUxN0MzLjg2ODcyIDguNjYxNjEgMy42MzEyOCA4LjY2MTYxIDMuNDg0ODQgOC41MTUxN0MzLjMzODM5IDguMzY4NzIgMy4zMzgzOSA4LjEzMTI4IDMuNDg0ODQgNy45ODQ4M0w1LjQ2OTY3IDZMMy40ODQ4NCA0LjAxNTE2QzMuMzM4MzkgMy44Njg3MiAzLjMzODM5IDMuNjMxMjggMy40ODQ4NCAzLjQ4NDg0WiIgZmlsbD0iI0ZGMDAwMCIvPg0KPC9zdmc+');
       width: 12px;

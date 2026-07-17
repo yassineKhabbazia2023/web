@@ -15,7 +15,6 @@
       <PForm
         ref="formRef"
         class="form-password"
-        pLabelPosition="top"
         pHideRequiredAsterisk
         :pRules="rules"
         :pModel="formValue"
@@ -80,7 +79,7 @@
 import { logger } from '@pulse/toolbox'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import type { FormRules, FormInstance } from 'element-plus'
+import type { FormRules, FormInstance } from '@pulse/styleguide/types'
 import { createNewPassword } from '@pulse/common/services/authentication'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { BackEndErrors } from '@pulse/common/constants'

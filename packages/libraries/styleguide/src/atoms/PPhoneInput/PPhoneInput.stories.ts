@@ -149,7 +149,6 @@ export const WithValidation: Story = {
           ref="formRef"
           :pModel="formData"
           :pRules="rules"
-          pLabelPosition="top"
         >
           <PFormItem pLabel="Phone" pProp="phone" pRequired>
             <PPhoneInput

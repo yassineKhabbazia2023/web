@@ -1,4 +1,4 @@
-import { getDateType, type DateType } from './PCalendarUtils'
+import { getDateType } from './PCalendarUtils'
 
 describe('test PCalendarUtils', () => {
   describe('getDateType', () => {
@@ -15,6 +15,12 @@ describe('test PCalendarUtils', () => {
       nativeDateType: 'current-month',
       expected: 'current-month',
       reason: 'no date range given',
+    }, {
+      dateRange: undefined,
+      date: new Date(YEAR, MONTH, 1),
+      nativeDateType: 'unexpected-type',
+      expected: 'current-month',
+      reason: 'native date type is unknown',
     }, {
       dateRange: DATE_RANGE,
       date: new Date(YEAR, MONTH, 1),
@@ -46,7 +52,7 @@ describe('test PCalendarUtils', () => {
       nativeDateType,
       expected,
     }) => {
-      const dateType = getDateType(dateRange, date, nativeDateType as DateType)
+      const dateType = getDateType(dateRange, date, nativeDateType)
       expect(dateType).toBe(expected)
     })
   })

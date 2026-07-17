@@ -14,6 +14,7 @@ const propsValue: PPopperContentProps = {
   pPlacement: 'bottom',
   pPopperOptions: {},
   pStrategy: 'absolute',
+  pArrowOffset: 5,
 }
 
 const popperInjection = {
@@ -45,6 +46,7 @@ describe('pPopperContent', () => {
       placement: propsValue.pPlacement,
       popperOptions: propsValue.pPopperOptions,
       strategy: propsValue.pStrategy,
+      arrowOffset: propsValue.pArrowOffset,
     }
 
     const props = component.props()

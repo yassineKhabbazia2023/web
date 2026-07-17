@@ -2,7 +2,7 @@
   <ElButton
     :type="button.class"
     :circle="pCircle"
-    :disabled="pDisabled"
+    :disabled="isDisabled"
     :loading="pLoading"
     :size="buttonSizeParent"
     :class="pClassMapper"
@@ -25,7 +25,7 @@ import { injectionButtonKey } from '../../atoms/PButtonGroup/PButtonGroupTypes'
 const props = withDefaults(defineProps<PButtonProps>(), {
   pType: 'default',
   pCircle: false,
-  pDisabled: false,
+  pDisabled: undefined,
   pLoading: false,
   pSize: 'default',
   pIconOnly: false,
@@ -50,6 +50,8 @@ const getButtonType = (buttonType: any) => (
 
 const buttonSizeParent = computed(() =>
   parentType?.pSize !== undefined ? parentType.pSize : props.pSize)
+
+const isDisabled = computed(() => (props.pLoading === true ? true : props.pDisabled))
 
 const pClassMapper = computed(() => {
   const buttonTypeClass = nativeTypes.includes(button.value.buttonType)

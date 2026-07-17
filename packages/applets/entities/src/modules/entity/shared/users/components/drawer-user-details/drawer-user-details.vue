@@ -28,7 +28,6 @@
       ref="formRef"
       :pModel="formValues"
       :rules="editMode ? rules : null"
-      pLabelPosition="top"
       requireAsteriskPosition="right"
       @submit.prevent="handleSubmit(formRef)"
     >

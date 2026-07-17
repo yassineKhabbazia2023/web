@@ -1,5 +1,5 @@
 <template>
-  <div class="margin-top--6">
+  <div class="margin-top--2">
     <div class="invoices-container">
       <InvoicesInfo />
       <InvoicesForm />

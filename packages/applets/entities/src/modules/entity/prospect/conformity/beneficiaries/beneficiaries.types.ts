@@ -1,4 +1,4 @@
-import type { FormItemRule } from 'element-plus'
+import type { FormItemRule } from '@pulse/styleguide/types'
 import type { BeneficiaryDocument, BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
 
 export interface BeneficiaryFormState {

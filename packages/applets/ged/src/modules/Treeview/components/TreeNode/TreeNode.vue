@@ -223,7 +223,7 @@ function clearNodeExpandTimeout() {
   lastTarget = null
 }
 
-// Element Plus does not allow us to bind class to the tree node wrapper
+// The tree component does not allow us to bind class to the tree node wrapper
 // We don't have any other choice than adding classes that way
 const nodeWrapper = () => document.querySelector(`[data-key="${props.data.id}"] .el-tree-node__content`)
 const isDragovered = ref(false)

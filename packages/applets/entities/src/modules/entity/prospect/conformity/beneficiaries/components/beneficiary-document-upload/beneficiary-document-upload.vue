@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { UploadFile, UploadRawFile } from 'element-plus'
+import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import { PUpload, PUploadFileLine } from '@pulse/styleguide/components'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'

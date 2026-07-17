@@ -12,7 +12,6 @@
   >
     <PForm
       :pModel="internalFilters"
-      pLabelPosition="top"
     >
       <!-- Report Type Dropdown -->
       <PFormItem :pLabel="t('labelTypeReport')">

@@ -12,7 +12,7 @@ const propsValue: PFormItemProps = {
   pRules: [],
   pError: 'error',
   pShowMessage: true,
-  pInlineMessage: 'inline message',
+  pInlineMessage: true,
   pSize: 'small',
   pFor: 'for',
   pValidateStatus: 'error',

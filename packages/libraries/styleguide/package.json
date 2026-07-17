@@ -33,7 +33,7 @@
   "dependencies": {
     "@pulse/toolbox": "1.0.0",
     "country-flag-icons": "^1.6.15",
-    "element-plus": "2.4.3",
+    "element-plus": "2.14.2",
     "libphonenumber-js": "^1.12.41"
   }
 }
