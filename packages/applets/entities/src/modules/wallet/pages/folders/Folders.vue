@@ -167,8 +167,22 @@
         @display-remove-current-user-from-folder-modal="handleDisplayRemoveCurrentUserFromFolderModal"
         @sort-account="handleSortAccount"
       />
+      <PPagination
+        v-if="isLoadMorePaginationActivated === false"
+        v-model:p-page-size="searchCriteria.limit"
+        class="margin-top--6"
+        :pCurrentPage="searchResult.currentPage"
+        :pTotal="searchResult.totalItems"
+        :pPageSizes="pageSizes"
+        pPageSizeSelectorSuffix=""
+        pShowTotalPageCounter
+        @on-page-range-changed="handlePageRangeChanged"
+        @update:p-current-page="onUpdateCurrentPage"
+      >
+        <p>{{ paginationLabel }}</p>
+      </PPagination>
       <PSamePagePagination
-        v-if="hasMoreResults"
+        v-else-if="hasMoreResults"
         :pLabel="t('showMoreResults')"
         :pLoading="isLoadingMore"
         class="margin-top--6"
@@ -214,11 +228,12 @@
 <script lang='ts' setup>
 import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref, watch, useTemplateRef, nextTick } from 'vue'
+import { onMounted, ref, watch, useTemplateRef, nextTick, computed } from 'vue'
 import {
   PLoader,
   PButton,
   PPastille,
+  PPagination,
   PIcon,
   PSamePagePagination,
 } from '@pulse/styleguide/components'
@@ -226,13 +241,15 @@ import { displayNotification, useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { checkLastCollaboratorOnAccounts, removeCurrentUserFromAccounts } from '@entities/services/account'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 import type { Entity, SortingCriteria } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
@@ -264,7 +281,12 @@ import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/registry'
 import { useSort } from '@pulse/common/composables/sort'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
-import { DESKTOP_FOLDERS_PAGE_SIZE, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
+import {
+  DESKTOP_FOLDERS_PAGE_SIZE,
+  MOBILE_FOLDERS_PAGE_SIZE,
+  FOLDERS_PAGE_SIZES_DESKTOP,
+  FOLDERS_PAGE_SIZES_MOBILE,
+} from './folders.consts'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -322,13 +344,28 @@ const route = useRoute()
 const userStore = useUserStore()
 const { isCollab, user } = storeToRefs(userStore)
 const { isMobile } = useResponsive()
+const {
+  isLoadMorePaginationActivated,
+  isManageWalletMenuActivated,
+} = useWalletFeatureFlags()
 
 const searchPlaceholder = computed(() =>
   isMobile.value ? t('searchShort') : t('search'),
 )
+
+const pageSizes = computed(() =>
+  isMobile.value ? FOLDERS_PAGE_SIZES_MOBILE : FOLDERS_PAGE_SIZES_DESKTOP,
+)
 const currentFoldersPageSize = computed(() =>
   isMobile.value ? MOBILE_FOLDERS_PAGE_SIZE : DESKTOP_FOLDERS_PAGE_SIZE,
 )
+
+const paginationLabel = computed(() => getPaginationLabel(t('on'), {
+  currentPage: searchCriteria.value.currentPage,
+  limit: searchCriteria.value.limit,
+  data: searchResult.value.items,
+  totalItems: searchResult.value.totalItems,
+}))
 
 const searchBar = ref()
 const isLoading = ref(true)
@@ -586,8 +623,6 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   },
 ] as const
 
-const isManageWalletMenuActivated = computed(() => FeatureFlagManager.isManageWalletMenuActivated())
-
 // #region entity creator drawer
 const isEntityCreatorDrawerOpen = ref(false)
 const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.ENTITY_CREATOR))
@@ -664,6 +699,17 @@ onBeforeRouteUpdate((to, from) => {
 const handleSearchValueSubmitted = (searchValue: string) => {
   searchCriteria.value.currentPage = 1
   searchCriteria.value.search = searchValue
+}
+
+function handlePageRangeChanged(pageRange: number) {
+  WalletTrackingManager.trackPaginationSizeChanged(pageRange)
+  searchCriteria.value.currentPage = 1
+  searchCriteria.value.limit = pageRange
+}
+
+function onUpdateCurrentPage(currentPage: number) {
+  WalletTrackingManager.trackPaginationPageClicked(currentPage)
+  searchCriteria.value.currentPage = currentPage
 }
 
 const hasMoreResults = computed(() =>
@@ -835,7 +881,12 @@ const handleSortAccount = (param: SortingCriteria) => {
   handleSortCriteria(param, searchCriteria.value)
 }
 
-defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })
+defineExpose({
+  handleAddFavorite,
+  searchCriteria,
+  isResendActivationEmailDrawerVisible,
+  selectedAccount,
+})
 </script>
 
 <style lang="scss" scoped>

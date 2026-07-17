@@ -77,10 +77,14 @@ const mockFetchWalletData = vi.mocked(fetchWalletData)
 
 let hasPermissionMock: MockInstance
 const isManageWalletMenuActivatedMock = vi.fn()
+const isWalletTableLoadMorePaginationActivatedMock = vi.fn()
+const isLastActivityFeatureActivatedMock = vi.fn()
 
 beforeEach(() => {
   hasPermissionMock = armCurrentUserPermissions(false)
   vi.spyOn(FeatureFlagManager, 'isManageWalletMenuActivated').mockImplementation(isManageWalletMenuActivatedMock)
+  vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedMock)
+  vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedMock)
   armRegistryServiceMocks()
   vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
   fetchFavoriteEntitiesMock.mockResolvedValue([])
@@ -142,6 +146,8 @@ describe('deploy', () => {
     isMobileMock.value = false
     hasPermissionMock.mockReturnValue(false)
     isManageWalletMenuActivatedMock.mockReturnValue(true)
+    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
+    isLastActivityFeatureActivatedMock.mockReturnValue(false)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
     checkLastCollaboratorOnAccountsMock.mockResolvedValue({
       isLastCollaboratorOnAny: false,
@@ -157,6 +163,9 @@ describe('deploy', () => {
 
   afterEach(() => {
     isMobileMock.value = false
+    isManageWalletMenuActivatedMock.mockReturnValue(true)
+    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
+    isLastActivityFeatureActivatedMock.mockReturnValue(false)
   })
 
   it('should call setFavoriteEntities', async () => {
@@ -713,6 +722,8 @@ describe('deploy', () => {
   })
 
   it('should progressively append folders when loading more results multiple times', async () => {
+    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
+
     const firstFolder = getMockedMappedAccount({ accountId: 1, accountNumber: '1' })
     const secondFolder = getMockedMappedAccount({ accountId: 2, accountNumber: '2' })
     const thirdFolder = getMockedMappedAccount({ accountId: 3, accountNumber: '3' })
@@ -1402,6 +1413,57 @@ describe('deploy', () => {
 
       expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
       expect(fetchAccountOperationsMock).toHaveBeenCalledWith(...expectedParameters)
+    })
+  })
+
+  describe('pagination feature flag', () => {
+    it('renders PPagination when isWalletTableLoadMorePaginationActivated is false', async () => {
+      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const pPagination = wrapper.findComponent({ name: 'PPagination' })
+      const pSamePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
+
+      expect(pPagination.exists()).toBe(true)
+      expect(pSamePagePagination.exists()).toBe(false)
+    })
+
+    it('renders PSamePagePagination when isWalletTableLoadMorePaginationActivated is true and has more results', async () => {
+      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
+      mockFetchWalletData.mockResolvedValueOnce(getMockedWalletQueryResult({
+        currentPage: 0,
+        items: [getMockedMappedAccount({ accountId: 1 })],
+        totalItems: 100,
+        totalPage: 10,
+      }))
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const pPagination = wrapper.findComponent({ name: 'PPagination' })
+      const pSamePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
+
+      expect(pPagination.exists()).toBe(false)
+      expect(pSamePagePagination.exists()).toBe(true)
+    })
+
+    it('does not render PSamePagePagination when has no more results', async () => {
+      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
+      mockFetchWalletData.mockResolvedValueOnce(getMockedWalletQueryResult({
+        currentPage: 0,
+        items: [],
+        totalItems: 0,
+        totalPage: 0,
+      }))
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const pSamePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
+
+      expect(pSamePagePagination.exists()).toBe(false)
     })
   })
 })

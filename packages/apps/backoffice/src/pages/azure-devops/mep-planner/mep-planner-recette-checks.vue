@@ -96,7 +96,11 @@
           <PIcon
             :pName="check.fallbackBuild.recetteDeployed === true ? 'check' : 'xCircle'"
             pSize="14"
-            :class="check.fallbackBuild.recetteDeployed === true ? 'text-color--success-500' : 'text-color--warning-500'"
+            :class="
+              check.fallbackBuild.recetteDeployed === true
+                ? 'text-color--success-500'
+                : 'text-color--warning-500'
+            "
           />
           <span class="font-small">
             Build alternatif

@@ -149,6 +149,7 @@
     </PTableColumn>
     <template v-if="isCollab === true">
       <PTableColumn
+        v-if="isLastActivityFeatureActivated"
         :pLabel="t(`${REGULAR_KEY}.lastActivityDate`)"
         pProp="lastActivityDate"
         pSortable="custom"
@@ -292,10 +293,13 @@ import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regula
 import { useRegularEntitiesList } from './regular-entity.list.composable'
 import { RegularEntitiesListManager } from './regular-entity.list.manager'
 import { RegularEntityAction } from './regular-entity.list.enums'
+import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 
 const { t } = useI18n()
 const LIST_KEY = 'entities.wallet.entitiesList'
 const REGULAR_KEY = 'entities.wallet.entitiesListRegular'
+
+const { isLastActivityFeatureActivated } = useWalletFeatureFlags()
 
 const props = withDefaults(defineProps<EntitiesListRegularProps>(), {
   data: () => [],

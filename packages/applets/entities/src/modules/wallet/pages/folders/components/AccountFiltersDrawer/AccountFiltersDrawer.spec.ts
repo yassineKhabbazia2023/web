@@ -3,14 +3,17 @@ import { shallowMount } from '@vue/test-utils'
 import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 
-import AccountFiltersDrawer from './AccountFiltersDrawer.vue'
 import type { AccountFilters } from '@entities/types'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { LastActivityPeriodInDays } from '@entities/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
+
+import AccountFiltersDrawer from './AccountFiltersDrawer.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
+const isLastActivityFeatureActivatedSpy = vi.fn(() => false)
 
 const stubs = {
   PDrawer: {
@@ -60,6 +63,10 @@ function findFilterOptionByTestId(wrapper: ReturnType<typeof createWrapper>, tes
 }
 
 describe('AccountFiltersDrawer.vue', () => {
+  beforeEach(() => {
+    vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedSpy)
+  })
+
   it('reflects prop filters as selected checkboxes when the drawer opens', async () => {
     const filters: AccountFilters = {
       isFavoriteFilter: true,
@@ -117,6 +124,7 @@ describe('AccountFiltersDrawer.vue', () => {
   })
 
   it('keeps only the latest selected last activity period', async () => {
+    isLastActivityFeatureActivatedSpy.mockReturnValue(true)
     const wrapper = createWrapper()
 
     await findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_TWO_WEEKS}`)!.vm.$emit('update:p-selected', true)
@@ -138,6 +146,7 @@ describe('AccountFiltersDrawer.vue', () => {
   })
 
   it('clears the last activity period when "all" is selected', async () => {
+    isLastActivityFeatureActivatedSpy.mockReturnValue(true)
     const wrapper = createWrapper()
 
     await findFilterOptionByTestId(wrapper, `filter-last-activity-period-${LastActivityPeriodInDays.LAST_THIRTY_DAYS}`)!.vm.$emit('update:p-selected', true)
@@ -163,6 +172,34 @@ describe('AccountFiltersDrawer.vue', () => {
         && c.attributes('data-testid') !== 'filter-last-activity-period-all')
     childFilterOptions.forEach((option) => {
       expect(option.props('pSelected')).toBe(false)
+    })
+  })
+
+  describe('last activity feature flag', () => {
+    it('renders lastActivityPeriod filter when feature flag is enabled', () => {
+      isLastActivityFeatureActivatedSpy.mockReturnValue(true)
+
+      const wrapper = createWrapper()
+
+      const allFilterOptions = wrapper.findAllComponents({ name: 'PFilterOption' })
+      const lastActivityFilters = allFilterOptions.filter(option =>
+        option.attributes('data-testid')?.includes('filter-last-activity-period'),
+      )
+
+      expect(lastActivityFilters.length).toBeGreaterThan(0)
+    })
+
+    it('hides lastActivityPeriod filter when feature flag is disabled', () => {
+      isLastActivityFeatureActivatedSpy.mockReturnValue(false)
+
+      const wrapper = createWrapper()
+
+      const allFilterOptions = wrapper.findAllComponents({ name: 'PFilterOption' })
+      const lastActivityFilters = allFilterOptions.filter(option =>
+        option.attributes('data-testid')?.includes('filter-last-activity-period'),
+      )
+
+      expect(lastActivityFilters.length).toBe(0)
     })
   })
 })
