@@ -1,22 +1,9 @@
-import { loggerMock } from '@pulse/toolbox/mocks'
 import type { Entity } from '@pulse/common/types'
-import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
+import { apiGatewayGetMock } from '../../__mocks__/vitest'
 import { getMockedEntitySummary, getMockedFavoriteEntities } from '../../__mocks__'
 
 import { DEFAULT_ENTITIES, fetchEntities, fetchEntityById } from './entities.service'
 import { API_PREFIXES } from '@common/constants'
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: apiGatewayMock,
-  }),
-}))
-
-vi.mock('../../api/interceptors/request-token.interceptor', () => ({
-  requestTokenInterceptor: vi.fn((config) => config),
-}))
 
 const entityIdMock = 12345
 const entitySummaryMock = getMockedEntitySummary({ accountId: entityIdMock })
@@ -27,7 +14,7 @@ describe('entities.service', () => {
     it('should return entity data when API call succeeds', async () => {
       const expectedUrl = `${API_PREFIXES.CONNECT}/accounts/${entityIdMock}/summary`
 
-      apiGatewayGetMock.mockResolvedValueOnce({
+      apiGatewayGetMock.mockResolvedValue({
         data: entitySummaryMock,
       })
 
@@ -42,7 +29,7 @@ describe('entities.service', () => {
       const errorMock = 'Entity not found'
       const error = new Error(errorMock)
 
-      apiGatewayGetMock.mockRejectedValueOnce(error)
+      apiGatewayGetMock.mockRejectedValue(error)
 
       await expect(fetchEntityById(entityIdMock)).rejects.toThrow(errorMock)
       expect(apiGatewayGetMock).toHaveBeenCalledOnce()

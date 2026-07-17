@@ -3,4 +3,5 @@ import viteConfig from './vite.config.ts'
 
 export default createVitestConfig(viteConfig, import.meta.url, {
   environment: 'node',
+  setupFiles: ['vitest.setup.ts'],
 })

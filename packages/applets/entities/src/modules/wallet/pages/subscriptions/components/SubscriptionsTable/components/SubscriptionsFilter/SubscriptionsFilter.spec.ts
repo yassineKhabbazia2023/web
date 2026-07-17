@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import SubscriptionsFilter from '.'
 import { nextTick } from 'vue'

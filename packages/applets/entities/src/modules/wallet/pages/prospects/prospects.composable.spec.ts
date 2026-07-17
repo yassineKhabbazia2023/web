@@ -7,15 +7,6 @@ import { CurrentUserService } from '@pulse/common/services/current-user'
 import { ProspectsManager } from './prospects.manager'
 import { useProspects } from './prospects.composable'
 
-vi.mock('./prospects.manager')
-vi.mock('@pulse/common/services/current-user')
-vi.mock('@pulse/styleguide', () => ({
-  useResponsive: () => ({ isMobile: { value: false }, isDesktop: { value: true } }),
-}))
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-
 const userStore = getStoreMock(useUserStore)
 
 const defaultFetchResult = {
@@ -28,8 +19,10 @@ const defaultFetchResult = {
 describe('useProspects', () => {
   beforeEach(() => {
     userStore.isCollab = false
-    vi.mocked(ProspectsManager.fetchProspectsData).mockResolvedValue(defaultFetchResult)
-    vi.mocked(CurrentUserService.getUserWalletInformation).mockResolvedValue({} as any)
+    vi.spyOn(ProspectsManager, 'fetchProspectsData').mockResolvedValue(defaultFetchResult)
+    vi.spyOn(CurrentUserService, 'getUserWalletInformation').mockResolvedValue(
+      {} as unknown as Awaited<ReturnType<typeof CurrentUserService.getUserWalletInformation>>,
+    )
   })
 
   it('fetches prospects on mount', async () => {

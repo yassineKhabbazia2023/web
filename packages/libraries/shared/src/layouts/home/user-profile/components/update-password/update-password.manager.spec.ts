@@ -2,21 +2,8 @@ import { PStrengthLevel } from '@pulse/styleguide/types'
 import { UpdatePasswordManager } from './update-password.manager'
 import { SKIP_CALLBACK_CODES, BackEndErrors } from '@pulse/common/constants'
 
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: vi.fn(),
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    info: vi.fn(),
-    error: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/common/services/authentication', () => ({
-  updatePassword: vi.fn(),
-}))
-
+// The authentication service is spy-wrapped project-wide (doctrine: shared-hubs):
+// tests arm updatePassword via the shared spy instead of a local factory.
 const PNotification = vi.mocked((await import('@pulse/styleguide')).PNotification)
 const logger = vi.mocked((await import('@pulse/toolbox')).logger)
 const updatePassword = vi.mocked((await import('@pulse/common/services/authentication')).updatePassword)

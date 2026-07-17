@@ -10,16 +10,11 @@ import {
   getProspectFormDataMock,
 } from '../../__mocks__'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-vi.mock('@pulse/toolbox', () => ({
-  logger: { error: vi.fn() },
-}))
+beforeEach(() => {
+  vi.spyOn(ProspectsService, 'searchEntities').mockResolvedValue([])
+  vi.spyOn(ProspectsService, 'checkProspectCreationEligibility').mockResolvedValue(undefined as unknown as ProspectEligibilityStatus)
+  vi.mocked(displayNotification).mockImplementation(() => undefined)
+})
 
 describe('useProspectEntitySearch', () => {
   describe('initial state', () => {

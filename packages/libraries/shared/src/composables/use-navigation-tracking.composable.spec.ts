@@ -1,3 +1,4 @@
+import { useI18n } from 'vue-i18n'
 import { useNavigationTracking } from './use-navigation-tracking.composable'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { NavigationItem } from '../types'
@@ -5,13 +6,11 @@ import { RouteName } from '@pulse/common/enums'
 
 const mockT = vi.fn((key: string) => `translated_${key}`)
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: mockT,
-  }),
-}))
-
-vi.mock('@pulse/common/services/amplitude')
+// vue-i18n's useI18n is spy-wrapped project-wide (doctrine: shared-hubs): arm the
+// shared spy per test — the composable runs outside a component i18n context.
+beforeEach(() => {
+  vi.mocked(useI18n).mockReturnValue({ t: mockT } as unknown as ReturnType<typeof useI18n>)
+})
 
 describe('useNavigationTracking', () => {
   describe('trackNavigationFeature', () => {

@@ -1,18 +1,21 @@
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedUserApi } from '@pulse/common/mocks'
 import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from '../../services/account/account.service'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { AccountType } from '@pulse/common/enums'
+import type { UserInfoApi } from '@pulse/common/types'
+import type { AxiosResponse } from 'axios'
 
 import { AccountManager } from './account.manager'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-vi.mock('../../services/account/account.service')
 const createCustomerMock = vi.mocked(createCustomer)
 const addContactToEntityMock = vi.mocked(addContactToEntity)
 const fetchAccountContactsByEmailMock = vi.mocked(fetchAccountContactsByEmail)
+
+beforeEach(() => {
+  createCustomerMock.mockResolvedValue(undefined as unknown as UserInfoApi)
+  addContactToEntityMock.mockResolvedValue(undefined as unknown as AxiosResponse)
+  fetchAccountContactsByEmailMock.mockResolvedValue(undefined)
+})
 
 describe('AccountManager', () => {
   describe('createOrAddCustomerToAccount', () => {

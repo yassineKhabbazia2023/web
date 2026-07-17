@@ -2,17 +2,6 @@ import { useDeleteAppSettingDialog } from './delete-app-setting-dialog.composabl
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
 import type { DeleteAppSettingResponse } from '@backoffice/services/app-settings-list/app-settings-list.service.type'
 
-vi.mock('@backoffice/services/app-settings-list/app-settings-list.service')
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-    warn: vi.fn(),
-  },
-}))
-
 describe('useDeleteAppSettingDialog', () => {
   let appSettingKey: string
   let onDeletedCallback: ReturnType<typeof vi.fn<() => void>>
@@ -105,6 +94,9 @@ describe('useDeleteAppSettingDialog', () => {
 
   describe('deleteAppSetting', () => {
     it('should return false if no environments are selected', async () => {
+      const deleteAppSettingSpy = vi.spyOn(AppSettingsListService, 'deleteAppSetting')
+        .mockResolvedValue({ deleted: 0, errors: [], results: [], message: '' })
+
       const { deleteAppSetting } = useDeleteAppSettingDialog(
         appSettingKey,
         onDeletedCallback,
@@ -113,7 +105,7 @@ describe('useDeleteAppSettingDialog', () => {
       const result = await deleteAppSetting()
 
       expect(result).toBe(false)
-      expect(AppSettingsListService.deleteAppSetting).not.toHaveBeenCalled()
+      expect(deleteAppSettingSpy).not.toHaveBeenCalled()
     })
 
     it('should call API with selected environments and show success notification', async () => {
@@ -123,7 +115,7 @@ describe('useDeleteAppSettingDialog', () => {
         results: [],
         message: 'Success',
       }
-      vi.mocked(AppSettingsListService.deleteAppSetting).mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'deleteAppSetting').mockResolvedValue(mockResponse)
 
       const { selectedEnvironments, deleteAppSetting } = useDeleteAppSettingDialog(
         appSettingKey,
@@ -145,7 +137,7 @@ describe('useDeleteAppSettingDialog', () => {
         results: [],
         message: 'Variable already deleted',
       }
-      vi.mocked(AppSettingsListService.deleteAppSetting).mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'deleteAppSetting').mockResolvedValue(mockResponse)
 
       const { selectedEnvironments, deleteAppSetting } = useDeleteAppSettingDialog(
         appSettingKey,
@@ -166,7 +158,7 @@ describe('useDeleteAppSettingDialog', () => {
         results: [],
         message: 'Partial success',
       }
-      vi.mocked(AppSettingsListService.deleteAppSetting).mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'deleteAppSetting').mockResolvedValue(mockResponse)
 
       const { selectedEnvironments, deleteAppSetting } = useDeleteAppSettingDialog(
         appSettingKey,
@@ -181,7 +173,7 @@ describe('useDeleteAppSettingDialog', () => {
     })
 
     it('should handle API error and show error notification', async () => {
-      vi.mocked(AppSettingsListService.deleteAppSetting).mockRejectedValue(new Error('API Error'))
+      vi.spyOn(AppSettingsListService, 'deleteAppSetting').mockRejectedValue(new Error('API Error'))
 
       const { selectedEnvironments, deleteAppSetting } = useDeleteAppSettingDialog(
         appSettingKey,

@@ -1,15 +1,12 @@
-import { PublicClientApplication, AccountInfo, AuthenticationResult } from '@azure/msal-browser'
+import { PublicClientApplication } from '@azure/msal-browser'
+import type { AccountInfo, AuthenticationResult } from '@azure/msal-browser'
 import {
   VITE_MSAL_CLIENT_ID,
   VITE_MSAL_REDIRECT_URI,
   VITE_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_MSAL_AUTHORITY,
 } from 'env-vars'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { AdminMsalService } from './admin-msal.service'
-
-vi.mock('@azure/msal-browser')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const mockedPublicClientApplication = vi.mocked(PublicClientApplication)
 
@@ -56,15 +53,13 @@ describe('AdminMsalService', () => {
       return mockPcaInstance
     })
 
-    // Mock sessionStorage
-    Object.defineProperty(window, 'sessionStorage', {
-      value: {
-        getItem: vi.fn(),
-        removeItem: vi.fn(),
-        setItem: vi.fn(),
-        clear: vi.fn(),
-      },
-      writable: true,
+    // Stub sessionStorage via vi.stubGlobal so it is restored automatically
+    // after each test by unstubGlobals (doctrine: shared-dom)
+    vi.stubGlobal('sessionStorage', {
+      getItem: vi.fn(),
+      removeItem: vi.fn(),
+      setItem: vi.fn(),
+      clear: vi.fn(),
     })
 
     vi.clearAllMocks()

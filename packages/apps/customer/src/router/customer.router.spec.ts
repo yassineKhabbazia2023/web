@@ -3,23 +3,15 @@ import { CustomerBootManager } from '@customer/managers/customer.boot.manager'
 import router from './customer.router'
 import { CUSTOMER_ROUTES } from './customer.routes'
 
-vi.mock('@customer/managers/customer.boot.manager', () => ({
-  CustomerBootManager: {
-    checkMaintenanceMode: vi.fn(),
-    getDefaultRedirection: vi.fn(),
-    initAmplitude: vi.fn(),
-  },
-}))
+beforeEach(() => {
+  vi.spyOn(CustomerBootManager, 'checkMaintenanceMode').mockReturnValue(undefined as unknown as boolean)
+  vi.spyOn(CustomerBootManager, 'getDefaultRedirection')
+    .mockReturnValue(undefined as unknown as ReturnType<typeof CustomerBootManager.getDefaultRedirection>)
+  vi.spyOn(CustomerBootManager, 'initAmplitude').mockImplementation(() => undefined)
+})
 
-// mock the main routes to guarantee presence of child routes
-vi.mock('./routes/customer.anonymous.routes', () => ({
-  anonymousCustomerRoutes: [{ path: '/anonymous', name: RouteName.ANONYMOUS }],
-}))
-
-vi.mock('./routes/customer.authenticated.routes', () => ({
-  authenticatedCustomerRoutes: [{ path: '/authenticated', name: RouteName.AUTHENTICATED }],
-}))
-
+// The main routes are canned worker-wide (vitest.setup.ts) to guarantee the
+// presence of child routes.
 describe('Customer Router', () => {
   describe('Router Configuration', () => {
     it('should be configured with web history', () => {
@@ -73,19 +65,20 @@ describe('Customer Router', () => {
 
   describe('Error Handling', () => {
     it('should handle navigation errors gracefully', async () => {
-      // Mock CustomerBootManager to throw an error
+      // The thrown error is the assertion below, but vue-router still reports it
+      // as an uncaught navigation error on the console: silence it so a passing
+      // run stays quiet.
+      vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+      vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      // The root route redirects before it runs beforeEnter: without a valid
+      // destination the navigation dies on the redirect and never reaches the
+      // maintenance check this test is about.
+      vi.mocked(CustomerBootManager.getDefaultRedirection).mockReturnValue({ name: RouteName.ANONYMOUS })
       vi.mocked(CustomerBootManager.checkMaintenanceMode).mockImplementation(() => {
         throw new Error('Test error')
       })
 
-      try {
-        await router.push('/')
-        // If no error is thrown, the test should still pass
-        expect(true).toBe(true)
-      } catch (error) {
-        // Error handling should be graceful
-        expect(error).toBeDefined()
-      }
+      await expect(router.push('/')).rejects.toThrow('Test error')
     })
 
     it('should handle missing route redirections', () => {

@@ -11,13 +11,8 @@ import type { ProspectConformityStep } from './prospect-conformity.types'
 // full static list mirrors an API returning every step.
 const getAllSteps = () => PROSPECT_CONFORMITY_STEPS
 
-// Keep the rest of VueUse real (useScroll drives the bottom-detection tests),
-// only stub useElementSize since jsdom has no ResizeObserver.
-vi.mock('@vueuse/core', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('@vueuse/core')>()),
-  useElementSize: vi.fn(),
-}))
-
+// useElementSize is spy-wrapped project-wide (vitest.setup.ts): the rest of
+// VueUse stays real (useScroll drives the bottom-detection tests).
 // The composable calls useElementSize first for the container, then for the
 // last card. Drive both heights through refs the test controls.
 function mockElementSizes(containerHeight: Ref<number>, lastCardHeight: Ref<number>): void {
@@ -32,7 +27,7 @@ const OTHER_STEP_ID = PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.SupportingDo
 const FIRST_STEP_ID = PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.Beneficiary]
 const LAST_STEP_ID = PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.EngagementLetter]
 
-let observerInstances: MockIntersectionObserver[] = []
+let observerInstances: MockIntersectionObserver[]
 
 class MockIntersectionObserver {
   callback: IntersectionObserverCallback
@@ -57,9 +52,14 @@ function setHash(hash: string): void {
   window.location.hash = hash
 }
 
+// Elements are tracked and removed per test instead of wiping the shared
+// jsdom body (which would break other specs of the worker under no-isolate).
+const createdElements: HTMLElement[] = []
+
 function createScrollContainer(metrics?: { scrollTop?: number, clientHeight?: number, scrollHeight?: number }) {
   const element = document.createElement('div')
   document.body.appendChild(element)
+  createdElements.push(element)
   if (metrics !== undefined) {
     Object.defineProperty(element, 'scrollTop', { configurable: true, value: metrics.scrollTop ?? 0, writable: true })
     Object.defineProperty(element, 'clientHeight', { configurable: true, value: metrics.clientHeight ?? 0 })
@@ -84,6 +84,7 @@ function createStepElement(stepId: string, top: number): HTMLElement {
   })
   element.scrollIntoView = vi.fn()
   document.body.appendChild(element)
+  createdElements.push(element)
   return element
 }
 
@@ -102,14 +103,21 @@ function buildEntry(target: Element, isIntersecting: boolean, top: number): Part
 describe('useProspectConformity', () => {
   beforeEach(() => {
     setHash('')
-    document.body.innerHTML = ''
     observerInstances = []
-    globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
+    vi.stubGlobal('IntersectionObserver', MockIntersectionObserver as unknown as typeof IntersectionObserver)
     vi.mocked(useElementSize).mockReturnValue({ width: ref(0), height: ref(0) } as unknown as ReturnType<typeof useElementSize>)
     vi.useFakeTimers()
   })
 
   afterEach(() => {
+    for (const element of createdElements) {
+      element.remove()
+    }
+    createdElements.length = 0
+    // Restore the worker-shared location hash the tests polluted; the stubbed
+    // globals and fake timers are restored automatically (unstubGlobals config
+    // and the isolate-safe guards).
+    setHash('')
     vi.useRealTimers()
   })
 

@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getSubscriptionProducts } from './ServicesDetailsUtils'
 import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
 

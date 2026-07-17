@@ -2,21 +2,18 @@ import { type EnvVars, FeatureFlagManager } from './feature-flag.manager'
 import { Feature } from '../../enums/feature.enums'
 import { OpenFeatureService } from '../../services/open-feature/open-feature.service'
 
-vi.mock('../../services/open-feature/open-feature.service', () => ({
-  OpenFeatureService: {
-    getBooleanValue: vi.fn(),
-  },
-}))
-
 declare let window: {
   EnvVars: EnvVars
 } & Window
 
-vi.stubGlobal('window', {
-  EnvVars: {} as Record<Feature, 'true' | 'false'>,
-})
-
 describe('FeatureFlagManager', () => {
+  beforeEach(() => {
+    // Stub the property only (window.EnvVars === globalThis.EnvVars in jsdom):
+    // replacing the whole window would strip location & co for any module
+    // lazily evaluated during these tests.
+    vi.stubGlobal('EnvVars', {} as Record<Feature, 'true' | 'false'>)
+  })
+
   const tests: {
     value: 'true' | 'false',
     expected: boolean,
@@ -90,7 +87,7 @@ describe('FeatureFlagManager', () => {
 
   describe('isManageWalletMenuActivated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
-      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(true)
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
 
       const result = FeatureFlagManager.isManageWalletMenuActivated()
 
@@ -99,7 +96,7 @@ describe('FeatureFlagManager', () => {
     })
 
     it('should return false when OpenFeatureService returns false', () => {
-      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(false)
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
 
       expect(FeatureFlagManager.isManageWalletMenuActivated()).toBe(false)
     })
@@ -107,7 +104,7 @@ describe('FeatureFlagManager', () => {
 
   describe('isFeatureActivated with OpenFeature flag', () => {
     it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
-      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(true)
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
 
       const result = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
 
@@ -116,7 +113,7 @@ describe('FeatureFlagManager', () => {
     })
 
     it('should return false when OpenFeatureService returns false', () => {
-      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(false)
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
 
       const result = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
 

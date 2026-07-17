@@ -11,11 +11,7 @@ import { PennylanePermissionsManager } from './pennylane-permissions.manager'
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const useUserStoreMock = getStoreMock(useUserStore)
 
-vi.mock('../feature-flag/feature-flag.manager')
-vi.mock('../current-user/current-user.manager')
-
 describe('PennylanePermissionsManager', () => {
-  const isFeatureActivatedSpy = vi.mocked(FeatureFlagManager.isFeatureActivated)
   const hasOfferSpy = currentEntityStoreMock.hasOffer
 
   describe('isGedUxV2', () => {
@@ -40,7 +36,7 @@ describe('PennylanePermissionsManager', () => {
       hasOfferMock,
       expected,
     }) => {
-      isFeatureActivatedSpy.mockReturnValue(isGedV2FeatureActivated)
+      const isFeatureActivatedSpy = vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(isGedV2FeatureActivated)
       hasOfferSpy.mockReturnValue(hasOfferMock)
 
       const isGedUxV2 = PennylanePermissionsManager.isGedUxV2()

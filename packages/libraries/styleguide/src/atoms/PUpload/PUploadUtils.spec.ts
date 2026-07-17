@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import type { UploadFile, UploadRawFile } from 'element-plus'
 import { isFileAccepted, isFileSizeValid, getFileRejectionMessage, getRawFile } from './PUploadUtils'
 import { BYTES_PER_MEGABYTE, OVERSIZED_FILE_MESSAGE } from './PUpload.constants'

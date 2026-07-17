@@ -4,11 +4,10 @@ import { displayNotification } from '@pulse/styleguide'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { useProspectArchiveDialog } from './prospect-archive.dialog.composable'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide')
+beforeEach(() => {
+  vi.spyOn(ProspectsService, 'archiveProspect').mockResolvedValue(undefined)
+  vi.mocked(displayNotification).mockImplementation(() => undefined)
+})
 
 const buildProspect = (overrides: Partial<ProspectWalletData> = {}): ProspectWalletData => ({
   owner: {

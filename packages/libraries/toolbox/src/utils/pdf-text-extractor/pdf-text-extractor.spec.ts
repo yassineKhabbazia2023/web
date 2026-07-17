@@ -3,16 +3,6 @@ import { PdfTextExtractor } from './pdf-text-extractor'
 import { configurePdfWorker } from '../pdf-worker/pdf-worker.utils'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
 
-// `pdfjs-dist` is mocked so the heavy real module is never loaded, and the worker util is stubbed
-// to a no-op (its real implementation pulls in a `?url` worker asset that cannot resolve in node).
-vi.mock('pdfjs-dist', () => ({
-  getDocument: vi.fn(),
-}))
-
-vi.mock('../pdf-worker/pdf-worker.utils', () => ({
-  configurePdfWorker: vi.fn(),
-}))
-
 const createTextItem = (str: string, x = 0, y = 0, width = 0, height = 0): unknown => ({
   str,
   transform: [1, 0, 0, 1, x, y],
@@ -32,9 +22,14 @@ const mockLoadedDocument = (document: PDFDocumentProxy): void => {
 }
 
 describe('PdfTextExtractor', () => {
+  beforeEach(() => {
+    // pdf-worker.utils is spy-wrapped in vitest.setup.ts (real by default): stub
+    // it to a no-op per test so the extractor never wires the real worker here.
+    vi.mocked(configurePdfWorker).mockImplementation(() => undefined)
+  })
+
   describe('loadDocument', () => {
     it('configures the worker and resolves the loaded document', async () => {
-      vi.mocked(configurePdfWorker).mockClear()
       const document = { numPages: 0 } as PDFDocumentProxy
       mockLoadedDocument(document)
       const data = new ArrayBuffer(8)

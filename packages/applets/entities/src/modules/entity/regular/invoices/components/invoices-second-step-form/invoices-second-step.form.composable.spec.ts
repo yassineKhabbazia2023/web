@@ -5,8 +5,6 @@ import { withSetup } from '@pulse/toolbox/utils/test'
 import { useInvoicesSecondStepForm } from './invoices-second-step.form.composable'
 import { InvoicesSecondStepFormManager } from './invoices-second-step.form.manager'
 
-vi.mock('./invoices-second-step.form.manager')
-
 const createFormRefMock = () => shallowRef<FormInstance | null>(null)
 
 const mockOptions = [
@@ -16,7 +14,7 @@ const mockOptions = [
 
 describe('useInvoicesSecondStepForm', () => {
   beforeEach(() => {
-    vi.mocked(InvoicesSecondStepFormManager.fetchCustomerOptions).mockResolvedValue({
+    vi.spyOn(InvoicesSecondStepFormManager, 'fetchCustomerOptions').mockResolvedValue({
       success: true,
       options: mockOptions,
     })

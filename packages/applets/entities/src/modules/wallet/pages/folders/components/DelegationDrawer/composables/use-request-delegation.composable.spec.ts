@@ -4,33 +4,16 @@ import type { Collab } from '@entities/types'
 import type { SearchAccountItem } from '@entities/services/account/account.type'
 import { useRequestDelegation } from './use-request-delegation.composable'
 import type { RequestDelegationRef } from './use-request-delegation.composable.types'
+import { createDelegationRequest } from '@entities/services/account'
+import { displayNotification } from '@pulse/styleguide'
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
+const createDelegationRequestMock = vi.mocked(createDelegationRequest)
+const displayNotificationMock = vi.mocked(displayNotification)
 
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-
-const { createDelegationRequestMock, displayNotificationMock } = vi.hoisted(() => ({
-  createDelegationRequestMock: vi.fn(),
-  displayNotificationMock: vi.fn(),
-}))
-
-vi.mock('@entities/services/account', () => ({
-  createDelegationRequest: createDelegationRequestMock,
-}))
-
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: displayNotificationMock,
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
-}))
+beforeEach(() => {
+  createDelegationRequestMock.mockResolvedValue(undefined as unknown as Awaited<ReturnType<typeof createDelegationRequest>>)
+  displayNotificationMock.mockImplementation(() => undefined)
+})
 
 const mockAccount: SearchAccountItem = {
   accountId: 10,
@@ -211,7 +194,6 @@ describe('useRequestDelegation', () => {
     })
 
     it('should send the request, notify success and close drawer on final step', async () => {
-      createDelegationRequestMock.mockResolvedValueOnce(undefined)
       const collabs = [{ contactId: 1 } as Collab, { contactId: 2 } as Collab]
       const { composable, setDrawerMock } = createComposable(2, true, collabs, collabs, mockAccount)
 
@@ -229,7 +211,7 @@ describe('useRequestDelegation', () => {
     })
 
     it('should notify error and keep drawer open when the request fails on final step', async () => {
-      createDelegationRequestMock.mockRejectedValueOnce(new Error('boom'))
+      createDelegationRequestMock.mockRejectedValue(new Error('boom'))
       const collabs = [{ contactId: 1 } as Collab]
       const { composable, setDrawerMock } = createComposable(2, true, collabs, collabs, mockAccount)
 

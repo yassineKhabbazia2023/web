@@ -1,4 +1,3 @@
-import { vi, describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PAlert from './'
 import type { PAlertProps } from './PAlertTypes'

@@ -1,8 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { OffersCatalogTrackingManager } from './offers-catalog-tracking.manager'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('OffersCatalogTrackingManager', () => {
   describe('trackExplicationResult', () => {
     it('should track explication result with succeeded status', () => {

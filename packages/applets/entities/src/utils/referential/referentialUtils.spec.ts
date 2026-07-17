@@ -1,5 +1,4 @@
-import { vi, it, expect, describe } from 'vitest'
-import { loggerMock, loggerWarnSpy } from '@pulse/toolbox/mocks'
+import { loggerWarnSpy } from '@pulse/toolbox/mocks'
 import {
   referentialOptionsToPDropdownOption,
   getReferentialDropdownOptions,
@@ -9,7 +8,12 @@ import {
   getFormStructure,
   cleanRecordStructure,
 } from './referentialUtils'
-import { type ReferentialOptions } from '@entities/services/account'
+import {
+  fetchAccountReferential,
+  fetchReferentialHubs,
+  fetchReferentialOffices,
+  type ReferentialOptions,
+} from '@entities/services/account'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import MEGOffersFormStructure from '@entities/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/config/forms/LOOPOfferFormStructure.json'
@@ -27,16 +31,10 @@ const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
 const mockedReferentialOffices = getMockedReferentialOffices()
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-vi.mock('@entities/services/account', async () => {
-  const actual = await vi.importActual('@entities/services/account')
-  return {
-    ...actual,
-    fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
-    fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
-    fetchReferentialOffices: vi.fn(() => getMockedReferentialOffices()),
-  }
+beforeEach(() => {
+  vi.mocked(fetchAccountReferential).mockImplementation(async () => getMockedAccountReferential())
+  vi.mocked(fetchReferentialHubs).mockImplementation(async () => getMockedReferentialHubs())
+  vi.mocked(fetchReferentialOffices).mockImplementation(async () => getMockedReferentialOffices())
 })
 
 describe('referentialUtils', () => {

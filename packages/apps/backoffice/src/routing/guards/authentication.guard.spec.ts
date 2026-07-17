@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.enum'
@@ -6,10 +6,7 @@ import { LoginManager } from '@backoffice/managers/login.manager'
 
 import { authenticationGuard } from './authentication.guard'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/managers/login.manager', () => ({
-  LoginManager: { syncToken: vi.fn() },
-}))
+let syncTokenMock: MockInstance
 
 const authenticatedRoot: any = { name: AdminRouteNames.AUTHENTICATED }
 
@@ -31,16 +28,19 @@ const toOnlyAllowAuthenticatedRouteMock: any = {
 }
 
 describe('authenticationGuard', () => {
+  beforeEach(() => {
+    syncTokenMock = vi.spyOn(LoginManager, 'syncToken').mockResolvedValue()
+  })
+
   describe('when user is authenticated', () => {
     beforeEach(() => {
-      vi.clearAllMocks()
       vi.spyOn(AdminMsalService, 'isUserAuthenticated').mockResolvedValue(true)
     })
 
     it('should sync the token store before resolving the route', async () => {
       await authenticationGuard(toAllowAllRouteMock)
 
-      expect(LoginManager.syncToken).toHaveBeenCalledExactlyOnceWith()
+      expect(syncTokenMock).toHaveBeenCalledExactlyOnceWith()
     })
 
     it('should proceed if route allows anonymous access and authenticated access', async () => {
@@ -72,14 +72,13 @@ describe('authenticationGuard', () => {
 
   describe('when user is NOT authenticated', () => {
     beforeEach(() => {
-      vi.clearAllMocks()
       vi.spyOn(AdminMsalService, 'isUserAuthenticated').mockResolvedValue(false)
     })
 
     it('should not sync the token store', async () => {
       await authenticationGuard(toAllowAllRouteMock)
 
-      expect(LoginManager.syncToken).not.toHaveBeenCalled()
+      expect(syncTokenMock).not.toHaveBeenCalled()
     })
 
     it('should proceed if route allows anonymous access and authenticated access', async () => {

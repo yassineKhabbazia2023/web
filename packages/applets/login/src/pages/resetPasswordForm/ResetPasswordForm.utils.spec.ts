@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import { getPasswordError, getConfirmPasswordError } from './ResetPasswordForm.utils'
 import { PStrengthLevel } from '@pulse/styleguide/types'
 

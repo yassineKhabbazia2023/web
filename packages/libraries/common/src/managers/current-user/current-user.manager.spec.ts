@@ -1,4 +1,4 @@
-import { getMockedUserInfo, envVarsMock, getMockedCurrentEntity, getPermissionsMock } from '../../__mocks__'
+import { getMockedUserInfo, getMockedCurrentEntity, getPermissionsMock } from '../../__mocks__'
 import { getStoreMock } from '../../__mocks__/vitest'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
@@ -8,6 +8,10 @@ import type { Permission } from '../../types/permission.type'
 import { CollaboratorPermission, CustomerPermission } from '../../enums/permission.enum'
 
 import { CurrentUserManager } from './current-user.manager'
+import type { Mock } from 'vitest'
+import { logoutUser } from '../../services/authentication.service'
+import { LogoutService } from '../../services/logout/logout.service'
+import { CurrentUserService } from '../../services/current-user/current-user.service'
 
 const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
@@ -17,29 +21,20 @@ const userPermissionsMock = getPermissionsMock()
 const currentEntityMock = getMockedCurrentEntity()
 const currentEntityPermissionsMock = currentEntityMock.permissions ?? []
 
-vi.mock('env-vars', () => envVarsMock)
 
-const logoutUserMock = vi.hoisted(() => vi.fn())
-const logoutStrategyMock = vi.hoisted(() => vi.fn())
-
-vi.mock('../../services/authentication.service', () => ({
-  logoutUser: logoutUserMock,
-}))
-
-vi.mock('../../services/logout/logout.service', () => ({
-  LogoutService: {
-    logout: logoutStrategyMock,
-  },
-}))
-
-const getCurrentUserMock = vi.hoisted((() => vi.fn()))
-vi.mock('../../services/current-user/current-user.service', () => ({
-  CurrentUserService: {
-    getCurrentUser: getCurrentUserMock,
-  },
-}))
+const logoutUserMock = vi.mocked(logoutUser)
+let logoutStrategyMock: Mock
+let getCurrentUserMock: Mock
 
 describe('test current-user.manager', () => {
+  beforeEach(() => {
+    // Real (spy-wrapped) services: give the logout collaborators a safe
+    // default so unstubbed calls never run the real network/strategy paths.
+    logoutUserMock.mockResolvedValue(undefined)
+    logoutStrategyMock = vi.mocked(vi.spyOn(LogoutService, 'logout').mockResolvedValue(undefined))
+    getCurrentUserMock = vi.mocked(vi.spyOn(CurrentUserService, 'getCurrentUser'))
+  })
+
   describe('initializeCurrentUser', () => {
     it('should initialize current user', async () => {
       const currentUserMock = getMockedUserInfo()

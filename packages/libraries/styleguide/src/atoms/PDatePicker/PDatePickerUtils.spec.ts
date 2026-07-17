@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 import type { PDatePickerModelValue } from './PDatePickerTypes'
 
@@ -10,7 +9,18 @@ const MONTHES = {
 
 const TODAY = '2024-07-09'
 const mockedToday = new Date(TODAY)
-vi.setSystemTime(mockedToday)
+
+// Re-anchored per test: the isolate-safe guards restore real timers before
+// every test, so a module-scope setSystemTime would only cover collection.
+beforeEach(() => {
+  vi.setSystemTime(mockedToday)
+})
+
+// Drop the faked clock so it cannot leak into the module-level evaluation of
+// the next file sharing this worker (isolate-safe: leave nothing behind).
+afterEach(() => {
+  vi.useRealTimers()
+})
 
 describe('test PDatePickerUtils', () => {
   describe('getCurrentDate', () => {

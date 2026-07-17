@@ -17,6 +17,7 @@ export const envVarsMock = {
   VITE_CONFIG_OFFERS_BOOK: 'https://example.com/offers-book',
   VITE_FEED_CENTER_ACTIVATED: 'true',
   VITE_GESTION_MEG: 'https://gestion-meg',
+  VITE_GIGYA_KEY: 'pulse-gigya-key',
   VITE_GIGYA_SSO_ACTIVATED: 'true',
   VITE_HUBSPOT_ACTIVATED: 'true',
   VITE_MAIL_TO_GED_ACTIVATED: 'true',

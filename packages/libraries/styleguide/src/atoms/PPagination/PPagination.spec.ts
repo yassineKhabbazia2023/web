@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import PPagination from './'

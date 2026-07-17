@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PConfigProvider from '.'
 import type { PConfigProviderProps } from './PConfigProviderTypes'
 import fr from 'element-plus/es/locale/lang/fr'

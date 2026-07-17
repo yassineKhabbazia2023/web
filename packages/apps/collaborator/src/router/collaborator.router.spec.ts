@@ -1,29 +1,18 @@
-import { createTestingPinia } from '@pinia/testing'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
 import { RouteName } from '@pulse/common/enums'
 import { CollaboratorBootManager } from '@collaborator/managers/collaborator.boot.manager'
 
 import router from './collaborator.router'
 
-createTestingPinia()
+beforeEach(() => {
+  vi.spyOn(CollaboratorBootManager, 'checkMaintenanceMode').mockReturnValue(undefined as unknown as boolean)
+  vi.spyOn(CollaboratorBootManager, 'getDefaultRedirection')
+    .mockReturnValue(undefined as unknown as ReturnType<typeof CollaboratorBootManager.getDefaultRedirection>)
+  vi.spyOn(CollaboratorBootManager, 'initAmplitude').mockImplementation(() => undefined)
+})
 
-vi.mock('@collaborator/managers/collaborator.boot.manager', () => ({
-  CollaboratorBootManager: {
-    checkMaintenanceMode: vi.fn(),
-    getDefaultRedirection: vi.fn(),
-    initAmplitude: vi.fn(),
-  },
-}))
-
-// mock the main routes to guarantee presence of child routes
-vi.mock('./routes/anonymous.routes', () => ({
-  anonymousRoutes: [{ path: '/anonymous', name: RouteName.ANONYMOUS }],
-}))
-
-vi.mock('./routes/authenticated.routes', () => ({
-  authenticatedRoutes: [{ path: '/authenticated', name: RouteName.AUTHENTICATED }],
-}))
-
+// The main routes are canned worker-wide (vitest.setup.ts) to guarantee the
+// presence of child routes.
 describe('App Router', () => {
   describe('Router Configuration', () => {
     it('should be configured with web history', () => {
@@ -82,19 +71,15 @@ describe('App Router', () => {
       vi.spyOn(console, 'warn').mockImplementationOnce(() => {})
       vi.spyOn(console, 'error').mockImplementationOnce(() => {})
 
-      // Mock BootManager to throw an error
+      // The root route redirects before it runs beforeEnter: without a valid
+      // destination the navigation dies on the redirect and never reaches the
+      // maintenance check this test is about.
+      vi.mocked(CollaboratorBootManager.getDefaultRedirection).mockReturnValue({ name: RouteName.ANONYMOUS })
       vi.mocked(CollaboratorBootManager.checkMaintenanceMode).mockImplementation(() => {
         throw new Error('Test error')
       })
 
-      try {
-        await router.push('/')
-        // If no error is thrown, the test should still pass
-        expect(true).toBe(true)
-      } catch (error) {
-        // Error handling should be graceful
-        expect(error).toBeDefined()
-      }
+      await expect(router.push('/')).rejects.toThrow('Test error')
     })
 
     it('should handle missing route redirections', () => {

@@ -1,19 +1,14 @@
 import { AmplitudeEvent, AmplitudeFeatureName } from '../../enums/amplitude.enums'
+import { AmplitudeService } from './amplitude.service'
 import { TrackingCenter } from './tracking-center'
-
-const trackMock = vi.hoisted(() => vi.fn())
-
-vi.mock('./amplitude.service', () => ({
-  AmplitudeService: {
-    track: trackMock,
-  },
-}))
 
 describe('TrackingCenter', () => {
   it('trackHomepageConsulted should track Feature Consulted with homepage', () => {
+    const trackSpy = vi.spyOn(AmplitudeService, 'track').mockImplementation(() => {})
+
     TrackingCenter.trackHomepageConsulted()
 
-    expect(trackMock).toHaveBeenCalledExactlyOnceWith(
+    expect(trackSpy).toHaveBeenCalledExactlyOnceWith(
       AmplitudeEvent.FEATURE_CONSULTED,
       { feature_name: AmplitudeFeatureName.HOMEPAGE },
     )

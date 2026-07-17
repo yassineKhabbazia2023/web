@@ -1,27 +1,10 @@
+import {
+  capturedTslogConfig,
+  tslogDebugMock,
+  tslogErrorMock,
+  tslogWarnMock,
+} from '../__mocks__/tslog.mocks'
 import { logger } from './logger'
-
-const mockedLoggerDebug = vi.hoisted(() => vi.fn((_: string) => _))
-const mockedLoggerWarn = vi.hoisted(() => vi.fn((_: string) => _))
-const mockedLoggerError = vi.hoisted(() => vi.fn((_: string) => _))
-
-const captured = vi.hoisted(() => ({ config: undefined as undefined | { overwrite?: { mask?: (args: unknown[]) => unknown[] } } }))
-
-const mockedLoggerConstructor = vi.hoisted(() => vi.fn(function(config: unknown) {
-  captured.config = config as typeof captured.config
-  return {
-    silly: vi.fn(),
-    trace: vi.fn(),
-    debug: mockedLoggerDebug,
-    info: vi.fn(),
-    warn: mockedLoggerWarn,
-    error: mockedLoggerError,
-    fatal: vi.fn(),
-  }
-}))
-
-vi.mock('tslog', () => ({
-  Logger: mockedLoggerConstructor,
-}))
 
 describe('logger', () => {
   it('should call Logger methods with proper args', () => {
@@ -33,14 +16,14 @@ describe('logger', () => {
     logger.warn(warnMessage)
     logger.error(errorMessage)
 
-    expect(mockedLoggerDebug).toHaveBeenCalledOnce()
-    expect(mockedLoggerDebug).toHaveBeenNthCalledWith(1, debugMessage)
+    expect(tslogDebugMock).toHaveBeenCalledOnce()
+    expect(tslogDebugMock).toHaveBeenNthCalledWith(1, debugMessage)
 
-    expect(mockedLoggerWarn).toHaveBeenCalledOnce()
-    expect(mockedLoggerWarn).toHaveBeenNthCalledWith(1, warnMessage)
+    expect(tslogWarnMock).toHaveBeenCalledOnce()
+    expect(tslogWarnMock).toHaveBeenNthCalledWith(1, warnMessage)
 
-    expect(mockedLoggerError).toHaveBeenCalledOnce()
-    expect(mockedLoggerError).toHaveBeenNthCalledWith(1, errorMessage)
+    expect(tslogErrorMock).toHaveBeenCalledOnce()
+    expect(tslogErrorMock).toHaveBeenNthCalledWith(1, errorMessage)
   })
 
   it('should register an overwrite.mask hook that swaps null-prototype fields on Error args for stringifiable copies', () => {
@@ -51,7 +34,7 @@ describe('logger', () => {
     error.config.url = '/api/login'
     expect(() => String(error.config)).toThrow(TypeError)
 
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     expect(mask).toBeTypeOf('function')
 
     mask!([error])
@@ -61,14 +44,14 @@ describe('logger', () => {
   })
 
   it('should leave string args untouched', () => {
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     const result = mask!(['hello', 'world'])
 
     expect(result).toEqual(['hello', 'world'])
   })
 
   it('should leave plain object args untouched', () => {
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     const plain = { foo: 'bar', nested: { value: 1 } }
     const result = mask!([plain])
 
@@ -77,14 +60,14 @@ describe('logger', () => {
   })
 
   it('should leave primitive and null args untouched', () => {
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     const result = mask!([42, true, null, undefined])
 
     expect(result).toEqual([42, true, null, undefined])
   })
 
   it('should return the same array reference it received', () => {
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     const args: unknown[] = ['hello', new Error('boom')]
 
     expect(mask!(args)).toBe(args)
@@ -99,7 +82,7 @@ describe('logger', () => {
     secondError.config = Object.create(null)
     secondError.config.url = '/api/two'
 
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
     mask!([firstError, secondError])
 
     expect(() => String(firstError.config)).not.toThrow()
@@ -110,7 +93,7 @@ describe('logger', () => {
     const error = new Error('boom') as Error & { payload: bigint }
     error.payload = 10n
 
-    const mask = captured.config?.overwrite?.mask
+    const mask = capturedTslogConfig.value?.overwrite?.mask
 
     expect(() => mask!([error])).not.toThrow()
     expect(error.payload).toBe(10n)

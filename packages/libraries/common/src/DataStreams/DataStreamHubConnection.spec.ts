@@ -1,20 +1,10 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import type { HubConnection } from '@microsoft/signalr'
 import { LocalStorageMock } from '../__mocks__'
+import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 
 import { DataStreamHubConnection } from './DataStreamHubConnection'
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('./DataStreamHubConnectionHelper', () => {
-  return {
-    getNewHubConnection: () => ({
-      start: vi.fn().mockResolvedValue({}),
-      stop: vi.fn().mockResolvedValue({}),
-    }),
-  }
-})
 
 describe('dataStreamHubConnection', () => {
   let dataStreamHubConnection: DataStreamHubConnection
@@ -27,6 +17,10 @@ describe('dataStreamHubConnection', () => {
     })
     loggerErrorSpy.mockClear()
     setActivePinia(createPinia())
+    vi.mocked(getNewHubConnection).mockImplementation(() => ({
+      start: vi.fn().mockResolvedValue({}),
+      stop: vi.fn().mockResolvedValue({}),
+    } as unknown as HubConnection))
     dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
   })
 
@@ -56,7 +50,7 @@ describe('dataStreamHubConnection', () => {
   describe('when connection fails', () => {
     it('should call logger.error when start connection fails', async () => {
       vi
-        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mocked(getNewHubConnection)
         .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
           return {
             start: vi.fn().mockRejectedValueOnce('error'),
@@ -71,7 +65,7 @@ describe('dataStreamHubConnection', () => {
 
     it('should call logger.error when destroyConnection connection fails', async () => {
       vi
-        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mocked(getNewHubConnection)
         .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
           return {
             start: vi.fn().mockResolvedValue({}),
@@ -87,7 +81,7 @@ describe('dataStreamHubConnection', () => {
 
     it('should do nothing when not connected', async () => {
       vi
-        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mocked(getNewHubConnection)
         .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
           return {
             start: vi.fn(),

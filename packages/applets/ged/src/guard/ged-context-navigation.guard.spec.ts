@@ -4,9 +4,6 @@ import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
 import { gedLegacyRouteUpdate } from './ged-context-navigation.guard'
 
-vi.mock('@pulse/common/managers')
-vi.mock('@pulse/toolbox')
-
 function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGeneric {
   return {
     path: '/dossier/123/ged',
@@ -24,7 +21,7 @@ function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGe
 describe('GedContextNavigationGuard', () => {
   describe('Given GED UX V2 is enabled', () => {
     beforeEach(() => {
-      vi.mocked(PennylanePermissionsManager.isGedUxV2).mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'isGedUxV2').mockReturnValue(true)
     })
 
     describe('When notification type is GSDocumentUploaded', () => {
@@ -98,7 +95,7 @@ describe('GedContextNavigationGuard', () => {
 
   describe('Given GED UX V2 is disabled', () => {
     beforeEach(() => {
-      vi.mocked(PennylanePermissionsManager.isGedUxV2).mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'isGedUxV2').mockReturnValue(false)
     })
 
     describe('When a valid notification type is present', () => {

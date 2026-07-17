@@ -1,7 +1,7 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
 import { getMockedPennylaneRole, getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
-import { PennylaneService } from '@pulse/common/services/pennylane'
+import { PennylaneService, type PennylaneRole } from '@pulse/common/services/pennylane'
 import { CustomerPermission } from '@pulse/common/enums'
 import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { updateUserPermissions } from '@entities/services/authorization'
@@ -18,14 +18,11 @@ import {
   getPennylaneRoleLabelByCode,
 } from '../utils'
 
-// Mocks
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
-vi.mock('@pulse/common/services/pennylane')
-vi.mock('@entities/services/authorization')
-vi.mock('@entities/managers/pennylane-customer-access-rights-tracking/pennylane-customer-access-rights-tracking.manager')
+beforeEach(() => {
+  vi.spyOn(PennylaneService, 'createRole').mockResolvedValue(undefined)
+  vi.spyOn(PennylaneService, 'getAccountContactRole').mockResolvedValue(undefined as unknown as PennylaneRole)
+  vi.spyOn(PennylaneCustomerAccessRightsTrackingManager, 'track').mockImplementation(() => undefined)
+})
 
 const updateUserPermissionsMock = vi.mocked(updateUserPermissions)
 

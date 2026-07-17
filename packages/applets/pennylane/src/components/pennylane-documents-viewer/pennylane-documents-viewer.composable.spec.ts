@@ -2,12 +2,8 @@ import { PennylaneService } from '@pulse/common/services/pennylane'
 import { usePennylaneDocumentViewer } from './pennylane-documents-viewer.composable'
 import { APICallStatus } from '@pulse/common/enums'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
-import { logger, getFileExtension } from '@pulse/toolbox'
+import { logger } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
-
-vi.mock('@pulse/common/services/pennylane')
-vi.mock('@pulse/toolbox')
-vi.mock('./pennylane-documents-viewer.helper')
 
 const technicalErrorMessageMock = 'An error occurred while loading the document. Please try again later.'
 const documentNameMock = 'example-document.pdf'
@@ -43,9 +39,7 @@ describe('pennylane-documents-viewer.composable', () => {
     } = usePennylaneDocumentViewer(technicalErrorMessageMock)
 
     const documentContentMock = 'mocked-document-content'
-    vi.mocked(PennylaneService.getDocumentContent).mockResolvedValue(documentContentMock)
-    vi.mocked(getFileExtension).mockReturnValue(fileExtensionMock)
-
+    vi.spyOn(PennylaneService, 'getDocumentContent').mockResolvedValue(documentContentMock)
     vi.mocked(getDocumentType).mockReturnValue(documentTypeMock)
     vi.mocked(getDocumentPreviewImage).mockReturnValue(previewImageMock)
 
@@ -95,7 +89,7 @@ describe('pennylane-documents-viewer.composable', () => {
       loadDocument,
     } = usePennylaneDocumentViewer(technicalErrorMessageMock)
 
-    vi.mocked(PennylaneService.getDocumentContent).mockRejectedValue(errorMock)
+    vi.spyOn(PennylaneService, 'getDocumentContent').mockRejectedValue(errorMock)
 
     vi.mocked(getDocumentType).mockReturnValue(documentTypeMock)
     vi.mocked(getDocumentPreviewImage).mockReturnValue(previewImageMock)

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setAssetsBaseUrl } from '../../utils/imageResolverInit'
 import PDocumentDisplay from './'

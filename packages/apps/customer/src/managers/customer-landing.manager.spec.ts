@@ -9,10 +9,6 @@ import { navigateToCurrentEntityHomepage } from '@pulse/shared/guards'
 
 import { CustomerLandingManager } from './customer-landing.manager'
 
-vi.mock('@pulse/shared/guards', () => ({
-  navigateToCurrentEntityHomepage: vi.fn(),
-}))
-
 const homepageRouteMock = {
   name: RouteName.HOMEPAGE,
   params: { [RouteParam.ENTITY_ID]: 1 },

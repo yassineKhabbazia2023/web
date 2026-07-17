@@ -1,26 +1,17 @@
 import { initAxeptio, openAxeptioCookies } from './axeptio.plugin'
+import { envVarsMock } from '@pulse/common/mocks'
 
 declare let window: {
   axeptioSettings: any
   openAxeptioCookies: any
 } & Window
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    trace: vi.fn(),
-  },
-}))
-
-vi.mock('env-vars', () => ({
-  VITE_AXEPTIO_KEY: 'test-client-id',
-}))
-
 describe('axeptio.plugin', () => {
   describe('initAxeptio', () => {
     it('should set axeptioSettings with clientId', () => {
       initAxeptio()
 
-      expect(window.axeptioSettings).toEqual({ clientId: 'test-client-id' })
+      expect(window.axeptioSettings).toEqual({ clientId: envVarsMock.VITE_AXEPTIO_KEY })
     })
 
     it('should create and insert a script element', () => {
@@ -46,15 +37,16 @@ describe('axeptio.plugin', () => {
 
   describe('openAxeptioCookies', () => {
     it('should call window.openAxeptioCookies when it is a function', () => {
-      window.openAxeptioCookies = vi.fn()
+      const openAxeptioCookiesGlobalMock = vi.fn()
+      vi.stubGlobal('openAxeptioCookies', openAxeptioCookiesGlobalMock)
 
       openAxeptioCookies()
 
-      expect(window.openAxeptioCookies).toHaveBeenCalled()
+      expect(openAxeptioCookiesGlobalMock).toHaveBeenCalled()
     })
 
     it('should not throw when window.openAxeptioCookies is not a function', () => {
-      window.openAxeptioCookies = undefined
+      vi.stubGlobal('openAxeptioCookies', undefined)
 
       expect(() => openAxeptioCookies()).not.toThrow()
     })

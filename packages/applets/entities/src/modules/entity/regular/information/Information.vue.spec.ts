@@ -1,54 +1,36 @@
-import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import {
-  getMockedAccount,
-  getMockedAccountReferential,
-  getMockedReferentialHubs,
-} from '@entities/__mocks__/account-row.mocks'
+import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { useUserStore } from '@pulse/common/stores'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { RouteParam } from '@pulse/common/enums'
+import { useRoute } from 'vue-router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
+import { fetchAccount } from '@entities/services/account'
+import type { FormSection } from '@entities/types'
+import { getCanEdit } from './InformationHelper'
 
 import Information from './Information.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
 
-// Mocks
-const getFormStructureMock = vi.hoisted(() => vi.fn(() => InformationFormStructure))
-const cleanRecordStructureMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@entities/utils/referential', () => ({
-  getFormStructure: getFormStructureMock,
-  cleanRecordStructure: cleanRecordStructureMock,
-}))
-
-const mockedGetCanEdit = vi.hoisted(() => vi.fn(() => true))
-const savePatchedAccountMock = vi.hoisted(() => vi.fn())
-vi.mock('./InformationHelper', () => ({
-  getCanEdit: mockedGetCanEdit,
-  savePatchedAccount: savePatchedAccountMock,
-}))
-
+const informationFormStructureMock = InformationFormStructure as FormSection[]
 const accountMock = getMockedAccount()
-const fetchAccountMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/account', () => ({
-  fetchAccount: fetchAccountMock,
-  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
-  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
-}))
 
 const ACCOUNT_ID = 5
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
+beforeEach(() => {
+  vi.mocked(useRoute).mockReturnValue({
     params: {
       [RouteParam.ENTITY_ID]: ACCOUNT_ID,
     },
-  }),
-}))
-
-vi.mock('@entities/utils/helpers')
+  } as unknown as RouteLocationNormalizedLoaded)
+  vi.mocked(getFormStructure).mockResolvedValue(informationFormStructureMock)
+  vi.mocked(cleanRecordStructure).mockImplementation(() => undefined)
+  vi.mocked(fetchAccount).mockResolvedValue(accountMock)
+  vi.mocked(getCanEdit).mockReturnValue(true)
+})
 
 const getWrapper = () => shallowMount(Information, {
   global: {
@@ -67,26 +49,19 @@ const getWrapper = () => shallowMount(Information, {
   },
 })
 
-// Unit Tests
 describe('information', () => {
-  let wrapper: ReturnType<typeof getWrapper>
-  beforeEach(() => {
-    fetchAccountMock.mockResolvedValue(accountMock)
-    cleanRecordStructureMock.mockResolvedValue(accountMock)
-  })
-
   describe('display', () => {
-    beforeEach(() => {
-      wrapper = getWrapper()
-    })
     it('should not display the alert if the user is a client', async () => {
       userStoreMock.isCollab = false
-      await nextTick()
+
+      const wrapper = getWrapper()
+      await flushPromises()
+
       const alertInstruction = wrapper.find(
         '[data-testid="folder-information-alert"]',
       )
 
-      expect(alertInstruction.exists()).toBeFalsy()
+      expect(alertInstruction.exists()).toBe(false)
     })
   })
 
@@ -110,23 +85,18 @@ describe('information', () => {
         mockedCanEdit,
         expectedHasInformationSaveButton,
       }) => {
-        const expectedForceDisabled = !mockedCanEdit
+        const expectedForceDisabled = mockedCanEdit === false
         userStoreMock.isCollab = isCollab
-
-        mockedGetCanEdit.mockReturnValue(mockedCanEdit)
+        vi.mocked(getCanEdit).mockReturnValue(mockedCanEdit)
 
         const wrapper = getWrapper()
-
         await flushPromises()
 
         const informationSaveButton = wrapper.find('[data-testid="information-save-button"]')
 
-        expect(mockedGetCanEdit).toHaveBeenCalledExactlyOnceWith(isCollab)
-
-        expect(getFormStructureMock).toHaveBeenCalledExactlyOnceWith('CompanyProfile', expectedForceDisabled)
-
-        expect(cleanRecordStructureMock).toHaveBeenCalledExactlyOnceWith(InformationFormStructure, accountMock)
-
+        expect(vi.mocked(getCanEdit)).toHaveBeenCalledExactlyOnceWith(isCollab)
+        expect(vi.mocked(getFormStructure)).toHaveBeenCalledExactlyOnceWith('CompanyProfile', expectedForceDisabled)
+        expect(vi.mocked(cleanRecordStructure)).toHaveBeenCalledExactlyOnceWith(informationFormStructureMock, accountMock)
         expect(informationSaveButton.exists()).toBe(expectedHasInformationSaveButton)
       })
   })

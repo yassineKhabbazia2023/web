@@ -1,4 +1,3 @@
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { BookingManager } from './booking.manager'
 import { BookingService } from '../../services'
 import { useUserStore, useCurrentEntityStore, useBookingCollabStore } from '@pulse/common/stores'
@@ -13,8 +12,6 @@ const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const bookingCustomerStoreMock = getStoreMock(useBookingCustomerStore)
 const bookingCollabStoreMock = getStoreMock(useBookingCollabStore)
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('BookingManager', () => {
 
@@ -31,7 +28,7 @@ describe('BookingManager', () => {
 
   describe('setupBookingForCollab', () => {
     it('should set collab booking enabled when API returns true', async () => {
-      vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(true)
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(true)
 
       await BookingManager.setupBookingForCollab()
 
@@ -41,7 +38,7 @@ describe('BookingManager', () => {
     })
 
     it('should set collab booking enabled when API returns false', async () => {
-      vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(false)
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(false)
 
       await BookingManager.setupBookingForCollab()
 
@@ -52,8 +49,8 @@ describe('BookingManager', () => {
 
   describe('setupBookingForCustomer', () => {
     it('should set customer booking enabled to true when user is eligible and has access', async () => {
-      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(true)
-      vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(true)
+      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(true)
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(true)
 
       await BookingManager.setupBookingForCustomer()
 
@@ -64,8 +61,8 @@ describe('BookingManager', () => {
     })
 
     it('should set customer booking enabled to false when user is eligible but has no access', async () => {
-      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(true)
-      vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(false)
+      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(true)
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(false)
 
       await BookingManager.setupBookingForCustomer()
 
@@ -76,7 +73,7 @@ describe('BookingManager', () => {
     })
 
     it('should not check enabled flag nor update store when user is not eligible', async () => {
-      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(false)
+      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(false)
 
       await BookingManager.setupBookingForCustomer()
 
@@ -92,7 +89,7 @@ describe('BookingManager', () => {
       userStoreMock.isCollab = false
       currentEntityStoreMock.currentEntityId = 123
       bookingCustomerStoreMock.getIsBookingEnabled.mockReturnValue(true)
-      vi.mocked(BookingService.getBookingAvailableExperts).mockResolvedValue(mockExperts)
+      vi.spyOn(BookingService, 'getBookingAvailableExperts').mockResolvedValue(mockExperts)
 
       await BookingManager.refreshAvailableExperts()
 
@@ -138,7 +135,7 @@ describe('BookingManager', () => {
       userStoreMock.isCollab = false
       currentEntityStoreMock.currentEntityId = 123
       bookingCustomerStoreMock.getIsBookingEnabled.mockReturnValue(true)
-      vi.mocked(BookingService.getBookingAvailableExperts).mockRejectedValue(mockError)
+      vi.spyOn(BookingService, 'getBookingAvailableExperts').mockRejectedValue(mockError)
 
       await BookingManager.refreshAvailableExperts()
 

@@ -1,15 +1,17 @@
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
+
 import PDatePicker from '.'
 import type { PDatePickerProps } from './PDatePickerTypes'
 
-const getCurrentDateMocked = vi.hoisted(() => vi.fn())
-const getWeekCountMocked = vi.hoisted(() => vi.fn())
+import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
-vi.mock('./PDatePickerUtils', () => ({
-  getCurrentDate: getCurrentDateMocked,
-  getWeekCount: getWeekCountMocked,
-}))
+const getCurrentDateMocked = vi.mocked(getCurrentDate)
+const getWeekCountMocked = vi.mocked(getWeekCount)
+
+beforeEach(() => {
+  getCurrentDateMocked.mockImplementation(() => undefined as unknown as Date)
+  getWeekCountMocked.mockImplementation(() => undefined as unknown as number)
+})
 
 const day = '2024-01-29'
 const defaultProps = {
@@ -117,8 +119,8 @@ describe('calendar lite', () => {
     const panelDate = '2024-04-05'
 
     getCurrentDateMocked
-      .mockReturnValueOnce(mockedCurrentDate1)
-      .mockReturnValueOnce(mockedCurrentDate2)
+      .mockReturnValueOnce(mockedCurrentDate1 as unknown as Date)
+      .mockReturnValueOnce(mockedCurrentDate2 as unknown as Date)
 
     const wrapper = createWrapper()
     const elDatePicker = wrapper.findComponent({ name: 'ElDatePicker' })

@@ -1,19 +1,19 @@
 import { secondValidDestination, unValidDestination, validDestination } from '@ged/__mocks__/files.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
-import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { moveFolderAsync } from '@ged/services/Folder'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 import { GedServiceId } from '@ged/enums/ged.enum'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 
 import FoldersMove from '.'
 
-vi.mock('@ged/services/Folder', () => folderServiceMock)
-
-vi.mock('@pulse/styleguide')
+beforeEach(() => {
+  armGedServiceDefaults()
+})
 
 const createWrapper = (
   props: FoldersMoveProps = defaultProps,
@@ -48,17 +48,19 @@ describe('test FoldersMove', () => {
 
     const cases = [
       {
+        label: 'an authorized destination folder',
         folder: validDestination,
         expectedResult: true,
       },
       {
+        label: 'a forbidden destination folder',
         folder: unValidDestination,
         expectedResult: false,
       },
     ]
 
     it.each(cases)(
-      'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
+      'should calculate the ExplorerAuthorizedGivenAction correctly with $label',
       ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,

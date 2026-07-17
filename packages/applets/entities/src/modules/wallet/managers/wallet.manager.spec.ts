@@ -5,8 +5,6 @@ import { RouteName } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 
-vi.mock('@pulse/common/managers')
-
 describe('WalletManager', () => {
   beforeEach(() => {
     // Clear the private Map between tests

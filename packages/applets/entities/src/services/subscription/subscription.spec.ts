@@ -1,5 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getMockedSubscriptionPaginationResponse, subscriptionDemandMock, subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
+import { apiGatewayGetMock, apiGatewayPostMock, apiGatewayPutMock } from '@pulse/common/mocks/vitest'
+import { handleRequestError } from '@entities/helpers/entity.helper'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { SubscriptionStatusCode } from './subscriptionTypes'
 import {
@@ -11,23 +12,13 @@ import {
   fetchSubscriptionStats,
 } from '.'
 
-const subscriptionGetMock = vi.hoisted(() => vi.fn())
-const subscriptionPutMock = vi.hoisted(() => vi.fn())
-const subscriptionPostMock = vi.hoisted(() => vi.fn())
+const subscriptionGetMock = apiGatewayGetMock
+const subscriptionPutMock = apiGatewayPutMock
+const subscriptionPostMock = apiGatewayPostMock
 
-vi.mock('@entities/helpers/entity.helper', () => ({
-  handleRequestError: vi.fn(),
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: subscriptionGetMock,
-      post: subscriptionPostMock,
-      put: subscriptionPutMock,
-    },
-  }),
-}))
+beforeEach(() => {
+  vi.mocked(handleRequestError).mockImplementation(() => undefined)
+})
 
 describe('subscriptionService', () => {
   const paginationResponseMock = getMockedSubscriptionPaginationResponse()

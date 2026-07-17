@@ -1,17 +1,17 @@
-import { loggerWarnSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerWarnSpy } from '@pulse/toolbox/mocks'
+import { getAssetsBaseUrl, setAssetsBaseUrl } from './imageResolverInit'
+import { TEST_ASSETS_BASE_URL } from '../__mocks__/test-assets.constants'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
+// The module is spy-wrapped and memoized per worker (vi.resetModules() cannot
+// produce a fresh instance), so the shared state is reset through its own API.
 describe('test imageResolverInit', () => {
-  let getAssetsBaseUrl: typeof import('./imageResolverInit').getAssetsBaseUrl
-  let setAssetsBaseUrl: typeof import('./imageResolverInit').setAssetsBaseUrl
+  beforeEach(() => {
+    setAssetsBaseUrl('')
+  })
 
-  beforeEach(async () => {
-    vi.resetModules()
-    vi.clearAllMocks()
-    const mod = await import('./imageResolverInit')
-    getAssetsBaseUrl = mod.getAssetsBaseUrl
-    setAssetsBaseUrl = mod.setAssetsBaseUrl
+  afterEach(() => {
+    // Restore the base URL every other spec of the worker relies on.
+    setAssetsBaseUrl(TEST_ASSETS_BASE_URL)
   })
 
   it('getAssetsBaseUrl should return empty string when assetsBaseUrl is not initialized', () => {

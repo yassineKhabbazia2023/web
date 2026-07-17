@@ -4,12 +4,6 @@ import { ConformityPaymentType } from '@entities/enums'
 import { ConformityPaymentService } from './conformity-payment.service'
 import type { PaymentPreferenceResponse, ProspectMandateBankDetails } from './conformity-payment.types'
 
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
 const accountId = 602
 const onboardingBasePath = `${API_PREFIXES.PROSPECT}/onboarding/${accountId}`
 const sepaPath = `${onboardingBasePath}/payment-preferences/sepa`

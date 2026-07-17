@@ -2,14 +2,8 @@ import { SubscriptionStatusCode } from '@entities/services/subscription/subscrip
 import type { SubscriptionStats } from '@entities/services/subscription/subscriptionTypes'
 import { SubscriptionStatusFiltersManager } from './subscription-status-filters.manager'
 
-vi.mock('@pulse/common/i18n', () => ({
-  i18n: {
-    global: {
-      t: (key: string) => key,
-    },
-  },
-}))
-
+// The real '@pulse/common/i18n' instance has no messages loaded, so t()
+// already returns the raw key the assertions expect.
 const statsMock: SubscriptionStats = {
   statuses: {
     [SubscriptionStatusCode.PENDING]: 3,

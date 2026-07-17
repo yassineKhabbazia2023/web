@@ -39,37 +39,35 @@ describe('prospect-creation-step-company.form.validation', () => {
   describe('rules', () => {
     const requiredFields = ['legalForm', 'legalStructure'] as const
 
-    requiredFields.forEach((field) => {
-      describe(`${field} validation`, () => {
-        it('should have a rule defined', () => {
-          const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
+    describe.each(requiredFields)('%s validation', (field) => {
+      it('should have a rule defined', () => {
+        const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
 
-          expect(rules.value[field]).toBeDefined()
-        })
+        expect(rules.value[field]).toBeDefined()
+      })
 
-        it('should pass validation for a selected value', async () => {
-          const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
-          const rule = getRuleAt(rules.value[field])
+      it('should pass validation for a selected value', async () => {
+        const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
+        const rule = getRuleAt(rules.value[field])
 
-          const error = await runValidator(rule, 'SAS')
-          expect(error).toBeUndefined()
-        })
+        const error = await runValidator(rule, 'SAS')
+        expect(error).toBeUndefined()
+      })
 
-        it('should fail validation for an empty value', async () => {
-          const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
-          const rule = getRuleAt(rules.value[field])
+      it('should fail validation for an empty value', async () => {
+        const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
+        const rule = getRuleAt(rules.value[field])
 
-          const error = await runValidator(rule, '')
-          expect(error).toBeInstanceOf(Error)
-        })
+        const error = await runValidator(rule, '')
+        expect(error).toBeInstanceOf(Error)
+      })
 
-        it('should fail validation for null or undefined', async () => {
-          const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
-          const rule = getRuleAt(rules.value[field])
+      it('should fail validation for null or undefined', async () => {
+        const { rules } = useProspectCreationStepCompanyValidation(getParamsMock())
+        const rule = getRuleAt(rules.value[field])
 
-          expect(await runValidator(rule, null)).toBeInstanceOf(Error)
-          expect(await runValidator(rule, undefined)).toBeInstanceOf(Error)
-        })
+        expect(await runValidator(rule, null)).toBeInstanceOf(Error)
+        expect(await runValidator(rule, undefined)).toBeInstanceOf(Error)
       })
     })
   })

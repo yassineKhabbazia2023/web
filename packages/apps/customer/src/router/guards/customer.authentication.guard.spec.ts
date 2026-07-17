@@ -5,19 +5,6 @@ import { SessionStorageService } from '@pulse/common/services/storage'
 import { customerAuthenticationGuard } from './customer.authentication.guard'
 import { RouteName } from '@pulse/common/enums'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: {
-    isAuthenticated: vi.fn(),
-    hasToken: vi.fn(),
-  },
-}))
-vi.mock('@pulse/common/services/storage', () => ({
-  SessionStorageService: {
-    setRedirectContext: vi.fn(),
-  },
-}))
-
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
 const toRootRoute: any = {
   path: '/',

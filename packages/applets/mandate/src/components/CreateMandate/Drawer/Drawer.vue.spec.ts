@@ -1,25 +1,21 @@
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
-import { expect, describe, it, vi } from 'vitest'
+
 import { nextTick } from 'vue'
 import { createMandate } from '@mandate/services/mandate'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import CreateMandateDrawer from '.'
+import { armMandateModuleDefaults } from '@mandate/__mocks__'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-
-vi.mock('@mandate/services/mandate', () => ({
-  getMandateAvailability: vi.fn(),
-  createMandate: vi.fn(() => {
-    return Promise.resolve({
-      data: { id: 'e4ec92f2-a375-4574-dssdA' },
-    })
-  }),
-}))
+beforeEach(() => {
+  armMandateModuleDefaults()
+  vi.spyOn(AmplitudeService, 'track').mockImplementation(() => undefined)
+  vi.mocked(createMandate).mockImplementation(() => Promise.resolve({
+    data: { id: 'e4ec92f2-a375-4574-dssdA' },
+  }))
+})
 
 describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', () => {
@@ -98,7 +94,7 @@ describe('createMandateDrawer.vue', () => {
     await nextTick()
     await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
     expect(createMandate).toHaveBeenCalled()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Bank Mandate Creation Completed', {
+    expect(AmplitudeService.track).toHaveBeenCalledWith('Bank Mandate Creation Completed', {
       bank_mandate_creation_result: 'failed',
     })
   })

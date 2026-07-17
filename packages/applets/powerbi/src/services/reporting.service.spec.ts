@@ -1,4 +1,10 @@
 import { getMockedBIReports } from '@powerbi/__mocks__/bi-report.mocks'
+import {
+  apiGatewayDeleteMock,
+  apiGatewayGetMock,
+  apiGatewayPatchMock,
+  apiGatewayPostMock,
+} from '@pulse/common/mocks/vitest'
 import { API_PREFIXES, PAGE_SIZES } from '@pulse/common/constants'
 import { serializeParams } from '@pulse/toolbox/utils/http'
 import { ReportDeleteOption, ReportStatus } from '@powerbi/enums/bi-reports.enum'
@@ -31,28 +37,20 @@ const mockReportUploadInfo = {
   reportId: 6,
 }
 
-const mockPostBIReport = vi.hoisted(() => vi.fn())
-const mockPatchBIReport = vi.hoisted(() => vi.fn())
-const mockDeleteBIReport = vi.hoisted(() => vi.fn())
-const mockGetBIReport = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: {} })))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: mockGetBIReport,
-      post: mockPostBIReport,
-      patch: mockPatchBIReport,
-      delete: mockDeleteBIReport,
-    },
-  }),
-}))
+// '@pulse/common/api' is hubbed worker-wide (packages/@config/vitest.setup.hubs.ts):
+// the services converge on the shared api-gateway spies armed below.
 
 describe('BI Reporting Services', () => {
+  beforeEach(() => {
+    // The fetchXxx services destructure `data` from the gateway response.
+    apiGatewayGetMock.mockResolvedValue({ data: {} })
+  })
+
   describe('fetchBIReports()', () => {
     it('should fetch all BI reports for an account', async () => {
       await fetchBIReports(mockAccountId)
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/currentuser`, {
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/currentuser`, {
         params: { accountId: mockAccountId, reportTypeId: undefined },
       })
     })
@@ -60,7 +58,7 @@ describe('BI Reporting Services', () => {
     it('should fetch BI reports for an account with a report type', async () => {
       await fetchBIReports(mockAccountId, mockReportTypeId)
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports`, {
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports`, {
         params: { accountId: mockAccountId, reportTypeId: mockReportTypeId },
       })
     })
@@ -70,13 +68,13 @@ describe('BI Reporting Services', () => {
     it('should fetch all report accounts', async () => {
       await fetchReportAccounts('')
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/account`)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/account`)
     })
 
     it('should fetch report accounts with a search query', async () => {
       await fetchReportAccounts('currentUser?search=test')
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/account/currentUser?search=test`)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/account/currentUser?search=test`)
     })
   })
 
@@ -84,7 +82,7 @@ describe('BI Reporting Services', () => {
     it('should fetch all report errors', async () => {
       await fetchReportErrors()
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/report-errors`)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/report-errors`)
     })
   })
 
@@ -92,7 +90,7 @@ describe('BI Reporting Services', () => {
     it('should fetch report statistics', async () => {
       await fetchReportStatistics()
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/statistics`)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/statistics`)
     })
   })
 
@@ -102,7 +100,7 @@ describe('BI Reporting Services', () => {
 
       await fetchBIToken(embededReportId, accountId)
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(
         `${API_PREFIXES.REPORTING}/reports/${embededReportId}/embedToken?accountId=${accountId}`,
       )
     })
@@ -112,7 +110,7 @@ describe('BI Reporting Services', () => {
     it('should fetch all BI report types', async () => {
       await fetchBIReportTypes()
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reportType`)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reportType`)
     })
   })
 
@@ -121,7 +119,7 @@ describe('BI Reporting Services', () => {
       const accountId = 602
       await activateSmartOfferTrial(accountId)
 
-      expect(mockPatchBIReport).toHaveBeenCalledWith(
+      expect(apiGatewayPatchMock).toHaveBeenCalledWith(
         'account/api/activate-offer/currentuser',
         {},
         { params: { accountId } },
@@ -133,7 +131,7 @@ describe('BI Reporting Services', () => {
     it('should delete a BI report with the given data', async () => {
       await deleteBIReport(embedReportIdMock, ReportDeleteOption.ALL)
 
-      expect(mockDeleteBIReport).toHaveBeenCalledOnce()
+      expect(apiGatewayDeleteMock).toHaveBeenCalledOnce()
     })
   })
 
@@ -143,7 +141,7 @@ describe('BI Reporting Services', () => {
 
       await uploadBIreport(accountId, reportTypeId, reportFile, reportName, reportId)
 
-      expect(mockPostBIReport).toHaveBeenCalledOnce()
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
     })
   })
 
@@ -153,7 +151,7 @@ describe('BI Reporting Services', () => {
 
       await fetchAvailableReports(queryParams)
 
-      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/available`, {
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/available`, {
         params: queryParams,
         paramsSerializer: serializeParams,
       })
@@ -173,7 +171,7 @@ describe('BI Reporting Services', () => {
 
       await updateReportStatus(mockAccountId, mockReportId, ReportStatus.ONLINE)
 
-      expect(mockPatchBIReport).toHaveBeenCalledWith(
+      expect(apiGatewayPatchMock).toHaveBeenCalledWith(
         `${API_PREFIXES.REPORTING}/reports`,
         expectedPayload,
         expectedParams,

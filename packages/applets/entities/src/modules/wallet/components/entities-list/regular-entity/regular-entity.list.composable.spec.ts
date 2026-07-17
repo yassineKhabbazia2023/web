@@ -1,5 +1,5 @@
 import { withSetup } from '@pulse/toolbox/utils/test'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock, isMobileMockRef } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { ref } from 'vue'
 import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
@@ -11,24 +11,22 @@ import type { RegularWalletData } from '@entities/modules/wallet/types'
 import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regular-entity.list.types'
 import { RegularEntityAction } from './regular-entity.list.enums'
 
-const isMobileMock = { value: false }
+const isMobileMock = isMobileMockRef
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide', () => ({
-  useResponsive: () => ({ isMobile: isMobileMock }),
-}))
-vi.mock('@pulse/toolbox/utils/validator', () => ({
-  isNotNullNorEmpty: (value: unknown) => value !== null && value !== undefined && value !== '',
-}))
-vi.mock('@pulse/toolbox/utils/string', () => ({
-  containsIgnoreCase: (text: string | undefined, search: string) =>
-    text !== undefined && text !== null && text.toLowerCase().includes(search.toLowerCase()),
-}))
-vi.mock('@pulse/common/services/amplitude')
-vi.mock('@entities/managers/wallet-tracking/wallet-tracking.manager')
-vi.mock('./regular-entity.list.manager')
+// isMobileMockRef is a plain worker-shared ref: mockReset does not touch it, so
+// a test leaving it true would leak mobile mode to the next file (doctrine: shared-dom).
+afterEach(() => {
+  isMobileMock.value = false
+})
+
+beforeEach(() => {
+  isMobileMock.value = false
+  vi.spyOn(WalletTrackingManager, 'trackFavoriteRequest').mockImplementation(() => undefined)
+  vi.spyOn(WalletTrackingManager, 'trackColumnSortRequested').mockImplementation(() => undefined)
+  vi.spyOn(WalletTrackingManager, 'trackFolderMenuAction').mockImplementation(() => undefined)
+  vi.spyOn(WalletTrackingManager, 'trackWalletSearched').mockImplementation(() => undefined)
+  vi.spyOn(TrackingCenter, 'trackHomepageConsulted').mockImplementation(() => undefined)
+})
 
 const _userStore = getStoreMock(useUserStore)
 

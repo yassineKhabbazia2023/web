@@ -1,4 +1,3 @@
-import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
 import { manageClick } from './mouse'
 
 const dummyFunction = vi.fn()

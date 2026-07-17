@@ -6,12 +6,8 @@ import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
 import { useComplementaryDocuments } from './complementary-documents.composable'
 
-vi.mock('@entities/services/conformity-documents')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-const uploadConformityDocumentMock = vi.mocked(ConformityDocumentsService.uploadConformityDocument)
+const uploadConformityDocumentMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
 const emitMock = vi.fn()
 
@@ -27,6 +23,8 @@ const fileMock = new File(['content'], 'facture.pdf', { type: 'application/pdf' 
 describe('complementary-documents.composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(ConformityDocumentsService, 'uploadConformityDocument').mockImplementation(uploadConformityDocumentMock)
+    displayNotificationMock.mockImplementation(() => undefined)
     currentEntityStoreMock.currentEntityId = accountIdMock
   })
 

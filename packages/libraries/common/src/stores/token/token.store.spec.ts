@@ -4,32 +4,30 @@ import { localStorageServiceMock } from '@common/__mocks__/vitest'
 
 import { useTokenStore } from './token.store'
 
-const getTokenExpMock = vi.hoisted(() => vi.fn())
-const nowInSecondsMock = vi.hoisted(() => vi.fn())
-
-vi.mock('./token.store.utils', () => ({
-  getTokenExp: getTokenExpMock,
-  nowInSeconds: nowInSecondsMock,
-}))
-
-vi.mock('../../services/storage', () => ({
-  LocalStorageService: localStorageServiceMock,
-}))
-
+// No utils stub: tokenMock is a real JWT whose exp claim IS tokenExpMock, and
+// the time-dependent tests pin "now" with fake timers, so this spec never
+// depends on a mocked module instance (storage stays mocked by the setup).
 describe('test tokenStore', () => {
   let tokenStore: ReturnType<typeof useTokenStore>
 
   beforeEach(() => {
-    getTokenExpMock.mockReturnValue(tokenExpMock)
     setActivePinia(createPinia())
     tokenStore = useTokenStore()
   })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  function setNowInSeconds(seconds: number): void {
+    vi.useFakeTimers()
+    vi.setSystemTime(seconds * 1000)
+  }
 
   describe('setToken', () => {
     it('should set token properly when setToken() is called', () => {
       tokenStore.setToken(tokenMock)
 
-      expect(getTokenExpMock).toHaveBeenCalledExactlyOnceWith(tokenMock)
       expect(localStorageServiceMock.setToken).toHaveBeenCalledWith(tokenMock)
     })
 
@@ -47,7 +45,6 @@ describe('test tokenStore', () => {
       tokenStore.setToken(tokenMock)
 
       expect(localStorageServiceMock.setToken).not.toHaveBeenCalled()
-      expect(getTokenExpMock).toHaveBeenCalledExactlyOnceWith(tokenMock)
       expect(tokenStore.getToken()).toBe(tokenMock)
     })
   })
@@ -69,7 +66,6 @@ describe('test tokenStore', () => {
 
       expect(result).toBe(tokenMock)
       expect(localStorageServiceMock.getToken).toHaveBeenCalledOnce()
-      expect(getTokenExpMock).toHaveBeenCalledWith(tokenMock)
     })
 
     it('should return empty string when no token in storage', () => {
@@ -111,7 +107,7 @@ describe('test tokenStore', () => {
 
     it('should return true when token is not expired', () => {
       tokenStore.setToken(tokenMock)
-      nowInSecondsMock.mockReturnValue(tokenExpMock - 100) // 100 seconds before expiry
+      setNowInSeconds(tokenExpMock - 100) // 100 seconds before expiry
 
       const result = tokenStore.hasActiveToken()
 
@@ -120,7 +116,7 @@ describe('test tokenStore', () => {
 
     it('should return false when token is expired', () => {
       tokenStore.setToken(tokenMock)
-      nowInSecondsMock.mockReturnValue(tokenExpMock + 100) // 100 seconds after expiry
+      setNowInSeconds(tokenExpMock + 100) // 100 seconds after expiry
 
       const result = tokenStore.hasActiveToken()
 
@@ -137,7 +133,7 @@ describe('test tokenStore', () => {
 
     it('should return remaining minutes when token is not expired', () => {
       tokenStore.setToken(tokenMock)
-      nowInSecondsMock.mockReturnValue(tokenExpMock - 300) // 5 minutes before expiry
+      setNowInSeconds(tokenExpMock - 300) // 5 minutes before expiry
 
       const result = tokenStore.timeUntilExpirationInMinutes()
 
@@ -146,7 +142,7 @@ describe('test tokenStore', () => {
 
     it('should return 0 when token is expired', () => {
       tokenStore.setToken(tokenMock)
-      nowInSecondsMock.mockReturnValue(tokenExpMock + 60) // 1 minute after expiry
+      setNowInSeconds(tokenExpMock + 60) // 1 minute after expiry
 
       const result = tokenStore.timeUntilExpirationInMinutes()
 

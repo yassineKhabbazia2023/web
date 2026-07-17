@@ -4,14 +4,6 @@ import { BookingService } from '../services/booking.service'
 import type { AppointmentResponse } from '../types/booking.types'
 import { logger } from '@pulse/toolbox'
 
-vi.mock('../services/booking.service')
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-    warn: vi.fn(),
-  },
-}))
-
 const mockAppointments: AppointmentResponse[] = [
   {
     id: 1,
@@ -60,7 +52,7 @@ describe('useBookingAppointmentsStore', () => {
   describe('fetchUpcomingAppointments', () => {
     it('should fetch upcoming appointments successfully', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointments).mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getUpcomingAppointments').mockResolvedValue(mockAppointments)
 
       await store.fetchUpcomingAppointments()
 
@@ -71,7 +63,7 @@ describe('useBookingAppointmentsStore', () => {
 
     it('should fetch upcoming appointments with custom limit', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointments).mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getUpcomingAppointments').mockResolvedValue(mockAppointments)
 
       await store.fetchUpcomingAppointments(5)
 
@@ -82,7 +74,7 @@ describe('useBookingAppointmentsStore', () => {
     it('should handle fetch upcoming appointments error', async () => {
       const store = useBookingAppointmentsStore()
       const error = new Error('Network error')
-      vi.mocked(BookingService.getUpcomingAppointments).mockRejectedValue(error)
+      vi.spyOn(BookingService, 'getUpcomingAppointments').mockRejectedValue(error)
 
       await store.fetchUpcomingAppointments()
 
@@ -92,7 +84,7 @@ describe('useBookingAppointmentsStore', () => {
 
     it('should set loading state while fetching', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointments).mockImplementation(
+      vi.spyOn(BookingService, 'getUpcomingAppointments').mockImplementation(
         () => new Promise((resolve) => {
           expect(store.isLoadingUpcomingAppointments).toBe(true)
           setTimeout(() => resolve(mockAppointments), 10)
@@ -108,7 +100,7 @@ describe('useBookingAppointmentsStore', () => {
   describe('fetchPastAppointments', () => {
     it('should fetch past appointments successfully', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getPastAppointments).mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getPastAppointments').mockResolvedValue(mockAppointments)
 
       await store.fetchPastAppointments()
 
@@ -119,7 +111,7 @@ describe('useBookingAppointmentsStore', () => {
 
     it('should fetch past appointments with custom limit', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getPastAppointments).mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getPastAppointments').mockResolvedValue(mockAppointments)
 
       await store.fetchPastAppointments(10)
 
@@ -130,7 +122,7 @@ describe('useBookingAppointmentsStore', () => {
     it('should handle fetch past appointments error', async () => {
       const store = useBookingAppointmentsStore()
       const error = new Error('Network error')
-      vi.mocked(BookingService.getPastAppointments).mockRejectedValue(error)
+      vi.spyOn(BookingService, 'getPastAppointments').mockRejectedValue(error)
 
       await store.fetchPastAppointments()
 
@@ -140,7 +132,7 @@ describe('useBookingAppointmentsStore', () => {
 
     it('should set loading state while fetching', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getPastAppointments).mockImplementation(
+      vi.spyOn(BookingService, 'getPastAppointments').mockImplementation(
         () => new Promise((resolve) => {
           expect(store.isLoadingPastAppointments).toBe(true)
           setTimeout(() => resolve(mockAppointments), 10)
@@ -156,7 +148,7 @@ describe('useBookingAppointmentsStore', () => {
   describe('fetchUpcomingAppointmentsCount', () => {
     it('should fetch upcoming appointments count successfully', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointmentsCount).mockResolvedValue(5)
+      vi.spyOn(BookingService, 'getUpcomingAppointmentsCount').mockResolvedValue(5)
 
       await store.fetchUpcomingAppointmentsCount()
 
@@ -168,7 +160,7 @@ describe('useBookingAppointmentsStore', () => {
     it('should handle fetch count error', async () => {
       const store = useBookingAppointmentsStore()
       const error = new Error('Network error')
-      vi.mocked(BookingService.getUpcomingAppointmentsCount).mockRejectedValue(error)
+      vi.spyOn(BookingService, 'getUpcomingAppointmentsCount').mockRejectedValue(error)
 
       await store.fetchUpcomingAppointmentsCount()
 
@@ -186,7 +178,7 @@ describe('useBookingAppointmentsStore', () => {
 
     it('should return true when count is greater than 0', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointmentsCount).mockResolvedValue(3)
+      vi.spyOn(BookingService, 'getUpcomingAppointmentsCount').mockResolvedValue(3)
 
       await store.fetchUpcomingAppointmentsCount()
 
@@ -197,9 +189,9 @@ describe('useBookingAppointmentsStore', () => {
   describe('reset', () => {
     it('should reset all state to initial values', async () => {
       const store = useBookingAppointmentsStore()
-      vi.mocked(BookingService.getUpcomingAppointments).mockResolvedValue(mockAppointments)
-      vi.mocked(BookingService.getPastAppointments).mockResolvedValue(mockAppointments)
-      vi.mocked(BookingService.getUpcomingAppointmentsCount).mockResolvedValue(5)
+      vi.spyOn(BookingService, 'getUpcomingAppointments').mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getPastAppointments').mockResolvedValue(mockAppointments)
+      vi.spyOn(BookingService, 'getUpcomingAppointmentsCount').mockResolvedValue(5)
 
       await store.fetchUpcomingAppointments()
       await store.fetchPastAppointments()

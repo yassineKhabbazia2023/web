@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
 import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'

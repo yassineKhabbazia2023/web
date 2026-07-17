@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { vi } from 'vitest'
+
 import {
   trackOutsideClickMiniDrawer,
   killTrackOutsideClick,
@@ -17,6 +17,9 @@ describe('p-drawer.manager', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    // The handler registered on the shared window must not leak to the tests
+    // and files that run after this one.
+    killTrackOutsideClick('unique-drawer-id')
   })
 
   it('should add a click event listener when trackOutsideClickMiniDrawer is called', () => {

@@ -1,32 +1,21 @@
-import { loggerWarnSpy, loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerWarnSpy, loggerErrorSpy } from '@pulse/toolbox/mocks'
 import { SERVER_ZONE } from './constants'
+import * as amplitude from '@amplitude/analytics-browser'
 import { Identify } from '@amplitude/analytics-browser'
+import type { Types } from '@amplitude/analytics-browser'
 import { AmplitudeUserType, AmplitudeDeviceSize } from '../../enums/amplitude.enums'
 
 import { AmplitudeService } from './amplitude.service'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-const initSpy = vi.fn()
-const resetSpy = vi.fn()
-const trackSpy = vi.fn()
-const identifySpy = vi.fn()
-const setUserIdSpy = vi.fn()
-const addSpy = vi.fn()
-
-vi.mock('@amplitude/analytics-browser', async () => {
-  const actual = await vi.importActual('@amplitude/analytics-browser')
-  return {
-    ...(actual as object),
-    init: (apiKey: string, userId = undefined, options: object) =>
-      initSpy(apiKey, userId, options),
-    setUserId: (arg: string) => setUserIdSpy(arg),
-    track: (arg: string) => trackSpy(arg),
-    identify: (arg: string) => identifySpy(arg),
-    reset: () => resetSpy(),
-    add: (plugin: any) => addSpy(plugin),
-  }
-})
+// The SDK entry points are replaced worker-wide by the amplitude-sdk overrides
+// registered in vitest.setup.ts (doctrine: shared-hubs); this spec only arms
+// and asserts those shared spies.
+const initSpy = vi.mocked(amplitude.init)
+const resetSpy = vi.mocked(amplitude.reset)
+const trackSpy = vi.mocked(amplitude.track)
+const identifySpy = vi.mocked(amplitude.identify)
+const setUserIdSpy = vi.mocked(amplitude.setUserId)
+const addSpy = vi.mocked(amplitude.add)
 
 const FAKE_API_KEY = '42'
 const serverUrl = 'https://api.eu.amplitude.com/2/httpapi'
@@ -80,7 +69,7 @@ describe('amplitude', () => {
 
     AmplitudeService.track(CUSTOM_EVENT)
 
-    expect(trackSpy).toHaveBeenCalledExactlyOnceWith(CUSTOM_EVENT)
+    expect(trackSpy).toHaveBeenCalledExactlyOnceWith(CUSTOM_EVENT, undefined)
   })
 
   it('can set a user id', () => {
@@ -151,11 +140,11 @@ describe('amplitude', () => {
 
     AmplitudeService.init(FAKE_API_KEY)
 
-    const deviceSizePlugin = addSpy.mock.calls[1][0]
+    const deviceSizePlugin = addSpy.mock.calls[1][0] as Types.EnrichmentPlugin
     const testEvent = { event_type: 'test', event_properties: { existing: 'prop' } }
-    const enrichedEvent = await deviceSizePlugin.execute(testEvent)
+    const enrichedEvent = await deviceSizePlugin.execute!(testEvent)
 
-    expect(enrichedEvent.event_properties).toEqual({
+    expect(enrichedEvent!.event_properties).toEqual({
       existing: 'prop',
       device_size: AmplitudeDeviceSize.MOBILE,
     })
@@ -166,11 +155,11 @@ describe('amplitude', () => {
 
     AmplitudeService.init(FAKE_API_KEY)
 
-    const deviceSizePlugin = addSpy.mock.calls[1][0]
+    const deviceSizePlugin = addSpy.mock.calls[1][0] as Types.EnrichmentPlugin
     const testEvent = { event_type: 'test', event_properties: {} }
-    const enrichedEvent = await deviceSizePlugin.execute(testEvent)
+    const enrichedEvent = await deviceSizePlugin.execute!(testEvent)
 
-    expect(enrichedEvent.event_properties).toEqual({
+    expect(enrichedEvent!.event_properties).toEqual({
       device_size: AmplitudeDeviceSize.DESKTOP,
     })
   })

@@ -1,14 +1,12 @@
 import { flushPromises } from '@vue/test-utils'
+import type { MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { useOnboardingSteps } from './onboarding-steps.composable'
 import { OnboardingStep, OnboardingStepStatus } from './prospect-conformity.enums'
 import { PROSPECT_CONFORMITY_STEPS } from './prospect-conformity.consts'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/toolbox')
-
-const fetchOnboardingStepsMock = vi.mocked(ProspectsService.fetchOnboardingSteps)
+let fetchOnboardingStepsMock: MockInstance
 
 const accountIdMock = 1971
 
@@ -22,7 +20,7 @@ const stepsResponseMock = [
 
 describe('onboarding-steps.composable', () => {
   beforeEach(() => {
-    fetchOnboardingStepsMock.mockResolvedValue(stepsResponseMock)
+    fetchOnboardingStepsMock = vi.spyOn(ProspectsService, 'fetchOnboardingSteps').mockResolvedValue(stepsResponseMock)
   })
 
   describe('initial loading on mount', () => {

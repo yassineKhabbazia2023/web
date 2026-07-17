@@ -1,12 +1,10 @@
-import { it, expect, describe, beforeEach } from 'vitest'
 import {
-  commonApiGatewayGetSpy,
-  commonApiGatewayPostSpy,
-  commonApiGatewayDeleteSpy,
-  commonApiGatewayPatchSpy,
-} from '@ged/__mocks__/common.import.mocks'
+  apiGatewayGetMock,
+  apiGatewayPostMock,
+  apiGatewayDeleteMock,
+  apiGatewayPatchMock,
+} from '@pulse/common/mocks/vitest'
 import { accountId } from '@ged/__mocks__/files.mocks'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import type { Service } from '@ged/models/Service'
 import { API_PREFIXES } from '@pulse/common/constants'
 
@@ -19,19 +17,17 @@ import {
   downloadFolder,
 } from './Folder'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 const fetchedFolder = 'fetched'
 const patchedFolder = 'patched'
 
 describe('folder service', () => {
   beforeEach(() => {
-    commonApiGatewayGetSpy.mockResolvedValue({
+    apiGatewayGetMock.mockResolvedValue({
       data: {
         folders: fetchedFolder,
       },
     })
-    commonApiGatewayPatchSpy.mockResolvedValue({
+    apiGatewayPatchMock.mockResolvedValue({
       data: {
         folders: patchedFolder,
       },
@@ -47,7 +43,7 @@ describe('folder service', () => {
 
     await fetchServicesFolders(services, entityId, accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(2)
+    expect(apiGatewayGetMock).toHaveBeenCalledTimes(2)
   })
 
   it('should return array of services when fetchServicesFolder has error', async () => {
@@ -57,10 +53,10 @@ describe('folder service', () => {
     ] as Service[]
     const entityId = 'my-entity'
 
-    commonApiGatewayGetSpy.mockRejectedValue(services[0].ServiceId)
+    apiGatewayGetMock.mockRejectedValue(services[0].ServiceId)
     const data = await fetchServicesFolders(services, entityId, accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(2)
+    expect(apiGatewayGetMock).toHaveBeenCalledTimes(2)
     expect(data).toStrictEqual({
       foldersByService: [],
       unavailableServices: [services[0], services[1]],
@@ -76,7 +72,7 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
 
     const data = await fetchServiceFolders(service, entityId, accountId)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${entityId}/folders/currentuser`,
       {
         headers: {
@@ -96,15 +92,15 @@ describe('folder service', () => {
     const folderName = 'newFolderName'
     const createdFolder = 'new folder'
 
-    commonApiGatewayPostSpy.mockResolvedValue({
+    apiGatewayPostMock.mockResolvedValue({
       data: {
         folders: createdFolder,
       },
     })
 
     const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName, accountId)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/currentuser`,
       {
         name: 'newFolderName',
@@ -126,8 +122,8 @@ describe('folder service', () => {
     const folderName = 'newFolderName'
 
     const data = await RenameFolder(folderId, folderName, serviceId, accountId, entityId)
-    expect(commonApiGatewayPatchSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPatchSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPatchMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPatchMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/some-entity-id/some-service-id/folders/1/currentuser`,
       [{ op: 'replace', path: '/name', value: folderName }],
       {
@@ -145,8 +141,8 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
 
     await deleteFolder(serviceId, entityId, folderId, false, accountId)
-    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledWith(
+    expect(apiGatewayDeleteMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayDeleteMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/currentuser/${folderId}?keepFolder=false`,
       {
         headers: { 'Account-Id': accountId },
@@ -161,7 +157,7 @@ describe('folder service', () => {
 
     await downloadFolder(service.ServiceId, entityId, folderId, accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${entityId}/folders/${folderId}/archive`,
       {
         headers: { 'Account-Id': accountId },

@@ -2,25 +2,24 @@ import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
-import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import { nextTick } from 'vue'
 import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 
 import DocumentsUpload from '.'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
+import * as DocumentsService from '@ged/services/Documents'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@ged/services/Documents', () => ({
-  ...documentsServiceMock,
-  uploadDocument: vi.fn(() => {
+beforeEach(() => {
+  armGedServiceDefaults()
+  vi.mocked(DocumentsService.uploadDocument).mockImplementation(() => {
     throw new Error('something uncool')
-  }),
-}))
-
-vi.mock('@pulse/styleguide')
+  })
+})
 
 const createWrapper = (
   props: DocumentUploadProps = defaultProps,

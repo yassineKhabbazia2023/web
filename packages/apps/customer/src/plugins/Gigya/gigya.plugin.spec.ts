@@ -1,3 +1,5 @@
+import { envVarsMock } from '@pulse/common/mocks'
+import { stubStrategyRegistries } from '@pulse/common/mocks/vitest'
 import { LoginService } from '@pulse/common/services/login'
 import { LogoutService } from '@pulse/common/services/logout'
 import { TokenProviderService } from '@pulse/common/services/token-provider'
@@ -5,35 +7,36 @@ import { TokenProviderService } from '@pulse/common/services/token-provider'
 import gigyaPlugin from './gigya.plugin'
 import { GigyaLoginStrategy, GigyaLogoutStrategy, GigyaTokenStrategy } from './gigya.strategy'
 
-const envVarsMock = vi.hoisted(() => ({
-  VITE_GIGYA_KEY: 'test-gigya-key',
-  VITE_GIGYA_SSO_ACTIVATED: 'true',
-  VITE_TOKEN_EXPIRATION_BUFFER: '5',
-  VITE_API_GATEWAY: 'https://api.example.com/gateway',
-}))
-
-vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/common/services/login', () => ({
-  LoginService: { registerStrategy: vi.fn() },
-}))
-vi.mock('@pulse/common/services/logout', () => ({
-  LogoutService: { registerStrategy: vi.fn() },
-}))
-vi.mock('@pulse/common/services/token-provider', () => ({
-  TokenProviderService: { registerProviderStrategy: vi.fn() },
-}))
+const originalGigyaKey = envVarsMock.VITE_GIGYA_KEY
+const originalGigyaSsoActivated = envVarsMock.VITE_GIGYA_SSO_ACTIVATED
 
 const findGigyaScript = (dom: any) => {
   return dom.querySelector('script[src*="gigya.com"]')
 }
 
+// Only remove the scripts this spec is responsible for (the anchor mock
+// script and the gigya scripts injected by the plugin): wiping the whole
+// head would destroy worker-shared state (doctrine: shared-dom).
+const removeGigyaAndMockScripts = () => {
+  document.querySelectorAll('script[src*="gigya.com"], script[src="mock-script.js"]')
+    .forEach((script) => script.remove())
+}
+
 describe('Gigya Plugin', () => {
-  beforeEach(() => {
-    document.head.innerHTML = ''
+  beforeEach(async () => {
+    removeGigyaAndMockScripts()
 
     const mockScript = document.createElement('script')
     mockScript.src = 'mock-script.js'
     document.head.appendChild(mockScript)
+
+    await stubStrategyRegistries()
+  })
+
+  afterEach(() => {
+    removeGigyaAndMockScripts()
+    envVarsMock.VITE_GIGYA_KEY = originalGigyaKey
+    envVarsMock.VITE_GIGYA_SSO_ACTIVATED = originalGigyaSsoActivated
   })
 
   it('should install if feature flag is ON and Gigya key exists', () => {

@@ -7,15 +7,10 @@ import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import { SIGNED_MANDATE_FILE_NAME } from './payment.consts'
 import { usePayment } from './payment.composable'
 
-vi.mock('@entities/services/conformity-payment')
-vi.mock('@pulse/common/helpers')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-
-const getPaymentPreferenceMock = vi.mocked(ConformityPaymentService.getPaymentPreference)
-const setOtherPaymentPreferenceMock = vi.mocked(ConformityPaymentService.setOtherPaymentPreference)
-const resetPaymentPreferenceMock = vi.mocked(ConformityPaymentService.resetPaymentPreference)
-const downloadSignedMandateMock = vi.mocked(ConformityPaymentService.downloadSignedMandate)
+const getPaymentPreferenceMock = vi.fn()
+const setOtherPaymentPreferenceMock = vi.fn()
+const resetPaymentPreferenceMock = vi.fn()
+const downloadSignedMandateMock = vi.fn()
 const downloadFileMock = vi.mocked(downloadFile)
 const displayNotificationMock = vi.mocked(displayNotification)
 
@@ -31,8 +26,12 @@ const accountIdMock = 602
 
 describe('payment.composable', () => {
   beforeEach(() => {
-    // The download tests assert downloadFile was not called, so call history must be reset per test.
-    vi.clearAllMocks()
+    vi.spyOn(ConformityPaymentService, 'getPaymentPreference').mockImplementation(getPaymentPreferenceMock)
+    vi.spyOn(ConformityPaymentService, 'setOtherPaymentPreference').mockImplementation(setOtherPaymentPreferenceMock)
+    vi.spyOn(ConformityPaymentService, 'resetPaymentPreference').mockImplementation(resetPaymentPreferenceMock)
+    vi.spyOn(ConformityPaymentService, 'downloadSignedMandate').mockImplementation(downloadSignedMandateMock)
+    downloadFileMock.mockImplementation(() => undefined)
+    displayNotificationMock.mockImplementation(() => undefined)
     getPaymentPreferenceMock.mockResolvedValue({ paymentType: null })
     setOtherPaymentPreferenceMock.mockResolvedValue(undefined)
     resetPaymentPreferenceMock.mockResolvedValue(undefined)

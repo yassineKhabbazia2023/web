@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mocks'
 import { getDocumentsTableStructureMock } from '@ged/__mocks__/documents-table-structure.mocks'
 import { Document } from '@ged/models/Document'

@@ -13,7 +13,7 @@ export function useRequestDelegation({
   requestDelegationRef,
   isDelegationDrawerOpened,
 }: UseRequestDelegationParams) {
-  const { t } = useI18n({ useScope: 'parent' })
+  const { t } = useI18n()
 
   const isSubmitting = ref(false)
 

@@ -6,6 +6,7 @@ import {
   fetchCollaborators,
 } from '.'
 import { ContactType } from '@pulse/common/enums'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { mockCollabsData } from '@entities/__mocks__/collab-data.mocks'
@@ -14,26 +15,22 @@ const accountId = 5
 const mockedCollaborators = getMockedCollaborators()
 const mockedCollabRoles = getMockedCollabRoles()
 
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: vi.fn().mockImplementation((url) => {
-        if (url.startsWith(`${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`)) {
-          return Promise.resolve({ data: { items: mockCollabsData } })
-        }
-        if (url === `${API_PREFIXES.WALLET}/contacts`) {
-          return Promise.resolve({ data: { items: mockedCollaborators } })
-        }
-        if (url === `${API_PREFIXES.WALLET}/personas/Collaborator`) {
-          return Promise.resolve({ data: mockedCollabRoles })
-        }
-        if (url === `${API_PREFIXES.OFFER}/contacts`) {
-          return Promise.resolve({ data: { items: mockedCollaborators } })
-        }
-      }),
-    },
-  }),
-}))
+beforeEach(() => {
+  apiGatewayGetMock.mockImplementation((url: string) => {
+    if (url.startsWith(`${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`)) {
+      return Promise.resolve({ data: { items: mockCollabsData } })
+    }
+    if (url === `${API_PREFIXES.WALLET}/contacts`) {
+      return Promise.resolve({ data: { items: mockedCollaborators } })
+    }
+    if (url === `${API_PREFIXES.WALLET}/personas/Collaborator`) {
+      return Promise.resolve({ data: mockedCollabRoles })
+    }
+    if (url === `${API_PREFIXES.OFFER}/contacts`) {
+      return Promise.resolve({ data: { items: mockedCollaborators } })
+    }
+  })
+})
 
 describe('collaborator service', () => {
   describe('getCollaboratorsByIdEntity', () => {

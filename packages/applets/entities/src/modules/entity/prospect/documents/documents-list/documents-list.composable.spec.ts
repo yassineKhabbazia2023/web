@@ -9,9 +9,6 @@ import { getConformityDocumentMock } from '@entities/__mocks__'
 import { formatDateToLocale } from '@entities/helpers'
 import { useDocumentsList } from './documents-list.composable'
 
-vi.mock('@entities/services/conformity-documents')
-vi.mock('@pulse/common/helpers')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const setCurrentEntity = (accountId: number | undefined): void => {
@@ -22,7 +19,9 @@ const setCurrentEntity = (accountId: number | undefined): void => {
 
 describe('useDocumentsList', () => {
   beforeEach(() => {
-    vi.mocked(ConformityDocumentsService.getConformityDocuments).mockResolvedValue([])
+    vi.spyOn(ConformityDocumentsService, 'getConformityDocuments').mockResolvedValue([])
+    vi.spyOn(ConformityDocumentsService, 'getConformityDocumentContent').mockResolvedValue(undefined as unknown as Blob)
+    vi.mocked(downloadFile).mockImplementation(() => undefined)
   })
 
   it('should fetch documents on mount for the current entity', async () => {

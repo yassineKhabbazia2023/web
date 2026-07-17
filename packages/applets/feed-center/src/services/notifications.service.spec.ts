@@ -1,12 +1,6 @@
-import { apiGatewayMock, apiGatewayGetMock } from '@pulse/common/mocks/vitest'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import * as notificationsService from './notifications.service'
 const NOTIFICATION_API_PREFIX = 'feedcenter/api/notifications'
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: apiGatewayMock,
-  }),
-}))
 
 describe('notifications service', () => {
   beforeEach(() => {

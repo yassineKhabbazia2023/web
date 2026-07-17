@@ -15,6 +15,28 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const gitignorePath = path.resolve(__dirname, '.gitignore')
 
+// Isolate-safe doctrine, lintable laws (docs/guidelines/isolate-safe-tests.md).
+// Mock behaviors and component mounts must live inside hooks or tests:
+// module-level and describe-level code runs at collection time, before the
+// guardrails' mockReset, so anything armed there is wiped or captures the
+// previous file's stubs. The selectors below flag both placements.
+const SPEC_TOP_LEVEL_CONTEXTS = [
+  'Program',
+  "CallExpression[callee.name='describe'] > :function > BlockStatement",
+]
+const SPEC_STATEMENT_SHAPES = [
+  '> ExpressionStatement',
+  '> VariableDeclaration > VariableDeclarator',
+]
+const MOCK_ARMING_CALL =
+  'CallExpression[callee.property.name=/^mock(ReturnValue|ResolvedValue|RejectedValue|Implementation|ReturnThis)(Once)?$/]'
+const MOUNT_CALL = 'CallExpression[callee.name=/^(mount|shallowMount)$/]'
+
+const buildTopLevelSelector = (call) =>
+  SPEC_TOP_LEVEL_CONTEXTS
+    .flatMap((context) => SPEC_STATEMENT_SHAPES.map((shape) => `${context} ${shape} > ${call}`))
+    .join(', ')
+
 
 export default [
   includeIgnoreFile(gitignorePath),
@@ -123,6 +145,76 @@ export default [
       // shut off rules that conflict with our implementation of vitest
       'vitest/no-mocks-import': 'off',
       'vitest/no-conditional-expect': 'off',
+      // isolate-safe doctrine (docs/guidelines/isolate-safe-tests.md)
+      // doctrine guardrails + shared-dom: top-level setup code runs at
+      // collection time, before the per-test guards
+      // getStoreMock is a lazy proxy resolved against the current file's
+      // testing pinia — the doctrine explicitly allows it at module level
+      'vitest/require-hook': ['error', { allowedFunctionCalls: ['getStoreMock'] }],
+      'vitest/no-duplicate-hooks': 'error',
+      'vitest/prefer-hooks-on-top': 'error',
+      'vitest/prefer-vi-mocked': 'error',
+      // globals: true is set in the base config — importing describe/it/vi &
+      // co is redundant (type-only imports like MockInstance stay allowed)
+      'vitest/no-importing-vitest-globals': 'error',
+      'no-restricted-syntax': [
+        'error',
+        {
+          // doctrine shared-hubs: specs never declare module mocks. The only
+          // tolerated exception is an own-spec id-split (doctrine:
+          // contested-modules), carried by a nominative eslint-disable.
+          selector: "CallExpression[callee.object.name='vi'][callee.property.name=/^(mock|doMock|unmock|doUnmock)$/]",
+          message: 'doctrine shared-hubs: specs never declare module mocks — add the vi.mock one-liner to the project vitest.setup.ts (spy-wrapped) and arm behaviors per test with vi.mocked(...).',
+        },
+        {
+          selector: buildTopLevelSelector(MOCK_ARMING_CALL),
+          message: 'doctrine guardrails: arm mock behaviors in a beforeEach or in the test itself — module/describe level runs before the per-test mockReset, so this behavior would be wiped (or leak between files).',
+        },
+        {
+          selector: buildTopLevelSelector(MOUNT_CALL),
+          message: 'doctrine shared-dom: never mount at module/describe level — it captures the previous file\'s stubs. Mount in a beforeEach or in the test (auto-unmount is armed by the guards).',
+        },
+        {
+          selector: 'AssignmentExpression[left.object.name=/^(window|globalThis)$/]',
+          message: 'doctrine shared-dom: never assign shared globals directly — use vi.stubGlobal (restored automatically after each test).',
+        },
+        {
+          selector: "AssignmentExpression[left.object.object.name='document'][left.object.property.name='body']",
+          message: 'doctrine shared-dom: never overwrite the worker-shared document.body — remove only the DOM nodes the spec added.',
+        },
+      ],
+    },
+  },
+  {
+    // doctrine mock-barrel: files under the vitest mocks barrels are loaded
+    // from inside vi.mock factories — a module-level value import of
+    // application code can reach an id whose factory is currently pending and
+    // deadlock the worker. Lazy-import (await import) application code inside
+    // helper functions instead; type imports stay allowed.
+    files: [
+      'packages/libraries/common/src/__mocks__/*.ts',
+      'packages/libraries/common/src/__mocks__/vitest/**/*.ts',
+      'packages/libraries/toolbox/src/__mocks__/**/*.ts',
+      'packages/@config/vitest.hub-mocks.ts',
+    ],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@pulse/(?!common/mocks|toolbox/mocks)',
+              allowTypeImports: true,
+              message: 'doctrine mock-barrel: no module-level value import of application code in mock modules — lazy-import it (await import) inside the helper function.',
+            },
+            {
+              regex: '(^|/)(managers|stores|services|api|helpers)$',
+              allowTypeImports: true,
+              message: 'doctrine mock-barrel: importing an application barrel from a mock module can deadlock the worker — lazy-import the concrete module inside the helper function.',
+            },
+          ],
+        },
+      ],
     },
   },
   {

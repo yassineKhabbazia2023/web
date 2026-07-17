@@ -29,17 +29,23 @@ export function getMockedFolder(
   }
 }
 
+// `label` names each case for the it.each titles: the folderName case carries a
+// several-hundred-character value that would otherwise be dumped into the title.
 export function getMockedButtonTest(folderName: string) {
   return [{
+    label: 'a name holding a forbidden character',
     typedValue: 'Test Content*',
     isBtnDisabled: true,
   }, {
+    label: 'an empty name',
     typedValue: '',
     isBtnDisabled: true,
   }, {
+    label: 'a name exceeding the allowed length',
     typedValue: folderName,
     isBtnDisabled: true,
   }, {
+    label: 'a valid name',
     typedValue: 'New Folder',
     isBtnDisabled: false,
   }]

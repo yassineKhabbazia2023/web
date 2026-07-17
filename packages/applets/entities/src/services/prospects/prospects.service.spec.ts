@@ -1,4 +1,10 @@
 import { API_PREFIXES } from '@pulse/common/constants'
+import {
+  apiGatewayDeleteMock,
+  apiGatewayGetMock,
+  apiGatewayPostMock,
+  apiGatewayPutMock,
+} from '@pulse/common/mocks/vitest'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
 import {
   OnboardingStep,
@@ -19,23 +25,12 @@ import { ProspectEligibilityStatus } from '@entities/modules/wallet/enums'
 import { ProspectsService } from './prospects.service'
 import type { OnboardingStepResponse } from './prospects.types'
 
-const mocks = vi.hoisted(() => ({
-  get: vi.fn(),
-  post: vi.fn(),
-  put: vi.fn(),
-  delete: vi.fn(),
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    gateway: {
-      get: mocks.get,
-      post: mocks.post,
-      put: mocks.put,
-      delete: mocks.delete,
-    },
-  },
-}))
+const mocks = {
+  get: apiGatewayGetMock,
+  post: apiGatewayPostMock,
+  put: apiGatewayPutMock,
+  delete: apiGatewayDeleteMock,
+}
 
 const prospectId = 602
 const accountId = 1971

@@ -1,12 +1,10 @@
 import { getPaginationMock, getMockedUserInfo, getMockedEntities } from '@pulse/common/mocks'
 import {
   AmplitudeServiceMock,
-  CurrentEntityManagerMock,
-  hasPermissionMock,
-  CurrentUserManagerMock,
+  apiGatewayGetMock,
   getStoreMock,
-  featureFlagManagerMock,
-  isManageWalletMenuActivatedMock,
+  isMobileMockRef,
+  stubUseI18nWithIdentityT,
 } from '@pulse/common/mocks/vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
@@ -14,8 +12,17 @@ import { nextTick, reactive } from 'vue'
 import { getMockedMappedAccount, getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/__mocks__/deploy-utils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
-import { loggerMock } from '@pulse/toolbox/mocks'
-import { registryServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
+import type { MockInstance } from 'vitest'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
+import { armRegistryServiceMocks, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
+import { displayNotification } from '@pulse/styleguide'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import { fetchAccountSubscriptions } from '@entities/services/subscription'
+import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
+import { checkLastCollaboratorOnAccounts, removeCurrentUserFromAccounts } from '@entities/services/account'
+import { fetchWalletData } from './FoldersUtils'
 import type { AccountOperations } from '@entities/services/registry'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation, LastActivityPeriodInDays } from '@entities/enums'
@@ -35,86 +42,23 @@ const userStoreMock = getStoreMock(useUserStore)
 const mockedAccount = getMockedAccount()
 const totalPagesMock = 5
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-  FeatureFlagManager: featureFlagManagerMock,
-}))
-
-const displayNotificationMock = vi.hoisted(() => vi.fn())
-const isMobileMock = vi.hoisted(() => ({
-  value: false,
-  __v_isRef: true,
-}))
-vi.mock('@pulse/styleguide', () => ({
-  AvatarRoles: {
-    CLIENT: 'client',
-    COLLAB: 'collaborator',
-    PROSPECT: 'prospect',
-  },
-  displayNotification: displayNotificationMock,
-  getAvatarColorFromKey: () => 'persian',
-  useResponsive: () => ({ isMobile: isMobileMock }),
-}))
-
-vi.mock('@entities/services/registry', () => registryServiceMock)
-
-const putFavoriteMock = vi.hoisted(() => vi.fn())
-const getFavoritesMock = vi.hoisted(() => vi.fn())
+const displayNotificationMock = vi.mocked(displayNotification)
+// The hub wires useResponsive to the shared mock backed by this ref: driving it
+// is how the specs below switch between the desktop and mobile layouts.
+const isMobileMock = isMobileMockRef
 const accountOperationsListMock = getAccountOperationsListMock()
-
-vi.mock('@entities/services/registry', () => registryServiceMock)
 
 const mockedQueryResult = getMockedWalletQueryResult()
 
-const mockedGatewayGet = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/subscription', () => ({
-  fetchAccountSubscriptions: vi.fn(() => ([])),
-}))
+const mockedGatewayGet = apiGatewayGetMock
 
-const fetchFavoriteEntitiesMock = vi.hoisted(() => vi.fn())
-const fetchAccountContactsMock = vi.hoisted(() => vi.fn(() => ({
-  items: [],
-})))
-const manageFavoriteEntitiesMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@entities/services/wallet', () => ({
-  fetchFavoriteEntities: fetchFavoriteEntitiesMock,
-  fetchAccountContacts: fetchAccountContactsMock,
-  manageFavoriteEntities: manageFavoriteEntitiesMock,
-}))
-
-const checkLastCollaboratorOnAccountsMock = vi.hoisted(() => vi.fn())
-const removeCurrentUserFromAccountsMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@entities/services/account', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@entities/services/account')>()
-
-  return {
-    ...actual,
-    checkLastCollaboratorOnAccounts: checkLastCollaboratorOnAccountsMock,
-    removeCurrentUserFromAccounts: removeCurrentUserFromAccountsMock,
-  }
-})
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    wallet: {
-      put: putFavoriteMock,
-      get: () => getFavoritesMock(),
-    },
-    gateway: {
-      get: mockedGatewayGet,
-    },
-  }),
-}))
-
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
+const fetchFavoriteEntitiesMock = vi.mocked(fetchFavoriteEntities)
+const manageFavoriteEntitiesMock = vi.mocked(manageFavoriteEntities)
+const checkLastCollaboratorOnAccountsMock = vi.mocked(checkLastCollaboratorOnAccounts)
+const removeCurrentUserFromAccountsMock = vi.mocked(removeCurrentUserFromAccounts)
 
 const mockRouterPush = vi.fn()
 const mockRouterReplace = vi.fn()
-const onBeforeRouteUpdateMock = vi.hoisted(() => vi.fn())
 
 interface RouterMockData {
   name: string,
@@ -129,27 +73,25 @@ const routeMockData: RouterMockData = reactive({
   },
 })
 
-vi.mock('vue-router', async () => {
-  return {
-    useRouter: () => ({
-      push: mockRouterPush,
-      replace: mockRouterReplace,
-    }),
-    useRoute: () => (routeMockData),
-    onBeforeRouteUpdate: onBeforeRouteUpdateMock,
-  }
+const mockFetchWalletData = vi.mocked(fetchWalletData)
+
+let hasPermissionMock: MockInstance
+const isManageWalletMenuActivatedMock = vi.fn()
+
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.spyOn(FeatureFlagManager, 'isManageWalletMenuActivated').mockImplementation(isManageWalletMenuActivatedMock)
+  armRegistryServiceMocks()
+  vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
+  fetchFavoriteEntitiesMock.mockResolvedValue([])
+  manageFavoriteEntitiesMock.mockResolvedValue(undefined)
+  vi.mocked(onBeforeRouteUpdate).mockImplementation(() => undefined)
+  vi.mocked(useRouter).mockReturnValue({
+    push: mockRouterPush,
+    replace: mockRouterReplace,
+  } as unknown as Router)
+  vi.mocked(useRoute).mockImplementation(() => routeMockData as unknown as RouteLocationNormalizedLoaded)
 })
-
-const mockFetchWalletData = vi.hoisted(() => vi.fn())
-vi.mock('./FoldersUtils', async () => ({
-  fetchWalletData: mockFetchWalletData,
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentEntityManager: CurrentEntityManagerMock,
-  CurrentUserManager: CurrentUserManagerMock,
-  FeatureFlagManager: featureFlagManagerMock,
-}))
 
 const createWrapper = (): ComponentWrapper<InstanceType<typeof Folders>> =>
   shallowMount(Folders, {
@@ -497,7 +439,7 @@ describe('deploy', () => {
     expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({
       accountIds: [targetedFolder.accountId],
     })
-    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'You removed yourself from the selected folder.')
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'removeFromFoldersSuccessSingle')
   })
 
   it('displays the remaining collaborator modal and sends all selected folders for removal', async () => {
@@ -572,6 +514,7 @@ describe('deploy', () => {
   })
 
   it('removes current user from selected folders and displays a success notification', async () => {
+    const { t: translateSpy } = stubUseI18nWithIdentityT()
     const wrapper = createWrapper()
     await flushPromises()
     const selectedFolderIds = mockedQueryResult.items
@@ -596,7 +539,8 @@ describe('deploy', () => {
     await flushPromises()
 
     expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({ accountIds: selectedFolderIds })
-    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'You removed yourself from the 2 selected folders.')
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'removeFromFoldersSuccessMultiple')
+    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSuccessMultiple', { count: 2 })
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(0)
   })
@@ -614,6 +558,7 @@ describe('deploy', () => {
       items: walletItems,
       totalItems: 3,
     })
+    const { t: translateSpy } = stubUseI18nWithIdentityT()
     const wrapper = createWrapper()
     await flushPromises()
     const selectedFolderIds = walletItems
@@ -643,8 +588,17 @@ describe('deploy', () => {
 
     expect(displayNotificationMock).toHaveBeenCalledWith(
       'warning',
-      'You removed yourself from 1 folder out of 3. The remaining folders could not be processed, please try again.',
+      'removeFromFoldersPartialSuccess',
     )
+    // The identity `t` returns the raw key, so nested translations surface as keys:
+    // this pins both the interpolated counts and the singular/plural key choices.
+    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersPartialSuccess', {
+      succeededCount: 1,
+      selectedCount: 3,
+      succeededFolderLabel: 'removeFromFoldersSucceededFolderLabel',
+      remainingFoldersFailureMessage: 'removeFromFoldersRemainingFailureMultiple',
+    })
+    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSucceededFolderLabel', 1)
   })
 
   it('displays a warning notification when one folder remains unprocessed', async () => {
@@ -660,6 +614,7 @@ describe('deploy', () => {
       items: walletItems,
       totalItems: 3,
     })
+    const { t: translateSpy } = stubUseI18nWithIdentityT()
     const wrapper = createWrapper()
     await flushPromises()
     const selectedFolderIds = walletItems
@@ -689,8 +644,15 @@ describe('deploy', () => {
 
     expect(displayNotificationMock).toHaveBeenCalledWith(
       'warning',
-      'You removed yourself from 2 folders out of 3. The remaining folder could not be processed, please try again.',
+      'removeFromFoldersPartialSuccess',
     )
+    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersPartialSuccess', {
+      succeededCount: 2,
+      selectedCount: 3,
+      succeededFolderLabel: 'removeFromFoldersSucceededFolderLabel',
+      remainingFoldersFailureMessage: 'removeFromFoldersRemainingFailureSingle',
+    })
+    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSucceededFolderLabel', 2)
   })
 
   it('opens the entity creator drawer for the create test account action', async () => {
@@ -712,8 +674,8 @@ describe('deploy', () => {
       await flushPromises()
 
       expect(wrapper.findComponent(ManageWalletButton).exists()).toBe(false)
-      expect(wrapper.text()).toContain('My delegations')
-      expect(wrapper.text()).toContain('Create a test account')
+      expect(wrapper.text()).toContain('delegation')
+      expect(wrapper.text()).toContain('createTestAccount')
     })
 
     it('opens the delegation drawer when the legacy delegation button is clicked', async () => {
@@ -724,7 +686,7 @@ describe('deploy', () => {
 
       const delegationButton = wrapper
         .findAllComponents({ name: 'PButton' })
-        .find((button) => button.text().includes('My delegations'))
+        .find((button) => button.text().includes('delegation'))
       delegationButton?.vm.$emit('click')
       await nextTick()
 
@@ -1300,7 +1262,7 @@ describe('deploy', () => {
 
       // Assert: Button exists and triggers correct fetch
       expect(clearAllButton.exists()).toBe(true)
-      expect(clearAllButton.text().trim()).toBe('Clear all')
+      expect(clearAllButton.text().trim()).toBe('clearAll')
 
       // Call count explanation:
       // 1 - onMounted → fetchAccountList()

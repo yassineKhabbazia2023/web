@@ -1,17 +1,8 @@
-import { vi, describe, it, expect } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/vitest'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { apiGatewayPostMock } from '../__mocks__/vitest'
 import { refreshClientToken, createNewPassword, updatePassword, login, logoutUser } from './authentication.service'
 
 import type { CreateNewPasswordPayload, UpdatePasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
-
-vi.mock('../api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('test authentication.service', () => {
   describe('refreshClientToken', () => {

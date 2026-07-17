@@ -1,13 +1,16 @@
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+
 import { mockUser } from '@entities/__mocks__/users-client.mocks'
+import { getContactById, patchContact } from '@entities/services/contact'
 import DrawerUserDetails from './drawer-user-details.vue'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
 
-vi.mock('@entities/services/contact', () => ({
-  getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
-  patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
-}))
+beforeEach(() => {
+  vi.mocked(getContactById).mockResolvedValue(mockUser)
+  vi.mocked(patchContact).mockImplementation(
+    (_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact as unknown as Contact),
+  )
+})
 
 const mockEntityId = 42
 

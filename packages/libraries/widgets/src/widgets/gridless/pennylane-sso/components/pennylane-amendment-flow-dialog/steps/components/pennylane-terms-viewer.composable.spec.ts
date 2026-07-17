@@ -1,7 +1,8 @@
 import { nextTick } from 'vue'
 import { flushPromises } from '@vue/test-utils'
+import type { MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
@@ -9,17 +10,17 @@ import { MOBILE_SCALE } from './pennylane-terms-viewer.consts'
 import { getIsMobile } from '@pulse/styleguide'
 import { downloadTermsPdf } from '../../pennylane-terms.helper'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/services/pennylane')
-vi.mock('pdfjs-dist', () => ({ getDocument: vi.fn() }))
-vi.mock('@pulse/toolbox/utils/pdf-worker', () => ({ configurePdfWorker: vi.fn() }))
-vi.mock('./pennylane-terms-viewer.manager')
-vi.mock('@pulse/styleguide', () => ({
-  getIsMobile: vi.fn().mockReturnValue(false),
-}))
-vi.mock('../../pennylane-terms.helper', () => ({
-  downloadTermsPdf: vi.fn(),
-}))
+let getTermsContentMock: MockInstance
+let loadPdfDocumentMock: MockInstance
+let getAllPagesMock: MockInstance
+let calculateOptimalScaleMock: MockInstance
+let renderPageToCanvasMock: MockInstance
+let formatZoomPercentageMock: MockInstance
+let isScrolledToBottomMock: MockInstance
+
+// getIsMobile is swapped for the shared spy by the '@pulse/styleguide' hub and
+// downloadTermsPdf is spy-wrapped (real by default) in vitest.setup.ts: both
+// are armed per test via vi.mocked(...) (doctrine: shared-hubs).
 
 async function waitForPdfLoad() {
   await flushPromises()
@@ -39,15 +40,19 @@ describe('usePennylaneTermsViewer', () => {
   ]
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(PennylaneService.getTermsContent).mockResolvedValue(mockPdfData)
-    vi.mocked(PennylaneTermsViewerManager.loadPdfDocument).mockResolvedValue(mockPdfDocument as any)
-    vi.mocked(PennylaneTermsViewerManager.getAllPages).mockResolvedValue(mockPages as any)
-    vi.mocked(PennylaneTermsViewerManager.calculateOptimalScale).mockReturnValue(1.2)
-    vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockReturnValue({
+    vi.mocked(getIsMobile).mockReturnValue(false)
+    getTermsContentMock = vi.spyOn(PennylaneService, 'getTermsContent').mockResolvedValue(mockPdfData)
+    loadPdfDocumentMock = vi.spyOn(PennylaneTermsViewerManager, 'loadPdfDocument').mockResolvedValue(mockPdfDocument as any)
+    getAllPagesMock = vi.spyOn(PennylaneTermsViewerManager, 'getAllPages').mockResolvedValue(mockPages as any)
+    calculateOptimalScaleMock = vi.spyOn(PennylaneTermsViewerManager, 'calculateOptimalScale').mockReturnValue(1.2)
+    renderPageToCanvasMock = vi.spyOn(PennylaneTermsViewerManager, 'renderPageToCanvas').mockReturnValue({
       promise: Promise.resolve(),
       cancel: vi.fn(),
     } as any)
+    // Pure formatting/predicate helpers: spied real-by-default so the tests that
+    // need a specific value can arm them without freezing a module mock.
+    formatZoomPercentageMock = vi.spyOn(PennylaneTermsViewerManager, 'formatZoomPercentage')
+    isScrolledToBottomMock = vi.spyOn(PennylaneTermsViewerManager, 'isScrolledToBottom')
   })
 
   it('should load PDF on mount', async () => {
@@ -59,9 +64,9 @@ describe('usePennylaneTermsViewer', () => {
 
     await waitForPdfLoad()
 
-    expect(PennylaneService.getTermsContent).toHaveBeenCalled()
-    expect(PennylaneTermsViewerManager.loadPdfDocument).toHaveBeenCalledWith(mockPdfData)
-    expect(PennylaneTermsViewerManager.getAllPages).toHaveBeenCalledWith(mockPdfDocument)
+    expect(getTermsContentMock).toHaveBeenCalled()
+    expect(loadPdfDocumentMock).toHaveBeenCalledWith(mockPdfData)
+    expect(getAllPagesMock).toHaveBeenCalledWith(mockPdfDocument)
     expect(result.numPages.value).toBe(2)
     expect(result.isLoading.value).toBe(false)
 
@@ -71,7 +76,7 @@ describe('usePennylaneTermsViewer', () => {
   it('should set error when PDF loading fails', async () => {
     const emit = vi.fn()
 
-    vi.mocked(PennylaneService.getTermsContent).mockRejectedValueOnce(new Error('Network error'))
+    getTermsContentMock.mockRejectedValueOnce(new Error('Network error'))
 
     const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
@@ -147,7 +152,7 @@ describe('usePennylaneTermsViewer', () => {
       const mockCanvas = document.createElement('canvas')
       result.setCanvasRef(mockCanvas, 0)
 
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).toHaveBeenCalled()
+      expect(renderPageToCanvasMock).toHaveBeenCalled()
 
       app.unmount()
     })
@@ -159,13 +164,13 @@ describe('usePennylaneTermsViewer', () => {
 
       await waitForPdfLoad()
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       const mockCanvas = document.createElement('canvas')
       result.setCanvasRef(mockCanvas, 0)
       result.setCanvasRef(mockCanvas, 0)
 
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).toHaveBeenCalledTimes(1)
+      expect(renderPageToCanvasMock).toHaveBeenCalledTimes(1)
 
       app.unmount()
     })
@@ -177,11 +182,11 @@ describe('usePennylaneTermsViewer', () => {
 
       await waitForPdfLoad()
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       result.setCanvasRef(null, 0)
 
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).not.toHaveBeenCalled()
+      expect(renderPageToCanvasMock).not.toHaveBeenCalled()
 
       app.unmount()
     })
@@ -212,7 +217,7 @@ describe('usePennylaneTermsViewer', () => {
       const rejectedPromise = Promise.reject(renderError)
       rejectedPromise.catch(() => {})
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockReturnValue({
+      renderPageToCanvasMock.mockReturnValue({
         promise: rejectedPromise,
         cancel: vi.fn(),
       } as any)
@@ -239,7 +244,7 @@ describe('usePennylaneTermsViewer', () => {
       const rejectedPromise = Promise.reject(cancelError)
       rejectedPromise.catch(() => {})
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockReturnValue({
+      renderPageToCanvasMock.mockReturnValue({
         promise: rejectedPromise,
         cancel: vi.fn(),
       } as any)
@@ -301,7 +306,7 @@ describe('usePennylaneTermsViewer', () => {
     it('should display correct zoom percentage', async () => {
       const emit = vi.fn()
 
-      vi.mocked(PennylaneTermsViewerManager.formatZoomPercentage).mockReturnValue('100%')
+      formatZoomPercentageMock.mockReturnValue('100%')
 
       const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
@@ -320,11 +325,11 @@ describe('usePennylaneTermsViewer', () => {
       const mockCanvas = document.createElement('canvas')
       result.setCanvasRef(mockCanvas, 0)
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       result.zoomIn()
 
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).toHaveBeenCalled()
+      expect(renderPageToCanvasMock).toHaveBeenCalled()
 
       app.unmount()
     })
@@ -339,11 +344,11 @@ describe('usePennylaneTermsViewer', () => {
       const mockCanvas = document.createElement('canvas')
       result.setCanvasRef(mockCanvas, 0)
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       result.zoomOut()
 
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).toHaveBeenCalled()
+      expect(renderPageToCanvasMock).toHaveBeenCalled()
 
       app.unmount()
     })
@@ -360,7 +365,7 @@ describe('usePennylaneTermsViewer', () => {
         result.zoomIn()
       }
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       result.zoomIn()
 
@@ -381,7 +386,7 @@ describe('usePennylaneTermsViewer', () => {
         result.zoomOut()
       }
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockClear()
+      renderPageToCanvasMock.mockClear()
 
       result.zoomOut()
 
@@ -405,7 +410,7 @@ describe('usePennylaneTermsViewer', () => {
       result.setCanvasRef(mockCanvas, 0)
 
       expect(getIsMobile).toHaveBeenCalled()
-      expect(PennylaneTermsViewerManager.renderPageToCanvas).toHaveBeenCalledWith(
+      expect(renderPageToCanvasMock).toHaveBeenCalledWith(
         expect.anything(),
         expect.anything(),
         MOBILE_SCALE,
@@ -422,7 +427,7 @@ describe('usePennylaneTermsViewer', () => {
       const emit = vi.fn()
       const cancelMock = vi.fn()
 
-      vi.mocked(PennylaneTermsViewerManager.renderPageToCanvas).mockReturnValue({
+      renderPageToCanvasMock.mockReturnValue({
         promise: new Promise(() => {}),
         cancel: cancelMock,
       } as any)
@@ -446,7 +451,7 @@ describe('usePennylaneTermsViewer', () => {
     it('should update isAtBottom when scrolled to bottom', async () => {
       const emit = vi.fn()
 
-      vi.mocked(PennylaneTermsViewerManager.isScrolledToBottom).mockReturnValue(true)
+      isScrolledToBottomMock.mockReturnValue(true)
 
       const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
@@ -460,7 +465,7 @@ describe('usePennylaneTermsViewer', () => {
     it('should initialize isAtBottom as false', async () => {
       const emit = vi.fn()
 
-      vi.mocked(PennylaneTermsViewerManager.isScrolledToBottom).mockReturnValue(false)
+      isScrolledToBottomMock.mockReturnValue(false)
 
       const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
@@ -476,13 +481,13 @@ describe('usePennylaneTermsViewer', () => {
     it('should not calculate scale when no pages are loaded', async () => {
       const emit = vi.fn()
 
-      vi.mocked(PennylaneTermsViewerManager.getAllPages).mockResolvedValueOnce([])
+      getAllPagesMock.mockResolvedValueOnce([])
 
       const [_result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
-      expect(PennylaneTermsViewerManager.calculateOptimalScale).not.toHaveBeenCalled()
+      expect(calculateOptimalScaleMock).not.toHaveBeenCalled()
 
       app.unmount()
     })

@@ -1,21 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { createI18n } from 'vue-i18n'
 import { PCollapse } from '@pulse/styleguide/components'
 import CollapsableFoldersList from '.'
 
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
-
 const createWrapper = (): VueWrapper => {
-  return mount(CollapsableFoldersList, {
-    global: {
-      provide: {
-        i18n,
-      },
-    },
-  })
+  return mount(CollapsableFoldersList)
 }
 
 let wrapper: VueWrapper

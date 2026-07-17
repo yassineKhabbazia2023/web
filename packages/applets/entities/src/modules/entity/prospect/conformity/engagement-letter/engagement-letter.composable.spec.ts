@@ -6,14 +6,7 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useEngagementLetter } from './engagement-letter.composable'
 import { ENGAGEMENT_LETTER_MAX_FILE_SIZE_BYTES } from './engagement-letter.consts'
-
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/common/helpers')
+import { armConformityDocumentMocks } from '@entities/__mocks__/vitest'
 
 const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
@@ -41,6 +34,9 @@ const buildPdfFile = (sizeInBytes?: number): File => {
 
 describe('useEngagementLetter', () => {
   beforeEach(() => {
+    armConformityDocumentMocks()
+    vi.spyOn(ProspectsService, 'downloadEngagementLetter').mockResolvedValue(undefined as unknown as Blob)
+    vi.spyOn(ProspectsService, 'uploadEngagementLetter').mockResolvedValue(undefined)
     setEntityId(entityId)
   })
 
@@ -89,7 +85,7 @@ describe('useEngagementLetter', () => {
 
   describe('openEngagementLetterDocument', () => {
     it('should open the document in a new tab for the current prospect', async () => {
-      openDocumentInNewTabMock.mockResolvedValueOnce(true)
+      openDocumentInNewTabMock.mockResolvedValue(true)
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()
@@ -113,7 +109,7 @@ describe('useEngagementLetter', () => {
     })
 
     it('should display an error notification when the browser blocks the popup', async () => {
-      openDocumentInNewTabMock.mockResolvedValueOnce(false)
+      openDocumentInNewTabMock.mockResolvedValue(false)
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()
@@ -123,7 +119,7 @@ describe('useEngagementLetter', () => {
     })
 
     it('should display an error notification when the download fails', async () => {
-      openDocumentInNewTabMock.mockRejectedValueOnce(new Error('network error'))
+      openDocumentInNewTabMock.mockRejectedValue(new Error('network error'))
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()

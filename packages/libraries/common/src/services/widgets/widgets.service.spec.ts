@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest'
 import { WidgetName } from '@pulse/widgets/enums'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
@@ -5,11 +6,16 @@ import { ReportingManager } from '@pulse/common/managers'
 
 import { WidgetsService } from './widgets.service'
 
-vi.mock('@pulse/common/managers')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
+let canShowSmartOfferWidgetMock: MockInstance
+
 describe('WidgetsService', () => {
+  beforeEach(() => {
+    // Called on every path: the smart offer takes precedence over the pennylane one.
+    canShowSmartOfferWidgetMock = vi.spyOn(ReportingManager, 'canShowSmartOfferWidget').mockReturnValue(false)
+  })
+
   describe('getHomeWidgetNames', () => {
     describe('desktop (isMobile = false)', () => {
       it.each([
@@ -95,7 +101,7 @@ describe('WidgetsService', () => {
         expectedWidgets,
       }) => {
         currentEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
-        vi.mocked(ReportingManager.canShowSmartOfferWidget).mockReturnValue(canShowSmartOffer)
+        canShowSmartOfferWidgetMock.mockReturnValue(canShowSmartOffer)
 
         const homeWidgetNames = WidgetsService.getHomeWidgetNames(true)
 
@@ -104,7 +110,7 @@ describe('WidgetsService', () => {
 
       it('should maintain the correct order of mobile widgets', () => {
         currentEntityStoreMock.hasOffer.mockReturnValue(true)
-        vi.mocked(ReportingManager.canShowSmartOfferWidget).mockReturnValue(false)
+        canShowSmartOfferWidgetMock.mockReturnValue(false)
 
         const homeWidgetNames = WidgetsService.getHomeWidgetNames(true)
 

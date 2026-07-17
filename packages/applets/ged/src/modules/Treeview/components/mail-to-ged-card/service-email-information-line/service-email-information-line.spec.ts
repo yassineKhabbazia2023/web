@@ -1,24 +1,25 @@
-import { vi, describe } from 'vitest'
 import { copyServiceEmailToClipboard } from './service-email-information-line.manager'
 import { PNotification } from '@pulse/styleguide'
 
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: vi.fn(),
-}))
-
-const mockClipboardWriteText = vi.hoisted(() => vi.fn())
-
+const mockClipboardWriteText = vi.fn()
 
 describe('service email information line', () => {
   beforeEach(() => {
-    // Mock global navigator.clipboard
+    // jsdom has no clipboard: define it on the worker-shared navigator for
+    // this file only (configurable so the afterAll below can remove it).
     Object.defineProperty(global.navigator, 'clipboard', {
       value: {
         writeText: mockClipboardWriteText,
       },
       writable: true,
+      configurable: true,
     })
+  })
 
+  afterAll(() => {
+    // Remove the property this spec defined on the worker-shared navigator
+    // (doctrine: shared-dom).
+    delete (global.navigator as { clipboard?: Clipboard }).clipboard
   })
 
   it('should copy the given email to clipboard and display a copy success notification', async () => {

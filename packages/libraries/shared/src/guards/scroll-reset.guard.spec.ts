@@ -34,21 +34,33 @@ describe('resetScrollPosition', () => {
 })
 
 describe('scrollResetGuard', () => {
+  // doctrine shared-dom: the body is worker-shared — track the nodes this spec
+  // adds and remove only those, never wipe document.body
+  const appendedContainers: HTMLElement[] = []
+
+  const appendScrollContainer = (className: string): HTMLDivElement => {
+    const container = document.createElement('div')
+    container.className = className
+    Object.defineProperty(container, 'scrollTop', { value: 100, writable: true, configurable: true })
+    document.body.appendChild(container)
+    appendedContainers.push(container)
+    return container
+  }
+
   beforeEach(() => {
     vi.useFakeTimers()
-    document.body.innerHTML = ''
   })
 
   afterEach(() => {
     vi.useRealTimers()
-    document.body.innerHTML = ''
+    for (const container of appendedContainers) {
+      container.remove()
+    }
+    appendedContainers.length = 0
   })
 
   it('should reset scroll with desktop container', () => {
-    const container = document.createElement('div')
-    container.className = 'main-container'
-    Object.defineProperty(container, 'scrollTop', { value: 100, writable: true, configurable: true })
-    document.body.appendChild(container)
+    const container = appendScrollContainer('main-container')
 
     scrollResetGuard(createMockRoute(), createMockRoute())
     vi.runAllTimers()
@@ -57,10 +69,7 @@ describe('scrollResetGuard', () => {
   })
 
   it('should reset scroll with mobile container', () => {
-    const container = document.createElement('div')
-    container.className = 'mobile-home-layout__main'
-    Object.defineProperty(container, 'scrollTop', { value: 100, writable: true, configurable: true })
-    document.body.appendChild(container)
+    const container = appendScrollContainer('mobile-home-layout__main')
 
     scrollResetGuard(createMockRoute(), createMockRoute())
     vi.runAllTimers()

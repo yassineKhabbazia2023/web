@@ -1,19 +1,12 @@
 import { nextTick } from 'vue'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-import { displayNotification as displayNotificationMock } from '@pulse/styleguide'
+import { displayNotification } from '@pulse/styleguide'
 import { delegateAccounts } from '@entities/services/account'
 
 import DelegationDrawer from '.'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@entities/services/account')
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
+const displayNotificationMock = vi.mocked(displayNotification)
 
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 const FIRST_SELECTED_FOLDER = {
@@ -46,8 +39,6 @@ const defaultProps: DelegationDrawerProps = {
   numberOfFoldersInPortfolio: 20,
 }
 
-vi.mock('@pulse/styleguide')
-
 const createWrapper = (
   props: DelegationDrawerProps = defaultProps,
 ) => {
@@ -71,8 +62,9 @@ const createFullDelegationWrapper = () => createWrapper({
 })
 
 describe('delegationDrawer', () => {
-  afterEach(() => {
-    document.body.outerHTML = ''
+  beforeEach(() => {
+    displayNotificationMock.mockImplementation(() => undefined)
+    delegateAccountsMock.mockResolvedValue(undefined as unknown as Awaited<ReturnType<typeof delegateAccounts>>)
   })
 
   describe('rendering', () => {

@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest'
 import type { AccessibleMenuItem } from '@entities/types'
 import { filterAccessibleMenuItems } from '.'
 
@@ -19,11 +18,6 @@ const mockedMenuItems: AccessibleMenuItem[] = [
     display: true,
   },
 ]
-const PNotificationMocked = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: PNotificationMocked,
-}))
-
 // Expectations
 const expectedAccessibleMenuItems = {
   pIconName: 'folder',

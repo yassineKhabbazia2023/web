@@ -1,8 +1,12 @@
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import {
   getMockedCollaborators,
   getFormattedMockedCollaborators,
 } from '@entities/__mocks__/collaborators.mocks'
+import { updateCollaborator } from '@entities/services/collaborator'
+
+import { restoreRealUseI18n } from '@pulse/common/mocks/vitest'
 
 import CollabDetailsDrawer from '.'
 
@@ -18,31 +22,10 @@ const mockedInputs = [
   { name: 'mobilePhone', value: mobilePhone, isDisabled: true },
   { name: 'landPhone', value: landPhone, isDisabled: false },
 ]
-const mockedPatchGateway = vi.fn(() => {
-  return Promise.resolve({
-    data: mockedCollaborators[0],
-  })
+beforeEach(() => {
+  restoreRealUseI18n()
+  vi.mocked(updateCollaborator).mockResolvedValue(mockedCollaborators[0])
 })
-
-vi.mock('@entities/services/collaborator', () => ({
-  updateCollaborator: vi.fn(),
-}))
-const spyPNotification = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: spyPNotification,
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      patch: mockedPatchGateway,
-    },
-  }),
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  useDebounce: (fn: any) => fn,
-}))
 
 const createWrapper = (): VueWrapper =>
   mount(CollabDetailsDrawer, {
@@ -102,6 +85,9 @@ describe('collabDetailsDrawer', () => {
   it.each(enabledInputs)(
     'should have control over the $name input',
     async (enabledInputs) => {
+      // The real toolbox useDebounce delays the submit-button state: drive it
+      // with fake timers instead of relying on a pass-through debounce mock.
+      vi.useFakeTimers()
       const input = getInputs(wrapper)[mockedInputs.indexOf(enabledInputs)]
       const getButtonSubmitAttrDisabled = () =>
         getButtonSubmit(wrapper).attributes('disabled')
@@ -109,14 +95,17 @@ describe('collabDetailsDrawer', () => {
       expect(getButtonSubmitAttrDisabled()).toBeUndefined()
 
       await input?.setValue('not digit value')
-      await flushPromises()
+      await vi.advanceTimersByTimeAsync(600)
+      await nextTick()
 
       expect(getButtonSubmitAttrDisabled()).toBeDefined()
 
       await input?.setValue('1234567890')
-      await flushPromises()
+      await vi.advanceTimersByTimeAsync(600)
+      await nextTick()
 
       expect(getButtonSubmitAttrDisabled()).toBeUndefined()
+      vi.useRealTimers()
     },
   )
 })

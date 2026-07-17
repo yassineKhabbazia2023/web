@@ -8,17 +8,17 @@ import { displayNotification } from '@pulse/styleguide'
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { CollaboratorPermission, AccountType } from '@pulse/common/enums'
 
-vi.mock('@entities/services/account')
-vi.mock('@entities/managers/account/account.manager')
-vi.mock('@pulse/common/services/amplitude')
-vi.mock('@pulse/toolbox')
-vi.mock('@entities/components/ManageRightsDrawer/utils')
-vi.mock('@pulse/styleguide')
-
 const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccount)
 const saveUserPermissionsMock = vi.mocked(saveUserPermissions)
-const createOrAddCustomerToAccountMock = vi.mocked(AccountManager.createOrAddCustomerToAccount)
+const createOrAddCustomerToAccountMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
+
+beforeEach(() => {
+  vi.spyOn(AccountManager, 'createOrAddCustomerToAccount').mockImplementation(createOrAddCustomerToAccountMock)
+  hasContactRoleOnCommonAccountMock.mockResolvedValue(undefined as unknown as boolean)
+  saveUserPermissionsMock.mockResolvedValue(undefined as unknown as boolean)
+  displayNotificationMock.mockReturnValue(undefined)
+})
 
 const initializationParamaters = {
   invalidEmailAdresseMessage: 'incorrectEmail',

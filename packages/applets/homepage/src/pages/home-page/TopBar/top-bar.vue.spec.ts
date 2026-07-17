@@ -1,7 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import { ref } from 'vue'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
+import type { MockInstance } from 'vitest'
+import { getStoreMock, isMobileMockRef } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
 
 import TopBar from './top-bar.vue'
 
@@ -9,23 +10,23 @@ import TopBar from './top-bar.vue'
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-const hasCurrentEntityPermissionSpy = vi.hoisted(() => vi.fn())
-const isMobileRef = ref(false)
+let hasCurrentEntityPermissionMock: MockInstance
+// The styleguide useResponsive is hub-mocked worker-wide onto this shared ref
+// (doctrine: shared-hubs).
+const isMobileRef = isMobileMockRef
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: {
-    hasCurrentEntityPermission: hasCurrentEntityPermissionSpy,
-  },
-}))
-
-vi.mock('@pulse/styleguide', async (importOriginal) => ({
-  ...await importOriginal(),
-  useResponsive: () => ({
-    isMobile: isMobileRef,
-  }),
-}))
+// isMobileMockRef is a plain worker-shared ref: mockReset does not touch it, so
+// a test leaving it true would leak mobile mode to the next file (doctrine: shared-dom).
+afterEach(() => {
+  isMobileRef.value = false
+})
 
 describe('TopBar', () => {
+  beforeEach(() => {
+    isMobileRef.value = false
+    hasCurrentEntityPermissionMock = vi.spyOn(CurrentUserManager, 'hasCurrentEntityPermission').mockReturnValue(false)
+  })
+
   describe('PennylaneSSO display', () => {
     it.each([
       {
@@ -54,7 +55,7 @@ describe('TopBar', () => {
     }) => {
       userStoreMock.isCollab = isCollab
       currentEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
-      hasCurrentEntityPermissionSpy.mockReturnValue(hasPennylaneOffer)
+      hasCurrentEntityPermissionMock.mockReturnValue(hasPennylaneOffer)
 
       const wrapper = shallowMount(TopBar)
       const pennylaneSSO = wrapper.findComponent({ name: 'pennylane-sso' })

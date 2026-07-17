@@ -1,56 +1,20 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { Mock, MockInstance } from 'vitest'
+import { useRoute, useRouter } from 'vue-router'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
+import { createNewPassword } from '@pulse/common/services/authentication'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
+import { LoginService } from '@pulse/common/services/login'
 import type { FormInstance } from 'element-plus'
 
 import CreatePassword from './CreatePassword.vue'
 
-const createNewPasswordMock = vi.hoisted(() => vi.fn())
-const authenticateCustomerMock = vi.hoisted(() => vi.fn())
+let authenticateCustomerMock: MockInstance
+let routerPushMock: Mock
 
 const VALID_PASSWORD = 'aaAA11@@'
-
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
-
-vi.mock('@pulse/common/services/authentication', () => ({
-  createNewPassword: createNewPasswordMock,
-}))
-
-vi.mock('@pulse/common/services/login', () => ({
-  LoginService: {
-    authenticate: authenticateCustomerMock,
-  },
-}))
-
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-
-const routerPushMock = vi.hoisted(() => vi.fn())
-const useRouterMock = vi.hoisted(() => vi.fn(() => ({
-  push: routerPushMock,
-})))
-
-const useRouteMock = vi.hoisted(() => vi.fn(() => ({
-  name: 'route-name',
-  meta: {},
-  query: {
-    contactId: 'contactId',
-    accountNumber: 'accountNumber',
-    email: 'email',
-    token: 'token',
-  },
-})))
-
-vi.mock('vue-router', () => ({
-  useRouter: useRouterMock,
-  useRoute: useRouteMock,
-}))
 
 function createWrapper() {
   return mount(CreatePassword)
@@ -60,6 +24,20 @@ describe('page creation password', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     vi.clearAllMocks()
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    routerPushMock = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push: routerPushMock } as unknown as ReturnType<typeof useRouter>)
+    vi.mocked(useRoute).mockReturnValue({
+      name: 'route-name',
+      meta: {},
+      query: {
+        contactId: 'contactId',
+        accountNumber: 'accountNumber',
+        email: 'email',
+        token: 'token',
+      },
+    } as unknown as ReturnType<typeof useRoute>)
+    authenticateCustomerMock = vi.spyOn(LoginService, 'authenticate').mockResolvedValue()
     vi.mocked(getLatestTerms).mockResolvedValue({ termsId: 1 } as any)
     wrapper = createWrapper()
   })
@@ -150,7 +128,7 @@ describe('page creation password', () => {
 
 
   it('redirects to expired token page and tracks Amplitude event when password reset fails due to expired token', async () => {
-    createNewPasswordMock.mockRejectedValueOnce({
+    vi.mocked(createNewPassword).mockRejectedValueOnce({
       status: 500,
       response: { data: { errorCode: BackEndErrors.TOKEN_EXPIRED } },
     })
@@ -202,7 +180,7 @@ describe('page creation password', () => {
       onboarding_result: 'succeeded',
     })
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
-    expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)
+    expect(vi.mocked(createNewPassword)).toHaveBeenCalledExactlyOnceWith(data)
 
     expect(authenticateCustomerMock).toHaveBeenCalledExactlyOnceWith(dataLogin.email, dataLogin.password)
     expect(routerPushMock).toHaveBeenCalledOnce()
@@ -225,7 +203,7 @@ describe('page creation password', () => {
   it('do not call mockAuthPost when not form given to submitForm', async () => {
     wrapper = createWrapper()
     await wrapper.vm.submitForm(undefined)
-    expect(createNewPasswordMock).not.toHaveBeenCalled()
+    expect(vi.mocked(createNewPassword)).not.toHaveBeenCalled()
   })
 
   it('do not call postMock when form is not valid', async () => {
@@ -234,6 +212,6 @@ describe('page creation password', () => {
       validate: vi.fn().mockRejectedValue(new Error('invalid form')),
     } as unknown as FormInstance
     await wrapper.vm.submitForm(mockedForm)
-    expect(createNewPasswordMock).not.toHaveBeenCalled()
+    expect(vi.mocked(createNewPassword)).not.toHaveBeenCalled()
   })
 })

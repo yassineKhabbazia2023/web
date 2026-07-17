@@ -1,7 +1,7 @@
 import {
-  commonApiGatewayGetSpy,
-  commonApiGatewayPostSpy,
-} from '@ged/__mocks__/common.import.mocks'
+  apiGatewayGetMock,
+  apiGatewayPostMock,
+} from '@pulse/common/mocks/vitest'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
 import { API_PREFIXES } from '@pulse/common/constants'
@@ -13,12 +13,12 @@ import {
 
 describe('bin documents service', () => {
   beforeEach(() => {
-    commonApiGatewayGetSpy.mockResolvedValue({
+    apiGatewayGetMock.mockResolvedValue({
       data: {
         documents: 'fetched',
       },
     })
-    commonApiGatewayPostSpy.mockResolvedValue({
+    apiGatewayPostMock.mockResolvedValue({
       data: {
         documents: 'posted',
       },
@@ -31,8 +31,8 @@ describe('bin documents service', () => {
 
     await fetchBinDocuments(service.ServiceId, accountNumber, accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/service-1/${accountNumber}/trash/mapped/currentuser`,
       {
         headers: { 'Account-Id': accountId },
@@ -51,8 +51,8 @@ describe('bin documents service', () => {
 
     await restoreDocuments(service.ServiceId, accountNumber, ['doc-id'], accountId)
 
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/trash/restore`,
       {
         ids: ['doc-id'],

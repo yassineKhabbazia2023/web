@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
+import type { MockInstance } from 'vitest'
 import { HTMLService } from '@pulse/common/services/html'
 import { initProductFruitsAnonymousCustomer, stopProductFruits } from '@shared/plugins/product-fruits/product-fruits.plugin'
 
@@ -8,29 +9,24 @@ const setIntervalMock = vi.hoisted(() => vi.fn())
 const clearIntervalMock = vi.hoisted(() => vi.fn())
 const reloadMock = vi.hoisted(() => vi.fn())
 
-declare let window: {
-  setInterval: (_: () => void, _delay: number) => void,
-  clearInterval: (_: () => void) => void,
-  location: Location
-} & Window
-
-window.setInterval = setIntervalMock
-window.clearInterval = clearIntervalMock
-;(window.location as any) = {
-  reload: reloadMock,
-}
-
-vi.mock('@pulse/common/services/html', () => ({
-  HTMLService: {
-    setDocumentTitle: vi.fn(),
-    resetDocumentTitle: vi.fn(),
-  },
-}))
-const HTMLServiceSetDocumentTitleMock = vi.mocked(HTMLService.setDocumentTitle)
-
-vi.mock('@shared/plugins/product-fruits/product-fruits.plugin')
+// Never assign these worker-shared globals directly (doctrine: shared-dom): a raw
+// assignment survives the file — and vi.useFakeTimers() would stash the mocked
+// setInterval as the "real" one, so every later useRealTimers() restores the mock.
+// vi.stubGlobal is undone by unstubGlobals after each test.
+// The product-fruits plugin is spy-wrapped project-wide, real by default
+// (doctrine: shared-hubs): automock-like no-ops are re-armed before each test.
 const initProductFruitsAnonymousCustomerMock = vi.mocked(initProductFruitsAnonymousCustomer)
 const stopProductFruitsMock = vi.mocked(stopProductFruits)
+
+beforeEach(() => {
+  vi.stubGlobal('setInterval', setIntervalMock)
+  vi.stubGlobal('clearInterval', clearIntervalMock)
+  vi.stubGlobal('location', { ...window.location, reload: reloadMock })
+  initProductFruitsAnonymousCustomerMock.mockReturnValue(undefined)
+  stopProductFruitsMock.mockReturnValue(undefined)
+})
+
+let HTMLServiceSetDocumentTitleMock: MockInstance
 
 function createWrapper() {
   return shallowMount(Maintenance, {
@@ -48,6 +44,11 @@ function createWrapper() {
 const DURATION = 900000
 
 describe('Maintenance', () => {
+  beforeEach(() => {
+    // doctrine: static-classes — HTMLService is a static class, stubbed per test
+    HTMLServiceSetDocumentTitleMock = vi.spyOn(HTMLService, 'setDocumentTitle').mockReturnValue()
+  })
+
   it('should initialize properly', async () => {
     const intervalMock = vi.fn()
     setIntervalMock.mockReturnValue(intervalMock)

@@ -1,5 +1,5 @@
 import { dateFormatter, downloadFile, saveFileAs } from './utils'
-import { expect, describe, it, vi } from 'vitest'
+
 interface Window {
   showSaveFilePicker: any
   URL: any
@@ -20,10 +20,11 @@ describe('utils helpers', () => {
     const appendChildMock = vi.fn()
     const clickMock = vi.fn()
     const setAttributeMock = vi.fn()
-    window.URL = {
-      createObjectURL: createObjectURLMock,
-      revokeObjectURL: revokeObjectURLMock,
-    }
+    // Spy the static methods on the real URL: replacing the constructor
+    // would break the import-time `new URL(...)` of files collected while
+    // this test runs (collection is pipelined on a shared worker).
+    vi.spyOn(URL, 'createObjectURL').mockImplementation(createObjectURLMock)
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(revokeObjectURLMock)
 
     const removeMock = vi.fn()
     const createElementSpy: any = vi.spyOn(document, 'createElement')
@@ -32,8 +33,9 @@ describe('utils helpers', () => {
       click: clickMock,
       remove: removeMock,
     }))
-    // Mock document.body.appendChild
-    document.body.appendChild = appendChildMock
+    // spyOn (restored before the next test) instead of a direct overwrite: the
+    // document.body is shared by the whole worker in no-isolate.
+    vi.spyOn(document.body, 'appendChild').mockImplementation(appendChildMock)
 
     // Execute the function
     const filename = 'testfile.txt'
@@ -51,17 +53,20 @@ describe('utils helpers', () => {
     expect(revokeObjectURLMock).toHaveBeenCalledOnce()
   })
   it('saves file with a prompt folder selection', async () => {
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+    const showSaveFilePickerMock = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),
         close: vi.fn(),
       })),
     }))
+    // stubGlobal (auto-unstubbed after each test) instead of a direct window
+    // assignment: the jsdom window is shared by the whole worker in no-isolate.
+    vi.stubGlobal('showSaveFilePicker', showSaveFilePickerMock)
 
     // Execute the function
     await saveFileAs('123-34531-13-134085', { mock: 'blabla' }, 'signed')
     // Assertions
-    expect(window.showSaveFilePicker).toHaveBeenCalledWith({
+    expect(showSaveFilePickerMock).toHaveBeenCalledWith({
       suggestedName: 'signed-mandate-123-34531-13-134085.pdf',
       types: [{
         description: 'PDF Document',

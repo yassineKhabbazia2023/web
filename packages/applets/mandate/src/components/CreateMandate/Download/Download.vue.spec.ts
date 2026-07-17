@@ -1,14 +1,16 @@
-import { expect, describe, it, vi, beforeEach } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
+import type { AxiosResponse } from 'axios'
+
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { PNotificationMocked } from '@mandate/__mocks__/styleguide.mocks'
+import { PNotification } from '@pulse/styleguide'
 import type { DownloadProps } from './DownloadTypes'
 import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
+import { showNotification } from '@mandate/helpers/NotificationHelper'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
 import Download from '.'
+import { armMandateModuleDefaults } from '@mandate/__mocks__'
 
 interface Window {
   showSaveFilePicker: any
@@ -18,7 +20,7 @@ declare let window: Window
 
 const data = 'pdf-data'
 
-const apiMocks = vi.hoisted(() => ({
+const apiMocks = {
   availableMandate: vi.fn(() =>
     Promise.resolve({ status: mandateAvailabilityCheckStatuses.AVAILABLE }),
   ),
@@ -28,26 +30,7 @@ const apiMocks = vi.hoisted(() => ({
   erroredMandate: vi.fn(() =>
     Promise.resolve({ status: mandateAvailabilityCheckStatuses.ERRORED, errorMessage: 'Some error occurred' }),
   ),
-}))
-
-vi.mock('@pulse/toolbox', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@pulse/toolbox')>()
-  return {
-    ...actual,
-    logger: loggerMock,
-  }
-})
-
-vi.mock('@mandate/services/mandate', () => ({
-  downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),
-  getMandateAvailability: apiMocks.availableMandate,
-}))
-
-vi.mock('@mandate/helpers/utils', () => utilsMocks)
-
-vi.mock('@pulse/styleguide', async () => ({
-  PNotification: PNotificationMocked,
-}))
+}
 
 const mandateId = '1243-4546-35323-43'
 
@@ -62,6 +45,15 @@ function getMandateDownloadFileCard(wrapper: VueWrapper<DownloadProps>) {
   return wrapper.find('[data-testid="download-prefilled-mandate"]')
 }
 
+beforeEach(() => {
+  armMandateModuleDefaults()
+  // The component always calls notification.close() in a finally block, so
+  // the no-op default of the hub would make every download reject.
+  vi.mocked(showNotification).mockImplementation(() => ({ close: vi.fn() }))
+  vi.mocked(getMandateAvailability).mockImplementation(apiMocks.availableMandate)
+  vi.mocked(downloadUnsignedMandate).mockImplementation(() => Promise.resolve({ data } as AxiosResponse))
+})
+
 describe('download mandate prefilled', () => {
   let wrapper: VueWrapper<DownloadProps>
   beforeEach(async () => {
@@ -70,8 +62,10 @@ describe('download mandate prefilled', () => {
     await flushPromises()
   })
   it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
-    window.showSaveFilePicker = vi.fn()
-    vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
+    // stubGlobal (auto-unstubbed after each test) instead of a direct window
+    // assignment: the jsdom window is shared by the whole worker in no-isolate.
+    vi.stubGlobal('showSaveFilePicker', vi.fn())
+    vi.mocked(saveFileAs).mockRejectedValue(new Error('Failed to execute  showSaveFilePicker on Window'))
     // Act
     await getMandateDownloadFileCard(wrapper).trigger('click')
 
@@ -81,12 +75,12 @@ describe('download mandate prefilled', () => {
   })
 
   it('uses showSaveFilePicker when available', async () => {
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+    vi.stubGlobal('showSaveFilePicker', vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),
         close: vi.fn(),
       })),
-    }))
+    })))
 
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
@@ -107,7 +101,7 @@ describe('download mandate prefilled', () => {
 
   it('handles errors correctly', async () => {
     // Mocking a scenario where downloadUnsignedMandate fails
-    vi.mocked(downloadUnsignedMandate).mockRejectedValueOnce(new Error('Download error'))
+    vi.mocked(downloadUnsignedMandate).mockRejectedValue(new Error('Download error'))
 
     // Spy on logger.error
 
@@ -162,6 +156,6 @@ describe('mandate is errored', () => {
     await flushPromises()
 
     expect(wrapper.emitted()).toHaveProperty('close-drawer')
-    expect(PNotificationMocked).toHaveBeenCalledOnce()
+    expect(vi.mocked(PNotification)).toHaveBeenCalledOnce()
   })
 })

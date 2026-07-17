@@ -1,6 +1,5 @@
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import { generateTestFiles, secondValidDestination, unValidDestination, validDestination, validFiles } from '@ged/__mocks__/files.mocks'
-import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
@@ -11,14 +10,15 @@ import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 
 import DocumentsUpload from './DocumentsUpload.vue'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@ged/services/Documents', () => documentsServiceMock)
-
-vi.mock('@pulse/styleguide')
+beforeEach(() => {
+  armGedServiceDefaults()
+})
 
 const createWrapper = (
   props: DocumentUploadProps = defaultProps,
@@ -57,17 +57,19 @@ describe('test DocumentsUpload', () => {
 
     const cases = [
       {
+        label: 'an authorized destination folder',
         folder: validDestination,
         expectedResult: true,
       },
       {
+        label: 'a forbidden destination folder',
         folder: unValidDestination,
         expectedResult: false,
       },
     ]
 
     it.each(cases)(
-      'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
+      'should calculate the ExplorerAuthorizedGivenAction correctly with $label',
       ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,

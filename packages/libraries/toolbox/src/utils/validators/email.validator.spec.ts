@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { validateEmail } from './email.validator'
 
 describe('validateEmail', () => {

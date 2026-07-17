@@ -1,13 +1,9 @@
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
 import { GigyaManager } from './gigya.manager'
-
-const loggerMock = vi.hoisted(() => ({ error: vi.fn() }))
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/managers')
 
 const userStoreMock = getStoreMock(useUserStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
@@ -38,11 +34,11 @@ describe('GigyaManager', () => {
 
   describe('loginSSO', () => {
     beforeEach(() => {
-      ;(window as any).gigya = { accounts: { login: gigyaLoginMock } }
+      vi.stubGlobal('gigya', { accounts: { login: gigyaLoginMock } })
     })
 
     it('should call gigya login when feature flag is activated', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(true)
 
       GigyaManager.loginSSO('test@email.com', 'password123')
 
@@ -53,7 +49,7 @@ describe('GigyaManager', () => {
     })
 
     it('should not call gigya login when feature flag is deactivated', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(false)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(false)
 
       GigyaManager.loginSSO('test@email.com', 'password123')
 
@@ -61,7 +57,7 @@ describe('GigyaManager', () => {
     })
 
     it('should log error when gigya login throws', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(true)
       const error = new Error('Gigya error')
       gigyaLoginMock.mockImplementation(() => {
         throw error
@@ -69,18 +65,18 @@ describe('GigyaManager', () => {
 
       GigyaManager.loginSSO('test@email.com', 'password123')
 
-      expect(loggerMock.error).toHaveBeenCalledWith('Error during Gigya SSO login: ', error)
+      expect(loggerErrorSpy).toHaveBeenCalledWith('Error during Gigya SSO login: ', error)
     })
   })
   describe('logoutSSO', () => {
     const gigyaLogoutMock = vi.fn()
 
     beforeEach(() => {
-      ;(window as any).gigya = { accounts: { logout: gigyaLogoutMock } }
+      vi.stubGlobal('gigya', { accounts: { logout: gigyaLogoutMock } })
     })
 
     it('should call gigya logout when feature flag is activated', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(true)
 
       GigyaManager.logoutSSO()
 
@@ -88,7 +84,7 @@ describe('GigyaManager', () => {
     })
 
     it('should not call gigya logout when feature flag is deactivated', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(false)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(false)
 
       GigyaManager.logoutSSO()
 
@@ -96,7 +92,7 @@ describe('GigyaManager', () => {
     })
 
     it('should log error when gigya logout throws', () => {
-      vi.mocked(FeatureFlagManager.isGigyaSsoActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isGigyaSsoActivated').mockReturnValue(true)
       const error = new Error('Gigya error')
       gigyaLogoutMock.mockImplementation(() => {
         throw error
@@ -104,7 +100,7 @@ describe('GigyaManager', () => {
 
       GigyaManager.logoutSSO()
 
-      expect(loggerMock.error).toHaveBeenCalledWith('Error during Gigya SSO logout: ', error)
+      expect(loggerErrorSpy).toHaveBeenCalledWith('Error during Gigya SSO logout: ', error)
     })
   })
 })

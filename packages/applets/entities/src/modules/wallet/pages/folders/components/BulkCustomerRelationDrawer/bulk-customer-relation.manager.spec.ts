@@ -2,8 +2,6 @@ import { updateCustomerRelation } from '@entities/services/account'
 import { BulkCustomerRelationManager } from './bulk-customer-relation.manager'
 import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
 
-vi.mock('@entities/services/account')
-
 const selectedFolders: SelectedFolder[] = [
   {
     id: 1,
@@ -28,6 +26,10 @@ const translations = {
 }
 
 describe('BulkCustomerRelationManager', () => {
+  beforeEach(() => {
+    vi.mocked(updateCustomerRelation).mockResolvedValue({ succeeded: [], failed: [] })
+  })
+
   it('identifies folders already in the target status', () => {
     expect(BulkCustomerRelationManager.isAlreadyInTargetStatus(selectedFolders[0], true)).toBe(true)
     expect(BulkCustomerRelationManager.isAlreadyInTargetStatus(selectedFolders[1], true)).toBe(false)

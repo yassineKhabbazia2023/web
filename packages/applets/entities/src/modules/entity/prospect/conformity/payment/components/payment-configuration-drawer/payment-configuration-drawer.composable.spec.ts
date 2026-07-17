@@ -6,12 +6,8 @@ import { usePaymentConfiguration } from './payment-configuration-drawer.composab
 import type { PaymentConfiguration } from './payment-configuration-drawer.composable'
 import { PaymentConfigurationStep } from './payment-configuration-drawer.enums'
 
-vi.mock('@entities/services/conformity-payment')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-
-const generateSepaMandateMock = vi.mocked(ConformityPaymentService.generateSepaMandate)
-const getPaymentPreferenceMock = vi.mocked(ConformityPaymentService.getPaymentPreference)
+const generateSepaMandateMock = vi.fn()
+const getPaymentPreferenceMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
 
 const SIGNATURE_URL = 'https://app.getaccept.com/sign/abc123'
@@ -34,6 +30,9 @@ const makeSubmittable = (result: PaymentConfiguration): void => {
 
 describe('payment-configuration-drawer.composable', () => {
   beforeEach(() => {
+    vi.spyOn(ConformityPaymentService, 'generateSepaMandate').mockImplementation(generateSepaMandateMock)
+    vi.spyOn(ConformityPaymentService, 'getPaymentPreference').mockImplementation(getPaymentPreferenceMock)
+    displayNotificationMock.mockImplementation(() => undefined)
     generateSepaMandateMock.mockResolvedValue({ signatureUrl: SIGNATURE_URL })
   })
 

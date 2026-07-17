@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { describe, expect, it } from 'vitest'
+
 import { useUserStore } from './user.store'
 import { getMockedUserInfo } from '@common/__mocks__'
 

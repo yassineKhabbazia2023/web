@@ -1,3 +1,5 @@
+import type { MockInstance } from 'vitest'
+import { useRoute } from 'vue-router'
 import { useCurrentEntityRouting } from './use-current-entity-routing.composable'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
@@ -7,20 +9,21 @@ const routeMock = {
   meta: {} as Record<string, unknown>,
 }
 
-vi.mock('vue-router', () => ({
-  useRoute: () => routeMock,
-}))
-
-vi.mock('@pulse/common/helpers')
+let getRouteParamAsIntMock: MockInstance
 
 describe('useCurrentEntityRouting', () => {
   beforeEach(() => {
     routeMock.meta = {}
+    // vue-router is spy-wrapped project-wide (doctrine: shared-hubs): arm the
+    // shared spy per test instead of registering a local factory.
+    vi.mocked(useRoute).mockReturnValue(routeMock as unknown as ReturnType<typeof useRoute>)
+    // doctrine: static-classes — RouterHelpers is a static class, stubbed per test
+    getRouteParamAsIntMock = vi.spyOn(RouterHelpers, 'getRouteParamAsInt').mockReturnValue(null)
   })
 
   describe('currentEntityId', () => {
     it('should return undefined when no entity ID in route', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(null)
+      getRouteParamAsIntMock.mockReturnValue(null)
 
       const { currentEntityId } = useCurrentEntityRouting()
 
@@ -28,7 +31,7 @@ describe('useCurrentEntityRouting', () => {
     })
 
     it('should return the entity ID as number when present', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(42)
+      getRouteParamAsIntMock.mockReturnValue(42)
 
       const { currentEntityId } = useCurrentEntityRouting()
 
@@ -38,7 +41,7 @@ describe('useCurrentEntityRouting', () => {
 
   describe('isEntityView', () => {
     it('should return false when no entity ID', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(null)
+      getRouteParamAsIntMock.mockReturnValue(null)
       routeMock.meta[IS_UNITARY_VIEW_META] = true
 
       const { isEntityView } = useCurrentEntityRouting()
@@ -47,7 +50,7 @@ describe('useCurrentEntityRouting', () => {
     })
 
     it('should return false when entity ID present but not unitary view', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(42)
+      getRouteParamAsIntMock.mockReturnValue(42)
       routeMock.meta[IS_UNITARY_VIEW_META] = false
 
       const { isEntityView } = useCurrentEntityRouting()
@@ -56,7 +59,7 @@ describe('useCurrentEntityRouting', () => {
     })
 
     it('should return false when unitary view meta is missing', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(42)
+      getRouteParamAsIntMock.mockReturnValue(42)
 
       const { isEntityView } = useCurrentEntityRouting()
 
@@ -64,7 +67,7 @@ describe('useCurrentEntityRouting', () => {
     })
 
     it('should return true when entity ID present and is unitary view', () => {
-      vi.mocked(RouterHelpers.getRouteParamAsInt).mockReturnValue(42)
+      getRouteParamAsIntMock.mockReturnValue(42)
       routeMock.meta[IS_UNITARY_VIEW_META] = true
 
       const { isEntityView } = useCurrentEntityRouting()

@@ -12,6 +12,7 @@ import {
 import { displayNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { getInitialTimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.composable'
+import { useBookingDrawer } from '../booking-drawer/booking-drawer.composable'
 import type { BookingConfigurationResponse } from '@booking/types'
 import {
   getMockedTimeSlotsConfiguration,
@@ -23,29 +24,18 @@ import {
 const closeBookingCreationDrawerMock = vi.fn()
 const isBookingCreationDrawerOpenedMock = ref(false)
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-  createI18n: vi.fn(),
-}))
-
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-vi.mock('@booking/services')
-vi.mock('./booking-configuration.manager')
-vi.mock('../booking-time-slots-configuration/booking-time-slots-configuration.composable')
-vi.mock('@booking/services/booking-tracking.service')
-vi.mock('../booking-drawer/booking-drawer.composable', () => ({
-  useBookingDrawer: () => ({
-    closeBookingCreationDrawer: closeBookingCreationDrawerMock,
-    isBookingCreationDrawerOpened: isBookingCreationDrawerOpenedMock,
-  }),
-}))
-
 describe('useBookingConfiguration', () => {
   beforeEach(() => {
+    vi.spyOn(BookingTrackingService, 'trackCollaboratorConfigurationSubmitted').mockImplementation(() => undefined)
     setActivePinia(createPinia())
+    // The time-slots and drawer composables are spy-wrapped (real by default)
+    // by the setup file: stub them per test (doctrine: shared-hubs).
     vi.mocked(getInitialTimeSlotsConfiguration).mockReturnValue(getMockedTimeSlotsConfiguration())
-    vi.mocked(BookingConfigurationManager.prepareMeetingTemplatePayload).mockReturnValue(getMockedBookingConfigurationPayload())
+    vi.mocked(useBookingDrawer).mockReturnValue({
+      closeBookingCreationDrawer: closeBookingCreationDrawerMock,
+      isBookingCreationDrawerOpened: isBookingCreationDrawerOpenedMock,
+    } as unknown as ReturnType<typeof useBookingDrawer>)
+    vi.spyOn(BookingConfigurationManager, 'prepareMeetingTemplatePayload').mockReturnValue(getMockedBookingConfigurationPayload())
   })
 
   describe('initial state', () => {
@@ -97,7 +87,7 @@ describe('useBookingConfiguration', () => {
 
   describe('submitConfiguration', () => {
     it('should call BookingTrackingService.trackCollaboratorConfigurationSubmitted with true on success', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { submitConfiguration } = useBookingConfiguration()
 
@@ -107,7 +97,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should call BookingTrackingService.trackCollaboratorConfigurationSubmitted with false on failure', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(new Error('API Error'))
 
       const { submitConfiguration } = useBookingConfiguration()
 
@@ -117,7 +107,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should set isSubmitSuccess to true on success', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { submitConfiguration, isSubmitSuccess } = useBookingConfiguration()
 
@@ -127,7 +117,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should display success notification on successful submission', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { submitConfiguration } = useBookingConfiguration()
 
@@ -137,7 +127,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should display error notification on failed submission', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(new Error('API Error'))
 
       const { submitConfiguration } = useBookingConfiguration()
 
@@ -148,7 +138,7 @@ describe('useBookingConfiguration', () => {
 
     it('should log error on failed submission', async () => {
       const error = new Error('API Error')
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(error)
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(error)
 
       const { submitConfiguration } = useBookingConfiguration()
 
@@ -158,7 +148,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should go back to CONFIGURE_SLOTS step on error', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(new Error('API Error'))
 
       const { submitConfiguration, currentStep } = useBookingConfiguration()
 
@@ -168,7 +158,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should prepare payload with appointment details and time slots configuration', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { submitConfiguration, appointmentDetails, timeSlotsConfiguration } = useBookingConfiguration()
 
@@ -187,7 +177,7 @@ describe('useBookingConfiguration', () => {
       const pendingPromise = new Promise<BookingConfigurationResponse>((resolve) => {
         resolvePromise = resolve
       })
-      vi.mocked(BookingService.submitBookingConfiguration).mockReturnValueOnce(pendingPromise)
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockReturnValueOnce(pendingPromise)
 
       const { submitConfiguration, isSubmitting } = useBookingConfiguration()
 
@@ -202,7 +192,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should set isSubmitting to false after failed submission', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(new Error('API Error'))
 
       const { submitConfiguration, isSubmitting } = useBookingConfiguration()
 
@@ -212,7 +202,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should set isSubmitSuccess to false on error', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockRejectedValueOnce(new Error('API Error'))
 
       const { submitConfiguration, isSubmitSuccess } = useBookingConfiguration()
 
@@ -224,7 +214,7 @@ describe('useBookingConfiguration', () => {
 
   describe('goToNextStep with confirmation step', () => {
     it('should move to CONFIRMATION step and submit when on CONFIGURE_SLOTS', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { goToNextStep, currentStep } = useBookingConfiguration()
 
@@ -238,7 +228,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should not go further than CONFIRMATION step', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { goToNextStep, currentStep } = useBookingConfiguration()
 
@@ -251,7 +241,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should not go back from CONFIRMATION step', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { goToNextStep, goToPreviousStep, currentStep } = useBookingConfiguration()
 
@@ -272,7 +262,7 @@ describe('useBookingConfiguration', () => {
     })
 
     it('should return true when on CONFIRMATION step', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { goToNextStep, isConfirmationStep } = useBookingConfiguration()
 
@@ -296,7 +286,7 @@ describe('useBookingConfiguration', () => {
 
   describe('drawerTitle', () => {
     it('should return success title when on CONFIRMATION step with isSubmitSuccess true', async () => {
-      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+      vi.spyOn(BookingService, 'submitBookingConfiguration').mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
       const { goToNextStep, drawerTitle } = useBookingConfiguration()
 

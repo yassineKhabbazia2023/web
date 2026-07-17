@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import { ElPopperArrow, POPPER_CONTENT_INJECTION_KEY } from 'element-plus'
 import PPopperArrow from '.'
 import { ref } from 'vue'

@@ -1,10 +1,8 @@
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
 import { getMockExperts } from '../../../__mocks__'
+// getInitials is spy-wrapped (real by default) by the setup file: the spec
+// stubs the shared spy per test via vi.mocked (doctrine: shared-hubs).
 import * as commonUtils from '@pulse/common/utils'
-
-vi.mock('@pulse/common/utils', () => ({
-  getInitials: vi.fn(),
-}))
 
 describe('booking-appointment-choose-expert.utils', () => {
   describe('getFormattedExperts', () => {

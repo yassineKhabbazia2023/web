@@ -1,18 +1,14 @@
 import { AxiosError } from 'axios'
-import { getUnauthorizedCallbackMock } from '../../__mocks__/vitest'
+import { getUnauthorizedCallback } from '../../unauthorized-callback'
 import { responseInterceptorError } from './response-error.interceptor'
 import { SKIP_CALLBACK_CODES } from '../../constants'
 import type { ApiErrorResponse } from '../api.types'
-
-vi.mock('../../unauthorized-callback', () => ({
-  getUnauthorizedCallback: getUnauthorizedCallbackMock,
-}))
 
 const unauthorizedCallbackMock = vi.fn()
 
 describe('responseInterceptorError', () => {
   beforeEach(() => {
-    getUnauthorizedCallbackMock.mockReturnValue(unauthorizedCallbackMock)
+    vi.mocked(getUnauthorizedCallback).mockReturnValue(unauthorizedCallbackMock)
   })
 
   it('should call Promise.reject', async () => {

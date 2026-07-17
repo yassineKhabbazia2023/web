@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 import PDocumentViewer from '.'

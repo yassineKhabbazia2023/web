@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PError from '.'
 import type { PErrorBlockProps } from './PErrorTypes'
 import { setAssetsBaseUrl } from '../../utils/imageResolverInit'

@@ -6,16 +6,22 @@ import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import { ProspectListType } from '@entities/modules/wallet/enums'
 import { SortDirection } from '@pulse/common/enums'
 import type { SortChangeEventData } from '@pulse/common/types'
-
-vi.mock('./prospect-entity.list.manager')
-
-const isMobileMock = { value: false }
-vi.mock('@pulse/styleguide', () => ({
-  useResponsive: () => ({ isMobile: isMobileMock }),
-}))
+import { isMobileMockRef } from '@pulse/common/mocks/vitest'
 
 const mockMenuElements = [{ pActionName: ProspectAction.ARCHIVE_PROSPECT, pValue: 'Delete', pIconName: 'trash', pState: 'default' }]
-vi.mocked(ProspectEntityListManager.getMenuElements).mockReturnValue(mockMenuElements as any)
+
+const isMobileMock = isMobileMockRef
+
+// isMobileMockRef is a plain worker-shared ref: mockReset does not touch it, so
+// a test leaving it true would leak mobile mode to the next file (doctrine: shared-dom).
+afterEach(() => {
+  isMobileMock.value = false
+})
+
+beforeEach(() => {
+  isMobileMock.value = false
+  vi.spyOn(ProspectEntityListManager, 'getMenuElements').mockReturnValue(mockMenuElements as unknown as ReturnType<typeof ProspectEntityListManager.getMenuElements>)
+})
 
 const createTestSetup = (prospectListType: ProspectListType = ProspectListType.PROSPECT_COLLAB) => {
   const props = reactive({

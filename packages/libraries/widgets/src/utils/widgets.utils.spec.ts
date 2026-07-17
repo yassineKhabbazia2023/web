@@ -3,12 +3,6 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
 
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: {
-    track: vi.fn(),
-  },
-}))
-
 describe('widgetClick', () => {
   it('should call AmplitudeService.track with basic widget props', () => {
     widgetClick({

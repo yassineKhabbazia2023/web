@@ -1,32 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
+import type { Mock } from 'vitest'
+
 import { shallowMount } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks/vitest'
+import { useRouter } from 'vue-router'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { updateTermsByCurrentUserMock } from '@pulse/common/mocks/vitest'
 import { RouteName } from '@pulse/common/enums'
 import { CurrentUserManager } from '@pulse/common/managers'
 
 import validationCGU from './ValidationCGU.vue'
 
-const mockRouterPush = vi.fn()
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
-}))
-
-vi.mock('@pulse/common', async () => {
-  const actual = await vi.importActual('@pulse/common')
-  return {
-    ...actual,
-    fetchUrlTerms: vi.fn(),
-  }
-})
-
-vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
-vi.mock('@pulse/common/managers')
+let mockRouterPush: Mock
 
 const createWrapper = () =>
   shallowMount(validationCGU, {
@@ -53,6 +36,12 @@ const createWrapper = () =>
   })
 
 describe('cgu validation', () => {
+  beforeEach(() => {
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    mockRouterPush = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push: mockRouterPush } as unknown as ReturnType<typeof useRouter>)
+  })
+
   it('should redirect to home page after terms acceptation', async () => {
     const wrapper = createWrapper()
 
@@ -65,7 +54,7 @@ describe('cgu validation', () => {
   })
 
   it('should back to login page and logout', async () => {
-    const CurrentUserManagerLogoutMock = vi.mocked(CurrentUserManager.logout)
+    const CurrentUserManagerLogoutMock = vi.spyOn(CurrentUserManager, 'logout').mockResolvedValue()
     const wrapper = createWrapper()
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')

@@ -1,6 +1,6 @@
 import { getFileErrorMessage, getFileErrorDescription }
   from '@ged/modules/common/helpers/documentCodeErrorHelper'
-import { describe, it, expect } from 'vitest'
+
 import { MAX_FILE_SIZE_MB } from '@ged/modules/common/constants/files'
 
 describe('document Code Error Helper', () => {

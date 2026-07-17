@@ -7,9 +7,6 @@ import { getMockedPermanentDelegationApiItems } from '@entities/__mocks__/perman
 import { usePermanentDelegations } from './permanent-delegations.composable'
 import { fetchPermanentDelegations, deleteAccountDelegation } from '@entities/services/account'
 
-vi.mock('@entities/services/account')
-vi.mock('@entities/managers/delegation-tracking/delegation-tracking.manager')
-
 import { DelegationTrackingManager } from '@entities/managers/delegation-tracking/delegation-tracking.manager'
 
 const userStoreMock = getStoreMock(useUserStore)
@@ -27,6 +24,7 @@ const deleteSuccessResponse = {
 describe('usePermanentDelegations', () => {
   beforeEach(() => {
     userStoreMock.user = userMock
+    vi.spyOn(DelegationTrackingManager, 'trackPermanentDeleteCompleted').mockImplementation(() => undefined)
     vi.mocked(fetchPermanentDelegations).mockResolvedValue({
       items: delegationApiItems,
       currentPage: 1,
@@ -93,7 +91,7 @@ describe('usePermanentDelegations', () => {
   })
 
   it('should throw and track failure on delete error', async () => {
-    vi.mocked(deleteAccountDelegation).mockRejectedValueOnce(new Error('Delete error'))
+    vi.mocked(deleteAccountDelegation).mockRejectedValue(new Error('Delete error'))
 
     const [result, app] = withSetup(() => usePermanentDelegations())
     await flushPromises()

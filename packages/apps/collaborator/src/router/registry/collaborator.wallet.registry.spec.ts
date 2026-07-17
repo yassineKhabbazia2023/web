@@ -4,8 +4,6 @@ import { RouteName } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { registerCollaboratorWalletTabs } from './collaborator.wallet.registry'
 
-vi.mock('@pulse/common/managers')
-
 // Collaborator tabs that don't require permissions
 const BASIC_COLLAB_TABS = [
   WalletTab.FOLDERS,
@@ -31,7 +29,7 @@ const PERMISSION_BASED_COLLAB_TABS = [
 describe('registerCollaboratorWalletTabs', () => {
   beforeEach(() => {
     // Default to prospect experience enabled (folders hidden on mobile)
-    vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
+    vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
     // @ts-expect-error - Accessing private static field for test cleanup
     WalletManager.tabs.clear()
     registerCollaboratorWalletTabs()
@@ -65,7 +63,7 @@ describe('registerCollaboratorWalletTabs', () => {
     })
 
     it('should show only the FOLDERS tab on mobile when the prospect experience is disabled', () => {
-      vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(false)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
       // @ts-expect-error - Accessing private static field for test cleanup
       WalletManager.tabs.clear()
       registerCollaboratorWalletTabs()

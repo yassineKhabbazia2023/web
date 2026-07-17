@@ -2,7 +2,7 @@ import {
   validInputAlphanumericFrench,
   validInputMaxLength,
 } from './inputValidationHelper'
-import { describe, it, expect } from 'vitest'
+
 
 describe('inputValidationHelper', () => {
   it('should return true if input is in french', () => {

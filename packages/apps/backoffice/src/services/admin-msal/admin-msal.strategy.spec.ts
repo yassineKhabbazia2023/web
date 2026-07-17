@@ -1,27 +1,28 @@
-import { tokenIsValid } from '@pulse/common/stores'
+import { createMockJwt } from '@pulse/common/mocks'
 import { AdminMsalService } from './admin-msal.service'
 
 import { AdminMsalTokenStrategy } from './admin-msal.strategy'
 
-vi.mock('@pulse/toolbox')
-vi.mock('./admin-msal.service')
-vi.mock('@pulse/common/stores')
-
 describe('AdminMsalTokenStrategy', () => {
   it('should return the refreshed token when valid', async () => {
-    vi.mocked(AdminMsalService.getFreshMSALToken).mockResolvedValue('msal-fresh')
-    vi.mocked(tokenIsValid).mockReturnValue(true)
+    const freshToken = createMockJwt(3600)
+    const getFreshTokenSpy = vi.spyOn(AdminMsalService, 'getFreshMSALToken').mockResolvedValue(freshToken)
 
     const result = await new AdminMsalTokenStrategy().refreshToken()
 
-    expect(result).toBe('msal-fresh')
-    expect(AdminMsalService.getFreshMSALToken).toHaveBeenCalledOnce()
-    expect(tokenIsValid).toHaveBeenCalledExactlyOnceWith('msal-fresh')
+    expect(result).toBe(freshToken)
+    expect(getFreshTokenSpy).toHaveBeenCalledOnce()
   })
 
   it('should throw when the refreshed token is invalid', async () => {
-    vi.mocked(AdminMsalService.getFreshMSALToken).mockResolvedValue(null)
-    vi.mocked(tokenIsValid).mockReturnValue(false)
+    vi.spyOn(AdminMsalService, 'getFreshMSALToken').mockResolvedValue(null)
+
+    await expect(new AdminMsalTokenStrategy().refreshToken())
+      .rejects.toThrow('Invalid token received from admin MSAL refresh')
+  })
+
+  it('should throw when the refreshed token is expired', async () => {
+    vi.spyOn(AdminMsalService, 'getFreshMSALToken').mockResolvedValue(createMockJwt(-60))
 
     await expect(new AdminMsalTokenStrategy().refreshToken())
       .rejects.toThrow('Invalid token received from admin MSAL refresh')

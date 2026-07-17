@@ -1,10 +1,9 @@
-import { it, expect, describe, beforeEach } from 'vitest'
 import {
-  commonApiGatewayGetSpy,
-  commonApiGatewayPostSpy,
-  commonApiGatewayDeleteSpy,
-  commonApiGatewayPatchSpy,
-} from '@ged/__mocks__/common.import.mocks'
+  apiGatewayGetMock,
+  apiGatewayPostMock,
+  apiGatewayDeleteMock,
+  apiGatewayPatchMock,
+} from '@pulse/common/mocks/vitest'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
 import type { Document } from '@ged/models/Document'
@@ -27,7 +26,7 @@ import {
 
 describe('documents service', () => {
   beforeEach(() => {
-    commonApiGatewayGetSpy.mockImplementation((url: string) => {
+    apiGatewayGetMock.mockImplementation((url: string) => {
       const returnValue = url.includes('preview')
         ? {
           data: new ArrayBuffer(1),
@@ -38,7 +37,7 @@ describe('documents service', () => {
         }
       return Promise.resolve(returnValue)
     })
-    commonApiGatewayPostSpy.mockImplementation(() => ({
+    apiGatewayPostMock.mockImplementation(() => ({
       data: {
         documents: 'posted',
       },
@@ -57,7 +56,7 @@ describe('documents service', () => {
       accountId,
     })
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
       {
         headers: { 'Account-Id': accountId },
@@ -88,7 +87,7 @@ describe('documents service', () => {
       search: 'test',
     })
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
       {
         headers: { 'Account-Id': accountId },
@@ -127,8 +126,8 @@ describe('documents service', () => {
       },
     })
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
       {
         headers: { 'Account-Id': accountId },
@@ -149,8 +148,8 @@ describe('documents service', () => {
 
       await downloadDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-      expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
-      expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+      expect(apiGatewayGetMock).toHaveBeenCalledTimes(1)
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(
         `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234/content`,
         {
           headers: { 'Account-Id': accountId },
@@ -164,8 +163,8 @@ describe('documents service', () => {
 
     await downloadDocuments(service.ServiceId, accountNumber, ['1234', '4567'], accountId)
 
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/archive`,
       { ids: ['1234', '4567'] },
       {
@@ -188,8 +187,8 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledWith(
+    expect(apiGatewayDeleteMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayDeleteMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents`,
       {
         headers: { 'Account-Id': accountId },
@@ -212,8 +211,8 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(commonApiGatewayPatchSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPatchSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPatchMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPatchMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234`,
       [{
         op: 'replace',
@@ -242,8 +241,8 @@ describe('documents service', () => {
     const expectedPayload = new FormData()
     expectedPayload.append('file', file)
 
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/folders/${folderId}/currentuser/documents?notify=true&source=User`,
       expectedPayload,
       {
@@ -270,8 +269,8 @@ describe('documents service', () => {
 
     await moveDocuments(service.ServiceId, accountNumber, fileMove, accountId)
 
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/move`,
       expectedPayload,
       {
@@ -290,8 +289,8 @@ describe('documents service', () => {
 
     await transmitDocuments(service.ServiceId, accountNumber, documentIds, accountId)
 
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+    expect(apiGatewayPostMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayPostMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/pia-speedup-transfer`,
       { ids: documentIds },
       {
@@ -308,8 +307,8 @@ describe('documents service', () => {
 
     const data = await previewDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledTimes(1)
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234/preview`,
       {
         responseType: 'arraybuffer',

@@ -1,9 +1,10 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
 import { MENU_ACTIONS_NAME } from './constants'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { getInitials } from '@entities/helpers'
 import { PTable } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -12,23 +13,15 @@ import CollaboratorsList from './collaborators-list.vue'
 
 let wrapper: VueWrapper<any>
 
-const mockGatewayGet = vi.hoisted(() => vi.fn(() => {
-  return Promise.resolve({
+const mockGatewayGet = apiGatewayGetMock
+let hasPermissionMock: MockInstance
+
+beforeEach(() => {
+  mockGatewayGet.mockResolvedValue({
     data: mockedCollaboratorsList2,
   })
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: mockGatewayGet,
-    },
-  }),
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+  hasPermissionMock = armCurrentUserPermissions()
+})
 
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(CollaboratorsList, {
@@ -92,7 +85,7 @@ const createWrapper = (): VueWrapper<any> =>
 const toolBoxElementsWithoutPermissions: PToolboxItemProps[] = [
   {
     pIconName: 'person',
-    pValue: 'Collaborator information',
+    pValue: 'collaboratorInformation',
     pActionName: 'collaboratorInformation',
     pState: 'default',
   },

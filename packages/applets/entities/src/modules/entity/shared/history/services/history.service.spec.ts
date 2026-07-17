@@ -1,19 +1,9 @@
-import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import { getMockedActivity, getMockedActivitiesResponse, getMockedThemes } from '../__mocks__/history.mocks'
 import { HistoryService } from './history.service'
 
-const commonApiGetMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: commonApiGetMock,
-      },
-    }),
-  }
-})
+const commonApiGetMock = apiGatewayGetMock
 
 // Helper to convert URLSearchParams to an object for easier testing
 const urlSearchParamsToObject = (params: URLSearchParams): Record<string, string | string[]> => {

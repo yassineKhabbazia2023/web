@@ -1,3 +1,4 @@
+import { useRouter } from 'vue-router'
 import { useLogout } from './use-logout.composable'
 import { RouteName } from '@pulse/common/enums'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
@@ -7,24 +8,15 @@ import { CurrentUserManager } from '@pulse/common/managers'
 
 const mockPush = vi.hoisted(() => vi.fn())
 
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-}))
-
-vi.mock('@pulse/common/services/amplitude')
-vi.mock('@pulse/common/managers', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@pulse/common/managers')>()
-  return {
-    ...actual,
-    CurrentUserManager: {
-      logout: vi.fn(),
-    },
-  }
-})
-
 describe('useLogout', () => {
+  beforeEach(() => {
+    // vue-router is spy-wrapped project-wide (doctrine: shared-hubs): arm the
+    // shared spy per test instead of registering a local factory.
+    vi.mocked(useRouter).mockReturnValue({ push: mockPush } as unknown as ReturnType<typeof useRouter>)
+    vi.spyOn(CurrentUserManager, 'logout').mockResolvedValue(undefined)
+    vi.spyOn(AmplitudeService, 'track').mockImplementation(() => undefined)
+  })
+
   it('should call CurrentUserManager.logout on handleLogout', async () => {
     const { handleLogout } = useLogout()
 

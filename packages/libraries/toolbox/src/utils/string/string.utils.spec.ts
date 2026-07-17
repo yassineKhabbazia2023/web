@@ -52,7 +52,7 @@ describe('string.utils', () => {
     }]
 
     it.each(testCases)(
-      'should replace non-alphanumeric characters in "%s" with "%s"',
+      'should replace non-alphanumeric characters in "$input" with "$expected"',
       ({
         input,
         expected,

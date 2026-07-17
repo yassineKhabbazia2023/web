@@ -13,17 +13,22 @@ declare global {
   }
 }
 
+// Canonical runtime environment variables shared by the window.EnvVars fixture
+// (below) and the module-shaped 'env-vars' fixture (env-vars.mocks.ts): both
+// sources must expose the exact same values for the worker.
+export const windowEnvVarsMock: Window['EnvVars'] = {
+  VITE_MSAL_CLIENT_ID: 'mock-client-id-9b2c80af',
+  VITE_MSAL_REDIRECT_URI: 'http://localhost:9001',
+  VITE_MSAL_POST_LOGOUT_REDIRECT_URI: 'http://localhost:9001',
+  VITE_MSAL_AUTHORITY: 'https://login.microsoftonline.com/mock-tenant',
+  VITE_MSAL_BACK_CLIENT_ID: 'mock-backend-client-id',
+  VITE_API_BASE_URL: 'https://backoffice.pulse.rydge.fr/back',
+}
+
 // Mock runtime environment variables (window.EnvVars)
 export function mockWindowEnvVars() {
   if (typeof window !== 'undefined') {
-    window.EnvVars = {
-      VITE_MSAL_CLIENT_ID: 'mock-client-id-9b2c80af',
-      VITE_MSAL_REDIRECT_URI: 'http://localhost:9001',
-      VITE_MSAL_POST_LOGOUT_REDIRECT_URI: 'http://localhost:9001',
-      VITE_MSAL_AUTHORITY: 'https://login.microsoftonline.com/mock-tenant',
-      VITE_MSAL_BACK_CLIENT_ID: 'mock-backend-client-id',
-      VITE_API_BASE_URL: 'https://backoffice.pulse.rydge.fr/back',
-    }
+    window.EnvVars = windowEnvVarsMock
   }
 }
 

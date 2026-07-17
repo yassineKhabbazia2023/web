@@ -5,8 +5,6 @@ import type { EntitiesManagementListEmit } from './entities-management.list.type
 import type { RegularWalletData } from '../../../types/wallet-data.types'
 import { EntitiesManagementAction } from './entities-management.list.enums'
 
-vi.mock('./entities-management.list.manager')
-
 const buildRow = (overrides: Partial<RegularWalletData> = {}): RegularWalletData => ({
   owner: {
     contactId: 1,
@@ -36,6 +34,10 @@ const createTestSetup = () => {
 }
 
 describe('useEntitiesManagementList', () => {
+  beforeEach(() => {
+    vi.spyOn(EntitiesManagementListManager, 'getMenuElements').mockReturnValue([])
+  })
+
   describe('menuElements', () => {
     it('should return empty array when getMenuElements returns empty', () => {
       vi.mocked(EntitiesManagementListManager.getMenuElements).mockReturnValue([])

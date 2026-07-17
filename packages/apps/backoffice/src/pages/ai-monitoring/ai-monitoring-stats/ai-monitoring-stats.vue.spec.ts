@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import AiMonitoringStats from './ai-monitoring-stats.vue'
 import type { AiMonitoringSummary } from '@backoffice/types/ai-monitoring.type'

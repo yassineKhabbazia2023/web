@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { usePrCompletionTime } from './use-pr-completion-time.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
@@ -9,11 +9,8 @@ import type {
 } from '@backoffice/types/azure-devops.type'
 import { buildMockPr } from '../__mocks__/pr-completion.mocks'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/azure-devops/azure-devops.service')
-
-const mockedGetPullRequestsAcrossRepos = vi.mocked(AzureDevOpsService.getPullRequestsAcrossRepos)
-const mockedGetCurrentUserProfile = vi.mocked(AzureDevOpsService.getCurrentUserProfile)
+let mockedGetPullRequestsAcrossRepos: MockInstance
+let mockedGetCurrentUserProfile: MockInstance
 
 const mockRepositories: AzureDevOpsRepository[] = [
   { id: '1', name: 'Pulse.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
@@ -37,8 +34,8 @@ const setupStoreWithProfile = () => {
 describe('usePrCompletionTime', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.clearAllMocks()
-    mockedGetCurrentUserProfile.mockResolvedValue(mockProfile)
+    mockedGetPullRequestsAcrossRepos = vi.spyOn(AzureDevOpsService, 'getPullRequestsAcrossRepos').mockResolvedValue([])
+    mockedGetCurrentUserProfile = vi.spyOn(AzureDevOpsService, 'getCurrentUserProfile').mockResolvedValue(mockProfile)
   })
 
   it('should initialize with default values', () => {

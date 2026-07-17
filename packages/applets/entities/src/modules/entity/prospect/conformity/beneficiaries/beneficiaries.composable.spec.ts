@@ -16,19 +16,10 @@ import { useBeneficiaries } from './beneficiaries.composable'
 import { BENEFICIARIES_I18N_KEYS } from './beneficiaries.constants'
 import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
-
-const fetchBeneficiariesMock = vi.mocked(ProspectsService.fetchBeneficiaries)
-const uploadBeneficiaryDocumentsMock = vi.mocked(ProspectsService.uploadBeneficiaryDocuments)
-const completeOnboardingStepMock = vi.mocked(ProspectsService.completeOnboardingStep)
-const fetchOnboardingStepMock = vi.mocked(ProspectsService.fetchOnboardingStep)
+const fetchBeneficiariesMock = vi.fn()
+const uploadBeneficiaryDocumentsMock = vi.fn()
+const completeOnboardingStepMock = vi.fn()
+const fetchOnboardingStepMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
 
 const prospectIdMock = 602
@@ -50,7 +41,11 @@ const secondBeneficiaryIdMock = 'beneficiary-2'
 
 describe('beneficiaries.composable', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(ProspectsService, 'fetchBeneficiaries').mockImplementation(fetchBeneficiariesMock)
+    vi.spyOn(ProspectsService, 'uploadBeneficiaryDocuments').mockImplementation(uploadBeneficiaryDocumentsMock)
+    vi.spyOn(ProspectsService, 'completeOnboardingStep').mockImplementation(completeOnboardingStepMock)
+    vi.spyOn(ProspectsService, 'fetchOnboardingStep').mockImplementation(fetchOnboardingStepMock)
+    displayNotificationMock.mockImplementation(() => undefined)
     setCurrentEntity(prospectIdMock)
     fetchBeneficiariesMock.mockResolvedValue(getBeneficiariesResponseMock({
       beneficiaries: [

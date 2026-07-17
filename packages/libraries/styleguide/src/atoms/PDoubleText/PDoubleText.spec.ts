@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PDoubleText from './'
-import { describe, it, expect } from 'vitest'
+
 
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 

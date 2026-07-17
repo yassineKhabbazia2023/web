@@ -3,9 +3,9 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     projects: [
-      'packages/libraries/*',
-      'packages/applets/*',
-      'packages/apps/*',
+      'packages/libraries/*/vitest.config.ts',
+      'packages/applets/*/vitest.config.ts',
+      'packages/apps/*/vitest.config.ts',
     ],
     reporters: [
       ['default', { summary: false }],
@@ -13,8 +13,8 @@ export default defineConfig({
     watch: false,
     coverage: {
       enabled: true,
-      provider: 'istanbul',
-      reporter: ['lcov', 'json', 'html'],
+      provider: 'v8',
+      reporter: ['lcov'],
       exclude: [
         'node_modules',
         'dist',

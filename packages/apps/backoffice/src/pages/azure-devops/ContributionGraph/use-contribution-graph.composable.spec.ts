@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { useContributionGraph } from './use-contribution-graph.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
@@ -11,15 +11,11 @@ import type {
   ContributionWorkItem,
 } from '@backoffice/types/azure-devops.type'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/azure-devops/azure-devops.service')
-
-const mockedGetCurrentUserProfile = vi.mocked(AzureDevOpsService.getCurrentUserProfile)
-const mockedGetCommitsByAuthorAcrossRepos = vi.mocked(AzureDevOpsService.getCommitsByAuthorAcrossRepos)
-const mockedGetWorkItemsForUser = vi.mocked(AzureDevOpsService.getWorkItemsForUser)
-const mockedGetPrReviewsForUserAcrossRepos = vi.mocked(AzureDevOpsService.getPrReviewsForUserAcrossRepos)
-const mockedEnrichPrReviewsWithVoteDates = vi.mocked(AzureDevOpsService.enrichPrReviewsWithVoteDates)
-const mockedBuildPrWebUrl = vi.mocked(AzureDevOpsService.buildPrWebUrl)
+let mockedGetCurrentUserProfile: MockInstance
+let mockedGetCommitsByAuthorAcrossRepos: MockInstance
+let mockedGetWorkItemsForUser: MockInstance
+let mockedGetPrReviewsForUserAcrossRepos: MockInstance
+let mockedEnrichPrReviewsWithVoteDates: MockInstance
 
 const mockProfile: AzureDevOpsUserProfile = {
   displayName: 'John Doe',
@@ -78,11 +74,13 @@ describe('useContributionGraph', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.clearAllMocks()
-    mockedGetWorkItemsForUser.mockResolvedValue([])
-    mockedGetPrReviewsForUserAcrossRepos.mockResolvedValue([])
-    mockedEnrichPrReviewsWithVoteDates.mockResolvedValue(new Map())
-    mockedBuildPrWebUrl.mockImplementation((repo, prId) => `https://dev.azure.com/org/project/_git/${repo}/pullrequest/${prId}`)
+    mockedGetCurrentUserProfile = vi.spyOn(AzureDevOpsService, 'getCurrentUserProfile').mockResolvedValue(mockProfile)
+    mockedGetCommitsByAuthorAcrossRepos = vi.spyOn(AzureDevOpsService, 'getCommitsByAuthorAcrossRepos').mockResolvedValue([])
+    mockedGetWorkItemsForUser = vi.spyOn(AzureDevOpsService, 'getWorkItemsForUser').mockResolvedValue([])
+    mockedGetPrReviewsForUserAcrossRepos = vi.spyOn(AzureDevOpsService, 'getPrReviewsForUserAcrossRepos').mockResolvedValue([])
+    mockedEnrichPrReviewsWithVoteDates = vi.spyOn(AzureDevOpsService, 'enrichPrReviewsWithVoteDates').mockResolvedValue(new Map())
+    vi.spyOn(AzureDevOpsService, 'buildPrWebUrl')
+      .mockImplementation((repo, prId) => `https://dev.azure.com/org/project/_git/${repo}/pullrequest/${prId}`)
   })
 
   it('should initialize with default values', () => {

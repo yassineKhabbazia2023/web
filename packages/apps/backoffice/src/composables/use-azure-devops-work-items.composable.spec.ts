@@ -1,21 +1,23 @@
 import { nextTick } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { useAzureDevOpsWorkItems } from './use-azure-devops-work-items.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/azure-devops/azure-devops.service')
-
-const mockedGetWorkItemsForCommitRange = vi.mocked(AzureDevOpsService.getWorkItemsForCommitRange)
-const mockedGetLatestMepTag = vi.mocked(AzureDevOpsService.getLatestMepTag)
-const mockedGetHeadInfo = vi.mocked(AzureDevOpsService.getHeadInfo)
-const mockedGetRepositories = vi.mocked(AzureDevOpsService.getRepositories)
+let mockedGetWorkItemsForCommitRange: MockInstance
+let mockedGetLatestMepTag: MockInstance
+let mockedGetHeadInfo: MockInstance
+let mockedGetRepositories: MockInstance
 
 describe('useAzureDevOpsWorkItems', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    mockedGetWorkItemsForCommitRange = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+      .mockResolvedValue({ workItemsByTeam: {}, failedIds: [], warnings: [] })
+    mockedGetLatestMepTag = vi.spyOn(AzureDevOpsService, 'getLatestMepTag').mockResolvedValue(null)
+    mockedGetHeadInfo = vi.spyOn(AzureDevOpsService, 'getHeadInfo').mockResolvedValue({ commitId: '', tagName: null })
+    mockedGetRepositories = vi.spyOn(AzureDevOpsService, 'getRepositories').mockResolvedValue([])
   })
 
   it('should initialize with default values', () => {

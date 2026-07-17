@@ -1,4 +1,5 @@
 import { API_PREFIXES } from '@pulse/common/constants'
+import { apiGatewayGetMock, apiGatewayPatchMock } from '@pulse/common/mocks/vitest'
 import {
   fetchFavoriteEntities,
   manageFavoriteEntities,
@@ -33,17 +34,8 @@ const TEST_ENTITIES: Entity[] = [
   },
 ]
 
-const mockedFavoriteEntityPatch = vi.hoisted(() => vi.fn())
-const mockedGatewayGet = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: mockedGatewayGet,
-      patch: mockedFavoriteEntityPatch,
-    },
-  }),
-}))
+const mockedFavoriteEntityPatch = apiGatewayPatchMock
+const mockedGatewayGet = apiGatewayGetMock
 
 const fetchEntitiesStatisticsImplementation = () => {
   return Promise.resolve({

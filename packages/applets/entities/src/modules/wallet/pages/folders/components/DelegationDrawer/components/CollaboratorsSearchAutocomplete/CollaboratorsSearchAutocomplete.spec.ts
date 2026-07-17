@@ -1,25 +1,20 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { createI18n } from 'vue-i18n'
 import { PAutocomplete } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-
-vi.mock('@entities/services/collaborator', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
-}))
+import { getCollaborators } from '@entities/services/collaborator'
 
 const mockedCollaborators = getMockedCollaborators()
+
+beforeEach(() => {
+  vi.mocked(getCollaborators).mockResolvedValue(mockedCollaborators as unknown as Awaited<ReturnType<typeof getCollaborators>>)
+})
 
 const defaultProps: CollaboratorsSearchAutocompleteProps = {
   selectedCollaborators: [mockedCollaborators[0], mockedCollaborators[1], mockedCollaborators[2]],
 }
-
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
 
 const mockSearchFetchSuggestions = vi.fn()
 
@@ -29,9 +24,6 @@ const createWrapper = (
   return mount(CollaboratorsSearchAutocomplete, {
     props,
     global: {
-      provide: {
-        i18n,
-      },
       stubs: {
         PAutocomplete: {
           name: 'PAutocomplete',

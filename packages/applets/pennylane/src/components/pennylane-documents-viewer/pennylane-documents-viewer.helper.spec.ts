@@ -1,12 +1,6 @@
 import type { FileExtension } from '@pulse/toolbox/types'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
 
-interface Window {
-  showSaveFilePicker: any
-  URL: any
-}
-declare let window: Window
-
 describe('pennylane-documents-viewer.helper', () => {
   describe('getDocumentType', () => {
     const tests: {
@@ -36,11 +30,10 @@ describe('pennylane-documents-viewer.helper', () => {
     it('should return return properly', () => {
       const previewImageMock = 'preview-image-mock'
       const expectedPreviewImage = previewImageMock
-      const createObjectURLMock = vi.fn()
-      window.URL = {
-        createObjectURL: createObjectURLMock,
-      }
-      createObjectURLMock.mockReturnValue(expectedPreviewImage)
+      // Spy the static method on the real URL: replacing the constructor
+      // would break the import-time `new URL(...)` of files collected while
+      // this test runs (collection is pipelined on a shared worker).
+      const createObjectURLMock = vi.spyOn(URL, 'createObjectURL').mockReturnValue(expectedPreviewImage)
 
       const documentSrcMock = 'document-src-mock'
       const documentTypeMock = 'application/pdf'

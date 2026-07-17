@@ -48,9 +48,8 @@ describe('PowerBIReportViewer', () => {
 
   beforeEach(() => {
     embedMock = vi.fn()
-    // To avoid mocking all properties since only 'embed' is needed
-    // @ts-ignore-next-line
-    window.powerbi = { embed: embedMock }
+    // Only 'embed' is needed; stubbed per test, restored automatically
+    vi.stubGlobal('powerbi', { embed: embedMock })
   })
 
   it('calls loadBIReportFullscreen on opened event and calls window.powerbi.embed with correct arguments', async () => {

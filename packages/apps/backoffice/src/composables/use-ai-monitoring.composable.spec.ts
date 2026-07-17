@@ -4,28 +4,6 @@ import { displayNotification } from '@pulse/styleguide'
 import { DEFAULT_PAGE_NUMBER, PAGE_SIZE_OPTIONS } from '@backoffice/constants/backoffice.const'
 import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse } from '@backoffice/types/ai-monitoring.type'
 
-vi.mock('@backoffice/services/ai-monitoring/ai-monitoring.service', () => ({
-  AiMonitoringService: {
-    getHistory: vi.fn(),
-    getFilters: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/toolbox/utils/dates', () => ({
-  formatStartDateToISO: (date: Date) => date.toISOString().split('T')[0] + 'T00:00:00',
-  formatEndDateToISO: (date: Date) => date.toISOString().split('T')[0] + 'T23:59:59',
-}))
-
 describe('useAiMonitoring', () => {
   const mockResponse: AiSearchHistoryResponse = {
     history: [
@@ -68,12 +46,8 @@ describe('useAiMonitoring', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(AiMonitoringService.getFilters).mockResolvedValue(mockFiltersResponse)
-  })
-
-  afterEach(() => {
-    vi.resetAllMocks()
+    vi.spyOn(AiMonitoringService, 'getHistory').mockResolvedValue(mockResponse)
+    vi.spyOn(AiMonitoringService, 'getFilters').mockResolvedValue(mockFiltersResponse)
   })
 
   describe('initialize', () => {
@@ -214,8 +188,10 @@ describe('useAiMonitoring', () => {
 
       const { filters, handleFilterChange } = useAiMonitoring()
 
-      const startDate = new Date('2024-01-01T00:00:00Z')
-      const endDate = new Date('2024-01-31T23:59:59Z')
+      // Midday UTC: the real formatters pin the calendar day to Paris, and noon
+      // lands on the same day there whatever the runner's timezone.
+      const startDate = new Date('2024-01-01T12:00:00Z')
+      const endDate = new Date('2024-01-31T12:00:00Z')
       filters.value.dateRange = [startDate, endDate]
 
       await handleFilterChange()

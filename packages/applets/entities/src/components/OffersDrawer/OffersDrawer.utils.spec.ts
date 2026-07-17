@@ -4,6 +4,7 @@ import { getClientContactMock, getMockedPrincipalContacts } from '@entities/__mo
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { type PatchValue } from '@entities/services/patch-record'
+import { addPathValue } from '@entities/services/patch-record/patch-record.service'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 
@@ -17,10 +18,11 @@ import {
   updateAccountOnInput,
 } from './OffersDrawer.utils'
 
-const addPathValueMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/patch-record/patch-record.service', () => ({
-  addPathValue: addPathValueMock,
-}))
+const addPathValueMock = vi.mocked(addPathValue)
+
+beforeEach(() => {
+  addPathValueMock.mockImplementation(() => undefined)
+})
 
 const roleIdMock = 17
 const mockedCollaborators = getMockedCollaborators()

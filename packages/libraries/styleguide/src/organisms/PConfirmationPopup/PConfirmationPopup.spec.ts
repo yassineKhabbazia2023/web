@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import { type PConfirmationPopupProps } from './PConfirmationPopupTypes'
 import { nextTick } from 'vue'
 import PConfirmationPopup from '.'

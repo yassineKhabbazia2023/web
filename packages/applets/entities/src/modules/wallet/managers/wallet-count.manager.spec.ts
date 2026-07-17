@@ -1,13 +1,14 @@
 import { WalletCountManager } from './wallet-count.manager'
 import { WalletTab } from '../enums'
 import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
-vi.mock('@pulse/common/stores')
+const userStoreMock = getStoreMock(useUserStore)
 
 describe('WalletCountManager', () => {
   describe('getCount()', () => {
     it('should return regularEntitiesCount for FOLDERS tab', () => {
-      vi.mocked(useUserStore).mockReturnValue({ getRegularEntitiesCount: () => 5 } as any)
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(5)
 
       const result = WalletCountManager.getCount(WalletTab.FOLDERS)
 
@@ -15,7 +16,7 @@ describe('WalletCountManager', () => {
     })
 
     it('should return regularEntitiesCount for CUSTOMER_ENTITIES tab', () => {
-      vi.mocked(useUserStore).mockReturnValue({ getRegularEntitiesCount: () => 12 } as any)
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(12)
 
       const result = WalletCountManager.getCount(WalletTab.CUSTOMER_ENTITIES)
 
@@ -23,7 +24,7 @@ describe('WalletCountManager', () => {
     })
 
     it('should return prospectEntitiesCount for PROSPECTS tab', () => {
-      vi.mocked(useUserStore).mockReturnValue({ getProspectEntitiesCount: () => 3 } as any)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(3)
 
       const result = WalletCountManager.getCount(WalletTab.PROSPECTS)
 

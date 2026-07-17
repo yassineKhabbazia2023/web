@@ -1,18 +1,21 @@
+import type { FormItemRule } from 'element-plus'
 import { createInvoicesFormRules } from './invoices-first-step.form.validation'
 import type { InvoicesFormModel } from '../../types'
 
-vi.mock('@pulse/styleguide/utils/validators', () => ({
-  validationRules: {
-    requiredTextInput: vi.fn((message: string) => ({ type: 'required', message })),
-    email: vi.fn((message: string) => ({ type: 'email', message })),
-    custom: vi.fn((validator: Function, message: string, trigger: string) => ({
-      type: 'custom',
-      validator,
-      message,
-      trigger,
-    })),
-  },
-}))
+// The real validationRules carry their message inside the validator callback,
+// not on the rule object: run the rule to know what it accepts and rejects.
+const runRule = (rule: FormItemRule, value: unknown): Error | undefined => {
+  let error: Error | undefined
+  const validator = rule.validator as (
+    rule: unknown,
+    value: unknown,
+    callback: (error?: Error) => void,
+  ) => void
+  validator({}, value, (callbackError?: Error) => {
+    error = callbackError
+  })
+  return error
+}
 
 describe('invoices-first-step.form.validation', () => {
   describe('InvoicesFormModel interface', () => {
@@ -48,41 +51,46 @@ describe('invoices-first-step.form.validation', () => {
       expect(rules.acceptTerms).toHaveLength(1)
     })
 
-    it('should use provided translations for email required rule', () => {
+    it('should reject an empty email with the provided translation', () => {
       const rules = createInvoicesFormRules(translations)
-      const emailRules = rules.email as Array<{ message: string }>
+      const emailRules = rules.email as FormItemRule[]
 
-      expect(emailRules[0].message).toBe(translations.emailRequired)
+      expect(runRule(emailRules[0], '')).toEqual(new Error(translations.emailRequired))
     })
 
-    it('should use provided translations for email invalid rule', () => {
+    it('should accept a filled email on the required rule', () => {
       const rules = createInvoicesFormRules(translations)
-      const emailRules = rules.email as Array<{ message: string }>
+      const emailRules = rules.email as FormItemRule[]
 
-      expect(emailRules[1].message).toBe(translations.emailInvalid)
+      expect(runRule(emailRules[0], 'test@example.com')).toBeUndefined()
     })
 
-    it('should use provided translations for acceptTerms rule', () => {
+    it('should reject a malformed email with the provided translation', () => {
       const rules = createInvoicesFormRules(translations)
-      const acceptTermsRules = rules.acceptTerms as Array<{ message: string }>
+      const emailRules = rules.email as FormItemRule[]
 
-      expect(acceptTermsRules[0].message).toBe(translations.acceptTermsRequired)
+      expect(runRule(emailRules[1], 'not-an-email')).toEqual(new Error(translations.emailInvalid))
     })
 
-    it('should create acceptTerms custom validator that returns true for true value', () => {
+    it('should accept a well-formed email on the format rule', () => {
       const rules = createInvoicesFormRules(translations)
-      const acceptTermsRules = rules.acceptTerms as Array<{ validator: (value: boolean) => boolean }>
-      const validator = acceptTermsRules[0].validator
+      const emailRules = rules.email as FormItemRule[]
 
-      expect(validator(true)).toBe(true)
+      expect(runRule(emailRules[1], 'test@example.com')).toBeUndefined()
     })
 
-    it('should create acceptTerms custom validator that returns false for false value', () => {
+    it('should accept acceptTerms when true', () => {
       const rules = createInvoicesFormRules(translations)
-      const acceptTermsRules = rules.acceptTerms as Array<{ validator: (value: boolean) => boolean }>
-      const validator = acceptTermsRules[0].validator
+      const acceptTermsRules = rules.acceptTerms as FormItemRule[]
 
-      expect(validator(false)).toBe(false)
+      expect(runRule(acceptTermsRules[0], true)).toBeUndefined()
+    })
+
+    it('should reject acceptTerms when false with the provided translation', () => {
+      const rules = createInvoicesFormRules(translations)
+      const acceptTermsRules = rules.acceptTerms as FormItemRule[]
+
+      expect(runRule(acceptTermsRules[0], false)).toEqual(new Error(translations.acceptTermsRequired))
     })
   })
 })

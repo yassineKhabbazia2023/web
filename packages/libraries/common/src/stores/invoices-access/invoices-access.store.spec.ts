@@ -1,16 +1,10 @@
-import { ref } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
 import { getInvoicesAccessResponseMock, getMockedUser, getMockedEntitySummary } from '../../__mocks__'
+import { isMobileMockRef } from '../../__mocks__/vitest'
 import { InvoicesTabState } from '../../services/invoices-access/invoices-access.service.types'
 import { useUserStore } from '../user/user.store'
 import { useCurrentEntityStore } from '../current-entity/current-entity.store'
 import { useInvoicesAccessStore } from './invoices-access.store'
-
-const isMobileRef = ref(false)
-
-vi.mock('@pulse/styleguide', () => ({
-  useResponsive: () => ({ isMobile: isMobileRef }),
-}))
 
 
 const USER_EMAIL = 'contact@example.com'
@@ -38,7 +32,7 @@ function setUpNonSignatoryEntity() {
 describe('useInvoicesAccessStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    isMobileRef.value = false
+    isMobileMockRef.value = false
   })
 
   describe('initial state', () => {
@@ -234,7 +228,7 @@ describe('useInvoicesAccessStore', () => {
 
   describe('mobile visibility', () => {
     it('should set isTabVisible to false when isMobile is true even for collab user', () => {
-      isMobileRef.value = true
+      isMobileMockRef.value = true
       const store = useInvoicesAccessStore()
       setUpCollabUser()
       setUpNonSignatoryEntity()
@@ -249,7 +243,7 @@ describe('useInvoicesAccessStore', () => {
     })
 
     it('should set isTabVisible to false when isMobile is true even for signatory user', () => {
-      isMobileRef.value = true
+      isMobileMockRef.value = true
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
       setUpSignatoryEntity()
@@ -264,7 +258,7 @@ describe('useInvoicesAccessStore', () => {
     })
 
     it('should set isTabVisible to false when isMobile is true even for client with access', () => {
-      isMobileRef.value = true
+      isMobileMockRef.value = true
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
       setUpNonSignatoryEntity()

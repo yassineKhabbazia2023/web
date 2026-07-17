@@ -1,7 +1,6 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
@@ -17,31 +16,30 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
-import type { PatchValue } from '@entities/services/patch-record'
+import type { PatchOperation, PatchValue } from '@entities/services/patch-record'
 import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 
+import {
+  getHasNoSignatory,
+  getIsAllCollaboratorRoleSelected,
+  getIsMissingCollaboratorRole,
+  getIsNextButtonDisabled,
+  getIsNoCollaboratorSelected,
+  updateAccountOnInput,
+} from './OffersDrawer.utils'
+import { getAllOffers, getOffer, getOffersBookLink } from '@entities/services/offer'
+import { addPathValue, getPatchOperations } from '@entities/services/patch-record/patch-record.service'
+
 import OffersDrawer from '.'
 
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-
-const getHasNoSignatoryMock = vi.hoisted(() => vi.fn())
-const getIsNoCollaboratorSelectedMock = vi.hoisted(() => vi.fn())
-const getIsAllCollaboratorRoleSelectedMock = vi.hoisted(() => vi.fn())
-const getIsMissingCollaboratorRoleMock = vi.hoisted(() => vi.fn())
-const getIsNextButtonDisabledMock = vi.hoisted(() => vi.fn())
-const updateAccountOnInputMock = vi.hoisted(() => vi.fn())
-vi.mock('./OffersDrawer.utils', () => ({
-  getHasNoSignatory: getHasNoSignatoryMock,
-  getIsNoCollaboratorSelected: getIsNoCollaboratorSelectedMock,
-  getIsAllCollaboratorRoleSelected: getIsAllCollaboratorRoleSelectedMock,
-  getIsMissingCollaboratorRole: getIsMissingCollaboratorRoleMock,
-  getIsNextButtonDisabled: getIsNextButtonDisabledMock,
-  updateAccountOnInput: updateAccountOnInputMock,
-}))
+const getHasNoSignatoryMock = vi.mocked(getHasNoSignatory)
+const getIsNoCollaboratorSelectedMock = vi.mocked(getIsNoCollaboratorSelected)
+const getIsAllCollaboratorRoleSelectedMock = vi.mocked(getIsAllCollaboratorRoleSelected)
+const getIsMissingCollaboratorRoleMock = vi.mocked(getIsMissingCollaboratorRole)
+const getIsNextButtonDisabledMock = vi.mocked(getIsNextButtonDisabled)
+const updateAccountOnInputMock = vi.mocked(updateAccountOnInput)
 
 const principalContacts: AccountSignatories[] = getMockedPrincipalContacts()
 const currentUser: UserInfo = getMockedUser()
@@ -61,57 +59,36 @@ const mockedPatchOperations = getMockedPatchOperations()
 const mockedCollaborators = getMockedCollaborators()
 const mockedCollaboratorIds = mockedCollaborators.map(({ id }) => id)
 
-function getMockedSanitized(url: string) {
-  return `sanitized-${url}`
-}
+const getAllOffersMock = vi.mocked(getAllOffers)
+const getAccountSignatoriesMock = vi.mocked(ServicesAccount.getAccountSignatories)
+const fetchAccountMock = vi.mocked(ServicesAccount.fetchAccount)
+const addPathValueMock = vi.mocked(addPathValue)
+const getPatchOperationsMock = vi.mocked(getPatchOperations)
+const fetchAccountSubscriptionsMock = vi.mocked(subscriptionService.fetchAccountSubscriptions)
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-const getAllOffersMock = vi.hoisted(() => vi.fn(() => Promise.resolve(subscriptionOffers)))
-const getAccountSignatoriesMock = vi.hoisted(() => vi.fn(() => Promise.resolve(principalContacts)))
-vi.mock('@entities/services/offer', () => ({
-  getAllOffers: getAllOffersMock,
-  getOffer: vi.fn((offerId) =>
+beforeEach(() => {
+  getHasNoSignatoryMock.mockReturnValue(undefined as unknown as boolean)
+  getIsNoCollaboratorSelectedMock.mockReturnValue(undefined as unknown as boolean)
+  getIsAllCollaboratorRoleSelectedMock.mockReturnValue(undefined as unknown as boolean)
+  getIsMissingCollaboratorRoleMock.mockReturnValue(undefined as unknown as boolean)
+  getIsNextButtonDisabledMock.mockReturnValue(undefined as unknown as boolean)
+  updateAccountOnInputMock.mockImplementation(() => undefined)
+  addPathValueMock.mockImplementation(() => undefined)
+  getPatchOperationsMock.mockReturnValue(undefined as unknown as PatchOperation[])
+  getAllOffersMock.mockImplementation(() => Promise.resolve(subscriptionOffers))
+  vi.mocked(getOffer).mockImplementation((offerId) =>
     Promise.resolve(
       subscriptionOffersServices.find((item) => item.offerId === offerId),
-    ),
-  ),
-  getOffersBookLink: vi.fn(() => offersBookTestLink),
-}))
-
-const fetchAccountMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockedAccount)))
-vi.mock('@entities/services/account', () => ({
-  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
-  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
-  fetchAccount: fetchAccountMock,
-  patchAccount: vi.fn(() => Promise.resolve({})),
-  getAccountSignatories: getAccountSignatoriesMock,
-}))
-
-vi.mock('@pulse/toolbox/utils/url', () => ({
-  sanitizeUrl: getMockedSanitized,
-}))
-
-const addPathValueMock = vi.hoisted(() => vi.fn())
-const getPatchOperationsMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/patch-record/patch-record.service', () => ({
-  addPathValue: addPathValueMock,
-  getPatchOperations: getPatchOperationsMock,
-}))
-
-const fetchAccountSubscriptionsMock = vi.hoisted(() => vi.fn(() => Promise.resolve([])))
-vi.mock('@entities/services/subscription/subscriptionService', () => ({
-  createSubscriptionRequest: vi.fn(),
-  fetchAccountSubscriptions: fetchAccountSubscriptionsMock,
-}))
-
-vi.mock('./OffersDrawerUtils', async () => {
-  const OffersDrawerUtils = await vi.importActual('./utils/OffersDrawerUtils')
-
-  return OffersDrawerUtils
+    ))
+  vi.mocked(getOffersBookLink).mockImplementation(() => offersBookTestLink)
+  vi.mocked(ServicesAccount.fetchAccountReferential).mockResolvedValue(getMockedAccountReferential())
+  vi.mocked(ServicesAccount.fetchReferentialHubs).mockResolvedValue(getMockedReferentialHubs())
+  fetchAccountMock.mockResolvedValue(mockedAccount)
+  vi.mocked(ServicesAccount.patchAccount).mockResolvedValue(undefined)
+  getAccountSignatoriesMock.mockResolvedValue(principalContacts)
+  vi.mocked(subscriptionService.createSubscriptionRequest).mockResolvedValue(undefined)
+  fetchAccountSubscriptionsMock.mockImplementation(() => Promise.resolve([]))
 })
-
-vi.mock('@entities/utils/helpers')
 
 const accountNumber = 'account-number'
 const accountId = mockedAccount.accountId
@@ -219,17 +196,17 @@ describe('offersDrawer', () => {
       }
 
       it('should patch the account and create a subscription when the user confirms', async () => {
-        const content = 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.\n'
+        const content = 'confirmationContent'
 
         const expectedConfirmationModalBefore = {
-          cancelButtonLabel: 'Cancel',
-          confirmButtonLabel: 'Confirm',
+          cancelButtonLabel: 'cancel',
+          confirmButtonLabel: 'confirm',
           content,
           isCancelButtonDisabled: false,
           isConfirmButtonDisabled: false,
           isConfirmButtonLoading: false,
           modelValue: false,
-          title: 'Attention',
+          title: 'confirmationTitle',
         }
         const expectedConfirmationModalDuring = {
           ...expectedConfirmationModalBefore,
@@ -241,8 +218,8 @@ describe('offersDrawer', () => {
           ...expectedConfirmationModalBefore,
         }
 
-        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
+        const patchAccountSpy = vi.mocked(ServicesAccount.patchAccount)
+        const createSubscriptionRequestSpy = vi.mocked(subscriptionService.createSubscriptionRequest)
 
         const wrapper = await getWrapper(true)
 
@@ -267,8 +244,8 @@ describe('offersDrawer', () => {
       })
 
       it('should track Amplitude event when saving for offers without validation', async () => {
-        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
+        const patchAccountSpy = vi.mocked(ServicesAccount.patchAccount)
+        const createSubscriptionRequestSpy = vi.mocked(subscriptionService.createSubscriptionRequest)
 
         const wrapper = await getWrapper(true)
 
@@ -311,8 +288,8 @@ describe('offersDrawer', () => {
         subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
         await flushPromises()
 
-        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
+        const patchAccountSpy = vi.mocked(ServicesAccount.patchAccount)
+        const createSubscriptionRequestSpy = vi.mocked(subscriptionService.createSubscriptionRequest)
         const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
         expect(confirmationModal.exists()).toBe(true)
 
@@ -751,7 +728,7 @@ describe('offersDrawer', () => {
         },
       }
 
-      vi.spyOn(subscriptionService, 'createSubscriptionRequest').mockRejectedValue(error500)
+      vi.mocked(subscriptionService.createSubscriptionRequest).mockRejectedValue(error500)
 
       const wrapper = await getWrapper(true)
       await wrapper.vm.initDrawerForCurrentAccount()

@@ -49,9 +49,24 @@ function createScrollableContainer(): HTMLElement {
     bottom: CONTAINER_TOP + CONTAINER_HEIGHT,
     height: CONTAINER_HEIGHT,
   })
-  document.body.appendChild(container)
+  appendToBody(container)
   return container
 }
+
+// Never wipe the worker-shared document.body (doctrine: shared-dom): every node
+// appended by this file is tracked and removed after each test instead.
+const appendedElements: HTMLElement[] = []
+
+function appendToBody(element: HTMLElement): void {
+  document.body.appendChild(element)
+  appendedElements.push(element)
+}
+
+afterEach(() => {
+  for (const element of appendedElements.splice(0)) {
+    element.remove()
+  }
+})
 
 function createAlertElement(viewportTop: number): HTMLElement {
   const alert = document.createElement('div')
@@ -65,7 +80,6 @@ function createAlertElement(viewportTop: number): HTMLElement {
 
 describe('useScrollToAlert', () => {
   beforeEach(() => {
-    document.body.innerHTML = ''
     vi.spyOn(globalThis, 'getComputedStyle').mockImplementation((element) => {
       const overflowY = (element as HTMLElement).getAttribute('style')?.includes('overflow-y: auto') === true
         ? 'auto'
@@ -146,7 +160,7 @@ describe('useScrollToAlert', () => {
 
   it('is a no-op when no scrollable ancestor is found', async () => {
     const orphanAlert = createAlertElement(50)
-    document.body.appendChild(orphanAlert)
+    appendToBody(orphanAlert)
     const alertRef = ref<HTMLElement | null>(orphanAlert)
 
     const [{ scrollToAlert }, app] = withSetup(() => useScrollToAlert(alertRef))

@@ -2,25 +2,6 @@ import { openHubspot, closeHubspot, initHubspot } from './hubspot.plugin'
 import { hubSpotStatus } from './hubspot.plugin.state'
 import { logger } from '@pulse/toolbox'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-    warn: vi.fn(),
-    trace: vi.fn(),
-  },
-}))
-
-declare let window: {
-  HubSpotConversations: {
-    on: (_eventName: string, _cb: () => void) => void
-    widget: {
-      load: ({ widgetOpen }: { widgetOpen: boolean }) => void
-      open: () => void
-      remove: () => void
-    }
-  }
-} & Window
-
 describe('Hubspot Plugin', () => {
   const mockHubSpotConversations = {
     on: vi.fn(),
@@ -34,7 +15,7 @@ describe('Hubspot Plugin', () => {
   beforeEach(() => {
     hubSpotStatus.isActive = false
     hubSpotStatus.isInitialized = false
-    window.HubSpotConversations = mockHubSpotConversations as any
+    vi.stubGlobal('HubSpotConversations', mockHubSpotConversations)
     vi.clearAllMocks()
   })
 
@@ -82,7 +63,7 @@ describe('Hubspot Plugin', () => {
 
     it('should log error and return early if window.HubSpotConversations does not exist', () => {
       hubSpotStatus.isActive = true
-      window.HubSpotConversations = undefined as any
+      vi.stubGlobal('HubSpotConversations', undefined)
       const onHubspotClose = vi.fn()
 
       initHubspot({ onHubspotClose })

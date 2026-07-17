@@ -35,6 +35,9 @@
     "./stores": "./src/stores/main.ts",
     "./mocks": "./src/__mocks__/index.ts",
     "./mocks/vitest": "./src/__mocks__/vitest/index.ts",
+    "./mocks/vitest/api.mocks": "./src/__mocks__/vitest/api.mocks.ts",
+    "./mocks/vitest/storage.mocks": "./src/__mocks__/vitest/storage.mocks.ts",
+    "./mocks/vitest/current-user.permissions.helper": "./src/__mocks__/vitest/current-user.permissions.helper.ts",
     "./utils": "./src/utils/index.ts",
     ".": "./src/main.ts"
   },

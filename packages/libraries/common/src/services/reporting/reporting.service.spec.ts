@@ -1,18 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
 import { apiGatewayGetMock } from '../../__mocks__/vitest'
 import { ReportingService } from './reporting.service'
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: apiGatewayGetMock,
-    },
-  }),
-}))
-
-vi.mock('../../api/interceptors/request-token.interceptor', () => ({
-  requestTokenInterceptor: vi.fn((config) => config),
-}))
 
 describe('ReportingService', () => {
   describe('getTotalBIReports', () => {
@@ -21,7 +8,7 @@ describe('ReportingService', () => {
       const expectedUrl = 'reporting/api/reports/currentuser'
       const mockResponse = { totalItems: 10 }
 
-      apiGatewayGetMock.mockResolvedValueOnce({
+      apiGatewayGetMock.mockResolvedValue({
         data: mockResponse,
       })
 

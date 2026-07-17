@@ -1,19 +1,11 @@
 import { API_PREFIXES } from '@pulse/common/constants'
+import { apiGatewayGetMock, apiGatewayPostMock } from '@pulse/common/mocks/vitest'
 import type { BillingSubmissionInputRequest } from '../types'
 import { getDigitalSafeCustomerMock } from '../__mocks__/invoices.mocks'
 import { InvoicesService } from './invoices.service'
 
-const commonApiGetMock = vi.hoisted(() => vi.fn())
-const commonApiPostMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: commonApiGetMock,
-      post: commonApiPostMock,
-    },
-  }),
-}))
+const commonApiGetMock = apiGatewayGetMock
+const commonApiPostMock = apiGatewayPostMock
 
 describe('InvoicesService', () => {
   describe('getAvailableCustomersForDigitalSafe', () => {

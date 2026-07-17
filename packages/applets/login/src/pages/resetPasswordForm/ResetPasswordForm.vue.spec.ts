@@ -1,41 +1,17 @@
 import { nextTick } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { Mock } from 'vitest'
+
 import { RouteName } from '@pulse/common/enums'
+import { createNewPassword } from '@pulse/common/services/authentication'
+import { useRoute, useRouter } from 'vue-router'
 
 import ResetPasswordForm from './ResetPasswordForm.vue'
 
 const emptyPasswordMock = ''
 const validPasswordMock = 'aaAA11@@'
 
-const createNewPasswordMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
-vi.mock('@pulse/common/services/authentication', () => ({
-  createNewPassword: createNewPasswordMock,
-}))
-
-const routerPushMock = vi.hoisted(() => vi.fn())
-const useRouterMock = vi.hoisted(() => vi.fn(() => ({
-  push: routerPushMock,
-})))
-
-const useRouteMock = vi.hoisted(() => vi.fn(() => ({
-  name: 'route-name',
-  meta: {},
-  query: {
-    contactId: 'contactId',
-    contactEmail: 'contactEmail',
-    token: 'token',
-  },
-})))
-
-vi.mock('vue-router', () => ({
-  useRouter: useRouterMock,
-  useRoute: useRouteMock,
-}))
+let routerPushMock: Mock
 
 function createWrapper() {
   return mount(ResetPasswordForm)
@@ -44,6 +20,18 @@ function createWrapper() {
 describe('page reset password form', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    routerPushMock = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push: routerPushMock } as unknown as ReturnType<typeof useRouter>)
+    vi.mocked(useRoute).mockReturnValue({
+      name: 'route-name',
+      meta: {},
+      query: {
+        contactId: 'contactId',
+        contactEmail: 'contactEmail',
+        token: 'token',
+      },
+    } as unknown as ReturnType<typeof useRoute>)
     wrapper = createWrapper()
   })
 
@@ -123,7 +111,7 @@ describe('page reset password form', () => {
       contactId: 'contactId',
       isCreatePasswordAction: false,
     }
-    expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)
+    expect(vi.mocked(createNewPassword)).toHaveBeenCalledExactlyOnceWith(data)
 
     expect(routerPushMock).toHaveBeenCalledTimes(1)
     expect(routerPushMock).toHaveBeenLastCalledWith({ name: RouteName.LOGIN_CLIENT })
@@ -131,12 +119,12 @@ describe('page reset password form', () => {
   it('do not call mockAuthPost when not form given to submitForm', async () => {
     wrapper = createWrapper()
     await wrapper.vm.submitForm()
-    expect(createNewPasswordMock).not.toHaveBeenCalled()
+    expect(vi.mocked(createNewPassword)).not.toHaveBeenCalled()
   })
 
   it('do not call mockAuthPost when form is not valid', async () => {
     wrapper = createWrapper()
     await wrapper.vm.submitForm()
-    expect(createNewPasswordMock).not.toHaveBeenCalled()
+    expect(vi.mocked(createNewPassword)).not.toHaveBeenCalled()
   })
 })

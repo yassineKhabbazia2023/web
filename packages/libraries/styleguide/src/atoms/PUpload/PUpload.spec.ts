@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PUpload from './'
 import type { UploadProps } from './PUploadTypes'

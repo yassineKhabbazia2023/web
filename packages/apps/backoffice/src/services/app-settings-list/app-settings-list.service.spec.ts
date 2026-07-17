@@ -2,16 +2,6 @@ import { AppSettingsListService } from './app-settings-list.service'
 import type { AppSettingsListResponse } from '@backoffice/types/app-settings-list.type'
 import type { DomainItem } from './app-settings-list.service.type'
 
-// Mock must be hoisted - define the mock inside the factory
-vi.mock('@backoffice/api/backoffice.api', () => ({
-  backofficeApi: {
-    get: vi.fn(),
-    delete: vi.fn(),
-    post: vi.fn(),
-  },
-}))
-
-// Import the mocked API to access the mock function
 import { backofficeApi } from '@backoffice/api/backoffice.api'
 const mockGet = vi.mocked(backofficeApi.get)
 const mockDelete = vi.mocked(backofficeApi.delete)

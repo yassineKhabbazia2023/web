@@ -1,7 +1,11 @@
 import { nextTick } from 'vue'
-import { describe, vi, it, expect } from 'vitest'
+
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { useDebounce } from '@pulse/toolbox'
+import { createTestAccount, generateAccountNumber } from '@entities/services/entity-creator'
+import { getFormStructure } from '@entities/utils/referential'
+import { getAccountUserByEmail } from '@entities/services/account'
 import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorFormStructure.json'
 import { EntityCreatorDrawerProps } from '@entities/modules/wallet/types'
 import { PDrawerActions } from '@pulse/styleguide/components'
@@ -40,38 +44,28 @@ const expectedDefaultAuthenticatedUser = {
   persona: userMock.persona,
 }
 
-const enableFieldMock = vi.hoisted(() => vi.fn())
-const disableFieldMock = vi.hoisted(() => vi.fn())
-const validateFieldMock = vi.hoisted(() => vi.fn())
-const createTestAccountMock = vi.hoisted(() => vi.fn())
-const generateAccountNumberMock = vi.hoisted(() => vi.fn())
-const getAccountUserByEmailMock = vi.hoisted(() =>
-  vi.fn(
-    (): Promise<Partial<Contact> | null> =>
+const enableFieldMock = vi.fn()
+const disableFieldMock = vi.fn()
+const validateFieldMock = vi.fn()
+const entityCreatorFormValidateMock = vi.fn(() => Promise.resolve(true))
+
+const createTestAccountMock = vi.mocked(createTestAccount)
+const generateAccountNumberMock = vi.mocked(generateAccountNumber)
+const getAccountUserByEmailMock = vi.mocked(getAccountUserByEmail)
+const entityCreatorFormStructureMock = vi.mocked(getFormStructure)
+
+beforeEach(() => {
+  vi.mocked(useDebounce).mockImplementation((fn) => fn as unknown as ReturnType<typeof useDebounce>)
+  createTestAccountMock.mockResolvedValue(undefined as unknown as Awaited<ReturnType<typeof createTestAccount>>)
+  getAccountUserByEmailMock.mockImplementation(
+    (): Promise<Contact | null> =>
       Promise.resolve({
         firstName: expectedExistingClient.contactFirstName,
         lastName: expectedExistingClient.contactLastName,
         oldId: expectedExistingClient.existingContactGuid,
-      }),
-  ),
-)
-const entityCreatorFormValidateMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
-const entityCreatorFormStructureMock = vi.hoisted(() => vi.fn(() => Promise.resolve(EntityCreatorFormStructure)))
-
-vi.mock('@pulse/common', () => ({
-  getInitials: vi.fn(() => 'AD'),
-}))
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))
-vi.mock('@entities/services/entity-creator', () => ({
-  createTestAccount: createTestAccountMock,
-  generateAccountNumber: generateAccountNumberMock,
-}))
-vi.mock('@entities/utils/referential', () => ({
-  getFormStructure: entityCreatorFormStructureMock,
-}))
-vi.mock('@entities/services/account', () => ({
-  getAccountUserByEmail: getAccountUserByEmailMock,
-}))
+      } as Contact),
+  )
+})
 
 const defaultProps: EntityCreatorDrawerProps = {
   modelValue: true,
@@ -126,14 +120,14 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof EntityCreatorDrawer>>
   beforeEach(async () => {
     // Reset mocks to default values
-    generateAccountNumberMock.mockResolvedValue({ data: { accountNumber: '123456' } })
+    generateAccountNumberMock.mockResolvedValue({ data: { accountNumber: '123456' } } as unknown as string)
     getAccountUserByEmailMock.mockResolvedValue({
       firstName: expectedExistingClient.contactFirstName,
       lastName: expectedExistingClient.contactLastName,
       oldId: expectedExistingClient.existingContactGuid,
-    })
+    } as Contact)
     entityCreatorFormValidateMock.mockResolvedValue(true)
-    entityCreatorFormStructureMock.mockResolvedValue(EntityCreatorFormStructure)
+    entityCreatorFormStructureMock.mockResolvedValue(EntityCreatorFormStructure as unknown as Awaited<ReturnType<typeof getFormStructure>>)
 
     wrapper = createWrapper()
     await flushPromises()

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { getPaginationLabel } from './table.utils'
 import type { PaginationData } from '../types/table.types'
 

@@ -1,19 +1,16 @@
 import { nextTick } from 'vue'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { launchCardsMock, collabLaunchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
-import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
-import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
 import { envVarsMock, getMockedEntitySummary, getHasPermissionMocked, getMockedUserInfo } from '@pulse/common/mocks'
 import { hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
-import '@launcher/__mocks__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './LauncherTypes'
-import * as VueRouter from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import type { Permission } from '@pulse/common/types'
 import { CollaboratorPermission } from '@pulse/common/enums'
+import { getLaunchCards, getSilaeDownloadLabel, handleClickAction, handleDownload } from './LauncherUtils'
 
 import Launcher from './Launcher.vue'
 
@@ -21,19 +18,7 @@ const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const userStoreMock = getStoreMock(useUserStore)
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
-    name: 'launcher',
-  }),
-  useRouter: () => ({
-    resolve: () => ({ href: '/pennylane-sso-proxy' }),
-    hasRoute: () => false,
-  }),
-}))
-
-vi.mock('./LauncherUtils', () => LauncherUtilsMocks)
-vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
-
+const mockedPercent = 47
 const mockedSilaeDownloadLabel = 'silae download label'
 
 function getWrapper() {
@@ -64,8 +49,22 @@ describe('test Home', () => {
     permissionsStoreMock.currentEntityPermissions = currentEntityPermissionsMock
     userStoreMock.user = getMockedUserInfo()
 
-    getLaunchCardsMock.mockReturnValue(launchCardsMock)
-    getSilaeDownloadLabelMock.mockReturnValue(mockedSilaeDownloadLabel)
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    vi.mocked(useRoute).mockReturnValue({ name: 'launcher' } as unknown as ReturnType<typeof useRoute>)
+    vi.mocked(useRouter).mockReturnValue({
+      resolve: () => ({ href: '/pennylane-sso-proxy' }),
+      hasRoute: () => false,
+    } as unknown as ReturnType<typeof useRouter>)
+
+    // LauncherUtils is spy-wrapped (real by default): re-arm the behaviors its
+    // legacy module mock used to provide (doctrine: shared-hubs).
+    vi.mocked(getLaunchCards).mockReturnValue(launchCardsMock)
+    vi.mocked(getSilaeDownloadLabel).mockReturnValue(mockedSilaeDownloadLabel)
+    vi.mocked(handleClickAction).mockResolvedValue(undefined)
+    vi.mocked(handleDownload).mockImplementation((_key, onSilaeDownloadProgress) => {
+      onSilaeDownloadProgress(mockedPercent)
+      return Promise.resolve()
+    })
     wrapper = getWrapper()
   })
 
@@ -86,8 +85,8 @@ describe('test Home', () => {
     })
 
     it('should display filtered cards', async () => {
-      const mockedFiltersLaunchCards = [launchCardsMock.at(0)]
-      getLaunchCardsMock.mockReturnValue(mockedFiltersLaunchCards)
+      const mockedFiltersLaunchCards = launchCardsMock.slice(0, 1)
+      vi.mocked(getLaunchCards).mockReturnValue(mockedFiltersLaunchCards)
       hasPermissionMock.mockImplementation(getHasPermissionMocked([LAUNCHER_AUTHORIZATIONS[2].authorizationCodes[0]]))
 
       const wrapper = getWrapper()
@@ -103,9 +102,9 @@ describe('test Home', () => {
         LauncherKey.PENNYLANE,
       ]
 
-      expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(1, mockedSilaeDownloadLabel, expectedParams1stCall, false)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, expectedParams2thCall, false)
+      expect(vi.mocked(getLaunchCards)).toHaveBeenCalledTimes(2)
+      expect(vi.mocked(getLaunchCards)).toHaveBeenNthCalledWith(1, mockedSilaeDownloadLabel, expectedParams1stCall, false)
+      expect(vi.mocked(getLaunchCards)).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, expectedParams2thCall, false)
       expect(noLauncher.exists()).toBeFalsy()
       expect(launchCards).toHaveLength(1)
     })
@@ -163,7 +162,7 @@ describe('test Home', () => {
     it('includes correct actionUrls for collab users', async () => {
       // Arrange
       userStoreMock.user = getMockedUserInfo({ isCollab: true })
-      getLaunchCardsMock.mockReturnValue(collabLaunchCardsMock)
+      vi.mocked(getLaunchCards).mockReturnValue(collabLaunchCardsMock)
 
       // Create new wrapper after setting isCollab to true
       const collabWrapper = getWrapper()
@@ -185,11 +184,7 @@ describe('test Home', () => {
 
   describe('when route is launcher-collab', () => {
     it('proper launchCards length and entity header elements', async () => {
-      vi
-        .spyOn(VueRouter, 'useRoute')
-        .mockReturnValueOnce({
-          name: 'launcher-collab',
-        } as VueRouter.RouteLocationNormalizedLoaded)
+      vi.mocked(useRoute).mockReturnValueOnce({ name: 'launcher-collab' } as unknown as ReturnType<typeof useRoute>)
       const wrapper = getWrapper()
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
@@ -206,15 +201,15 @@ describe('test Home', () => {
 
   describe('when no launcher app to display', () => {
     it('should display filtered cards', async () => {
-      getLaunchCardsMock.mockReturnValue([])
+      vi.mocked(getLaunchCards).mockReturnValue([])
       hasPermissionMock.mockImplementation(() => false)
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
-      expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, [], false)
+      expect(vi.mocked(getLaunchCards)).toHaveBeenCalledTimes(2)
+      expect(vi.mocked(getLaunchCards)).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, [], false)
       expect(noLauncher.exists()).toBeTruthy()
       expect(launchCards).toHaveLength(0)
     })
@@ -227,8 +222,8 @@ describe('test Home', () => {
 
       silaeLaunchCard.vm.$emit('click-action')
 
-      expect(handleClickActionMock).toHaveBeenCalledOnce()
-      expect(handleClickActionMock).toHaveBeenNthCalledWith(1, key)
+      expect(vi.mocked(handleClickAction)).toHaveBeenCalledOnce()
+      expect(vi.mocked(handleClickAction)).toHaveBeenNthCalledWith(1, key)
     })
   })
 
@@ -244,12 +239,12 @@ describe('test Home', () => {
       silaeLaunchCard.vm.$emit('click-download')
       await nextTick()
 
-      expect(handleDownloadMock).toHaveBeenCalledOnce()
-      expect(handleDownloadMock).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
+      expect(vi.mocked(handleDownload)).toHaveBeenCalledOnce()
+      expect(vi.mocked(handleDownload)).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
 
-      expect(getSilaeDownloadLabelMock).toHaveBeenCalledTimes(2)
-      expect(getSilaeDownloadLabelMock).toHaveBeenNthCalledWith(1, undefined)
-      expect(getSilaeDownloadLabelMock).toHaveBeenNthCalledWith(2, mockedPercent)
+      expect(vi.mocked(getSilaeDownloadLabel)).toHaveBeenCalledTimes(2)
+      expect(vi.mocked(getSilaeDownloadLabel)).toHaveBeenNthCalledWith(1, undefined)
+      expect(vi.mocked(getSilaeDownloadLabel)).toHaveBeenNthCalledWith(2, mockedPercent)
     })
 
     it('should call onClickAction twice once when resolve between two clicks on action-download', async () => {
@@ -257,14 +252,14 @@ describe('test Home', () => {
       await flushPromises()
       silaeLaunchCard.vm.$emit('click-download')
 
-      expect(handleDownloadMock).toHaveBeenCalledTimes(2)
+      expect(vi.mocked(handleDownload)).toHaveBeenCalledTimes(2)
     })
 
     it('should call onClickAction only once when resolve after two clicks on action-download', () => {
       silaeLaunchCard.vm.$emit('click-download')
       silaeLaunchCard.vm.$emit('click-download')
 
-      expect(handleDownloadMock).toHaveBeenCalledOnce()
+      expect(vi.mocked(handleDownload)).toHaveBeenCalledOnce()
     })
   })
 })

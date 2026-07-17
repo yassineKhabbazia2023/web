@@ -3,13 +3,9 @@ import { displayNotification } from '@pulse/styleguide'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useCompletedStep } from './completed-step.composable'
+import { armConformityDocumentMocks } from '@entities/__mocks__/vitest'
 
-vi.mock('@entities/services/conformity-payment')
-vi.mock('@pulse/common/helpers')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-
-const downloadSignedMandateMock = vi.mocked(ConformityPaymentService.downloadSignedMandate)
+const downloadSignedMandateMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
 const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
@@ -17,12 +13,14 @@ const paramsMock = { accountId: 602, downloadErrorMessage: 'downloadError' }
 
 describe('completed-step.composable', () => {
   beforeEach(() => {
+    armConformityDocumentMocks()
+    vi.spyOn(ConformityPaymentService, 'downloadSignedMandate').mockImplementation(downloadSignedMandateMock)
     downloadSignedMandateMock.mockResolvedValue(new Blob(['signed mandate'], { type: 'application/pdf' }))
   })
 
   describe('openSignedMandate', () => {
     it('should open the signed mandate in a new tab', async () => {
-      openDocumentInNewTabMock.mockResolvedValueOnce(true)
+      openDocumentInNewTabMock.mockResolvedValue(true)
       const [step] = withSetup(() => useCompletedStep(paramsMock))
 
       await step.openSignedMandate()
@@ -37,7 +35,7 @@ describe('completed-step.composable', () => {
     })
 
     it('should notify when the browser blocks the popup', async () => {
-      openDocumentInNewTabMock.mockResolvedValueOnce(false)
+      openDocumentInNewTabMock.mockResolvedValue(false)
       const [step] = withSetup(() => useCompletedStep(paramsMock))
 
       await step.openSignedMandate()
@@ -47,7 +45,7 @@ describe('completed-step.composable', () => {
     })
 
     it('should notify when the download fails', async () => {
-      openDocumentInNewTabMock.mockRejectedValueOnce(new Error('boom'))
+      openDocumentInNewTabMock.mockRejectedValue(new Error('boom'))
       const [step] = withSetup(() => useCompletedStep(paramsMock))
 
       await step.openSignedMandate()

@@ -5,7 +5,7 @@ import {
   getMockedCurrentEntity,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock, stubCurrentEntityManager } from '@pulse/common/mocks/vitest'
 import { initProductFruitsAuthenticatedCollab, stopProductFruits, getProductFruitsUser } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -16,50 +16,23 @@ import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse
 import { RouteName } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/managers'
+import type { QueryResult, Entity, EntitySummary } from '@pulse/common/types'
 
 import { CollaboratorAuthenticatedFlowManager } from './collaborator.authenticated.flow.manager'
 
-vi.mock('@pulse/common/services/current-user')
-vi.mock('@pulse/common/services/entities')
-vi.mock('@pulse/common/managers', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@pulse/common/managers')>()
-  return {
-    ...actual,
-    CurrentEntityManager: {
-      initializeCurrentEntity: vi.fn(),
-      getLocalStorageEntityId: vi.fn(),
-      setLocalStorageEntityId: vi.fn(),
-      clearLocalStorageEntityId: vi.fn(),
-      clearCurrentEntity: vi.fn(),
-      fetchInvoicesAccess: vi.fn(),
-    },
-    CurrentUserManager: {
-      hasGlobalPermission: vi.fn(),
-    },
-  }
+beforeEach(async () => {
+  vi.spyOn(CurrentUserService, 'getCurrentUserContext').mockResolvedValue(undefined)
+  vi.mocked(fetchEntities).mockResolvedValue(undefined as unknown as QueryResult<Entity>)
+  vi.mocked(fetchEntityById).mockResolvedValue(undefined as unknown as EntitySummary)
+  vi.mocked(initProductFruitsAuthenticatedCollab).mockImplementation(() => undefined)
+  vi.mocked(getProductFruitsUser).mockReturnValue(undefined)
+  vi.mocked(stopProductFruits).mockImplementation(() => undefined)
+  await stubCurrentEntityManager()
+  vi.spyOn(CurrentUserManager, 'hasGlobalPermission').mockReturnValue(undefined as unknown as boolean)
+  vi.spyOn(BookingManager, 'setupBookingForCollab').mockResolvedValue(undefined)
+  vi.spyOn(OpenFeatureService, 'setUserContext').mockResolvedValue(undefined)
+  vi.spyOn(OpenFeatureService, 'clearUserContext').mockResolvedValue(undefined)
 })
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-vi.mock('@pulse/common/services/open-feature', () => ({
-  OpenFeatureService: {
-    setUserContext: vi.fn(),
-    clearUserContext: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/booking/managers', () => ({
-  BookingManager: {
-    setupBookingForCollab: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/shared/plugins', () => ({
-  initProductFruitsAuthenticatedCollab: vi.fn(),
-  getProductFruitsUser: vi.fn(),
-  stopProductFruits: vi.fn(),
-}))
 
 const userMock = getMockedUserContext()
 const entityMock = getMockedEntity()
@@ -322,10 +295,9 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
 
   describe('redirectWrongUser', () => {
     it('should redirect to customer app with current pathname', () => {
-      Object.defineProperty(globalThis, 'location', {
-        value: { href: '', pathname: '/collaborateur/dossiers' },
-        writable: true,
-      })
+      // Stub via vi.stubGlobal so unstubGlobals restores the worker-shared
+      // location after each test (doctrine: shared-dom).
+      vi.stubGlobal('location', { href: '', pathname: '/collaborateur/dossiers' })
 
       CollaboratorAuthenticatedFlowManager.redirectWrongUser()
 
@@ -334,10 +306,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
     })
 
     it('should redirect to root when pathname is only /collaborateur', () => {
-      Object.defineProperty(globalThis, 'location', {
-        value: { href: '', pathname: '/collaborateur' },
-        writable: true,
-      })
+      vi.stubGlobal('location', { href: '', pathname: '/collaborateur' })
 
       CollaboratorAuthenticatedFlowManager.redirectWrongUser()
 

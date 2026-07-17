@@ -1,18 +1,21 @@
 import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { stubUseI18nWithIdentityT } from '@pulse/common/mocks/vitest'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks'
+import { getCollaborators } from '@entities/services/collaborator'
+import { CurrentUserManager } from '@pulse/common/managers'
 
 import AddDelegatesStep from '.'
 
 const mockedCollaborators = getMockedCollaborators2()
-vi.mock('@entities/services/collaborator', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve({
-    items: mockedCollaborators,
-  })),
-}))
 
-vi.mock('@pulse/common/managers')
+beforeEach(() => {
+  vi.mocked(getCollaborators).mockResolvedValue({
+    items: mockedCollaborators,
+  } as unknown as Awaited<ReturnType<typeof getCollaborators>>)
+  vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
+})
 
 const defaultProps: DelegatorsAddStepProps = {
   numberOfFoldersInPortfolio: 5,
@@ -56,9 +59,13 @@ describe('addDelegatesStep', () => {
 
   describe('props', () => {
     it('should correctly pass the number of folders in portfolio', () => {
-      const alertWrapper = wrapper.findComponent({ name: 'PAlert' })
-      // 5 comes from the base props
-      expect(alertWrapper.html()).toContain('5')
+      // The count reaches the alert through the i18n plural call, not as rendered
+      // wording: assert the call forwards the count (5 from the base props).
+      const { t } = stubUseI18nWithIdentityT()
+
+      createWrapper()
+
+      expect(t).toHaveBeenCalledWith('folders', 5)
     })
   })
 

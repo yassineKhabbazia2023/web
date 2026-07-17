@@ -1,5 +1,5 @@
-import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { apiGatewayGetMock, apiGatewayPatchMock, apiGatewayPostMock } from '@pulse/common/mocks/vitest'
 import { AccountType } from '@pulse/common/enums'
 import { omit } from 'lodash-es'
 import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
@@ -15,23 +15,11 @@ const mockedAccountId = 125
 const mockedCustomerIDs = [1, 2, 3]
 const mockedContact = getMockedCustomer()
 
-const mocks = vi.hoisted(() => ({
-  get: vi.fn(),
-  post: vi.fn(),
-  patch: vi.fn(),
-}))
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: mocks.get,
-        patch: mocks.patch,
-        post: mocks.post,
-      },
-    }),
-  }
-})
+const mocks = {
+  get: apiGatewayGetMock,
+  post: apiGatewayPostMock,
+  patch: apiGatewayPatchMock,
+}
 
 const handlePatchApiMock = (url: string, _: object, __: object) => {
   if (url === `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${mockedContact[0].id}`) {

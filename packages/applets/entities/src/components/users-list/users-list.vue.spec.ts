@@ -1,28 +1,29 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { RouteName, SortDirection, ContactType } from '@pulse/common/enums'
 import { mockedUsersClient } from '@entities/__mocks__/users-client.mocks'
 import { getInitials } from '@entities/helpers'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { UserActions } from '@entities/enums'
 import { nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 import UsersList from './'
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+let hasPermissionMock: MockInstance
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({ name: RouteName.USERS }),
-}))
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions()
+  vi.mocked(useRoute).mockReturnValue({ name: RouteName.USERS } as unknown as RouteLocationNormalizedLoaded)
+})
 
 let wrapper: VueWrapper<any>
 
 const toolBoxElementsWithoutPermissions = [
   {
     pIconName: 'person',
-    pValue: 'User information',
+    pValue: 'userInformation',
     pActionName: 'userInformation',
     pState: 'default',
   },
@@ -148,7 +149,7 @@ describe('users-list', () => {
 
     expect(pToolbox.props('pElements')).toContainEqual({
       pIconName: 'pencilSquare',
-      pValue: 'Modify rights',
+      pValue: 'modifyRights',
       pActionName: 'modifyRights',
       pState: 'default',
     })
@@ -161,7 +162,7 @@ describe('users-list', () => {
 
     expect(pToolbox.props('pElements')).not.toContainEqual({
       pIconName: 'pencilSquare',
-      pValue: 'Modify rights',
+      pValue: 'modifyRights',
       pActionName: 'modifyRights',
       pState: 'default',
     })

@@ -1,13 +1,8 @@
-import { expect, describe, it, vi } from 'vitest'
-import { PNotificationMocked } from '@mandate/__mocks__/styleguide.mocks'
+import { PNotification } from '@pulse/styleguide'
 import type { NotificationMessagesByType } from './NotificationHelperTypes'
 import { type IconName } from '@pulse/styleguide/types'
 import { showNotification } from './NotificationHelper'
 
-
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: PNotificationMocked,
-}))
 
 describe('test NotificationHelper', () => {
   const messagesByType: NotificationMessagesByType = {
@@ -55,13 +50,13 @@ describe('test NotificationHelper', () => {
       showClose: true,
     }
 
-    expect(PNotificationMocked).toHaveBeenCalledOnce()
-    expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams)
+    expect(vi.mocked(PNotification)).toHaveBeenCalledOnce()
+    expect(vi.mocked(PNotification)).toHaveBeenNthCalledWith(1, expectedParams)
   })
 
   it('should close first notification on second call', () => {
     const type = 'loading'
-    PNotificationMocked.mockImplementation(() => ({
+    vi.mocked(PNotification).mockImplementation(() => ({
       close: closeNotificationSpy,
     }))
     const firstNotification = showNotification(messagesByType, type, true)
@@ -83,9 +78,9 @@ describe('test NotificationHelper', () => {
     }
     showNotification(messagesByType, type, false, firstNotification)
 
-    expect(PNotificationMocked).toHaveBeenCalledTimes(2)
-    expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams1)
-    expect(PNotificationMocked).toHaveBeenNthCalledWith(2, expectedParams2)
+    expect(vi.mocked(PNotification)).toHaveBeenCalledTimes(2)
+    expect(vi.mocked(PNotification)).toHaveBeenNthCalledWith(1, expectedParams1)
+    expect(vi.mocked(PNotification)).toHaveBeenNthCalledWith(2, expectedParams2)
     expect(closeNotificationSpy).toHaveBeenCalledOnce()
   })
 })

@@ -1,15 +1,19 @@
 import { ReportStatus } from '@powerbi/enums/bi-reports.enum'
 import type { ReportQueryParams, ReportStatusTag, ReportTableRow } from '@powerbi/types/bi-reports.types'
 import { getMockReportTable } from '@powerbi/__mocks__/bi-report.mocks'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 import { getMappedReport, getReportsQueryParams } from './power-bi.utils'
 
-vi.mock('@pulse/styleguide', () => ({
-  getAvatarColorFromKey: vi.fn((key: string) => `color-${key}`),
-}))
+// getAvatarColorFromKey is swapped for the shared spy by the '@pulse/styleguide'
+// hub in vitest.setup.ts: the mapping is armed per test (doctrine: shared-hubs).
 
 describe('getMappedReport', () => {
   it('should map reports correctly with avatarColor and status tag', () => {
+    vi.mocked(getAvatarColorFromKey)
+      .mockReturnValueOnce('amethyste')
+      .mockReturnValueOnce('persian-light')
+
     const reports: ReportTableRow[] = getMockReportTable()?.splice(0, 2)
 
     const reportStatus: Record<ReportStatus, ReportStatusTag> = {
@@ -25,14 +29,16 @@ describe('getMappedReport', () => {
       {
         ...reports[0],
         status: reportStatus[ReportStatus.ONLINE],
-        avatarColor: `color-${reports[0].accountNumber}`,
+        avatarColor: 'amethyste',
       },
       {
         ...reports[1],
         status: reportStatus[ReportStatus.OFFLINE],
-        avatarColor: `color-${reports[1].accountNumber}`,
+        avatarColor: 'persian-light',
       },
     ])
+    expect(vi.mocked(getAvatarColorFromKey)).toHaveBeenNthCalledWith(1, reports[0].accountNumber)
+    expect(vi.mocked(getAvatarColorFromKey)).toHaveBeenNthCalledWith(2, reports[1].accountNumber)
   })
 })
 

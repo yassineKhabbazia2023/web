@@ -4,10 +4,6 @@ import PResponsiveTable from './'
 import PTable from '../../atoms/PTable'
 import PResponsiveTableCard from '../../atoms/PResponsiveTableCard'
 
-vi.mock('../../composables/use-responsive.composable', () => ({
-  useResponsive: vi.fn(),
-}))
-
 import { useResponsive } from '../../composables/use-responsive.composable'
 
 const mockData = [

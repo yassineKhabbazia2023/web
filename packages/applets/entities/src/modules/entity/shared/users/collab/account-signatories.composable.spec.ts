@@ -10,12 +10,9 @@ import { useAccountSignatories } from './account-signatories.composable'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { User } from '@entities/types'
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/common/services/amplitude')
-vi.mock('@entities/services/account')
+beforeEach(() => {
+  vi.mocked(displayNotification).mockReturnValue(undefined)
+})
 
 const ACCOUNT_ID = 123
 const entitySummaryMock = getMockedEntitySummary(getMockedEntity({ accountId: ACCOUNT_ID }))

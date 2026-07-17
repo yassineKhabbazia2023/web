@@ -1,4 +1,3 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import {
   fetchWalletData,
   getMappedAccount,
@@ -16,11 +15,9 @@ import {
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { MockEntityId, MockEntityData } from '@pulse/common/mocks'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { apiGatewayGetMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
-
-vi.mock('@pulse/common/services/current-user')
 
 getStoreMock(useUserStore)
 
@@ -32,29 +29,16 @@ const deploymentStatuses: DeploymentStatus[] = [
   },
 ]
 
-vi.mock('@entities/services/account', () => {
-  return {
-    fetchAccounts: vi.fn(),
-  }
-})
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: (url: string) => ({
-          data: [url],
-        }),
-      },
-    }),
-  }
-})
-
 describe('test FoldersUtils', () => {
   let searchCriteria: SearchCriteria
   beforeEach(() => {
     searchCriteria = getMockedSearchCriteria()
-    vi.mocked(CurrentUserService.getUserWalletInformation).mockResolvedValue({} as any)
+    apiGatewayGetMock.mockImplementation((url: string) => ({
+      data: [url],
+    }))
+    vi.spyOn(CurrentUserService, 'getUserWalletInformation').mockResolvedValue(
+      {} as unknown as Awaited<ReturnType<typeof CurrentUserService.getUserWalletInformation>>,
+    )
   })
 
   describe('fetchWalletData', () => {
@@ -62,9 +46,8 @@ describe('test FoldersUtils', () => {
       const mockedAccountQueryResult = getMockedAccountQueryResult({
         currentPage: 0,
       })
-      const fetchAccountsSpy = vi
-        .spyOn(accountService, 'fetchAccounts')
-        .mockResolvedValue(mockedAccountQueryResult)
+      const fetchAccountsSpy = vi.mocked(accountService.fetchAccounts)
+      fetchAccountsSpy.mockResolvedValue(mockedAccountQueryResult)
       const expectedArguments = [
         'currentuser',
         `?pageNumber=${searchCriteria.currentPage}`,

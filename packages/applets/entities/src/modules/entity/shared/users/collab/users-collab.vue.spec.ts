@@ -1,6 +1,6 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
-import { registryServiceMock } from '@entities/__mocks__/vitest'
+import { armRegistryServiceMocks, fetchOperationsForAccountMock } from '@entities/__mocks__/vitest'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -9,8 +9,12 @@ import { nextTick } from 'vue'
 import { UserActions, TrackingLocalisation } from '@entities/enums'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { getMockedEntity, getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
-import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
+import type { MockInstance } from 'vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { useRoute, useRouter } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import { getPendingOperations } from '../utils/operations.utils'
 import { AccountType, RouteName, RouteParam } from '@pulse/common/enums'
 
@@ -46,42 +50,32 @@ const MOCKED_USER = {
 
 const mockedAccount = getMockedAccount()
 
-vi.mock('@entities/services/registry', () => registryServiceMock)
-vi.mock('@entities/services/wallet')
-
-const composableMocks = vi.hoisted(() => ({
+const composableMocks = {
   loadAccountSignatories: vi.fn(() => Promise.resolve()),
   getSignatoryToolboxItems: vi.fn((): PToolboxItemProps[] => []),
   handleSignatoryAction: vi.fn(() => false),
-}))
+}
 
-vi.mock('./account-signatories.composable', () => ({
-  useAccountSignatories: vi.fn(() => composableMocks),
-}))
-
-const routeMock = vi.hoisted(() => ({
+const routeMock = {
   name: '' as string,
   params: {} as Record<string, number>,
-}))
-
-vi.mock('vue-router', () => ({
-  useRoute: () => routeMock,
-  useRouter: () => ({
-    go: vi.fn(),
-  }),
-}))
+}
 
 const userMock = getMockedUser({ id: 2 })
 const currentEntityMock = getMockedEntity({ accountId: mockedAccount.accountId })
 const entitySummaryMock = getMockedEntitySummary(currentEntityMock)
 
-vi.mock('@pulse/common', () => ({
-  getInitials: vi.fn(),
-}))
+let hasPermissionMock: MockInstance
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+beforeEach(() => {
+  armRegistryServiceMocks()
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.mocked(useAccountSignatories).mockReturnValue(composableMocks)
+  vi.mocked(useRoute).mockImplementation(() => routeMock as unknown as RouteLocationNormalizedLoaded)
+  vi.mocked(useRouter).mockReturnValue({
+    go: vi.fn(),
+  } as unknown as Router)
+})
 
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(UsersCollab, {
@@ -140,14 +134,14 @@ const signatoryToolboxItem: PToolboxItemProps = {
 
 const modifyToolboxItem: PToolboxItemProps = {
   pIconName: 'pencilSquare',
-  pValue: 'Change the rights',
+  pValue: 'modifyRights',
   pActionName: 'modifyRights',
   pState: 'default',
 }
 
 const removeUserToolboxItem: PToolboxItemProps = {
   pIconName: 'personRemove',
-  pValue: 'Remove user',
+  pValue: 'removeUser',
   pActionName: 'removeUser',
   pState: 'default',
 }
@@ -230,7 +224,7 @@ describe('usersCollab', () => {
     it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
       hasPermissionMock.mockReturnValue(true)
       const operationsMock = getMockedOperations()
-      registryServiceMock.fetchOperationsForAccount.mockResolvedValue(operationsMock)
+      fetchOperationsForAccountMock.mockResolvedValue(operationsMock)
 
       const expectedPendingOperations = getPendingOperations(operationsMock)
       const accountNumber = expectedPendingOperations?.at(0)?.accountNumber

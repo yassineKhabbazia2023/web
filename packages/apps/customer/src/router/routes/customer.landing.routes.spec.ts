@@ -3,14 +3,8 @@ import { RouteName } from '@pulse/common/enums'
 import { CustomerLandingManager } from '@customer/managers/customer-landing.manager'
 import { landingCustomerRoutes } from './customer.landing.routes'
 
-vi.mock('@customer/managers/customer-landing.manager')
-vi.mock('@pulse/shared/guards', () => ({
-  deepLinkGuard: vi.fn(),
-}))
-vi.mock('../guards/pennylane-sso.guard', () => ({
-  pennylaneSsoGuard: vi.fn(),
-}))
-
+// The real pennylaneSsoGuard (tested by its own spec) sits in beforeEnter but
+// is never invoked by these tests.
 const landingRoute = landingCustomerRoutes[0]
 // beforeEnter is an array of guards: [pennylaneSsoGuard, deepLinkGuard, redirectionGuard]
 const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
@@ -34,7 +28,7 @@ describe('landingCustomerRoutes', () => {
   describe('beforeEnter', () => {
     it('should redirect to landing page based on user type', () => {
       const mockLandingPage = { name: RouteName.ENTITY }
-      vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue(mockLandingPage)
+      vi.spyOn(CustomerLandingManager, 'getLandingPage').mockReturnValue(mockLandingPage)
 
       const result = redirectionGuard({ query: {} } as RouteLocationNormalized, {} as RouteLocationNormalized)
 
@@ -42,7 +36,7 @@ describe('landingCustomerRoutes', () => {
     })
 
     it('should forward the incoming query to the landing manager', () => {
-      vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue({ name: RouteName.ENTITY })
+      vi.spyOn(CustomerLandingManager, 'getLandingPage').mockReturnValue({ name: RouteName.ENTITY })
       const query = { bookingWidget: 'true' }
 
       redirectionGuard({ query } as unknown as RouteLocationNormalized, {} as RouteLocationNormalized)
@@ -51,7 +45,7 @@ describe('landingCustomerRoutes', () => {
     })
 
     it('should redirect to WALLET as fallback when no landing page found', () => {
-      vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue(null)
+      vi.spyOn(CustomerLandingManager, 'getLandingPage').mockReturnValue(null)
 
       const result = redirectionGuard({ query: {} } as RouteLocationNormalized, {} as RouteLocationNormalized)
 

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
 import type { SelectedProduct, ContactWithRoles } from '@entities/types'
 import type { ContactFunction, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'

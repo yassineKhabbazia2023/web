@@ -1,17 +1,22 @@
+import type { MockInstance } from 'vitest'
 import { RouteName } from '@pulse/common/enums'
-import { CurrentUserManagerMock, featureFlagManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { TabName, Tab } from '../types'
 
 import { getTabAuthorizations, getTabs } from './entity-overview.helper'
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-  FeatureFlagManager: featureFlagManagerMock,
-}))
+let hasPermissionMock: MockInstance
+const isFeatureActivatedGlobalMock = vi.fn()
+
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockImplementation(isFeatureActivatedGlobalMock)
+})
 
 describe('test entity-helper', () => {
   describe('getTabAuthorizations', () => {
-    const isFeatureActivatedMock = vi.mocked(featureFlagManagerMock.isFeatureActivated)
+    const isFeatureActivatedMock = isFeatureActivatedGlobalMock
     const tests = [{
       isCollab: true,
       hasPermission: true,
@@ -83,7 +88,7 @@ describe('test entity-helper', () => {
   })
 
   describe('getTabAuthorizations - invoices access', () => {
-    const isFeatureActivatedMock = vi.mocked(featureFlagManagerMock.isFeatureActivated)
+    const isFeatureActivatedMock = isFeatureActivatedGlobalMock
 
     beforeEach(() => {
       hasPermissionMock.mockClear()

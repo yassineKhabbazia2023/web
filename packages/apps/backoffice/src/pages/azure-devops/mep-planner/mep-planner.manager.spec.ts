@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { MepPlannerManager } from './mep-planner.manager'
 import { MepPlannerService } from '@backoffice/services/azure-devops/mep-planner.service'
@@ -5,27 +6,40 @@ import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devo
 import type { AzureDevOpsWorkItemWithRelationsResponse } from '@backoffice/types/azure-devops.type'
 import { MepReadinessStatus } from './mep-planner.enum'
 import type { MepPlannerTicketsResult } from './mep-planner.type'
+import { buildMockPr } from '../__mocks__/pr-completion.mocks'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/azure-devops/azure-devops.service')
-vi.mock('@backoffice/services/azure-devops/mep-planner.service')
+let mockedGetWorkItemsWithRelations: MockInstance
+let mockedExtractLinkedPullRequests: MockInstance
+let mockedGetDeliveryPipelines: MockInstance
+let mockedGetBuildsForBranch: MockInstance
+let mockedGetBuildTimeline: MockInstance
+let mockedGetPullRequestById: MockInstance
 
-const mockedGetWorkItemsWithRelations = vi.mocked(MepPlannerService.getWorkItemsWithRelations)
-const mockedExtractLinkedPullRequests = vi.mocked(MepPlannerService.extractLinkedPullRequests)
-const mockedGetDeliveryPipelines = vi.mocked(MepPlannerService.getDeliveryPipelines)
-const mockedGetBuildsForBranch = vi.mocked(MepPlannerService.getBuildsForBranch)
-const mockedGetBuildTimeline = vi.mocked(MepPlannerService.getBuildTimeline)
-const mockedGetPullRequestById = vi.mocked(MepPlannerService.getPullRequestById)
-
-const mockedGetLatestMepTag = vi.mocked(AzureDevOpsService.getLatestMepTag)
-const mockedGetCommitIdsAfterTag = vi.mocked(AzureDevOpsService.getCommitIdsAfterTag)
-const mockedGetAllTags = vi.mocked(AzureDevOpsService.getAllTags)
-const mockedFindVersionTagForCommit = vi.mocked(AzureDevOpsService.findVersionTagForCommit)
-const mockedGetWorkItemsForCommitRange = vi.mocked(AzureDevOpsService.getWorkItemsForCommitRange)
+let mockedGetLatestMepTag: MockInstance
+let mockedGetCommitIdsAfterTag: MockInstance
+let mockedGetAllTags: MockInstance
+let mockedFindVersionTagForCommit: MockInstance
+let mockedGetWorkItemsForCommitRange: MockInstance
 
 const PAT = 'test-pat'
 
 describe('MepPlannerManager', () => {
+  beforeEach(() => {
+    mockedGetWorkItemsWithRelations = vi.spyOn(MepPlannerService, 'getWorkItemsWithRelations').mockResolvedValue([])
+    mockedExtractLinkedPullRequests = vi.spyOn(MepPlannerService, 'extractLinkedPullRequests').mockReturnValue([])
+    mockedGetDeliveryPipelines = vi.spyOn(MepPlannerService, 'getDeliveryPipelines').mockResolvedValue([])
+    mockedGetBuildsForBranch = vi.spyOn(MepPlannerService, 'getBuildsForBranch').mockResolvedValue([])
+    mockedGetBuildTimeline = vi.spyOn(MepPlannerService, 'getBuildTimeline').mockResolvedValue([])
+    mockedGetPullRequestById = vi.spyOn(MepPlannerService, 'getPullRequestById').mockResolvedValue(buildMockPr())
+
+    mockedGetLatestMepTag = vi.spyOn(AzureDevOpsService, 'getLatestMepTag').mockResolvedValue(null)
+    mockedGetCommitIdsAfterTag = vi.spyOn(AzureDevOpsService, 'getCommitIdsAfterTag').mockResolvedValue(new Set())
+    mockedGetAllTags = vi.spyOn(AzureDevOpsService, 'getAllTags').mockResolvedValue([])
+    mockedFindVersionTagForCommit = vi.spyOn(AzureDevOpsService, 'findVersionTagForCommit').mockReturnValue(null)
+    mockedGetWorkItemsForCommitRange = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+      .mockResolvedValue({ workItemsByTeam: {}, failedIds: [], warnings: [] })
+  })
+
   describe('fetchDeliveryPipelines', () => {
     it('should delegate to AzureDevOpsService', async () => {
       const pipelines = [{ id: 1, name: 'Pulse.API.Delivery', path: '/', repository: { id: '1', name: 'Pulse.API', type: 'TfsGit' } }]

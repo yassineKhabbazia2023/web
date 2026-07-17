@@ -1,17 +1,16 @@
-import { describe, it, expect } from 'vitest'
 import { notificationsMock } from '../../__mocks__/notifications.mocks'
-import { loggerMock } from '@pulse/toolbox/mocks'
-import { patchAllNotificationsReadStatusMock, fetchNotificationsMock, notificationsServiceMock } from '../../__mocks__/notification.service.mocks'
+import { patchAllNotificationsReadStatusMock, fetchNotificationsMock, armNotificationsServiceDefaults } from '../../__mocks__/notification.service.mocks'
 
 import {
   patchAllNotificationsAsRead,
   fetchNotificationsWithTimeout,
 } from './feed-center-drawer.manager'
 
-vi.mock('../../services/notifications.service', () => notificationsServiceMock)
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 const userIdMock = 12
+
+beforeEach(() => {
+  armNotificationsServiceDefaults()
+})
 
 describe('patch all notifications as read', () => {
   it('should do nothing if user is undefined', async () => {

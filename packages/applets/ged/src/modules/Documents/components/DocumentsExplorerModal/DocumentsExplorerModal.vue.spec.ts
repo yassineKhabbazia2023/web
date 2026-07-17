@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
 import { currentService, secondValidDestination, validDestination, currentServiceFolder, currentEntity, accountId } from '@ged/__mocks__/files.mocks'
 import type { GivenActionState, ExplorerDocument } from '../../DocumentsTypes'
@@ -69,8 +68,6 @@ const defaultProps: DocumentsModalExplorerProps = {
   canCloseModal: false,
 }
 
-vi.mock('@pulse/styleguide')
-
 const createWrapper = (
   props: DocumentsModalExplorerProps = defaultProps,
 ): DocumentsExplorerModalWrapper => {
@@ -116,7 +113,7 @@ describe('documentsExplorerModal', () => {
       ]
 
       it.each(cases)(
-        'params "%s"',
+        'params $isDialogVisible',
         async ({ isDialogVisible, expectedResult }) => {
           const updatedProps = {
             ...defaultProps,

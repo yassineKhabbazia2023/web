@@ -1,125 +1,84 @@
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { tokenMock, tokenExpMock } from '@common/__mocks__'
 import { getTokenExp, tokenIsValid, nowInSeconds } from './token.store.utils'
 
-vi.mock('@pulse/toolbox')
-const jwtDecodeMock = vi.hoisted(() => vi.fn())
-vi.mock('jwt-decode', () => ({
-  jwtDecode: jwtDecodeMock,
-}))
+// No jwt-decode mock: the tests decode real (unsigned) JWTs built on the fly,
+// so this spec stays valid on the spy-wrapped module instance shared by the
+// whole worker (see vitest.setup.ts).
+function createTestToken(payload: Record<string, unknown> = {}): string {
+  const header = { alg: 'HS256', typ: 'JWT' }
+  return `${btoa(JSON.stringify(header))}.${btoa(JSON.stringify(payload))}.signature`
+}
 
 describe('token.store.utils', () => {
-  beforeEach(() => {
-    jwtDecodeMock.mockReturnValue({
-      exp: tokenExpMock,
-    })
-  })
-
   describe('getTokenExp', () => {
     it('should return exp value when token is valid', () => {
       const exp = getTokenExp(tokenMock)
 
       expect(exp).toBe(tokenExpMock)
-      expect(jwtDecodeMock).toHaveBeenCalledWith(tokenMock)
     })
 
     it('should return 0 when token is empty', () => {
-      jwtDecodeMock.mockImplementation(() => {
-        throw new Error('Invalid token')
-      })
-
       const exp = getTokenExp('')
 
       expect(exp).toBe(0)
-      expect(jwtDecodeMock).toHaveBeenCalledWith('')
     })
 
-    it('should return 0 when jwt-decode throws error', () => {
-      jwtDecodeMock.mockImplementation(() => {
-        throw new Error('Invalid token')
-      })
-
+    it('should return 0 when the token cannot be decoded', () => {
       const exp = getTokenExp('invalid-token')
 
       expect(exp).toBe(0)
-      expect(jwtDecodeMock).toHaveBeenCalledWith('invalid-token')
     })
 
     it('should return undefined when token has no exp claim', () => {
-      jwtDecodeMock.mockReturnValue({})
-
-      const exp = getTokenExp(tokenMock)
+      const exp = getTokenExp(createTestToken())
 
       expect(exp).toBeUndefined()
     })
   })
 
   describe('tokenIsValid', () => {
-    const futureTimestamp = nowInSeconds() + 3600 // 1 hour from now
-    const pastTimestamp = nowInSeconds() - 3600 // 1 hour ago
-
     it('should return true when token is valid and not expired', () => {
-      jwtDecodeMock.mockReturnValue({
-        exp: futureTimestamp,
-      })
-
-      const isValid = tokenIsValid(tokenMock)
+      const isValid = tokenIsValid(createTestToken({ exp: nowInSeconds() + 3600 }))
 
       expect(isValid).toBe(true)
     })
 
     it('should return false when token is expired', () => {
-      jwtDecodeMock.mockReturnValue({
-        exp: pastTimestamp,
-      })
-
-      const isValid = tokenIsValid(tokenMock)
+      const isValid = tokenIsValid(createTestToken({ exp: nowInSeconds() - 3600 }))
 
       expect(isValid).toBe(false)
     })
 
     it('should return false when token has no exp claim', () => {
-      jwtDecodeMock.mockReturnValue({})
-
-      const isValid = tokenIsValid(tokenMock)
+      const isValid = tokenIsValid(createTestToken())
 
       expect(isValid).toBe(false)
     })
 
     it('should return false when token is invalid', () => {
-      jwtDecodeMock.mockImplementation(() => {
-        throw new Error('Invalid token')
-      })
-
       const isValid = tokenIsValid('invalid-token')
 
       expect(isValid).toBe(false)
     })
 
-    it('should return false when token is empty', () => {
+    it('should return false when token is empty without attempting to decode', () => {
       const isValid = tokenIsValid('')
 
       expect(isValid).toBe(false)
-      expect(jwtDecodeMock).not.toHaveBeenCalled()
+      // The empty guard short-circuits before getTokenExp, so no decode is
+      // attempted and no decode error is logged (contrast the invalid case).
+      expect(loggerMock.error).not.toHaveBeenCalled()
     })
 
     it('should return false when exp is 0', () => {
-      jwtDecodeMock.mockReturnValue({
-        exp: 0,
-      })
-
-      const isValid = tokenIsValid(tokenMock)
+      const isValid = tokenIsValid(createTestToken({ exp: 0 }))
 
       expect(isValid).toBe(false)
     })
 
     it('should return false when exp equals current time', () => {
-      const currentTimestamp = nowInSeconds()
-
-      jwtDecodeMock.mockReturnValue({
-        exp: currentTimestamp,
-      })
-
-      const isValid = tokenIsValid(tokenMock)
+      const isValid = tokenIsValid(createTestToken({ exp: nowInSeconds() }))
 
       expect(isValid).toBe(false)
     })
@@ -141,7 +100,5 @@ describe('token.store.utils', () => {
 
       expect(isValid).toBe(false)
     })
-
   })
-
 })

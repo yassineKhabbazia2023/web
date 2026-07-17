@@ -1,13 +1,8 @@
-import { describe, it, expect } from 'vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedDropdownOptions } from './PDropdown.mocks'
 import type { DropdownGroup, PDropdownOption } from './PDropdownTypes'
 
 import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues, getInternalOptions } from './PDropdownUtils'
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
 
 describe('test PDropdownUtils', () => {
   describe('getDropdownGroups()', () => {

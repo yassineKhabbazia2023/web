@@ -1,18 +1,11 @@
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature, RouteName } from '@pulse/common/enums'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
 
 import { featureFlagGuard } from './feature-flag.guard'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: featureFlagManagerMock,
-}))
 
 const toNameMock = RouteName.INFO
 
@@ -54,7 +47,7 @@ describe('feature-flag.guard', () => {
     expectedRouteName,
     expectedLoggerMock,
   }) => {
-    featureFlagManagerMock.isFeatureActivated.mockReturnValue(featureFlagIsActivatedMock)
+    vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(featureFlagIsActivatedMock)
     const toRouteMock = {
       name: toNameMock,
       meta: {
@@ -65,7 +58,7 @@ describe('feature-flag.guard', () => {
     const result = featureFlagGuard(toRouteMock)
 
     if (featureFlag !== undefined) {
-      expect(featureFlagManagerMock.isFeatureActivated).toHaveBeenCalledWith(featureFlag)
+      expect(FeatureFlagManager.isFeatureActivated).toHaveBeenCalledWith(featureFlag)
     }
 
     if (expectedLoggerMock === undefined) {

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PEntity from './'
-import { describe, it, expect } from 'vitest'
+
 import type { PEntityProps } from './PEntityTypes'
 
 const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'

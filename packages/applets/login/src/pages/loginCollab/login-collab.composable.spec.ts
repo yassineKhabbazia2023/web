@@ -1,49 +1,45 @@
 import { flushPromises } from '@vue/test-utils'
+import type { Mock, MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { RouteName } from '@pulse/common/enums'
 import { LoginService } from '@pulse/common/services/login'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useLoginCollab } from './login-collab.composable'
 
-const mockRouterPush = vi.hoisted(() => vi.fn())
-const mockRoute = vi.hoisted(() => ({
-  query: {} as Record<string, string>,
-}))
-
-vi.mock('@pulse/common/services/login', () => ({
-  LoginService: {
-    redirectToSso: vi.fn(),
-    handleSsoRedirectResult: vi.fn(),
-  },
-}))
-vi.mock('vue-router', () => ({
-  useRoute: () => mockRoute,
-  useRouter: () => ({ push: mockRouterPush }),
-}))
+let redirectToSsoMock: MockInstance
+let handleSsoRedirectResultMock: MockInstance
+let mockRouterPush: Mock
+let mockRoute: { query: Record<string, string> }
 
 describe('useLoginCollab', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    mockRoute.query = {}
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    mockRouterPush = vi.fn()
+    mockRoute = { query: {} }
+    vi.mocked(useRouter).mockReturnValue({ push: mockRouterPush } as unknown as ReturnType<typeof useRouter>)
+    vi.mocked(useRoute).mockReturnValue(mockRoute as unknown as ReturnType<typeof useRoute>)
+    redirectToSsoMock = vi.spyOn(LoginService, 'redirectToSso').mockResolvedValue()
+    handleSsoRedirectResultMock = vi.spyOn(LoginService, 'handleSsoRedirectResult').mockResolvedValue(false)
   })
 
   it('should complete the SSO redirect and navigate to landing when authentication succeeds', async () => {
-    vi.mocked(LoginService.handleSsoRedirectResult).mockResolvedValue(true)
+    handleSsoRedirectResultMock.mockResolvedValue(true)
 
     withSetup(() => useLoginCollab())
     await flushPromises()
 
-    expect(LoginService.handleSsoRedirectResult).toHaveBeenCalledOnce()
+    expect(handleSsoRedirectResultMock).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledExactlyOnceWith({ name: RouteName.LANDING })
   })
 
   it('should not navigate when the SSO redirect does not authenticate a user', async () => {
-    vi.mocked(LoginService.handleSsoRedirectResult).mockResolvedValue(false)
+    handleSsoRedirectResultMock.mockResolvedValue(false)
 
     withSetup(() => useLoginCollab())
     await flushPromises()
 
-    expect(LoginService.handleSsoRedirectResult).toHaveBeenCalledOnce()
+    expect(handleSsoRedirectResultMock).toHaveBeenCalledOnce()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
@@ -53,7 +49,7 @@ describe('useLoginCollab', () => {
     withSetup(() => useLoginCollab())
     await flushPromises()
 
-    expect(LoginService.handleSsoRedirectResult).not.toHaveBeenCalled()
+    expect(handleSsoRedirectResultMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
@@ -62,6 +58,6 @@ describe('useLoginCollab', () => {
 
     result.handleLoginCollab()
 
-    expect(LoginService.redirectToSso).toHaveBeenCalledOnce()
+    expect(redirectToSsoMock).toHaveBeenCalledOnce()
   })
 })

@@ -10,8 +10,6 @@ import {
   trackNotificationsConsulted,
 } from './tracking.service'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('feedcenter opened tracking', () => {
   it('tracks if feedcenter is opened', () => {
     trackFeedcenterOpened()

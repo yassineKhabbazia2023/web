@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PCollapse from '.'
 import { ElCollapse } from 'element-plus'
 

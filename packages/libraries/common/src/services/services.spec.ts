@@ -1,8 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
 import { envVarsMock } from '@pulse/common/mocks'
 import { fetchUrlTerms } from '.'
-
-vi.mock('env-vars', () => envVarsMock)
 
 const CGU_URL = 'contact/api/terms/latest/content?language=fr'
 

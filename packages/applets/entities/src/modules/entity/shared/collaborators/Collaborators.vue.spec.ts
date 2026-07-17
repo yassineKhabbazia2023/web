@@ -1,12 +1,16 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { mockCollabsData } from '@entities/__mocks__/collab-data.mocks'
-import * as collaboratorServices from '@entities/services/collaborator'
-import * as contactServices from '@entities/services/contact'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
-import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
+import { useRoute } from 'vue-router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { getCollaboratorsByIdEntity } from '@entities/services/collaborator'
+import { getContactById } from '@entities/services/contact'
+import type { Contact } from '@entities/services/contact/contactTypes'
 
 import Collaborators from './Collaborators.vue'
 
@@ -14,37 +18,21 @@ const userStoreMock = getStoreMock(useUserStore)
 
 const ENTITY_ID = 42
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
+beforeEach(() => {
+  armCurrentUserPermissions(false)
+  vi.mocked(useRoute).mockReturnValue({
     params: {
       [RouteParam.ENTITY_ID]: ENTITY_ID,
     },
-  }),
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
-
-vi.mock('@entities/services/account', () => ({
-  deleteContactFromAccount: vi.fn(() => Promise.resolve()),
-  fetchContactsFromSameHub: vi.fn(() => Promise.resolve([])),
-}))
-
-vi.mock('@entities/services/contact', () => ({
-  getContactById: vi.fn(() => Promise.resolve({})),
-}))
-
-vi.mock('@entities/services/collaborator', () => ({
-  getCollaboratorsByIdEntity: vi.fn(() =>
-    Promise.resolve({
-      items: mockCollabsData,
-      currentPage: 1,
-      totalPage: 1,
-      totalItems: mockCollabsData.length,
-    }),
-  ),
-}))
+  } as unknown as RouteLocationNormalizedLoaded)
+  vi.mocked(getContactById).mockResolvedValue({} as Contact)
+  vi.mocked(getCollaboratorsByIdEntity).mockResolvedValue({
+    items: mockCollabsData,
+    currentPage: 1,
+    totalPage: 1,
+    totalItems: mockCollabsData.length,
+  })
+})
 
 const createWrapper = (): ComponentWrapper<
   InstanceType<typeof Collaborators>
@@ -83,7 +71,6 @@ const createWrapper = (): ComponentWrapper<
 
 describe('collaborators', () => {
   let wrapper: ReturnType<typeof createWrapper>
-  const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
   const getAddCollaboratorDrawer = () =>
     wrapper.findComponent({ name: 'AddCollaboratorsDrawer' })
@@ -94,32 +81,25 @@ describe('collaborators', () => {
 
   beforeEach(async () => {
     userStoreMock.isCollab = true
-    vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
-      expectedErrorMessage,
-    )
 
     wrapper = createWrapper()
     await flushPromises()
   })
 
   it('can display the add-collaborator drawer', async () => {
-    expect(getAddCollaboratorDrawer().exists()).toBeFalsy()
+    expect(getAddCollaboratorDrawer().exists()).toBe(false)
 
     await getAddCollaboratorButton().click()
 
-    expect(getAddCollaboratorDrawer().exists()).toBeTruthy()
+    expect(getAddCollaboratorDrawer().exists()).toBe(true)
     expect(getAddCollaboratorDrawer().props('entityId')).toBe(ENTITY_ID)
 
-    const getCollaboratorsSpy = vi.spyOn(
-      collaboratorServices,
-      'getCollaboratorsByIdEntity',
-    )
     // Clear previous calls (from component mount in beforeEach)
-    getCollaboratorsSpy.mockClear()
+    vi.mocked(getCollaboratorsByIdEntity).mockClear()
 
     getAddCollaboratorDrawer().vm.$emit('refresh-collaborators-list')
     await flushPromises()
-    expect(getCollaboratorsSpy).toHaveBeenCalledOnce()
+    expect(vi.mocked(getCollaboratorsByIdEntity)).toHaveBeenCalledOnce()
   })
 
   it("should emit an 'accessSwitched' event when the table changes", () => {
@@ -130,6 +110,7 @@ describe('collaborators', () => {
       [mockCollabsData[0]],
     ])
   })
+
   it('should not display actions when is NOT Collab', async () => {
     userStoreMock.isCollab = false
     await nextTick()
@@ -140,7 +121,7 @@ describe('collaborators', () => {
 
     const addCollaboratorButton = getAddCollaboratorButton()
 
-    expect(collaboratorsAction.exists()).toBeFalsy()
-    expect(addCollaboratorButton).toBeFalsy()
+    expect(collaboratorsAction.exists()).toBe(false)
+    expect(addCollaboratorButton).toBeNull()
   })
 })

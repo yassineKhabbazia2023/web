@@ -1,34 +1,12 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import { defineAsyncComponent } from 'vue'
+import { asyncComponentMatcher, installWidgetOnAppMock } from '@widgets/__mocks__/widget-install.mocks'
 
 import PennylaneIntro from './pennylane-intro.widget'
 
-vi.mock('vue')
-
 describe('pennylane-intro widget', () => {
   it('should install', () => {
-    const _options: any = {}
-    const appComponentMock = vi.fn()
-    const app: any = {
-      component: appComponentMock,
-    }
+    const appComponentMock = installWidgetOnAppMock(PennylaneIntro)
 
-    const expectedDefineAsyncComponentArguments = [
-      expect.any(Function),
-    ]
-    const expectedAppComponentArguments = [
-      WidgetName.PENNYLANE_INTRO,
-      expect.any(Promise),
-    ]
-
-    const defineAsyncComponentSpy = vi
-      .mocked(defineAsyncComponent)
-      .mockImplementation((callback: any) => callback())
-
-    PennylaneIntro.install(app, _options)
-
-    expect(appComponentMock).toHaveBeenCalledExactlyOnceWith(...expectedAppComponentArguments)
-    expect(defineAsyncComponentSpy).toHaveBeenCalledExactlyOnceWith(...expectedDefineAsyncComponentArguments)
+    expect(appComponentMock).toHaveBeenCalledExactlyOnceWith(WidgetName.PENNYLANE_INTRO, asyncComponentMatcher())
   })
 })
-

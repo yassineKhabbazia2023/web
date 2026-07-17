@@ -1,17 +1,13 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount } from '@vue/test-utils'
 import { defineComponent, h } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useBookingQueryParams } from './use-booking-query-params.composable'
 import { useBookingAppointmentsStore, useBookingCustomerStore } from '@booking/stores'
 import {
   BOOKING_QUERY_PARAM_WIDGET,
   BOOKING_QUERY_PARAM_COLLABORATOR_ID,
 } from '@booking/constants'
-
-vi.mock('vue-router', () => ({
-  useRoute: vi.fn(),
-  useRouter: vi.fn(),
-}))
 
 const mockRoute = {
   query: {} as Record<string, string | string[] | undefined>,
@@ -22,16 +18,13 @@ const mockRouter = {
   replace: mockReplace,
 }
 
-// Get the mocked functions
-const { useRoute, useRouter } = await import('vue-router')
-
-vi.mocked(useRoute).mockReturnValue(mockRoute as any)
-vi.mocked(useRouter).mockReturnValue(mockRouter as any)
-
 describe('useBookingQueryParams', () => {
   let pinia: ReturnType<typeof createPinia>
 
   beforeEach(() => {
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    vi.mocked(useRoute).mockReturnValue(mockRoute as unknown as ReturnType<typeof useRoute>)
+    vi.mocked(useRouter).mockReturnValue(mockRouter as unknown as ReturnType<typeof useRouter>)
     pinia = createPinia()
     setActivePinia(pinia)
     mockRoute.query = {}

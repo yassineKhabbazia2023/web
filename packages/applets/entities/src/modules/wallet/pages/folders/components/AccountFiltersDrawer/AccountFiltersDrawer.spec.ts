@@ -10,14 +10,7 @@ import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { LastActivityPeriodInDays } from '@entities/enums'
 
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 const userStoreMock = getStoreMock(useUserStore)
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: loggerErrorSpy,
-  },
-}))
 
 const stubs = {
   PDrawer: {

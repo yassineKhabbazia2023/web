@@ -2,30 +2,28 @@ import { nextTick } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from '@entities/constants'
 import type { Account } from '@entities/services/account'
 import { ProviderName } from '@entities/enums'
-import { getFormStructure } from '@entities/utils/referential'
+import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
+
+import { restoreRealUseI18n } from '@pulse/common/mocks/vitest'
 
 import CompanyInformation from './CompanyInformation.vue'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
+const getFormStructureMock = vi.mocked(getFormStructure)
 
-vi.mock('@entities/utils/referential', () => ({
-  getFormStructure: vi.fn(() => Promise.resolve([
+beforeEach(() => {
+  restoreRealUseI18n()
+  getFormStructureMock.mockResolvedValue([
     {
       title: 'Test Section',
       fields: [],
     },
-  ])),
-  cleanRecordStructure: vi.fn(),
-}))
-
-const getFormStructureMock = vi.mocked(getFormStructure)
+  ])
+  vi.mocked(cleanRecordStructure).mockImplementation(() => undefined)
+})
 
 const mockAccount: Account = {
   accountId: 1,

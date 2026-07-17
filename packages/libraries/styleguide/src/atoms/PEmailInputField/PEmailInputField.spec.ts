@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { describe, it, expect } from 'vitest'
+
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import type { PEmailInputFieldProps } from './p-email-input-field.types'
 import PEmailInputField from '.'

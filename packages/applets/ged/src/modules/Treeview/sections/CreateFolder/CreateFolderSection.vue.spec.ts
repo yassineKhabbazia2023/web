@@ -1,7 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { type Mock } from 'vitest'
-import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
@@ -9,7 +7,7 @@ import { CreateFolder } from '@ged/services/Folder'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
-
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 
 const defaultProps: CreateFolderSectionProps = {
@@ -50,7 +48,6 @@ export type CreateFolderSectionWrapper = VueWrapper<
   ComponentPublicInstance<CreateFolderSectionSetup, CreateFolderSectionProps>
 >
 
-vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: CreateFolderSectionProps = defaultProps,
@@ -60,7 +57,9 @@ const createWrapper = (
   }) as unknown as CreateFolderSectionWrapper
 }
 
-vi.mock('@ged/services/Folder', () => folderServiceMock)
+beforeEach(() => {
+  armGedServiceDefaults()
+})
 
 describe('createFolderSection', () => {
   describe('props', () => {
@@ -231,7 +230,7 @@ describe('createFolderSection', () => {
       await nextTick()
 
       expect(PNotificationMock).toHaveBeenCalledTimes(1)
-      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
+      const callArguments = (vi.mocked(PNotificationMock)).mock.calls[0][0]
       expect(callArguments.message).toBe(
         'Le dossier a été créé avec succès.',
       )
@@ -266,7 +265,7 @@ describe('createFolderSection', () => {
       ]
 
       it.each(cases)(
-        'close event validation with "%s"',
+        'close event validation with $action',
         async ({ action, expectedEvent }) => {
           const updatedProps: CreateFolderSectionProps = {
             ...defaultProps,

@@ -3,14 +3,6 @@ import { api } from '@pulse/common/api'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
 import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse, AiMonitoringSummary } from '@backoffice/types/ai-monitoring.type'
 
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    gateway: {
-      get: vi.fn(),
-    },
-  },
-}))
-
 describe('AiMonitoringService', () => {
   const mockResponse: AiSearchHistoryResponse = {
     history: [

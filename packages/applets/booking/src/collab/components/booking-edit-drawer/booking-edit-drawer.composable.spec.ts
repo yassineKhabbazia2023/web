@@ -7,26 +7,6 @@ import type { BookingConfigurationDetails } from '@booking/types'
 import { useBookingEditDrawer } from './booking-edit-drawer.composable'
 import { BookingEditDrawerTab } from './booking-edit-drawer.enums'
 
-vi.mock('@booking/services', () => ({
-  BookingService: {
-    getBookingConfigurationDetails: vi.fn(),
-    updateBookingConfiguration: vi.fn(),
-  },
-}))
-
-vi.mock('@booking/services/booking-tracking.service', () => ({
-  BookingTrackingService: {
-    trackSlotModificationStarted: vi.fn(),
-    trackSlotModificationValidated: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-  },
-}))
-
 const mockConfigurationDetails: BookingConfigurationDetails = {
   displayName: 'Test Meeting',
   description: 'Test description',
@@ -51,8 +31,9 @@ const mockConfigurationDetails: BookingConfigurationDetails = {
 
 describe('useBookingEditDrawer', () => {
   beforeEach(() => {
+    vi.spyOn(BookingTrackingService, 'trackSlotModificationStarted').mockImplementation(() => undefined)
+    vi.spyOn(BookingTrackingService, 'trackSlotModificationValidated').mockImplementation(() => undefined)
     setActivePinia(createPinia())
-    vi.clearAllMocks()
   })
 
   describe('initialization', () => {
@@ -72,7 +53,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should fetch configuration details when drawer opens', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       const { configurationDetails, appointmentDetails, timeSlotsConfiguration } = useBookingEditDrawer(mockOptions)
 
@@ -89,7 +70,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should track slot modification started when drawer opens', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       useBookingEditDrawer(mockOptions)
 
@@ -101,7 +82,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should detect unsaved changes', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       const { hasUnsavedChanges, appointmentDetails } = useBookingEditDrawer(mockOptions)
 
@@ -119,7 +100,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should show confirmation modal when closing with unsaved changes', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       const { handleBeforeClose, isConfirmationModalOpen, appointmentDetails } = useBookingEditDrawer(mockOptions)
 
@@ -139,7 +120,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should close directly when no unsaved changes', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       const { handleBeforeClose, isConfirmationModalOpen } = useBookingEditDrawer(mockOptions)
 
@@ -158,8 +139,8 @@ describe('useBookingEditDrawer', () => {
 
     it('should call onSuccess callback after successful save', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
-      vi.mocked(BookingService.updateBookingConfiguration).mockResolvedValue(undefined)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'updateBookingConfiguration').mockResolvedValue(undefined)
 
       const { handleSave } = useBookingEditDrawer(mockOptions)
 
@@ -177,8 +158,8 @@ describe('useBookingEditDrawer', () => {
 
     it('should track slot modification validated with success when save succeeds', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
-      vi.mocked(BookingService.updateBookingConfiguration).mockResolvedValue(undefined)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'updateBookingConfiguration').mockResolvedValue(undefined)
 
       const { handleSave } = useBookingEditDrawer(mockOptions)
 
@@ -195,8 +176,8 @@ describe('useBookingEditDrawer', () => {
 
     it('should call onError callback after failed save', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
-      vi.mocked(BookingService.updateBookingConfiguration).mockRejectedValue(new Error('API Error'))
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'updateBookingConfiguration').mockRejectedValue(new Error('API Error'))
 
       const { handleSave } = useBookingEditDrawer(mockOptions)
 
@@ -213,8 +194,8 @@ describe('useBookingEditDrawer', () => {
 
     it('should track slot modification validated with failure when save fails', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
-      vi.mocked(BookingService.updateBookingConfiguration).mockRejectedValue(new Error('API Error'))
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'updateBookingConfiguration').mockRejectedValue(new Error('API Error'))
 
       const { handleSave } = useBookingEditDrawer(mockOptions)
 
@@ -231,7 +212,7 @@ describe('useBookingEditDrawer', () => {
 
     it('should discard changes and close drawer', async () => {
       const collabStore = useBookingCollabStore()
-      vi.mocked(BookingService.getBookingConfigurationDetails).mockResolvedValue(mockConfigurationDetails)
+      vi.spyOn(BookingService, 'getBookingConfigurationDetails').mockResolvedValue(mockConfigurationDetails)
 
       const { handleDiscardChanges, isConfirmationModalOpen } = useBookingEditDrawer(mockOptions)
 

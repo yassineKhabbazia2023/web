@@ -1,13 +1,9 @@
 import { ref } from 'vue'
+import { withSetup } from '@pulse/toolbox/utils/test'
 import { useOfferPlanSubscription } from './use-offer-plan-subscription.composable'
 import { getOfferPlanMock } from '@entities/__mocks__/offer-subscription.mocks'
 import type { OfferPlan } from '@entities/types'
 import { PlanCode } from '@entities/enums'
-
-vi.mock('vue', async (importOriginal) => ({
-  ...await importOriginal<typeof import('vue')>(),
-  onMounted: vi.fn(),
-}))
 
 const PLAN_BASIC = getOfferPlanMock({
   planId: 1,
@@ -44,12 +40,12 @@ const DEFAULT_PLANS: OfferPlan[] = [PLAN_BASIC, PLAN_ESSENTIAL, PLAN_PREMIUM_INT
 describe('useOfferPlanSubscription', () => {
   describe('selectedPlanPricings', () => {
     it('should return pricings of selected plan in creation mode', () => {
-      const { selectedPlanPricings } = useOfferPlanSubscription({
+      const [{ selectedPlanPricings }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(2),
         selectedPricingId: ref(undefined),
-      })
+      }))
 
       expect(selectedPlanPricings.value).toHaveLength(2)
       expect(selectedPlanPricings.value[0].planPricingId).toBe(2)
@@ -62,24 +58,24 @@ describe('useOfferPlanSubscription', () => {
         { ...PLAN_PREMIUM_INTERNAL, isSelected: false },
       ]
 
-      const { selectedPlanPricings } = useOfferPlanSubscription({
+      const [{ selectedPlanPricings }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithSelection),
         isRecap: ref(true),
         selectedPlanId: ref(1), // ignored in recap mode
         selectedPricingId: ref(undefined),
-      })
+      }))
 
       expect(selectedPlanPricings.value).toHaveLength(2)
       expect(selectedPlanPricings.value[0].planPricingId).toBe(2)
     })
 
     it('should return empty array when no plan is selected', () => {
-      const { selectedPlanPricings } = useOfferPlanSubscription({
+      const [{ selectedPlanPricings }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(undefined),
         selectedPricingId: ref(undefined),
-      })
+      }))
 
       expect(selectedPlanPricings.value).toHaveLength(0)
     })
@@ -92,12 +88,12 @@ describe('useOfferPlanSubscription', () => {
       { planId: 3, expectedClass: 'grid-cols--3', description: '3 pricings' },
       { planId: undefined, expectedClass: 'grid-cols--3', description: 'no plan selected' },
     ])('should return $expectedClass when $description', ({ planId, expectedClass }) => {
-      const { pricingGridClass } = useOfferPlanSubscription({
+      const [{ pricingGridClass }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(planId),
         selectedPricingId: ref(undefined),
-      })
+      }))
 
       expect(pricingGridClass.value).toBe(expectedClass)
     })
@@ -109,12 +105,12 @@ describe('useOfferPlanSubscription', () => {
       { planId: 2, expected: false, description: 'planCode is not PREMIUM_INTERNAL' },
       { planId: undefined, expected: false, description: 'no plan is selected' },
     ])('should return $expected when $description', ({ planId, expected }) => {
-      const { isPremiumInternalise } = useOfferPlanSubscription({
+      const [{ isPremiumInternalise }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(planId),
         selectedPricingId: ref(undefined),
-      })
+      }))
 
       expect(isPremiumInternalise.value).toBe(expected)
     })
@@ -137,12 +133,12 @@ describe('useOfferPlanSubscription', () => {
       const selectedPlanId = ref<number | undefined>(undefined)
       const selectedPricingId = ref<number | undefined>(undefined)
 
-      const { initializeRecapMode } = useOfferPlanSubscription({
+      const [{ initializeRecapMode }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithSelection),
         isRecap: ref(true),
         selectedPlanId,
         selectedPricingId,
-      })
+      }))
 
       initializeRecapMode()
 
@@ -155,12 +151,12 @@ describe('useOfferPlanSubscription', () => {
       const selectedPlanId = ref<number | undefined>(undefined)
       const selectedPricingId = ref<number | undefined>(undefined)
 
-      const { initializeRecapMode } = useOfferPlanSubscription({
+      const [{ initializeRecapMode }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithSelection),
         isRecap: ref(false),
         selectedPlanId,
         selectedPricingId,
-      })
+      }))
 
       initializeRecapMode()
 
@@ -179,12 +175,12 @@ describe('useOfferPlanSubscription', () => {
       const selectedPlanId = ref<number | undefined>(undefined)
       const selectedPricingId = ref<number | undefined>(undefined)
 
-      const { initializeRecapMode } = useOfferPlanSubscription({
+      const [{ initializeRecapMode }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithSelection),
         isRecap: ref(true),
         selectedPlanId,
         selectedPricingId,
-      })
+      }))
 
       initializeRecapMode()
 
@@ -203,12 +199,12 @@ describe('useOfferPlanSubscription', () => {
       const selectedPlanId = ref<number | undefined>(undefined)
       const selectedPricingId = ref<number | undefined>(undefined)
 
-      const { initializeRecapMode } = useOfferPlanSubscription({
+      const [{ initializeRecapMode }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithSelection),
         isRecap: ref(true),
         selectedPlanId,
         selectedPricingId,
-      })
+      }))
 
       initializeRecapMode()
 
@@ -221,12 +217,12 @@ describe('useOfferPlanSubscription', () => {
     it('should auto-select pricing when plan has exactly 1 pricing', () => {
       const selectedPricingId = ref<number | undefined>(undefined)
 
-      const { handlePlanChange } = useOfferPlanSubscription({
+      const [{ handlePlanChange }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(undefined),
         selectedPricingId,
-      })
+      }))
 
       handlePlanChange(1) // PLAN_BASIC has 1 pricing
 
@@ -236,12 +232,12 @@ describe('useOfferPlanSubscription', () => {
     it('should clear pricing when plan has multiple pricings', () => {
       const selectedPricingId = ref<number | undefined>(999)
 
-      const { handlePlanChange } = useOfferPlanSubscription({
+      const [{ handlePlanChange }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(false),
         selectedPlanId: ref(undefined),
         selectedPricingId,
-      })
+      }))
 
       handlePlanChange(2) // PLAN_ESSENTIAL has 2 pricings
 
@@ -251,12 +247,12 @@ describe('useOfferPlanSubscription', () => {
     it('should not modify pricing in recap mode', () => {
       const selectedPricingId = ref<number | undefined>(1)
 
-      const { handlePlanChange } = useOfferPlanSubscription({
+      const [{ handlePlanChange }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(DEFAULT_PLANS),
         isRecap: ref(true),
         selectedPlanId: ref(1),
         selectedPricingId,
-      })
+      }))
 
       handlePlanChange(2)
 
@@ -272,12 +268,12 @@ describe('useOfferPlanSubscription', () => {
       ]
       const selectedPricingId = ref<number | undefined>(999)
 
-      const { handlePlanChange } = useOfferPlanSubscription({
+      const [{ handlePlanChange }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithUndefinedPricings),
         isRecap: ref(false),
         selectedPlanId: ref(undefined),
         selectedPricingId,
-      })
+      }))
 
       handlePlanChange(1)
 
@@ -293,12 +289,12 @@ describe('useOfferPlanSubscription', () => {
       ]
       const selectedPricingId = ref<number | undefined>(999)
 
-      const { handlePlanChange } = useOfferPlanSubscription({
+      const [{ handlePlanChange }] = withSetup(() => useOfferPlanSubscription({
         plans: ref(plansWithEmptyPricings),
         isRecap: ref(false),
         selectedPlanId: ref(undefined),
         selectedPricingId,
-      })
+      }))
 
       handlePlanChange(1)
 

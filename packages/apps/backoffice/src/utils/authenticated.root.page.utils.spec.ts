@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { parseUserName, getFirstName, getUserInitials } from './authenticated.root.page.utils'
 
 describe('authenticated.root.page.utils', () => {

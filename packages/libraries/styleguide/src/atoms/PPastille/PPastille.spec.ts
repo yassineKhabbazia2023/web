@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PPastille from './PPastille.vue'
 import type { PPastilleProps } from './PPastilleTypes'

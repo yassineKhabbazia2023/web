@@ -1,4 +1,3 @@
-import { describe, it, vi, expect } from 'vitest'
 import {
   fetchAccount,
   fetchAccounts,
@@ -39,6 +38,12 @@ import {
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { AccountType } from '@pulse/common/enums'
+import {
+  apiGatewayDeleteMock,
+  apiGatewayGetMock,
+  apiGatewayPatchMock,
+  apiGatewayPostMock,
+} from '@pulse/common/mocks/vitest'
 
 const delegationId = 3
 const accountId = 5
@@ -55,37 +60,28 @@ const mockedReferentialHubs = getMockedReferentialHubs()
 const mockedReferentialOffices = getMockedReferentialOffices()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
-const mockedAccountApiPatch = vi.hoisted(() => vi.fn())
+const mockedAccountApiPatch = apiGatewayPatchMock
 const mockedCollaborators = getMockedCollaborators()
-const postSpy = vi.hoisted(() => vi.fn())
-const commonApiGetMock = vi.hoisted(() => vi.fn())
+const postSpy = apiGatewayPostMock
+const commonApiGetMock = apiGatewayGetMock
 
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: commonApiGetMock,
-        patch: mockedAccountApiPatch,
-        delete: vi.fn().mockImplementation((url) => {
-          if (url === `${API_PREFIXES.ACCOUNT}/roles`) {
-            return {
-              status: 200,
-              data: {
-                accountId,
-                contactId,
-              },
-            }
-          }
-          if (url === `${API_PREFIXES.ACCOUNT}/delegations/currentuser`) {
-            return {
-              status: 200,
-            }
-          }
-        }),
-        post: postSpy,
-      },
-    }),
-  }
+beforeEach(() => {
+  apiGatewayDeleteMock.mockImplementation((url) => {
+    if (url === `${API_PREFIXES.ACCOUNT}/roles`) {
+      return {
+        status: 200,
+        data: {
+          accountId,
+          contactId,
+        },
+      }
+    }
+    if (url === `${API_PREFIXES.ACCOUNT}/delegations/currentuser`) {
+      return {
+        status: 200,
+      }
+    }
+  })
 })
 
 describe('test accountServices', () => {

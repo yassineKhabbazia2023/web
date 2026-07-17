@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { useSort } from './sort.composable'
 import { SortingCriteria } from '@pulse/common/types'
 

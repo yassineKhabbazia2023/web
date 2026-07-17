@@ -6,10 +6,6 @@ import { getCatalogTagProps, getOfferSearchTerms, getOffersWithSearchTerms } fro
 
 const offersMock = getOffersMock()
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
 describe('offers-catalog.utils', () => {
   describe('getCatalogTagProps', () => {
     it('should return proper props when tag label is known', () => {

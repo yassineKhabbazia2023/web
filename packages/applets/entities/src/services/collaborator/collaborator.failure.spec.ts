@@ -4,28 +4,23 @@ import {
   fetchContactRoles,
   getCollaborators,
 } from '.'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
+import { handleRequestError } from '@entities/helpers/entity.helper'
 
 const collaboratorType = ContactType.COLLABORATOR
 const errorMessage = 'API Error: 503 Service Unavailable'
 
-vi.mock('@entities/helpers/entity.helper', () => ({
-  handleRequestError: vi.fn(),
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: vi.fn().mockImplementation((url) => {
-        if (url === `${API_PREFIXES.WALLET}/contacts`) {
-          return Promise.reject(new Error(errorMessage))
-        }
-        if (url === `${API_PREFIXES.WALLET}/personas/${collaboratorType}`) {
-          return Promise.reject(new Error(errorMessage))
-        }
-      }),
-    },
-  }),
-}))
+beforeEach(() => {
+  vi.mocked(handleRequestError).mockImplementation(() => undefined)
+  apiGatewayGetMock.mockImplementation((url: string) => {
+    if (url === `${API_PREFIXES.WALLET}/contacts`) {
+      return Promise.reject(new Error(errorMessage))
+    }
+    if (url === `${API_PREFIXES.WALLET}/personas/${collaboratorType}`) {
+      return Promise.reject(new Error(errorMessage))
+    }
+  })
+})
 
 describe('getCollaborators/Admin', () => {
   it('service should return empty list', async () => {

@@ -10,6 +10,11 @@ import * as styleguide from '@pulse/styleguide'
 import { PAGE_SIZES } from '@pulse/common/constants'
 
 import { SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
+import {
+  confirmSubscriptionTransfer,
+  fetchSubscriptionRequests,
+  validateSubscriptionRequest,
+} from '@entities/services/subscription'
 import { SubscriptionStatusFiltersManager } from '../SubscriptionStatusFilters/subscription-status-filters.manager'
 import SubscriptionsTable from '.'
 
@@ -19,33 +24,27 @@ const paginationResponseMock = getMockedSubscriptionPaginationResponse()
 const userStoreMock = getStoreMock(useUserStore)
 
 const { subscriptionId, offer, status } = subscriptionRequestMock[0]
-const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests, mockConfirmSubscriptionTransfer } = vi.hoisted(() => ({
-  mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
-  mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(getMockedSubscriptionPaginationResponse())),
-  mockConfirmSubscriptionTransfer: vi.fn(() => Promise.resolve()),
-}))
-vi.mock('@entities/services/subscription', async () => {
-  const actual = await vi.importActual('@entities/services/subscription')
-  return {
-    ...(actual as object),
-    validateSubscriptionRequest: mockValidateSubscriptionRequest,
-    fetchSubscriptionRequests: mockFetchSubscriptionRequests,
-    confirmSubscriptionTransfer: mockConfirmSubscriptionTransfer,
-  }
-})
 
-vi.mock('@pulse/common/services/amplitude')
+const mockValidateSubscriptionRequest = vi.mocked(validateSubscriptionRequest)
+const mockFetchSubscriptionRequests = vi.mocked(fetchSubscriptionRequests)
+const mockConfirmSubscriptionTransfer = vi.mocked(confirmSubscriptionTransfer)
+
+beforeEach(() => {
+  mockValidateSubscriptionRequest.mockResolvedValue(undefined)
+  mockFetchSubscriptionRequests.mockResolvedValue(getMockedSubscriptionPaginationResponse())
+  mockConfirmSubscriptionTransfer.mockResolvedValue(undefined)
+})
 
 const pendingRequestMenu = [
   {
     pIconName: 'eye',
-    pValue: 'Consult',
+    pValue: 'consult',
     pActionName: 'consult',
     pState: 'default',
   },
   {
     pIconName: 'check',
-    pValue: 'Validate request',
+    pValue: 'validate',
     pActionName: 'validate',
     pState: 'default',
   },
@@ -54,7 +53,7 @@ const pendingRequestMenu = [
 const validatedRequestMenu = [
   {
     pIconName: 'eye',
-    pValue: 'Consult',
+    pValue: 'consult',
     pActionName: 'consult',
     pState: 'default',
   },
@@ -63,19 +62,19 @@ const validatedRequestMenu = [
 const toTransferRequestMenu = [
   {
     pIconName: 'eye',
-    pValue: 'Consult',
+    pValue: 'consult',
     pActionName: 'consult',
     pState: 'default',
   },
   {
     pIconName: 'arrowLeftRight',
-    pValue: 'Confirm transfer request',
+    pValue: 'confirmTransferRequest',
     pActionName: 'confirm-transfer',
     pState: 'default',
   },
   {
     pIconName: 'check',
-    pValue: 'Validate request',
+    pValue: 'validate',
     pActionName: 'validate',
     pState: 'default',
   },
@@ -106,13 +105,13 @@ const transferInProgressSubscriptionRequestMock = {
 }
 
 const pTableColumnsLabel: { [key: number]: string } = {
-  0: 'Legal name',
-  1: 'Customer code',
-  2: 'Date',
-  3: 'Requester',
-  4: 'Offer',
-  5: 'User',
-  6: 'Status',
+  0: 'legalName',
+  1: 'customerCode',
+  2: 'dateRequest',
+  3: 'requester',
+  4: 'offer',
+  5: 'user',
+  6: 'status',
 }
 
 const emailMock = 'email-mock'
@@ -171,14 +170,16 @@ describe('subscriptionsTable', () => {
 
     const cells = dataRows[0].findAll('td')
     const cellsText = cells.map((cell) => cell.text())
-    const expected: string[] = [
+    // The date cell renders through the i18n d() formatter, whose output is not
+    // asserted (timezone-dependent): only its presence as a string is checked.
+    const expected: unknown[] = [
       'Test Indicators 1',
       'V900000163',
-      '3/24/2023',
+      expect.any(String),
       'test-01@test.fr',
       'Modules MEG : facturation et caisse',
       'TTTFirsName TLastNameTLastName+test@test.onmicrosoft.com',
-      'To validate',
+      'pending',
       '',
     ]
     expect(cellsText).toMatchObject(expected)
@@ -248,10 +249,10 @@ describe('subscriptionsTable', () => {
     await wrapper.vm.handleOfferFiltered()
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Transfer in progress')
+    expect(wrapper.text()).toContain('pennylaneTransferInProgress')
     const transferInProgressTag = wrapper
       .findAllComponents({ name: 'PTag' })
-      .find(tag => tag.props('pContent') === 'Transfer in progress')
+      .find(tag => tag.props('pContent') === 'pennylaneTransferInProgress')
 
     expect(transferInProgressTag?.props('pIconLeftName')).toBe('clockHistory')
   })
@@ -275,8 +276,8 @@ describe('subscriptionsTable', () => {
   })
 
   it("should send a request to validate the demand when the 'Validate' button is clicked", async () => {
-    const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
-    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+    const spyTrackAmplitude = vi.mocked(AmplitudeService.track)
+    const spyDisplayNotification = vi.mocked(styleguide.displayNotification).mockImplementation(() => { })
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
@@ -296,7 +297,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_result: 'succeeded',
       subscription_complete_plan: 'MEG Premium',
       subscription_complete_forfait: 49,
-      subscription_complete_statut: 'To validate',
+      subscription_complete_statut: 'pending',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -307,7 +308,7 @@ describe('subscriptionsTable', () => {
 
   it("should send a request to confirm transfer when the 'Confirm transfer request' button is clicked", async () => {
     mockConfirmSubscriptionTransfer.mockClear()
-    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+    const spyDisplayNotification = vi.mocked(styleguide.displayNotification).mockImplementation(() => { })
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
@@ -324,13 +325,13 @@ describe('subscriptionsTable', () => {
     )
     expect(spyDisplayNotification).toHaveBeenCalledExactlyOnceWith(
       'success',
-      'The transfer declaration has been saved',
+      'transferDeclarationSaved',
     )
   })
 
   it('should display an error notification when transfer confirmation fails', async () => {
     mockConfirmSubscriptionTransfer.mockRejectedValueOnce('API Error: 503 Service Unavailable')
-    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+    const spyDisplayNotification = vi.mocked(styleguide.displayNotification).mockImplementation(() => { })
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
@@ -344,14 +345,14 @@ describe('subscriptionsTable', () => {
 
     expect(spyDisplayNotification).toHaveBeenCalledExactlyOnceWith(
       'error',
-      'The transfer declaration could not be saved',
+      'transferDeclarationNotSaved',
     )
   })
 
   it('should track the amplitude event and display an error notification if the demand validation fails', async () => {
     mockValidateSubscriptionRequest.mockRejectedValue('API Error: 503 Service Unavailable')
-    const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
-    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+    const spyTrackAmplitude = vi.mocked(AmplitudeService.track)
+    const spyDisplayNotification = vi.mocked(styleguide.displayNotification).mockImplementation(() => { })
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
@@ -370,7 +371,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_result: 'failed',
       subscription_complete_plan: 'MEG Premium',
       subscription_complete_forfait: 49,
-      subscription_complete_statut: 'To validate',
+      subscription_complete_statut: 'pending',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',

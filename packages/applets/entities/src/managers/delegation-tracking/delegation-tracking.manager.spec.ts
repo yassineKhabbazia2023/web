@@ -1,8 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { DelegationTrackingManager } from './delegation-tracking.manager'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('DelegationTrackingManager', () => {
   describe('trackPermanentDeleteRequested', () => {
     it('should track the event without properties', () => {

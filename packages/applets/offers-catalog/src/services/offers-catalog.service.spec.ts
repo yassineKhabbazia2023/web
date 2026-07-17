@@ -6,12 +6,6 @@ import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffers
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: apiGatewayMock,
-  }),
-}))
-
 describe('offers-catalog.service', () => {
   describe('getOffersCatalog', () => {
     it('should call api properly', async () => {

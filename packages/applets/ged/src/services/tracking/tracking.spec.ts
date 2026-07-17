@@ -1,4 +1,3 @@
-import { describe } from 'vitest'
 import { DocumentConsultationSource } from './tracking.types'
 import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 import { GedContext } from '@pulse/common/enums'
@@ -13,8 +12,6 @@ import {
   trackDocumentTransmit,
   trackDocumentConsulted,
 } from '@ged/services/tracking/tracking.service'
-
-vi.mock('@pulse/common/services/amplitude')
 
 const successValue = 'succeeded'
 const failValue = 'failed'

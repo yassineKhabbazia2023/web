@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { notificationsServiceMock, patchNotificationReadStatusMock } from '../../../__mocks__/notification.service.mocks'
+import { patchNotificationReadStatusMock, armNotificationsServiceDefaults } from '../../../__mocks__/notification.service.mocks'
 import {
   notificationsMock,
   readNotificationsMock,
@@ -22,7 +22,7 @@ import {
 
 const accountRows = getAllMockAccountRows()
 const entities = getMockedEntities()
-import { getStoreMock, CurrentEntityManagerMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
@@ -41,15 +41,13 @@ import {
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-vi.mock('../../../services/notifications.service', () => notificationsServiceMock)
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentEntityManager: CurrentEntityManagerMock,
-}))
-
 const routerMock = {
   push: vi.fn(),
 } as unknown as Router
+
+beforeEach(() => {
+  armNotificationsServiceDefaults()
+})
 
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {

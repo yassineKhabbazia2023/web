@@ -1,30 +1,21 @@
 import { getMockedPennylaneDocument } from '@pulse/common/mocks'
-import { getFileExtension, logger } from '@pulse/toolbox'
-import { getIconFileName, displayNotification } from '@pulse/styleguide'
+import { logger } from '@pulse/toolbox'
+import { displayNotification } from '@pulse/styleguide'
 import { downloadFile } from '@pulse/common/helpers'
-import type { IconName } from '@pulse/styleguide/types'
 
 import { getFormattedPennylaneDocuments, downloadDocument } from './pennylane-documents.helper'
 
-vi.mock('@pulse/toolbox')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/common/helpers')
-
 const loggerSpy = vi.mocked(logger)
-const getFileExtensionSpy = vi.mocked(getFileExtension)
-const getIconFileNameSpy = vi.mocked(getIconFileName)
 const downloadFileSpy = vi.mocked(downloadFile)
 const displayNotificationSpy = vi.mocked(displayNotification)
 
-const fileExtensionMock = 'pdf'
-const iconNameMock: IconName = 'bell'
+beforeEach(() => {
+  downloadFileSpy.mockImplementation(() => undefined)
+})
 
 describe('pennylane-documents.helper', () => {
   describe('getFormattedPennylaneDocuments', () => {
     it('should return formatted documents with the correct path prefix', () => {
-      getFileExtensionSpy.mockReturnValue(fileExtensionMock)
-      getIconFileNameSpy.mockReturnValue(iconNameMock)
-
       const pathPrefix = 'PennylanePrefix'
       const pennylaneDocument = getMockedPennylaneDocument()
       const pennylaneDocuments = [
@@ -32,16 +23,13 @@ describe('pennylane-documents.helper', () => {
       ]
       const expectedFormattedDocuments = [{
         ...pennylaneDocument,
-        iconName: iconNameMock,
+        iconName: 'filetypePng',
         path: `${pathPrefix}${pennylaneDocument.path}`,
       }]
 
       const formattedDocuments = getFormattedPennylaneDocuments(pennylaneDocuments, pathPrefix)
 
       expect(formattedDocuments).toStrictEqual(expectedFormattedDocuments)
-
-      expect(getFileExtensionSpy).toHaveBeenCalledWith(pennylaneDocument.name)
-      expect(getIconFileNameSpy).toHaveBeenCalledWith(fileExtensionMock, 'filetypeTxt')
     })
   })
 

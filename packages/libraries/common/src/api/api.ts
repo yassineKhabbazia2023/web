@@ -35,6 +35,12 @@ export const createApiInstance = (domain: string | undefined) => {
   return instance
 }
 
+let gatewayInstance: ReturnType<typeof createApiInstance> | undefined
+
 export const api = {
-  gateway: createApiInstance(VITE_API_GATEWAY),
+  get gateway() {
+    gatewayInstance ??= createApiInstance(VITE_API_GATEWAY)
+
+    return gatewayInstance
+  },
 }

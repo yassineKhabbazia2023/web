@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
+
 import PInput from '.'
 import type { PInputProps } from './PInputTypes'
 

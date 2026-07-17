@@ -1,8 +1,6 @@
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { BookingAppointmentChooseTimeSlotManager } from './booking-appointment-choose-time-slot.manager'
 
-vi.mock('@pulse/toolbox/utils/url')
-
 describe('BookingAppointmentChooseTimeSlotManager', () => {
   describe('getSanitizedIframeUrl', () => {
     it('should return empty string when iframeUrl is null', () => {

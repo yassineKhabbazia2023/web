@@ -1,7 +1,7 @@
 import wrapperFactory from '../../tests/utils/wrapperFactory'
 import PCarousel from '.'
 import { ElCarousel, ElCarouselItem } from 'element-plus'
-import { describe, it, expect } from 'vitest'
+
 import type { VueWrapper } from '@vue/test-utils'
 import type { PCarouselProps } from './PCarouselTypes'
 import type { PCarouselItemProps } from '../../atoms/PCarouselItem/PCarouselItemTypes'

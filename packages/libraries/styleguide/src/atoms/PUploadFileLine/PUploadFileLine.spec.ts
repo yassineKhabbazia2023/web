@@ -1,12 +1,14 @@
-import { describe, it, expect, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import PUploadFileLine from './'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 
-const getMainIconNameMock = vi.hoisted(() => vi.fn())
-vi.mock('./PUploadFileLineUtils', () => ({
-  getMainIconName: getMainIconNameMock,
-}))
+import { getMainIconName } from './PUploadFileLineUtils'
+
+const getMainIconNameMock = vi.mocked(getMainIconName)
+
+beforeEach(() => {
+  getMainIconNameMock.mockImplementation(() => undefined)
+})
 
 const defaultProps: PUploadFileLineProps = {
   pIconName: 'filetypePdf',

@@ -1,9 +1,9 @@
 import { logger } from '@pulse/toolbox'
-import {
+import { PublicClientApplication } from '@azure/msal-browser'
+import type {
   AccountInfo,
   AuthenticationResult,
   Configuration,
-  PublicClientApplication,
   RedirectRequest,
   SilentRequest,
 } from '@azure/msal-browser'

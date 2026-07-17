@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PCHeader from '.'
 
 const propsValue = {

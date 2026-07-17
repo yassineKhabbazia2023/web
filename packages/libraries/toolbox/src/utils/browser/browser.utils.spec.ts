@@ -6,10 +6,16 @@ describe('browser.utils', () => {
     const writeTextMock = vi.fn()
 
     beforeAll(() => {
+      // jsdom has no clipboard API: the property is added for this file only
+      // and removed afterwards (isolate-safe doctrine: shared-dom).
       Object.defineProperty(navigator, 'clipboard', {
         configurable: true,
         value: { writeText: writeTextMock },
       })
+    })
+
+    afterAll(() => {
+      delete (navigator as { clipboard?: unknown }).clipboard
     })
 
     beforeEach(() => {
@@ -33,7 +39,9 @@ describe('browser.utils', () => {
       const result = await copyToClipboard('hello')
 
       expect(result).toBe(false)
-      expect(loggerSpy).toHaveBeenCalledWith('Failed to copy to clipboard', error)
+      // Wait for the log to land while the spy is still armed: under a shared
+      // worker a late microtask would otherwise hit the next file's tests.
+      await vi.waitFor(() => expect(loggerSpy).toHaveBeenCalledWith('Failed to copy to clipboard', error))
     })
   })
 
@@ -69,7 +77,7 @@ describe('browser.utils', () => {
         expectedBrowserName: 'Unknown',
       },
     ])(
-      'should return %s as the browser name for the user agent %s',
+      'should return $expectedBrowserName as the browser name for the user agent $mockedNavigatorUserAgent',
       ({ mockedNavigatorUserAgent, expectedBrowserName }) => {
         vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
           mockedNavigatorUserAgent,

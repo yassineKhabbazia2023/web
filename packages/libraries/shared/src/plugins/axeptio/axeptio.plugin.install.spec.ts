@@ -4,14 +4,10 @@ declare let window: {
   axeptioSettings: any // Axeptio
 } & Window
 
-vi.mock('env-vars', () => ({
-  VITE_AXEPTIO_KEY: 'test-client-id',
-}))
-
 describe('Axeptio Plugin', () => {
   beforeEach(() => {
-    // Reset the window.axeptioSettings before each test
-    window.axeptioSettings = {}
+    // Reset the window.axeptioSettings before each test (restored automatically)
+    vi.stubGlobal('axeptioSettings', {})
   })
 
   it('should install if set as active', () => {

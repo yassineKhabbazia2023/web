@@ -1,124 +1,100 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import type { MockInstance } from 'vitest'
 import { RouteName } from '@pulse/common/enums'
-import type { Tab } from './types'
-import * as EntityHelper from './helpers/entity-overview.helper'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { useRoute, useRouter } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import type { Permission } from '@pulse/common/types'
 
 import EntityOverview from './entity-overview.page.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-const mockedTabs: Tab[] = [
-  {
-    name: RouteName.COLLAB,
-    title: 'Collaborateurs',
-  },
-  {
-    name: RouteName.USERS,
-    title: 'Utilisateurs',
-  },
-  {
-    name: RouteName.OFFERS,
-    title: 'Offres',
-  },
-  {
-    name: RouteName.INFO,
-    title: 'Informations',
-  },
-]
 const entitySummaryMock = getMockedEntitySummary(getMockedEntity())
 
-vi.mock('@pulse/common', () => ({
-  sanitizeUrl: vi.fn(),
-}))
-
-const fetchUserAccountPermissionsMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common/services/permissions', () => ({
-  fetchUserAccountPermissions: fetchUserAccountPermissionsMock,
-}))
-
-vi.mock('./entity-helper', () => {
-  return {
-    getTabAuthorizations: vi.fn(),
-    getTabs: vi.fn(() => {
-      return mockedTabs
-    }),
-  }
-})
-
 const mockRouterPush = vi.fn()
-const useRouteSpy = vi.hoisted(() => vi.fn(() => ({
-  name: RouteName.WALLET,
-})))
-
 const mockRouterReplace = vi.fn()
 
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
+let hasPermissionMock: MockInstance
+
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  // Keeps the invoices tab out of the authorized tabs whatever the store state.
+  vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
+  userStoreMock.isCollab = true
+  currentEntityStoreMock.currentEntity = entitySummaryMock
+  vi.mocked(useRouter).mockReturnValue({
     push: mockRouterPush,
     replace: mockRouterReplace,
-  }),
-  useRoute: useRouteSpy,
-}))
+  } as unknown as Router)
+  vi.mocked(useRoute).mockReturnValue({
+    name: RouteName.WALLET,
+  } as unknown as RouteLocationNormalizedLoaded)
+})
 
-const createWrapper = () =>
+const createWrapper = (): ComponentWrapper<InstanceType<typeof EntityOverview>> =>
   mount(EntityOverview, {
     attachTo: document.body,
     global: {
       stubs: {
         RouterView: true,
         PEntityHeader: true,
-        Home: true,
       },
     },
   })
 
 describe('entity', () => {
-  let wrapper: ComponentWrapper<InstanceType<typeof EntityOverview>>
-
-  beforeEach(async () => {
-    vi.useFakeTimers()
-    userStoreMock.isCollab = true
-    currentEntityStoreMock.currentEntity = entitySummaryMock
-
-    wrapper = createWrapper()
-    await flushPromises()
-  })
-
   describe('display', () => {
     it('should only display tabs to which the user has permission to access', async () => {
-      const title = 'Information'
-      const mockedTabs: Tab[] = [
-        {
-          name: RouteName.INFO,
-          title,
-        },
-      ]
-      vi.spyOn(EntityHelper, 'getTabs').mockReturnValue(mockedTabs)
-      wrapper = createWrapper()
+      // Client user granted only the information permission: the collaborator-only
+      // tabs and the permission-gated tabs must all be filtered out.
+      userStoreMock.isCollab = false
+      hasPermissionMock.mockImplementation(
+        (permissions: Permission[]) => permissions === ACCOUNT_PERMISSIONS.INFORMATION,
+      )
+
+      const wrapper = createWrapper()
       await flushPromises()
 
-      const entityTabsAccess = [title]
-      const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
-      entityTabsAccess.forEach((tabPane, index) => {
-        const label = tabsPane.at(index)?.props('pLabel')
-        expect(label).toBe(tabPane)
-      })
+      const tabPanes = wrapper.findAllComponents({ name: 'PTabPane' })
+      // The identity i18n stub returns the raw key: the tab labels are the keys.
+      expect(tabPanes.map((tabPane) => tabPane.props('pLabel'))).toStrictEqual(['info'])
     })
 
-    it("should not display the 'Add User' button if the client does not have the necessary permissions", async () => {
-      vi.spyOn(EntityHelper, 'getTabs').mockReturnValue([])
+    it('should display every authorized tab for a fully-permitted collaborator', async () => {
+      hasPermissionMock.mockReturnValue(true)
 
+      const wrapper = createWrapper()
       await flushPromises()
-      wrapper = createWrapper()
-      const entityActionButton = wrapper.findComponent({ name: 'PButton' })
 
-      expect(entityActionButton.exists()).toBeFalsy()
+      const tabPanes = wrapper.findAllComponents({ name: 'PTabPane' })
+      expect(tabPanes.map((tabPane) => tabPane.props('pLabel'))).toStrictEqual([
+        'users',
+        'collab',
+        'offers',
+        'info',
+        'history',
+      ])
+    })
+
+    it('should redirect to the entity redirect page when the user has no authorized tab', async () => {
+      userStoreMock.isCollab = false
+      vi.mocked(useRoute).mockReturnValue({
+        name: RouteName.ENTITY_OVERVIEW,
+      } as unknown as RouteLocationNormalizedLoaded)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      expect(wrapper.findAllComponents({ name: 'PTabPane' })).toHaveLength(0)
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({ name: RouteName.ENTITY_REDIRECT })
     })
   })
 })

@@ -1,6 +1,8 @@
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { envVarsMock } from '@pulse/common/mocks'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { handleRequestError } from '@entities/helpers/entity.helper'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
@@ -16,27 +18,16 @@ const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 
-vi.mock('@entities/helpers/entity.helper', () => ({
-  handleRequestError: vi.fn(),
-}))
-
-vi.mock('env-vars', () => envVarsMock)
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: vi.fn((url, _) => {
-          if (/\b(offers)\/[\d]+/.test(url)) {
-            return getOfferImplementation(url)
-          }
-          if (url === `${API_PREFIXES.OFFER}/offers`) {
-            return getAllOffersImplementation()
-          }
-        }),
-      },
-    }),
-  }
+beforeEach(() => {
+  vi.mocked(handleRequestError).mockImplementation(() => undefined)
+  apiGatewayGetMock.mockImplementation((url: string) => {
+    if (/\b(offers)\/[\d]+/.test(url)) {
+      return getOfferImplementation(url)
+    }
+    if (url === `${API_PREFIXES.OFFER}/offers`) {
+      return getAllOffersImplementation()
+    }
+  })
 })
 
 const getAllOffersImplementation = () => {

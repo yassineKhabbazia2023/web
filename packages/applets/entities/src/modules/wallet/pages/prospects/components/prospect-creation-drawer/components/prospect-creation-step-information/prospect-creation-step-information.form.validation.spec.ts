@@ -7,12 +7,6 @@ import {
   getValidationParamsMock,
 } from '../../__mocks__'
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
-
 const ERROR_KEY = 'entities.wallet.prospect.form.requiredFieldError'
 const REQUIRED_FIELDS_ALERT_KEY = 'entities.wallet.prospect.form.requiredFieldsAlert'
 
@@ -49,34 +43,32 @@ describe('prospect-creation-step-information.form.validation', () => {
       'jobTitle',
     ]
 
-    textFields.forEach((field) => {
+    describe.each(textFields)('signatory.%s validation', (field) => {
       const ruleKey = `signatory.${field}` as const
 
-      describe(`${ruleKey} validation`, () => {
-        it('should have a rule defined', () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+      it('should have a rule defined', () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
 
-          expect(rules.value[ruleKey]).toBeDefined()
-        })
+        expect(rules.value[ruleKey]).toBeDefined()
+      })
 
-        it('should pass validation for a non-empty value', async () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
-          const rule = getRuleAt(rules.value[ruleKey])
+      it('should pass validation for a non-empty value', async () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+        const rule = getRuleAt(rules.value[ruleKey])
 
-          const error = await runValidator(rule, 'some value')
-          expect(error).toBeUndefined()
-        })
+        const error = await runValidator(rule, 'some value')
+        expect(error).toBeUndefined()
+      })
 
-        it('should fail validation for an empty value', async () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
-          const rule = getRuleAt(rules.value[ruleKey])
+      it('should fail validation for an empty value', async () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+        const rule = getRuleAt(rules.value[ruleKey])
 
-          const error = await runValidator(rule, '')
-          expect(error).toBeInstanceOf(Error)
-          if (error instanceof Error) {
-            expect(error.message).toBe(ERROR_KEY)
-          }
-        })
+        const error = await runValidator(rule, '')
+        expect(error).toBeInstanceOf(Error)
+        if (error instanceof Error) {
+          expect(error.message).toBe(ERROR_KEY)
+        }
       })
     })
   })
@@ -87,41 +79,39 @@ describe('prospect-creation-step-information.form.validation', () => {
       'companyRole',
     ]
 
-    selectFields.forEach((field) => {
+    describe.each(selectFields)('signatory.%s validation', (field) => {
       const ruleKey = `signatory.${field}` as const
 
-      describe(`${ruleKey} validation`, () => {
-        it('should have a rule defined', () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+      it('should have a rule defined', () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
 
-          expect(rules.value[ruleKey]).toBeDefined()
-        })
+        expect(rules.value[ruleKey]).toBeDefined()
+      })
 
-        it('should trigger validation on change so dropdown errors clear when a value is selected', () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
-          const rule = getRuleAt(rules.value[ruleKey])
+      it('should trigger validation on change so dropdown errors clear when a value is selected', () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+        const rule = getRuleAt(rules.value[ruleKey])
 
-          expect(rule?.trigger).toBe('change')
-        })
+        expect(rule?.trigger).toBe('change')
+      })
 
-        it('should pass validation for a selected value', async () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
-          const rule = getRuleAt(rules.value[ruleKey])
+      it('should pass validation for a selected value', async () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+        const rule = getRuleAt(rules.value[ruleKey])
 
-          const error = await runValidator(rule, 'some value')
-          expect(error).toBeUndefined()
-        })
+        const error = await runValidator(rule, 'some value')
+        expect(error).toBeUndefined()
+      })
 
-        it('should fail validation for an empty value', async () => {
-          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
-          const rule = getRuleAt(rules.value[ruleKey])
+      it('should fail validation for an empty value', async () => {
+        const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+        const rule = getRuleAt(rules.value[ruleKey])
 
-          const error = await runValidator(rule, '')
-          expect(error).toBeInstanceOf(Error)
-          if (error instanceof Error) {
-            expect(error.message).toBe(ERROR_KEY)
-          }
-        })
+        const error = await runValidator(rule, '')
+        expect(error).toBeInstanceOf(Error)
+        if (error instanceof Error) {
+          expect(error.message).toBe(ERROR_KEY)
+        }
       })
     })
   })

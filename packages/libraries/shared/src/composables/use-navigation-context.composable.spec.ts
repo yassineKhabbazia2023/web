@@ -1,58 +1,38 @@
 import { ref, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import { useNavigationContext } from './use-navigation-context.composable'
 import { PennylanePermission } from '@pulse/common/enums'
+import { useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
+import {
+  CurrentUserManager,
+  FeatureFlagManager,
+  PennylanePermissionsManager,
+  ReportingManager,
+} from '@pulse/common/managers'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
+// vue-router is spy-wrapped project-wide (doctrine: shared-hubs): arm the shared
+// spy per test instead of registering a local factory.
+beforeEach(() => {
+  vi.mocked(useRoute).mockReturnValue({
     fullPath: '/launcher',
     name: 'homepage',
     params: {},
-  }),
-}))
+  } as unknown as ReturnType<typeof useRoute>)
+})
 
-let isCollabMockValue = false
-let isInvoicesTabVisibleMockValue = false
-vi.mock('@pulse/common/stores', () => ({
-  useUserStore: () => ({
-    get isCollab() {
-      return isCollabMockValue
-    },
-  }),
-  useInvoicesAccessStore: () => ({
-    get isTabVisible() {
-      return isInvoicesTabVisibleMockValue
-    },
-  }),
-}))
-
-const hasPennylanePermissionSpy = vi.hoisted(() => vi.fn())
-const hasPermissionSpy = vi.hoisted(() => vi.fn())
-const canShowBIReportsSpy = vi.hoisted(() => vi.fn())
-const isFeatureActivatedSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: {
-    hasPermission: hasPermissionSpy,
-  },
-  FeatureFlagManager: {
-    isFeatureActivated: isFeatureActivatedSpy,
-  },
-  PennylanePermissionsManager: {
-    hasPermission: hasPennylanePermissionSpy,
-  },
-  ReportingManager: {
-    canShowBIReports: canShowBIReportsSpy,
-  },
-}))
+const userStoreMock = getStoreMock(useUserStore)
+const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
 
 describe('useNavigationContext', () => {
   beforeEach(() => {
-    hasPennylanePermissionSpy.mockReturnValue(false)
-    hasPermissionSpy.mockReturnValue(false)
-    canShowBIReportsSpy.mockResolvedValue(false)
-    isFeatureActivatedSpy.mockReturnValue(false)
-    isCollabMockValue = false
-    isInvoicesTabVisibleMockValue = false
+    // doctrine: static-classes — managers are stubbed with vi.spyOn per test
+    vi.spyOn(PennylanePermissionsManager, 'hasPermission').mockReturnValue(false)
+    vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
+    vi.spyOn(ReportingManager, 'canShowBIReports').mockResolvedValue(false)
+    vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
+    userStoreMock.isCollab = false
+    invoicesAccessStoreMock.isTabVisible = false
   })
 
   describe('return value', () => {
@@ -94,14 +74,14 @@ describe('useNavigationContext', () => {
 
   describe('isCollab', () => {
     it('should use userStore isCollab', () => {
-      isCollabMockValue = true
+      userStoreMock.isCollab = true
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.isCollab).toBe(true)
     })
 
     it('should default to false when userStore isCollab is undefined', () => {
-      isCollabMockValue = false
+      userStoreMock.isCollab = undefined
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.isCollab).toBe(false)
@@ -116,7 +96,7 @@ describe('useNavigationContext', () => {
     })
 
     it('should update shouldShowBIReports when refreshBIReports is called', async () => {
-      canShowBIReportsSpy.mockResolvedValue(true)
+      vi.spyOn(ReportingManager, 'canShowBIReports').mockResolvedValue(true)
       const { navigationContext, refreshBIReports } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.shouldShowBIReports).toBe(false)
@@ -130,16 +110,16 @@ describe('useNavigationContext', () => {
 
   describe('shouldShowRydgeInvoicesTab', () => {
     it('should be true when invoices tab is visible and feature flag is active', () => {
-      isInvoicesTabVisibleMockValue = true
-      isFeatureActivatedSpy.mockReturnValue(true)
+      invoicesAccessStoreMock.isTabVisible = true
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.shouldShowRydgeInvoicesTab).toBe(true)
     })
 
     it('should be false when invoices tab is visible but feature flag is inactive', () => {
-      isInvoicesTabVisibleMockValue = true
-      isFeatureActivatedSpy.mockReturnValue(false)
+      invoicesAccessStoreMock.isTabVisible = true
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.shouldShowRydgeInvoicesTab).toBe(false)
@@ -148,15 +128,15 @@ describe('useNavigationContext', () => {
 
   describe('hasPennylanePermission', () => {
     it('should delegate to PennylanePermissionsManager.hasPermission', () => {
-      hasPennylanePermissionSpy.mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'hasPermission').mockReturnValue(true)
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.hasPennylanePermission(PennylanePermission.ACCOUNTING)).toBe(true)
-      expect(hasPennylanePermissionSpy).toHaveBeenCalledWith(PennylanePermission.ACCOUNTING)
+      expect(PennylanePermissionsManager.hasPermission).toHaveBeenCalledWith(PennylanePermission.ACCOUNTING)
     })
 
     it('should return false when PennylanePermissionsManager.hasPermission returns false', () => {
-      hasPennylanePermissionSpy.mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'hasPermission').mockReturnValue(false)
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.hasPennylanePermission(PennylanePermission.GED_V2)).toBe(false)
@@ -165,13 +145,13 @@ describe('useNavigationContext', () => {
 
   describe('hasPermission', () => {
     it('should call CurrentUserManager.hasPermission with the given permission', () => {
-      hasPermissionSpy.mockReturnValue(true)
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
       const { navigationContext } = useNavigationContext(() => 123)
       const testPermission = ['test-permission']
 
       const result = navigationContext.value.hasPermission(testPermission as any)
 
-      expect(hasPermissionSpy).toHaveBeenCalledWith(testPermission)
+      expect(CurrentUserManager.hasPermission).toHaveBeenCalledWith(testPermission)
       expect(result).toBe(true)
     })
   })

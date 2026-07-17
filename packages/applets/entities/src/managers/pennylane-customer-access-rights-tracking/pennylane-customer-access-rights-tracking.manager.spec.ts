@@ -1,8 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PennylaneCustomerAccessRightsTrackingManager } from './pennylane-customer-access-rights-tracking.manager'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('PennylaneCustomerAccessRightsTrackingManager', () => {
   beforeEach(() => {
     vi.clearAllMocks()

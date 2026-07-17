@@ -1,19 +1,15 @@
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { useTokenStore } from '../../stores/token/token.store'
 import { TokenProviderService } from './token-provider.service'
 import type { TokenProviderStrategy } from './token-provider.service.types'
 
-const setTokenMock = vi.hoisted(() => vi.fn())
-const getTokenMock = vi.hoisted(() => vi.fn().mockReturnValue('current-token'))
-vi.mock('../../stores/token/token.store', () => ({
-  useTokenStore: () => ({ setToken: setTokenMock, getToken: getTokenMock }),
-}))
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 describe('TokenProviderService', () => {
   beforeEach(() => {
     TokenProviderService['strategy'] = undefined
     TokenProviderService['refreshPromise'] = undefined
-    setTokenMock.mockClear()
-    getTokenMock.mockClear()
-    getTokenMock.mockReturnValue('current-token')
+    tokenStoreMock.getToken.mockReturnValue('current-token')
   })
 
   it('should throw when refreshToken is called without a registered strategy', async () => {
@@ -92,7 +88,7 @@ describe('TokenProviderService', () => {
     ])
 
     expect(refreshToken).toHaveBeenCalledOnce()
-    expect(setTokenMock).toHaveBeenCalledExactlyOnceWith('fresh-token')
+    expect(tokenStoreMock.setToken).toHaveBeenCalledExactlyOnceWith('fresh-token')
   })
 
   it('should not persist anything when the strategy rejects', async () => {
@@ -101,19 +97,23 @@ describe('TokenProviderService', () => {
     })
 
     await expect(TokenProviderService.refreshToken()).rejects.toThrow('boom')
-    expect(setTokenMock).not.toHaveBeenCalled()
+    expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
   })
 
-  it.each(['', null, undefined])(
-    'should throw and not persist when the strategy returns %p',
-    async (emptyValue) => {
+  it.each([
+    { label: 'an empty string', emptyValue: '' },
+    { label: 'null', emptyValue: null },
+    { label: 'undefined', emptyValue: undefined },
+  ])(
+    'should throw and not persist when the strategy returns $label',
+    async ({ emptyValue }) => {
       TokenProviderService.registerProviderStrategy({
         refreshToken: () => Promise.resolve(emptyValue as unknown as string),
       })
 
       await expect(TokenProviderService.refreshToken())
         .rejects.toThrow('TokenProviderService: strategy returned an empty token')
-      expect(setTokenMock).not.toHaveBeenCalled()
+      expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
     },
   )
 
@@ -128,11 +128,11 @@ describe('TokenProviderService', () => {
     const inFlight = TokenProviderService.refreshToken()
     // Simulate a concurrent logout (or 401 callback) clearing the store while
     // the strategy is still in flight.
-    getTokenMock.mockReturnValue('')
+    tokenStoreMock.getToken.mockReturnValue('')
     resolveRefresh!('fresh-token')
 
     await expect(inFlight)
       .rejects.toThrow('TokenProviderService: token store was cleared during refresh')
-    expect(setTokenMock).not.toHaveBeenCalled()
+    expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
   })
 })

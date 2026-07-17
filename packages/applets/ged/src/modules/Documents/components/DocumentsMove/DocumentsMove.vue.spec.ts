@@ -1,7 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mocks'
-import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { validDestination, currentServiceFolder, unValidDestination, secondValidDestination, currentService, currentEntity, accountId } from '@ged/__mocks__/files.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import type { Folder } from '@ged/models/Folder'
@@ -13,6 +12,7 @@ import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTyp
 import { moveDocuments } from '@ged/services/Documents'
 
 import DocumentsMove from '.'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 
 const defaultProps: DocumentMoveProps = {
   folder: validDestination,
@@ -37,9 +37,9 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
-vi.mock('@pulse/styleguide')
-
-vi.mock('@ged/services/Documents', () => documentsServiceMock)
+beforeEach(() => {
+  armGedServiceDefaults()
+})
 
 const createWrapper = (
   props: DocumentMoveProps = defaultProps,
@@ -78,17 +78,19 @@ describe('documents Move', () => {
 
     const cases = [
       {
+        label: 'an authorized destination folder',
         folder: validDestination,
         expectedResult: true,
       },
       {
+        label: 'a forbidden destination folder',
         folder: unValidDestination,
         expectedResult: false,
       },
     ]
 
     it.each(cases)(
-      'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
+      'should calculate the ExplorerAuthorizedGivenAction correctly with $label',
       ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,

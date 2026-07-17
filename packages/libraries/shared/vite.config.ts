@@ -6,5 +6,7 @@ export default ({ mode }: ConfigEnv) =>
     mode,
     packageName: '@pulse/shared',
     rootDir: import.meta.url,
-    setupFiles: ['vitest.setup.ts'],
+    // Opt into the universal hub mocks: shared is a consumer project like the
+    // apps/applets (paths resolve against the project root)
+    setupFiles: ['../../@config/vitest.setup.hubs.ts', 'vitest.setup.ts'],
   })

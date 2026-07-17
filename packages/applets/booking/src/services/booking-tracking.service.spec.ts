@@ -2,7 +2,9 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { BookingSourceEvent } from './booking-tracking.enum'
 import { BookingTrackingService } from './booking-tracking.service'
 
-vi.mock('@pulse/common/services/amplitude')
+beforeEach(() => {
+  vi.spyOn(AmplitudeService, 'track').mockImplementation(() => undefined)
+})
 
 describe('BookingTrackingService', () => {
   describe('trackConfigurationOpened', () => {

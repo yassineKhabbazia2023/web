@@ -1,4 +1,3 @@
-import { expect, describe, it } from 'vitest'
 import {
   getModelValueAsArray,
   getInternalCheckboxOptions,

@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { useMepPlanner } from './use-mep-planner.composable'
 import { MepPlannerManager } from './mep-planner.manager'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
@@ -8,12 +8,9 @@ import type { AzureDevOpsRepository } from '@backoffice/types/azure-devops.type'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { MepReadinessStatus } from './mep-planner.enum'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('./mep-planner.manager')
-
-const mockedSearchTicketsToRepos = vi.mocked(MepPlannerManager.searchTicketsToRepos)
-const mockedCheckReadiness = vi.mocked(MepPlannerManager.checkReadiness)
-const mockedFetchDeliveryPipelines = vi.mocked(MepPlannerManager.fetchDeliveryPipelines)
+let mockedSearchTicketsToRepos: MockInstance
+let mockedCheckReadiness: MockInstance
+let mockedFetchDeliveryPipelines: MockInstance
 
 const mockRepositories: AzureDevOpsRepository[] = [
   { id: '1', name: 'Pulse.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
@@ -29,8 +26,11 @@ const setupStoreWithPat = () => {
 describe('useMepPlanner', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.clearAllMocks()
-    mockedFetchDeliveryPipelines.mockResolvedValue([])
+    mockedSearchTicketsToRepos = vi.spyOn(MepPlannerManager, 'searchTicketsToRepos')
+      .mockResolvedValue({ workItems: [], linkedPrs: [], repoAnalyses: [], warnings: [] })
+    mockedCheckReadiness = vi.spyOn(MepPlannerManager, 'checkReadiness')
+      .mockResolvedValue({ status: MepReadinessStatus.Ready, reposNotReady: [], extraWorkItems: [], recetteChecks: [] })
+    mockedFetchDeliveryPipelines = vi.spyOn(MepPlannerManager, 'fetchDeliveryPipelines').mockResolvedValue([])
   })
 
   it('should initialize with default values', () => {

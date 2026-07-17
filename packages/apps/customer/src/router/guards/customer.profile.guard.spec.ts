@@ -4,10 +4,6 @@ import { FeatureFlagManager } from '@pulse/common/managers'
 import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { customerProfileGuard } from './customer.profile.guard'
 
-vi.mock('@pulse/toolbox')
-vi.mock('@pulse/common/managers')
-vi.mock('@pulse/styleguide')
-
 describe('customerProfileGuard', () => {
   const accessTests = [
     {
@@ -34,7 +30,7 @@ describe('customerProfileGuard', () => {
   ]
 
   it.each(accessTests)('$reason', ({ isResponsive, isMobile, routeName, expectedRedirect }) => {
-    vi.mocked(FeatureFlagManager.isResponsiveActivated).mockReturnValue(isResponsive)
+    vi.spyOn(FeatureFlagManager, 'isResponsiveActivated').mockReturnValue(isResponsive)
     vi.mocked(getEffectiveIsMobile).mockReturnValue(isMobile)
 
     const toRoute = { name: routeName } as unknown as RouteLocationNormalizedGeneric

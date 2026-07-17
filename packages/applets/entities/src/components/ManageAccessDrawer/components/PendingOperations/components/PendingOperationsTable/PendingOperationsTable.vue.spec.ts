@@ -1,5 +1,4 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
 import { formatPhoneNumber } from '@pulse/toolbox/utils/string'
 import type { Operation } from '@entities/types'
 import { OperationStatus } from '@entities/enums'
@@ -57,15 +56,16 @@ const createWrapper = (operations: Operation[]): VueWrapper<any> =>
   })
 
 describe('pendingOperationsTable', () => {
-  it('displays the "Signataire" tag when the user is a signatory', () => {
+  it('displays the signatory tag when the user is a signatory', () => {
     const wrapper = createWrapper([signatoryWithPhone])
 
     const tag = wrapper.find('[data-testid="user-signatory-tag"]')
     expect(tag.exists()).toBe(true)
-    expect(wrapper.findComponent({ name: 'PTag' }).props('pContent')).toBe('Signatory')
+    // The identity i18n stub returns the raw key: the wording itself is not asserted.
+    expect(wrapper.findComponent({ name: 'PTag' }).props('pContent')).toBe('signatory')
   })
 
-  it('does not display the "Signataire" tag when the user is not a signatory', () => {
+  it('does not display the signatory tag when the user is not a signatory', () => {
     const wrapper = createWrapper([nonSignatoryWithPhone])
 
     expect(wrapper.find('[data-testid="user-signatory-tag"]').exists()).toBe(false)
@@ -80,15 +80,15 @@ describe('pendingOperationsTable', () => {
     expect(wrapper.find('[data-testid="user-missing-phone"]').exists()).toBe(false)
   })
 
-  it('displays the "Missing number" alert when the mobile phone is missing', () => {
+  it('displays the missing number alert when the mobile phone is missing', () => {
     const wrapper = createWrapper([signatoryWithoutPhone])
 
     const missing = wrapper.find('[data-testid="user-missing-phone"]')
     expect(missing.exists()).toBe(true)
-    expect(missing.text()).toContain('Missing phone number')
+    expect(missing.text()).toContain('missingNumber')
     // Only the label is red; the "|" separator keeps the default color.
     const redLabel = missing.find('.text-color--red-800')
-    expect(redLabel.text()).toBe('Missing phone number')
+    expect(redLabel.text()).toBe('missingNumber')
     expect(wrapper.find('[data-testid="user-mobile-phone"]').exists()).toBe(false)
   })
 

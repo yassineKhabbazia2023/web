@@ -7,8 +7,6 @@ import {
 import { BookingRedirectAction } from '@booking/enums/booking-redirect-action.enums'
 import { BookingRedirectActionManager } from './booking-redirect-action.manager'
 
-vi.mock('@pulse/toolbox')
-
 beforeEach(() => {
   RedirectActionRegistry.clear()
   BookingRedirectActionManager.registerResolvers()

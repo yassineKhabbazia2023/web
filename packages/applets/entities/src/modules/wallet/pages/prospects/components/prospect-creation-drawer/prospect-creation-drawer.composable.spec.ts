@@ -10,11 +10,6 @@ import {
   getEmptyDropdownsContentMock,
 } from './__mocks__'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/toolbox', () => ({
-  logger: { error: vi.fn() },
-}))
-
 const steps = [
   ProspectCreationDrawerStep.INFORMATION,
   ProspectCreationDrawerStep.COMPANY,
@@ -23,8 +18,8 @@ const steps = [
 
 describe('useProspectCreationDrawer', () => {
   beforeEach(() => {
-    vi.mocked(ProspectsService.fetchProspectCreationDropdownContent).mockResolvedValue(getDropdownsContentMock())
-    vi.mocked(ProspectsService.fetchCollaboratorTargetRoles).mockResolvedValue(getCollaboratorTargetRolesMock())
+    vi.spyOn(ProspectsService, 'fetchProspectCreationDropdownContent').mockResolvedValue(getDropdownsContentMock())
+    vi.spyOn(ProspectsService, 'fetchCollaboratorTargetRoles').mockResolvedValue(getCollaboratorTargetRolesMock())
   })
 
   it('should initialize with first step', () => {

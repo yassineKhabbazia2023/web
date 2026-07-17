@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PBlockHeader from '.'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
 import { setAssetsBaseUrl } from '../../utils/imageResolverInit'

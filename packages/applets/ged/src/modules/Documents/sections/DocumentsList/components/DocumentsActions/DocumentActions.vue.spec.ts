@@ -1,41 +1,27 @@
+import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import type { ComponentPublicInstance } from 'vue'
-import type { DocumentActionsProps } from './DocumentActionsTypes'
-import type { VueWrapper } from '@vue/test-utils'
+import { type DocumentActionsProps } from './DocumentActionsTypes'
 
 import DocumentActions from './DocumentActions.vue'
-
-vi.mock('@pulse/styleguide', () => ({
-  AppColors: {
-    GRAY_300: 'GRAY_300',
-  },
-}))
 
 const defaultProps: DocumentActionsProps = {
   permissions: [],
 }
 
-type DocumentActionsSetup = {
-  toolboxBasicData: any
-}
-
-export type DocumentActionsWrapper = VueWrapper<ComponentPublicInstance<
-  DocumentActionsProps,
-  DocumentActionsSetup>
->
-
 const createWrapper = (
   props: DocumentActionsProps = defaultProps,
-): DocumentActionsWrapper => {
+): VueWrapper => {
   return mount(DocumentActions, {
     props,
-  }) as unknown as DocumentActionsWrapper
+  })
 }
+
+const findToolbox = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'PToolbox' })
 
 describe('documentActions', () => {
   describe('props', () => {
-    it('should render PToolbox according to the provided permissions', () => {
+    it('should pass download and delete actions to PToolbox according to the provided permissions', () => {
       const updatedProps: DocumentActionsProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_DOCUMENT'],
@@ -43,9 +29,9 @@ describe('documentActions', () => {
       const wrapper = createWrapper(updatedProps)
       expect(wrapper.exists()).toBeTruthy()
 
-      const componentInstance = wrapper.vm
-
-      expect(componentInstance.toolboxBasicData).toStrictEqual([
+      const toolbox = findToolbox(wrapper)
+      expect(toolbox.exists()).toBeTruthy()
+      expect(toolbox.props('pElements')).toStrictEqual([
         {
           pActionName: 'download-document',
           pIconName: 'download',
@@ -59,16 +45,15 @@ describe('documentActions', () => {
       ])
     })
 
-    it('should render download action even when permissions is empty', () => {
+    it('should pass the download action even when permissions is empty', () => {
       const props: DocumentActionsProps = {
         ...defaultProps,
         permissions: [],
       }
 
       const wrapper = createWrapper(props)
-      const componentInstance = wrapper.vm
 
-      expect(componentInstance.toolboxBasicData).toStrictEqual([
+      expect(findToolbox(wrapper).props('pElements')).toStrictEqual([
         {
           pActionName: 'download-document',
           pIconName: 'download',
@@ -79,7 +64,7 @@ describe('documentActions', () => {
   })
 
   describe('interactions', () => {
-    it('should emit on-document-actions-dropdown-close when visible-change is emitted',
+    it('should emit on-document-actions-dropdown-close when PToolbox emits visible-change',
       async () => {
         const updatedProps: DocumentActionsProps = {
           ...defaultProps,
@@ -88,7 +73,7 @@ describe('documentActions', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const toolbox = wrapper.findComponent({ name: 'PToolbox' })
+        const toolbox = findToolbox(wrapper)
 
         await toolbox.vm.$emit('visible-change', true)
         await nextTick()
@@ -98,9 +83,10 @@ describe('documentActions', () => {
         ).toStrictEqual([[true]])
       })
 
-    it('should handle handleActionsDropdownOpening', () => {
-      const wrapper: any = createWrapper()
-      wrapper.vm.handleActionsDropdownOpening()
+    it('should emit actions-dropdown-opened when the actions button is clicked', async () => {
+      const wrapper = createWrapper()
+
+      await wrapper.find('.on-document-action-clicked').trigger('click')
 
       expect(wrapper.emitted()).toHaveProperty('actions-dropdown-opened')
     })

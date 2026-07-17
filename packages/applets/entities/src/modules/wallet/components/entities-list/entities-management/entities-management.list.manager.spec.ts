@@ -1,19 +1,19 @@
+import type { MockInstance } from 'vitest'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { filterAccessibleMenuItems } from '@entities/utils'
 import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntitiesManagementListManager } from './entities-management.list.manager'
 import { EntitiesManagementAction } from './entities-management.list.enums'
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
-vi.mock('@entities/utils')
-vi.mock('@pulse/common/i18n', () => ({
-  i18n: { global: { t: (key: string) => key } },
-}))
+// The real '@pulse/common/i18n' instance has no messages loaded, so t()
+// already returns the raw key the assertions expect.
+let hasPermissionMock: MockInstance
 
-vi.mocked(filterAccessibleMenuItems).mockImplementation((items) => items as PToolboxItemProps[])
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.mocked(filterAccessibleMenuItems).mockImplementation((items) => items as PToolboxItemProps[])
+})
 
 describe('EntitiesManagementListManager', () => {
   describe('buildMenu', () => {

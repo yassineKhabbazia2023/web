@@ -2,13 +2,7 @@ import { HTMLService } from '@pulse/common/services/html'
 import { HTML_TITLE_META } from '@pulse/common/constants'
 import { seoGuard } from './seo.guard'
 import type { RouteLocationNormalized } from 'vue-router'
-
-vi.mock('@pulse/common/services/html', () => ({
-  HTMLService: {
-    setDocumentTitle: vi.fn(),
-    resetDocumentTitle: vi.fn(),
-  },
-}))
+import type { MockInstance } from 'vitest'
 
 const createMockRoute = (meta: Record<string, any> = {}): RouteLocationNormalized => {
   return {
@@ -24,10 +18,16 @@ const createMockRoute = (meta: Record<string, any> = {}): RouteLocationNormalize
   }
 }
 
-const setDocumentTitleMock = vi.mocked(HTMLService.setDocumentTitle)
-const resetDocumentTitleMock = vi.mocked(HTMLService.resetDocumentTitle)
+let setDocumentTitleMock: MockInstance
+let resetDocumentTitleMock: MockInstance
 
 describe('seoGuard', () => {
+  beforeEach(() => {
+    // doctrine: static-classes — HTMLService is a static class, stubbed per test
+    setDocumentTitleMock = vi.spyOn(HTMLService, 'setDocumentTitle').mockReturnValue()
+    resetDocumentTitleMock = vi.spyOn(HTMLService, 'resetDocumentTitle').mockReturnValue()
+  })
+
   it('should set document title when route has HTML_TITLE_META', () => {
     const title = 'Test Page Title'
     const toRoute = createMockRoute({

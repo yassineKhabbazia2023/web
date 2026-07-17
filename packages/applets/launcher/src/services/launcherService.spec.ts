@@ -1,17 +1,9 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AxiosResponse } from 'axios'
-import { commonApiGatewayGetSpy, commonApiGatewayPostSpy } from '@launcher/__mocks__/api.mocks'
-import { envVarsMock } from '@pulse/common/mocks'
-import '@launcher/__mocks__/common.import.mocks'
+import { apiGatewayGetMock, apiGatewayPostMock } from '@pulse/common/mocks/vitest'
 import { DEFAULT_APPLICATION_FILENAME, ApiRoutes } from './launcherServiceConsts'
 import * as FileSaver from 'file-saver'
 import { downloadApplication, getFileName, saveApplication, getSsoSilaeUrl } from './launcherServices'
 import { flushPromises } from '@vue/test-utils'
-
-vi.mock('env-vars', () => envVarsMock)
-vi.mock('file-saver', () => ({
-  saveAs: vi.fn(),
-}))
 
 function getMockedResponse(disposition = '') {
   return {
@@ -28,7 +20,7 @@ describe('launcherServices', () => {
 
     it('should return expected response', async () => {
       const mockedResponse = getMockedResponse()
-      commonApiGatewayGetSpy.mockResolvedValueOnce(mockedResponse)
+      apiGatewayGetMock.mockResolvedValueOnce(mockedResponse)
 
       const response = await downloadApplication(progressPercentCallback)
 
@@ -40,7 +32,7 @@ describe('launcherServices', () => {
       const progress = 0.27
       const progressPercent = Math.round(progress * 100)
 
-      commonApiGatewayGetSpy.mockImplementation((_, { onDownloadProgress }) => {
+      apiGatewayGetMock.mockImplementation((_, { onDownloadProgress }) => {
         onDownloadProgress({ progress })
 
         return Promise.resolve({})
@@ -56,7 +48,7 @@ describe('launcherServices', () => {
     it('should call callback with 0 percent when progress is undefined', async () => {
       const expectedProgressPercent = 0
 
-      commonApiGatewayGetSpy.mockImplementation((_, { onDownloadProgress }) => {
+      apiGatewayGetMock.mockImplementation((_, { onDownloadProgress }) => {
         onDownloadProgress({})
 
         return Promise.resolve({})
@@ -106,7 +98,8 @@ describe('launcherServices', () => {
 
   describe('saveApplication', () => {
     it('sdf', () => {
-      const mockedSaveAs = vi.spyOn(FileSaver, 'saveAs')
+      // saveAs is full-faked worker-wide by the setup file (doctrine: shared-hubs).
+      const mockedSaveAs = vi.mocked(FileSaver.saveAs)
       const mockedResponse = getMockedResponse()
       saveApplication(mockedResponse)
 
@@ -118,7 +111,7 @@ describe('launcherServices', () => {
   describe('getSsoSilaeUrl', () => {
     const redirectUrl = 'https://redirect-url'
     beforeEach(() => {
-      commonApiGatewayPostSpy.mockResolvedValue({
+      apiGatewayPostMock.mockResolvedValue({
         data: { redirectUrl },
       })
     })
@@ -126,8 +119,8 @@ describe('launcherServices', () => {
     it('should call commonApiSilaePostSpy', () => {
       getSsoSilaeUrl()
 
-      expect(commonApiGatewayPostSpy).toHaveBeenCalledOnce()
-      expect(commonApiGatewayPostSpy).toHaveBeenNthCalledWith(1, ApiRoutes.SILAE_SSO, { wrapRedirect: true })
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
+      expect(apiGatewayPostMock).toHaveBeenNthCalledWith(1, ApiRoutes.SILAE_SSO, { wrapRedirect: true })
     })
 
     it('should return encoded redirectUrl', async () => {
@@ -140,7 +133,7 @@ describe('launcherServices', () => {
 
     it('should throw error when redirectUrl given', async () => {
       const expectedError = 'no redirectUrl given'
-      commonApiGatewayPostSpy.mockResolvedValue({
+      apiGatewayPostMock.mockResolvedValue({
         data: {},
       })
 

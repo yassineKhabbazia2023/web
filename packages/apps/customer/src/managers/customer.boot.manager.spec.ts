@@ -5,12 +5,6 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 import { CustomerBootManager } from './customer.boot.manager'
 
-vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-vi.mock('@pulse/common/services/amplitude')
-
 describe('CustomerBootManager', () => {
   describe('getDefaultRedirection', () => {
     it('should return the default authenticated route when user is authenticated', () => {

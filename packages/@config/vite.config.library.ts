@@ -15,7 +15,7 @@ export function createLibraryConfig(options: LibraryConfigOptions) {
     mode,
     packageName,
     rootDir,
-    setupFiles = [],
+    setupFiles = ['vitest.setup.ts'],
     minify = false,
   } = options
 

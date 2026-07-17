@@ -1,6 +1,6 @@
 import { CurrentUserManager } from '@pulse/common/managers'
 import { getMockedUser } from '@pulse/common/mocks'
-import { AmplitudeServiceMock, getStoreMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { login, refreshClientToken } from '@pulse/common/services/authentication'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -9,36 +9,23 @@ import { tokenIsValid, useUserStore } from '@pulse/common/stores'
 import { GigyaManager } from './gigya.manager'
 import { GigyaLoginStrategy, GigyaLogoutStrategy, GigyaTokenStrategy } from './gigya.strategy'
 
-const envVarsMock = vi.hoisted(() => ({
-  VITE_GIGYA_SSO_ACTIVATED: 'true',
-  VITE_TOKEN_EXPIRATION_BUFFER: '5',
-  VITE_API_GATEWAY: 'https://api.example.com/gateway',
-}))
-
-vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/toolbox')
-vi.mock('@pulse/common/managers')
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-vi.mock('@pulse/common/services/authentication')
-vi.mock('@pulse/common/services/current-user')
-vi.mock('@pulse/common/stores', async () => {
-  const actual = await vi.importActual<typeof import('@pulse/common/stores')>('@pulse/common/stores')
-  return {
-    ...actual,
-    tokenIsValid: vi.fn(),
-  }
-})
-vi.mock('./gigya.manager')
-
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser()
+
+beforeEach(() => {
+  // No-op stubs: the real side effects must not run, and the
+  // `not.toHaveBeenCalled` assertions need armed spies to assert on.
+  vi.spyOn(CurrentUserManager, 'persistToken').mockImplementation(() => undefined)
+  vi.spyOn(CurrentUserManager, 'clearUser').mockImplementation(() => undefined)
+  vi.spyOn(GigyaManager, 'setStoreGigyaUserId').mockImplementation(() => undefined)
+  vi.spyOn(GigyaManager, 'loginSSO').mockImplementation(() => undefined)
+  vi.spyOn(GigyaManager, 'logoutSSO').mockImplementation(() => undefined)
+})
 
 describe('GigyaLoginStrategy', () => {
   it('should login, persist token, fetch user, track amplitude, set Gigya user id and login SSO', async () => {
     vi.mocked(login).mockResolvedValue({ webToken: 'web-token', userId: 'gigya-user-id' })
-    vi.mocked(CurrentUserService.getCurrentUser).mockResolvedValue(userMock)
+    vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
     userStoreMock.getUserId.mockReturnValue(userMock.id)
     userStoreMock.getUserEmail.mockReturnValue(userMock.email)
 
@@ -61,7 +48,7 @@ describe('GigyaLoginStrategy', () => {
 
   it('should roll back the persisted token and user store and skip Gigya SSO when userId is invalid', async () => {
     vi.mocked(login).mockResolvedValue({ webToken: 'web-token', userId: 'gigya-user-id' })
-    vi.mocked(CurrentUserService.getCurrentUser).mockResolvedValue(userMock)
+    vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
     userStoreMock.getUserId.mockReturnValue(0)
 
     await expect(new GigyaLoginStrategy().authenticate('a@b.com', 'pwd'))
@@ -87,7 +74,7 @@ describe('GigyaLoginStrategy', () => {
   it('should roll back the persisted token and user store when getCurrentUser throws', async () => {
     vi.mocked(login).mockResolvedValue({ webToken: 'web-token', userId: 'gigya-user-id' })
     const fetchError = new Error('Network down')
-    vi.mocked(CurrentUserService.getCurrentUser).mockRejectedValue(fetchError)
+    vi.spyOn(CurrentUserService, 'getCurrentUser').mockRejectedValue(fetchError)
 
     await expect(new GigyaLoginStrategy().authenticate('a@b.com', 'pwd'))
       .rejects.toThrow(fetchError)

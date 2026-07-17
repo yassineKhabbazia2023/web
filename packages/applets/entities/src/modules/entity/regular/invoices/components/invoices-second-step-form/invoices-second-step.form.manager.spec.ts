@@ -2,7 +2,9 @@ import { InvoicesSecondStepFormManager } from './invoices-second-step.form.manag
 import { InvoicesService } from '../../services/invoices.service'
 import { getDigitalSafeCustomerMock } from '../../__mocks__'
 
-vi.mock('../../services/invoices.service')
+beforeEach(() => {
+  vi.spyOn(InvoicesService, 'getAvailableCustomersForDigitalSafe').mockResolvedValue([])
+})
 
 describe('InvoicesSecondStepFormManager', () => {
   describe('mapCustomerToOption', () => {

@@ -1,9 +1,8 @@
-import { expect, describe, it, vi } from 'vitest'
-import { loggerMock } from '@pulse/toolbox/mocks'
-import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
+import { flushPromises } from '@vue/test-utils'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getCompany, validateIban, getBankDetail } from '@mandate/services/mandate'
 import CreateMandateForm from '.'
+import { armMandateModuleDefaults } from '@mandate/__mocks__'
 
 function mockMandateService(
   createMandateData: any,
@@ -17,15 +16,12 @@ function mockMandateService(
   }
 }
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: featureFlagManagerMock,
-}))
+const createWrapper = (props: any = {}) =>
+  wrapperFactory(CreateMandateForm, { props })
 
-vi.mock('@mandate/services/mandate', () => {
-  return mockMandateService(
+beforeEach(() => {
+  armMandateModuleDefaults()
+  const serviceDefaults = mockMandateService(
     {
       data: {
         id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
@@ -58,10 +54,17 @@ vi.mock('@mandate/services/mandate', () => {
       },
     },
   )
+  vi.mocked(getCompany).mockImplementation(serviceDefaults.getCompany)
+  vi.mocked(validateIban).mockImplementation(serviceDefaults.validateIban)
+  vi.mocked(getBankDetail).mockImplementation(serviceDefaults.getBankDetail)
 })
 
-const createWrapper = (props: any = {}) =>
-  wrapperFactory(CreateMandateForm, { props })
+afterEach(async () => {
+  // Element-plus validations run detached from the trigger() promise: flush
+  // them while the service stubs above are still armed, otherwise they
+  // resolve during the next test's mock reset and reject unhandled.
+  await flushPromises()
+})
 
 describe('form.vue', () => {
   it('renders the component when step value is 1', () => {
@@ -79,7 +82,7 @@ describe('form.vue', () => {
     },
   ]
 
-  it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
+  it.each(step1TestCases)('drawer step 1 and erpId $initial.erpId, name $initial.name and siret $initial.siretNumber',
     async ({ initial: { erpId, name, siretNumber } }) => {
       const wrapper = createWrapper({ step: 1 })
       const ibsInputElement = wrapper
@@ -216,7 +219,46 @@ describe('form.vue', () => {
     await input.setValue('')
     expect((input.element as HTMLInputElement).value).toBe('')
     const emittedEnableDisableEvent = wrapper.emitted('enable-disable-next')
-    expect(emittedEnableDisableEvent).toBeTruthy()
+    expect(emittedEnableDisableEvent!.at(-1)).toStrictEqual([false])
+  })
+
+  it('should disable next step button when the fetched company has no siret', async () => {
+    const failingCompanyService = mockMandateService(
+      {
+        data: {
+          id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
+          name: 'Mike',
+          siretNumber: '',
+          erpId: '1234567891',
+          signatory: {
+            title: 'M',
+            firstName: 'maroo',
+            lastName: 'elleuch',
+            email: 'elleuch@email.com',
+          },
+          address: {
+            street: 'RUE DU COMMERCE',
+            addressComplement: '',
+            zipCode: '59590',
+            city: 'RAISMES',
+            country: 'FRANCE',
+          },
+        },
+      },
+      { valid: false },
+      undefined,
+    )
+    vi.mocked(getCompany).mockImplementation(failingCompanyService.getCompany)
+    vi.mocked(validateIban).mockImplementation(failingCompanyService.validateIban)
+
+    const wrapper = createWrapper({ step: 1 })
+    const ibsInputElement = wrapper.find('input[data-testid="ibs-number-test"]')
+    await ibsInputElement.setValue('1234567891')
+    await ibsInputElement.trigger('change')
+
+    const siretNumberInputElement = wrapper.find('input[data-testid="siretNumber-input-test"]')
+    expect((siretNumberInputElement.element as HTMLInputElement).value).toBe('')
+    expect(wrapper.emitted('enable-disable-next')![0]).toStrictEqual([false])
   })
 
   it('renders the component when step value is 2', () => {

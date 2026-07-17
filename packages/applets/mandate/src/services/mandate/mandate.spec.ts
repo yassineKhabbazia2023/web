@@ -13,6 +13,7 @@ import {
   getMandateAvailability,
 } from '.'
 import type { SearchMandateParams } from './ServiceMandateTypes'
+import { apiGatewayGetMock as gatewayGetSpy, apiGatewayPostMock as gatewayPostSpy } from '@pulse/common/mocks/vitest'
 
 const bban = getMockedBban()
 
@@ -25,19 +26,6 @@ const validateIbanImplementation = ({ params }: any) => {
   return Promise.resolve({ data: { valid: false } })
 }
 
-const gatewayGetSpy = vi.hoisted(() => vi.fn())
-const gatewayPostSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: gatewayGetSpy,
-        post: gatewayPostSpy,
-      },
-    }),
-  }
-})
 
 beforeEach(() => {
   gatewayGetSpy.mockResolvedValue({ data: {}, status: {} })

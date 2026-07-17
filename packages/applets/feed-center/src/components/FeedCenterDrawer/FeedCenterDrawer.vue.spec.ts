@@ -1,8 +1,8 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { FeatureFlagManager } from '@pulse/common/managers'
-import { fetchNotificationsMock, notificationsServiceMock } from '../../__mocks__/notification.service.mocks'
-import { trackingServiceMock, trackNotificationMarkAsReadMock } from '../../__mocks__/tracking.service.mocks'
-import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '../../__mocks__/feed-center-drawer.manager.mocks'
+import { fetchNotificationsMock, armNotificationsServiceDefaults } from '../../__mocks__/notification.service.mocks'
+import { trackNotificationMarkAsReadMock } from '../../__mocks__/tracking.service.mocks'
+import { armFeedCenterDrawerManagerDefaults, patchAllNotificationsAsReadMock } from '../../__mocks__/feed-center-drawer.manager.mocks'
 import { NotificationTrackingReadType } from '../../services/tracking/tracking.types'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
@@ -11,26 +11,8 @@ import { FeedCenterActions } from '../../feed-center.enum'
 import { useFeedCenterStore } from '../../stores/feed-center.store'
 import FeedCenterDrawer from '.'
 
-vi.mock('../../services/notifications.service', () => notificationsServiceMock)
-vi.mock('../../services/tracking/tracking.service', () => trackingServiceMock)
-vi.mock('./feed-center-drawer.manager', () => feedCenterDrawerManagerMock)
-
 getStoreMock(useUserStore)
 getStoreMock(useFeedCenterStore)
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      get: () => vi.fn(),
-    },
-  }),
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: {
-    isNotificationSettingsDrawerActivated: vi.fn(),
-  },
-}))
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
   return shallowMount(FeedCenterDrawer, {
@@ -68,6 +50,12 @@ const FeedCenterDrawerBaseProps: FeedCenterDrawerProps = {
   modelValue: true,
   unreadNotificationsCount: 0,
 }
+
+beforeEach(() => {
+  armNotificationsServiceDefaults()
+  armFeedCenterDrawerManagerDefaults()
+  vi.spyOn(FeatureFlagManager, 'isNotificationSettingsDrawerActivated').mockReturnValue(false)
+})
 
 describe('feed center drawer', () => {
   let wrapper: VueWrapper<InstanceType<typeof FeedCenterDrawer>>
@@ -124,7 +112,7 @@ describe('feed center drawer', () => {
     })
 
     it('should emit open-notification-settings-drawer when settings option is clicked', async () => {
-      vi.mocked(FeatureFlagManager.isNotificationSettingsDrawerActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isNotificationSettingsDrawerActivated').mockReturnValue(true)
       wrapper = createWrapper()
       const notificationDrawer = findFeedCenterDrawer(wrapper)
 

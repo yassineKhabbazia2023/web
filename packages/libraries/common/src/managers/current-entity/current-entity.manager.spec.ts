@@ -1,64 +1,56 @@
-import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock, LocalStorageMock } from '../../__mocks__'
+import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock } from '../../__mocks__'
 import { AccountType } from '../../enums/account-type.enum'
-import { getStoreMock, permissionServiceMock, fetchUserAccountPermissionsMock } from '@pulse/common/mocks/vitest'
+import {
+  getStoreMock,
+  setLastVisitedEntityIdMock,
+  removeLastVisitedEntityIdMock,
+} from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useInvoicesAccessStore } from '../../stores/invoices-access/invoices-access.store'
+import { fetchUserAccountPermissions } from '../../services/permissions/permissions.service'
 import { InvoicesAccessService } from '../../services/invoices-access/invoices-access.service'
 import { CurrentEntityManager } from './current-entity.manager'
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
 
-vi.mock('../../services/permissions/permissions.service', () => permissionServiceMock)
-vi.mock('../../services/invoices-access/invoices-access.service')
-
 describe('test current-entity.manager', () => {
-  beforeEach(() => {
-    Object.defineProperty(globalThis, 'localStorage', {
-      value: new LocalStorageMock(),
-      configurable: true,
-    })
-  })
   describe('CurrentEntityManager', () => {
     it('should set currentEntity properly', async () => {
       const permissionsMock = getPermissionsMock()
       const accessMock = getInvoicesAccessResponseMock()
 
-      const setItemMock = vi.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
       const entityMock = getMockedEntitySummary()
       const { accountId: expectedAccountId } = entityMock
 
-      fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)
-      vi.mocked(InvoicesAccessService.fetchInvoicesAccess).mockResolvedValueOnce(accessMock)
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
+      vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess').mockResolvedValueOnce(accessMock)
 
-      const expectedSetItemArguments = [
-        'last-visited-entity',
-        JSON.stringify(expectedAccountId),
-      ]
       await CurrentEntityManager.initializeCurrentEntity(entityMock)
 
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledExactlyOnceWith(entityMock)
 
-      expect(setItemMock).toHaveBeenCalledWith(...expectedSetItemArguments)
+      expect(setLastVisitedEntityIdMock).toHaveBeenCalledWith(expectedAccountId)
 
-      expect(fetchUserAccountPermissionsMock).toHaveBeenCalledExactlyOnceWith(expectedAccountId)
+      expect(fetchUserAccountPermissions).toHaveBeenCalledExactlyOnceWith(expectedAccountId)
 
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith(permissionsMock)
 
-      expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
+      expect(InvoicesAccessService.fetchInvoicesAccess).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
       expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(accessMock)
     })
 
     it('should not fetch invoices access for a prospect entity', async () => {
       const permissionsMock = getPermissionsMock()
       const entityMock = getMockedEntitySummary({ accountType: AccountType.PROSPECT })
+      const fetchInvoicesAccessSpy = vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess')
 
-      fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
 
       await CurrentEntityManager.initializeCurrentEntity(entityMock)
 
-      expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).not.toHaveBeenCalled()
+      expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
       expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
     })
 
@@ -66,8 +58,8 @@ describe('test current-entity.manager', () => {
       const permissionsMock = getPermissionsMock()
       const entityMock = getMockedEntitySummary()
 
-      fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)
-      vi.mocked(InvoicesAccessService.fetchInvoicesAccess).mockRejectedValueOnce(new Error('API error'))
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
+      vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess').mockRejectedValueOnce(new Error('API error'))
 
       await CurrentEntityManager.initializeCurrentEntity(entityMock)
 
@@ -77,14 +69,12 @@ describe('test current-entity.manager', () => {
 
   describe('clearCurrentEntity', () => {
     it('should reset all stores and clear local storage', () => {
-      const removeItemMock = vi.spyOn(Object.getPrototypeOf(localStorage), 'removeItem')
-
       CurrentEntityManager.clearCurrentEntity()
 
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledOnce()
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith([])
       expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
-      expect(removeItemMock).toHaveBeenCalledWith('last-visited-entity')
+      expect(removeLastVisitedEntityIdMock).toHaveBeenCalledOnce()
     })
   })
 })

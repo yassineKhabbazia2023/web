@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getContentBeforeAndAfterSeparator } from './string.helper'
 
 describe('get content before and after given separator', () => {

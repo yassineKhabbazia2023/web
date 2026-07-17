@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url'
 import type { Plugin } from 'vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import { viteConfigBase } from './vite.config.base'
@@ -47,7 +48,12 @@ export function createAppConfig(options: AppConfigOptions) {
         open: true,
       },
       test: {
-        setupFiles: 'vitest.setup.ts',
+        // Universal hub mocks first, then the app's own setup (its variants
+        // of a hub win: the later vi.mock registration replaces the earlier one)
+        setupFiles: [
+          fileURLToPath(new URL('./vitest.setup.hubs.ts', import.meta.url)),
+          'vitest.setup.ts',
+        ],
       },
       build: {
         outDir,

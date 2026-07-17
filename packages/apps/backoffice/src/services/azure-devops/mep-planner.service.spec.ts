@@ -1,9 +1,5 @@
 import axios from 'axios'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { MepPlannerService } from './mep-planner.service'
-
-vi.mock('axios')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const mockedAxiosGet = vi.mocked(axios.get)
 

@@ -3,8 +3,6 @@ import { useAppSettingsToolbar } from './app-settings-toolbar.composable'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
 import type { DomainItem } from '@backoffice/services/app-settings-list/app-settings-list.service.type'
 
-vi.mock('@backoffice/services/app-settings-list/app-settings-list.service')
-
 describe('useAppSettingsToolbar', () => {
   const mockDomains: DomainItem[] = [
     { domainName: 'account', keysCount: 20 },

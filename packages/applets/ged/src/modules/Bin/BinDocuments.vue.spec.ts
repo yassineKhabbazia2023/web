@@ -10,8 +10,7 @@ import { nextTick } from 'vue'
 import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
 
 import BinDocuments from './BinDocuments.vue'
-
-vi.mock('@pulse/styleguide')
+import * as BinDocumentsService from '@ged/services/BinDocuments'
 
 const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
@@ -47,12 +46,13 @@ const createWrapper = (
   }) as unknown as BinDocumentsWrapper
 }
 
-vi.mock('@ged/services/BinDocuments', () => ({
-  restoreDocuments: vi.fn(),
-  fetchBinDocuments: vi.fn(() => {
-    return binDocumentsMock
-  }),
-}))
+
+beforeEach(() => {
+  vi.mocked(BinDocumentsService.restoreDocuments).mockImplementation(
+    () => undefined as unknown as ReturnType<typeof BinDocumentsService.restoreDocuments>,
+  )
+  vi.mocked(BinDocumentsService.fetchBinDocuments).mockResolvedValue(binDocumentsMock)
+})
 
 describe('binDocuments', () => {
   describe('events', () => {

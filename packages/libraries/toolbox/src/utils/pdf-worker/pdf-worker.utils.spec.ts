@@ -1,14 +1,7 @@
-// `pdfjs-dist` and the legacy worker asset are mocked: the worker is a heavy `?url` asset that
-// cannot be resolved in the node test environment, and we only care that the util wires the
-// worker source exactly once.
-vi.mock('pdfjs-dist', () => ({
-  GlobalWorkerOptions: { workerSrc: '' },
-}))
-
-vi.mock('pdfjs-dist/legacy/build/pdf.worker.min.mjs?url', () => ({
-  default: 'mocked-pdf-worker-url',
-}))
-
+// `pdfjs-dist`, the legacy `?url` worker asset ('mocked-pdf-worker-url') and the
+// spy-wrap of pdf-worker.utils itself are all hubbed in vitest.setup.ts (single
+// shape for the project). The spy-wrap is real by default, so this own-spec
+// exercises the real implementation through the shared wrapper.
 describe('configurePdfWorker', () => {
   beforeEach(() => {
     // Reset the module-level `isWorkerConfigured` flag so each test exercises the util from a

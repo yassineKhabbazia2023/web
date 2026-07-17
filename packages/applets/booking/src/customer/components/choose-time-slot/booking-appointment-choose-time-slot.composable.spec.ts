@@ -5,15 +5,12 @@ import { useBookingAppointmentChooseTimeSlot } from './booking-appointment-choos
 import { BookingService } from '../../../services'
 import { BookingAppointmentChooseTimeSlotManager } from './booking-appointment-choose-time-slot.manager'
 
-vi.mock('../../../services')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 describe('useBookingAppointmentChooseTimeSlot', () => {
   it('should have isLoading true initially and set sanitized iframeUrl after API call', async () => {
     const rawUrl = 'https://outlook.office.com/booking/test'
     const sanitizedUrl = 'https://outlook.office.com/booking/test-sanitized'
 
-    vi.mocked(BookingService.getBookingIframeUrl).mockResolvedValueOnce(rawUrl)
+    vi.spyOn(BookingService, 'getBookingIframeUrl').mockResolvedValueOnce(rawUrl)
     vi.spyOn(BookingAppointmentChooseTimeSlotManager, 'getSanitizedIframeUrl').mockReturnValueOnce(sanitizedUrl)
 
     const [result] = withSetup(() => useBookingAppointmentChooseTimeSlot(42))
@@ -31,7 +28,7 @@ describe('useBookingAppointmentChooseTimeSlot', () => {
 
   it('should set empty iframeUrl and log error when API call fails', async () => {
     const mockError = new Error('API error')
-    vi.mocked(BookingService.getBookingIframeUrl).mockRejectedValueOnce(mockError)
+    vi.spyOn(BookingService, 'getBookingIframeUrl').mockRejectedValueOnce(mockError)
 
     const [result] = withSetup(() => useBookingAppointmentChooseTimeSlot(42))
 

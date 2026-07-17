@@ -1,19 +1,20 @@
+import type { MockInstance } from 'vitest'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import type { MenuTranslations } from './regular-entity.list.types'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { filterAccessibleMenuItems } from '@entities/utils'
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { RegularEntitiesListManager } from './regular-entity.list.manager'
 import { RegularEntityAction } from './regular-entity.list.enums'
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
-vi.mock('@entities/utils')
+let hasPermissionMock: MockInstance
 
-vi.mocked(filterAccessibleMenuItems).mockImplementation((items) =>
-  items.filter(({ display }) => display) as PToolboxItemProps[],
-)
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.mocked(filterAccessibleMenuItems).mockImplementation((items) =>
+    items.filter(({ display }) => display) as PToolboxItemProps[],
+  )
+})
 
 const translations: MenuTranslations = {
   accessThisFolder: 'Access this folder',

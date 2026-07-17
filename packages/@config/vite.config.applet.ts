@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import { viteConfigBase, DEFAULT_EXTERNALS } from './vite.config.base'
 
@@ -18,7 +19,12 @@ export const createAppletConfig = ({ mode, packageName, pages = [] }: AppletConf
   return defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
       test: {
-        setupFiles: 'vitest.setup.ts',
+        // Universal hub mocks first, then the applet's own setup (its variants
+        // of a hub win: the later vi.mock registration replaces the earlier one)
+        setupFiles: [
+          fileURLToPath(new URL('./vitest.setup.hubs.ts', import.meta.url)),
+          'vitest.setup.ts',
+        ],
       },
       build: {
         chunkSizeWarningLimit: 1000,

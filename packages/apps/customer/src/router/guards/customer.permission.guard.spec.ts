@@ -1,21 +1,13 @@
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { hasPermissionMock } from '@pulse/common/mocks/vitest'
 import { customerPermissionGuard } from './customer.permission.guard'
 import { PERMISSIONS_META } from '@pulse/common/constants'
-import { createTestingPinia } from '@pinia/testing'
+import { CustomerLandingManager } from '@customer/managers/customer-landing.manager'
 
-createTestingPinia()
-
-vi.mock('@pulse/toolbox')
-
-vi.mock('@customer/managers/customer-landing.manager', () => ({
-  CustomerLandingManager: {
-    getLandingPage: () => ({ name: 'home' }),
-  },
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+beforeEach(() => {
+  vi.spyOn(CurrentUserManager, 'hasPermission').mockImplementation(hasPermissionMock)
+  vi.spyOn(CustomerLandingManager, 'getLandingPage').mockReturnValue({ name: 'home' })
+})
 
 describe('customerPermissionGuard', () => {
   it.each([

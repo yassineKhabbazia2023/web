@@ -1,26 +1,7 @@
 import { nextTick } from 'vue'
 import { useModifyAppSetting } from './modify-app-setting.composable'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
-import * as styleguide from '@pulse/styleguide'
-
-// Mocks
-vi.mock('@backoffice/services/app-settings-list/app-settings-list.service', () => ({
-  AppSettingsListService: {
-    getAvailableEnvironments: vi.fn(),
-    updateAppSetting: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    info: vi.fn(),
-    error: vi.fn(),
-  },
-}))
+import { displayNotification } from '@pulse/styleguide'
 
 describe('useModifyAppSetting', () => {
   const mockOnSuccess = vi.fn()
@@ -54,7 +35,8 @@ describe('useModifyAppSetting', () => {
   } as any
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(AppSettingsListService, 'getAvailableEnvironments').mockResolvedValue([])
+    vi.spyOn(AppSettingsListService, 'updateAppSetting').mockResolvedValue()
   })
 
   it('should initialize with default state', () => {
@@ -232,7 +214,7 @@ describe('useModifyAppSetting', () => {
 
     await handleSave()
 
-    expect(styleguide.displayNotification).toHaveBeenCalledWith(
+    expect(vi.mocked(displayNotification)).toHaveBeenCalledWith(
       'success',
       "Variable d'environnement mise à jour avec succès",
     )
@@ -253,7 +235,7 @@ describe('useModifyAppSetting', () => {
 
     await handleSave()
 
-    expect(styleguide.displayNotification).toHaveBeenCalledWith(
+    expect(vi.mocked(displayNotification)).toHaveBeenCalledWith(
       'error',
       "Impossible de modifier la variable d'environnement",
     )

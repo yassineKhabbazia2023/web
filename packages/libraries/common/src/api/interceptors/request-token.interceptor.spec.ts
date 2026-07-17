@@ -1,21 +1,9 @@
 import { createPinia, setActivePinia } from 'pinia'
+import { getTokenMock } from '../../__mocks__/vitest'
 import { TokenProviderService } from '../../services/token-provider/token-provider.service'
 import { nowInSeconds } from '../../stores/token/token.store.utils'
 
 import { requestTokenInterceptor } from './request-token.interceptor'
-
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-}
-
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-})
-
-vi.mock('../../services/token-provider/token-provider.service')
-vi.mock('@pulse/toolbox')
 
 
 // Helper function to create JWT tokens for testing
@@ -29,11 +17,17 @@ function createTestToken(payload: Record<string, any> = {}): string {
 describe('requestTokenInterceptor', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    // Clear any strategy or in-flight refresh left by another file of the
+    // worker, then arm fresh spies on the real class for this test.
+    TokenProviderService['strategy'] = undefined
+    TokenProviderService['refreshPromise'] = undefined
+    vi.spyOn(TokenProviderService, 'getRefreshPromise')
+    vi.spyOn(TokenProviderService, 'refreshToken')
   })
 
   it('should add Authorization header when token exists', async () => {
     const mockToken = createTestToken({ exp: nowInSeconds() + 3600 })
-    localStorageMock.getItem.mockReturnValue(mockToken)
+    getTokenMock.mockReturnValue(mockToken)
     const mockConfig = { headers: {} }
 
     const result = await requestTokenInterceptor(mockConfig)
@@ -42,7 +36,7 @@ describe('requestTokenInterceptor', () => {
   })
 
   it('should not add Authorization header when token does not exist', async () => {
-    localStorageMock.getItem.mockReturnValue('')
+    getTokenMock.mockReturnValue('')
     const mockConfig = { headers: {} }
 
     const result = await requestTokenInterceptor(mockConfig)
@@ -52,7 +46,7 @@ describe('requestTokenInterceptor', () => {
 
   it('should bypass refresh when skipTokenRefresh is true', async () => {
     const mockToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
-    localStorageMock.getItem.mockReturnValue(mockToken)
+    getTokenMock.mockReturnValue(mockToken)
 
     const mockConfig = {
       url: '/api/refreshToken?userId=123',
@@ -70,9 +64,9 @@ describe('requestTokenInterceptor', () => {
     const oldToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
-    localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
+    getTokenMock.mockReturnValue(oldToken)
+    vi.spyOn(TokenProviderService, 'getRefreshPromise').mockReturnValue(undefined)
+    vi.spyOn(TokenProviderService, 'refreshToken').mockResolvedValue(newToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -90,11 +84,11 @@ describe('requestTokenInterceptor', () => {
     const oldToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
-    localStorageMock.getItem.mockReturnValue(oldToken)
+    getTokenMock.mockReturnValue(oldToken)
 
     // Mock an existing refresh promise
     const refreshPromise = Promise.resolve(newToken)
-    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(refreshPromise)
+    vi.spyOn(TokenProviderService, 'getRefreshPromise').mockReturnValue(refreshPromise)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -111,9 +105,9 @@ describe('requestTokenInterceptor', () => {
     const oldToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
-    localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
+    getTokenMock.mockReturnValue(oldToken)
+    vi.spyOn(TokenProviderService, 'getRefreshPromise').mockReturnValue(undefined)
+    vi.spyOn(TokenProviderService, 'refreshToken').mockResolvedValue(newToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -130,9 +124,9 @@ describe('requestTokenInterceptor', () => {
     const expiredToken = createTestToken({ exp: nowInSeconds() - 60 }) // expired 1 minute ago
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
-    localStorageMock.getItem.mockReturnValue(expiredToken)
-    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
+    getTokenMock.mockReturnValue(expiredToken)
+    vi.spyOn(TokenProviderService, 'getRefreshPromise').mockReturnValue(undefined)
+    vi.spyOn(TokenProviderService, 'refreshToken').mockResolvedValue(newToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -147,7 +141,7 @@ describe('requestTokenInterceptor', () => {
 
   it('should not refresh token when not expiring soon', async () => {
     const mockToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
-    localStorageMock.getItem.mockReturnValue(mockToken)
+    getTokenMock.mockReturnValue(mockToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -163,9 +157,9 @@ describe('requestTokenInterceptor', () => {
   it('should continue with current token when refresh fails', async () => {
     const oldToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
 
-    localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenProviderService.refreshToken).mockRejectedValue(new Error('Refresh failed'))
+    getTokenMock.mockReturnValue(oldToken)
+    vi.spyOn(TokenProviderService, 'getRefreshPromise').mockReturnValue(undefined)
+    vi.spyOn(TokenProviderService, 'refreshToken').mockRejectedValue(new Error('Refresh failed'))
 
     const mockConfig = {
       url: '/api/normal-request',

@@ -1,34 +1,12 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import { defineAsyncComponent } from 'vue'
+import { asyncComponentMatcher, installWidgetOnAppMock } from '@pulse/widgets/mocks'
 
 import BookingAppointmentWidget from './booking-appointment.widget'
 
-vi.mock('vue')
-
 describe('booking-appointment widget', () => {
   it('should install', () => {
-    const _options: any = {}
-    const appComponentMock = vi.fn()
-    const app: any = {
-      component: appComponentMock,
-    }
+    const appComponentMock = installWidgetOnAppMock(BookingAppointmentWidget)
 
-    const expectedDefineAsyncComponentArguments = [
-      expect.any(Function),
-    ]
-    const expectedAppComponentArguments = [
-      WidgetName.BOOKING_APPOINTMENT,
-      expect.any(Promise),
-    ]
-
-    const defineAsyncComponentSpy = vi
-      .mocked(defineAsyncComponent)
-      .mockImplementation((callback: any) => callback())
-
-    BookingAppointmentWidget.install(app, _options)
-
-    expect(appComponentMock).toHaveBeenCalledExactlyOnceWith(...expectedAppComponentArguments)
-    expect(defineAsyncComponentSpy).toHaveBeenCalledExactlyOnceWith(...expectedDefineAsyncComponentArguments)
+    expect(appComponentMock).toHaveBeenCalledExactlyOnceWith(WidgetName.BOOKING_APPOINTMENT, asyncComponentMatcher())
   })
 })
-

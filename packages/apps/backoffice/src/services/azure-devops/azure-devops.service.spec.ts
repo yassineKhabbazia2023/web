@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { AzureDevOpsService } from './azure-devops.service'
 import type {
   AzureDevOpsCommit,
@@ -11,9 +10,6 @@ import type {
   AzureDevOpsWiqlResponse,
   AzureDevOpsWorkItemsBatchResponse,
 } from '@backoffice/types/azure-devops.type'
-
-vi.mock('axios')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const mockedAxiosGet = vi.mocked(axios.get)
 const mockedAxiosPost = vi.mocked(axios.post)

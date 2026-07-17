@@ -1,10 +1,10 @@
 import { nextTick, reactive } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
+import { useRoute } from 'vue-router'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 import type { VueWrapper } from '@vue/test-utils'
-import '@ged/__mocks__/common.import.mocks'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentMock } from '@ged/__mocks__/documents.mocks'
-import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
 import type { Service } from '@ged/models/Service'
 import { downloadFolder } from '@ged/services/Folder'
@@ -14,10 +14,8 @@ import { GedServiceId } from '@ged/enums/ged.enum'
 
 import Treeview from '@ged/modules/Treeview'
 
-const createObjectURLMock = vi.hoisted(() => vi.fn())
+const createObjectURLMock = vi.fn()
 const url = 'https://fakeUrl'
-createObjectURLMock.mockImplementation((_: Blob | MediaSource) => url)
-window.URL.createObjectURL = createObjectURLMock
 
 type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 
@@ -39,22 +37,30 @@ const defaultProps: TreeviewProps = {
   accountId: 1234,
 }
 
-vi.mock('@ged/services/Folder', () => folderServiceMock)
-
-vi.mock('@ged/services/tracking/tracking.service')
-
-vi.mock('@pulse/styleguide')
-
 const routerDataMock = reactive({
   name: 'ged',
   query: {
     folderId: '',
   },
 })
-vi.mock('vue-router', () => ({
-  useRoute: () => (routerDataMock),
-}))
+beforeEach(() => {
+  // routerDataMock is a module-level reactive shared by every test of the file:
+  // reset the query each test writes, or a test that sets folderId makes the
+  // next mount emit an extra selected-folder-change (doctrine: guardrails).
+  routerDataMock.query.folderId = ''
+  vi.mocked(useRoute).mockImplementation(() => routerDataMock as unknown as ReturnType<typeof useRoute>)
+  armGedServiceDefaults()
+  // jsdom has no createObjectURL: this spec adds it on the worker-shared
+  // window.URL, re-armed per test (mock reset) and removed in the afterAll.
+  createObjectURLMock.mockImplementation((_: Blob | MediaSource) => url)
+  window.URL.createObjectURL = createObjectURLMock
+})
 
+afterAll(() => {
+  // Remove the property this spec added on the worker-shared window.URL
+  // (doctrine: shared-dom).
+  delete (window.URL as Partial<typeof window.URL>).createObjectURL
+})
 
 const createWrapper = (props: TreeviewProps = defaultProps): TreeviewWrapper => {
   return mount(Treeview, {

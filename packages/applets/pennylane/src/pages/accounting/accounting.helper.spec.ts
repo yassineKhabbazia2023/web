@@ -2,11 +2,12 @@ import { HIDE_ACCOUNTING_HEADER_KEY, HIDE_ACCOUNTING_HEADER_TRUE, HIDE_ACCOUNTIN
 import { localStorageMock } from '@pulse/toolbox/mocks'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-})
-
 describe('accounting.helper', () => {
+  beforeEach(() => {
+    // doctrine shared-dom: stub the worker-shared localStorage per test (restored automatically)
+    vi.stubGlobal('localStorage', localStorageMock)
+  })
+
   describe('persistHideAccountingHeader', () => {
     const tests = [{
       hideAccountingHeader: true,

@@ -41,7 +41,7 @@ description: Unit testing requirements, Vitest guidelines, mock patterns, and te
 
 - Use `getStoreMock` from `@pulse/common/mocks/vitest` for Pinia store mocks
 - Use `withSetup` from `@pulse/toolbox/utils/test` when testing composables with lifecycle hooks
-- To mock the logger, use the auto mock: `vi.mock('@pulse/toolbox')` then assert with `vi.mocked(logger.error)`. Caveat: this mocks every export of the toolbox main entry (`useDebounce`, validator re-exports…) — if the tested code needs their real behavior, spread the original module and mock only the logger: `vi.mock('@pulse/toolbox', async (importOriginal) => ({ ...await importOriginal<object>(), logger: loggerMock }))` with `loggerMock` from `@pulse/toolbox/mocks`
+- The logger is hub-mocked worker-wide by the shared setup (`packages/@config/vitest.setup.hubs.ts`, `toolboxLoggerHubMock`): never re-mock `@pulse/toolbox` in a spec, just assert with `vi.mocked(logger.error)` (with `logger` imported from `@pulse/toolbox`)
 
 ## Async Testing Patterns
 
@@ -104,17 +104,46 @@ it('should calculate total', () => {
 })
 ```
 
+## Isolate-Safe Testing (vitest `isolate: false`)
+
+Workers are shared between test files — full doctrine (7 laws) in
+`docs/guidelines/isolate-safe-tests.md`. What it means when writing a spec:
+
+- **Specs never call `vi.mock`** (enforced by ESLint). Every module mock lives
+  in a setup file: the universal hubs (`@pulse/common/api`, toolbox logger,
+  `env-vars`, Amplitude) in the shared `packages/@config/vitest.setup.hubs.ts`,
+  everything else in the project's `vitest.setup.ts` (spy-wrapped via
+  `spyWrappedModule`). To mock a new module, add a one-liner to the project
+  setup — never to the spec.
+- **Configure behavior per test** with `vi.mocked(...)` in a `beforeEach` or in
+  the test itself, never at module scope or in a `beforeAll` — every mock is
+  reset (`mockReset: true`) before every test.
+- **Static-class services/managers**: stub with a per-test
+  `vi.spyOn(MyService, 'myMethod')`, never a module mock.
+- **Spy-wrapped ("contested") modules** are real by default; consumer specs
+  stub them per test via `vi.mocked(fn).mockXxx(...)`, or re-apply legacy
+  automock behaviors with `armModuleMocks` from
+  `@pulse/toolbox/mocks/spy-module.helper`.
+- **Never wipe worker-shared state**: no `window.location` reassignment, no
+  `document.body.innerHTML = ''`; use `vi.stubGlobal`/`vi.stubEnv` (restored
+  automatically) and remove only the DOM nodes the spec added.
+- The only tolerated spec-level `vi.mock` is the id-split of an own-spec (a
+  spec escaping a fully-faked hub to test the real module) — it carries an
+  explicit `eslint-disable` with a `doctrine:` justification.
+
 ## Mock Patterns
 
 - **Use dedicated mock files**: Create mock data factories in `__mocks__/` folders (e.g., `getBookingServiceExpert()`) instead of inline test data
-- **Use vitest auto mock pattern** with `vi.mock()` then `vi.mocked()`:
+- **Module mocks live in setup files, never in specs.** There is no per-spec decision to make — a spec only does two things:
 
 ```typescript
-// Good: Auto mock at top level
-vi.mock('../../../services')
-vi.mock('./my-manager')
+// vitest.setup.ts — the ONLY place a vi.mock lives (spy-wrapped: real by
+// default, stubbable per test)
+vi.mock('./src/services/my-service', (importOriginal) => spyWrappedModule(importOriginal))
+```
 
-// Then in tests, use vi.mocked() to configure behavior
+```typescript
+// In the spec: arm behaviors per test with vi.mocked()
 it('should do something', async () => {
   vi.mocked(MyService.myMethod).mockResolvedValueOnce({ data: 'test' })
 
@@ -123,12 +152,10 @@ it('should do something', async () => {
   expect(vi.mocked(MyService.myMethod)).toHaveBeenCalledWith('expected')
 })
 
-// Bad: Manual mock implementation
-vi.mock('../../../services', () => ({
-  MyService: {
-    myMethod: vi.fn(),
-  },
-}))
+// And for static-class services/managers: vi.spyOn per test
+beforeEach(() => {
+  vi.spyOn(LogoutService, 'logout').mockResolvedValue()
+})
 ```
 
 ## Running Tests

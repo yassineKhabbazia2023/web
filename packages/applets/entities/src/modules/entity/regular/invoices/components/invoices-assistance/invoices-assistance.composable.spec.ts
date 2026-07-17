@@ -9,9 +9,10 @@ import { InvoicesFormStep, InvoicesAssistanceFormParam } from '../../enums'
 import { INVOICES_ASSISTANCE_FORM_URL } from '../../invoices.constants'
 import { useInvoicesAssistance } from './invoices-assistance.composable'
 
-vi.mock('@pulse/toolbox/utils/url')
-vi.mock('@pulse/toolbox/utils/string')
-vi.mock('../../services/invoices.tracking.service')
+
+beforeEach(() => {
+  vi.spyOn(InvoicesTracking, 'trackAssistanceButtonClick').mockImplementation(() => undefined)
+})
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)

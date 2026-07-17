@@ -4,16 +4,6 @@ import { API_PREFIXES } from '../../constants/api-prefixes'
 
 import { PennylaneService } from './pennylane.service'
 
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: apiGatewayMock,
-  }),
-}))
-
-vi.mock('env-vars', () => ({
-  VITE_API_GATEWAY: 'https://api.mock.com',
-}))
-
 const roleMock = getMockedPennylaneRole()
 const documentMock = getMockedPennylaneDocument()
 const documentsMock = [documentMock]

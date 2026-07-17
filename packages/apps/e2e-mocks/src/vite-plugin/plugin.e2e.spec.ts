@@ -2,15 +2,18 @@ import type { Plugin, ViteDevServer } from 'vite'
 import { createProxyMiddleware } from '../proxy/middleware'
 import { e2ePlugin } from './plugin.e2e'
 
-vi.mock('../proxy/middleware', () => ({
-  createProxyMiddleware: vi.fn(() => vi.fn()),
-}))
-
 const PROXY_ENV_KEYS = ['VITE_PROXY_ENABLED', 'VITE_PROXY_TARGET', 'VITE_PROXY_MODE', 'VITE_E2E_MODE', 'VITE_DEV_MOCKS'] as const
 
 let savedEnv: Record<string, string | undefined>
 
 beforeEach(() => {
+  // The middleware module is spy-wrapped in vitest.setup.ts (real by default):
+  // stub it per test so no real proxy middleware is ever built here.
+  vi.mocked(createProxyMiddleware).mockReturnValue(vi.fn())
+  // configureServer announces the mounted proxy on the dev-server console; the
+  // spec drives that hook directly, so silence it to keep the run's output clean.
+  vi.spyOn(console, 'log').mockImplementation(() => undefined)
+
   savedEnv = {}
   for (const key of PROXY_ENV_KEYS) {
     savedEnv[key] = process.env[key]

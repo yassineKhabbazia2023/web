@@ -5,12 +5,8 @@ import { extractRibFromPdf } from '@pulse/toolbox/utils/rib-extraction'
 import { useGeneralInformationStep } from './general-information-step.composable'
 import type { MandateBankDetails } from '@entities/modules/entity/prospect/conformity/payment/components/payment-configuration-drawer/payment-configuration-drawer.types'
 
-// Factory mock so the real module (and its `pdfjs-dist` import) is never evaluated under jsdom.
-vi.mock('@pulse/toolbox/utils/rib-extraction', () => ({
-  extractRibFromPdf: vi.fn(),
-}))
-vi.mock('@pulse/toolbox')
-
+// extractRibFromPdf is spy-wrapped project-wide (vitest.setup.ts, with inert
+// pdfjs-dist mocks): every test arms its extraction result in a hook.
 const extractRibFromPdfMock = vi.mocked(extractRibFromPdf)
 
 // Canonical valid French IBAN + a matching (FR) and a mismatching (DE) BIC.

@@ -1,11 +1,21 @@
+import type { FormItemRule } from 'element-plus'
 import { createInvoicesSecondStepFormRules } from './invoices-second-step.form.validation'
 import type { InvoicesSecondStepFormModel } from './invoices-second-step.form.types'
 
-vi.mock('@pulse/styleguide/utils/validators', () => ({
-  validationRules: {
-    requiredSelect: vi.fn((message: string) => ({ type: 'required', message, trigger: 'change' })),
-  },
-}))
+// The real validationRules carry their message inside the validator callback,
+// not on the rule object: run the rule to know what it accepts and rejects.
+const runRule = (rule: FormItemRule, value: unknown): Error | undefined => {
+  let error: Error | undefined
+  const validator = rule.validator as (
+    rule: unknown,
+    value: unknown,
+    callback: (error?: Error) => void,
+  ) => void
+  validator({}, value, (callbackError?: Error) => {
+    error = callbackError
+  })
+  return error
+}
 
 describe('invoices-second-step.form.validation', () => {
   describe('InvoicesSecondStepFormModel interface', () => {
@@ -38,16 +48,23 @@ describe('invoices-second-step.form.validation', () => {
       expect(rules.selectedContactId).toHaveLength(1)
     })
 
-    it('should use provided translation for contact required rule', () => {
+    it('should reject a missing contact with the provided translation', () => {
       const rules = createInvoicesSecondStepFormRules(translations)
-      const contactRules = rules.selectedContactId as Array<{ message: string }>
+      const contactRules = rules.selectedContactId as FormItemRule[]
 
-      expect(contactRules[0].message).toBe(translations.contactRequired)
+      expect(runRule(contactRules[0], null)).toEqual(new Error(translations.contactRequired))
+    })
+
+    it('should accept a selected contact', () => {
+      const rules = createInvoicesSecondStepFormRules(translations)
+      const contactRules = rules.selectedContactId as FormItemRule[]
+
+      expect(runRule(contactRules[0], 'contact-123')).toBeUndefined()
     })
 
     it('should have trigger set to change', () => {
       const rules = createInvoicesSecondStepFormRules(translations)
-      const contactRules = rules.selectedContactId as Array<{ trigger: string }>
+      const contactRules = rules.selectedContactId as FormItemRule[]
 
       expect(contactRules[0].trigger).toBe('change')
     })

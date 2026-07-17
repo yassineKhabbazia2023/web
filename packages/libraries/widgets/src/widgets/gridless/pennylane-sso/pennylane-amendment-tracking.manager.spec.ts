@@ -2,15 +2,9 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PennylaneAmendmentStep } from './components/pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.enum'
 import { PennylaneAmendmentTrackingManager } from './pennylane-amendment-tracking.manager'
 
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: {
-    track: vi.fn(),
-  },
-}))
-
 describe('PennylaneAmendmentTrackingManager', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(AmplitudeService, 'track').mockImplementation(() => undefined)
   })
 
   describe('trackAmendmentInformationDisplayed', () => {

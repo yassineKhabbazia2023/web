@@ -13,13 +13,9 @@ import { useConformityDocuments } from './conformity-documents.composable'
 import { PROSPECT_DOCUMENT_DEFAULT_MAX_FILES } from '@entities/modules/entity/prospect/prospect.constants'
 import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
 
-vi.mock('@entities/services/conformity-documents')
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/toolbox')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-const getSupportingDocumentsMock = vi.mocked(ConformityDocumentsService.getSupportingDocuments)
-const fetchOnboardingStepMock = vi.mocked(ProspectsService.fetchOnboardingStep)
+const getSupportingDocumentsMock = vi.fn()
+const fetchOnboardingStepMock = vi.fn()
 
 const emitMock = vi.fn()
 
@@ -28,6 +24,8 @@ const accountIdMock = 602
 describe('conformity-documents.composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(ConformityDocumentsService, 'getSupportingDocuments').mockImplementation(getSupportingDocumentsMock)
+    vi.spyOn(ProspectsService, 'fetchOnboardingStep').mockImplementation(fetchOnboardingStepMock)
     currentEntityStoreMock.currentEntityId = accountIdMock
     getSupportingDocumentsMock.mockResolvedValue(getSupportingDocumentsResponseMock())
     fetchOnboardingStepMock.mockResolvedValue({

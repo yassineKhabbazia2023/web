@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PProgress from '.'
 import type { PProgressProps } from './PProgressTypes'
 

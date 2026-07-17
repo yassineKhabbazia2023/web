@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import placementOptions from '../../constants/placementOptions'
 import PTooltip from '.'
 import type { PTooltipProps } from './PTooltipTypes'

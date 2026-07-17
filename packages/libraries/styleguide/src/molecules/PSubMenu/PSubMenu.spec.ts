@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { ElSubMenu } from 'element-plus'

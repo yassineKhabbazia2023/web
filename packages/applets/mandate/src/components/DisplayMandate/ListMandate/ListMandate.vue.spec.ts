@@ -1,66 +1,31 @@
-import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
+import type { AxiosResponse } from 'axios'
 import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mocks'
-import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
+import { mockedNotification } from '@mandate/__mocks__/notification.helper.mocks'
+import { showNotification } from '@mandate/helpers/NotificationHelper'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import type { ListMandateProps } from './ListMandateTypes'
 import { MandateTracking } from '@mandate/services/mandate-tracking.service'
 import Table from '.'
+import { armMandateModuleDefaults } from '@mandate/__mocks__'
 
-interface Window {
-  showSaveFilePicker: any
-  URL: any
-}
-declare let window: Window
 declare let document: any
 
 const currentPageMock = 1
 const idMock = 'id-mock'
 
-vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
-vi.mock('@mandate/helpers/utils', () => utilsMocks)
-
-vi.mock('@mandate/services/mandate', () => {
-  return {
-    downloadUnsignedMandate: vi.fn(() => {
-      // Mock implementation or return value for downloadUnsignedMandate
-      return Promise.resolve(Promise.resolve({ data: 'pdf-data' }))
-    }),
-    downloadSignedMandate: vi.fn(() => {
-      // Mock implementation or return value for downloadSignedMandate
-      return Promise.resolve(Promise.resolve({ data: 'pdf-data' }))
-    }),
-    terminateMandate: vi.fn(() => {
-      // Mock implementation or return value for terminateMandate
-      return Promise.resolve(Promise.resolve({ data: {} }))
-    }),
-    uploadSignedMandate: vi.fn(() => {
-      // Mock implementation or return value for terminateMandate
-      return Promise.resolve(Promise.resolve(true))
-    }),
+const mockShowSaveFilePicker = () => {
+  const writableStreamMock = {
+    write: vi.fn(() => Promise.resolve()),
+    close: vi.fn(() => Promise.resolve()),
   }
-})
-
-const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
-  if (withShowSaveFilePicker) {
-    // Resetting the window object to its original state before each test
-    window = Object.create(window)
-    const writableStreamMock = {
-      write: vi.fn(() => Promise.resolve()),
-      close: vi.fn(() => Promise.resolve()),
-    }
-    const fileHandleMock = {
-      createWritable: vi.fn(() => Promise.resolve(writableStreamMock)),
-    }
-    window.showSaveFilePicker = () => Promise.resolve(fileHandleMock)
-    // Mocking window.showSaveFilePicker directly
-    vi.spyOn(window, 'showSaveFilePicker').mockResolvedValue(fileHandleMock)
-    // window.showSaveFilePicker = fileHandleMock.createWritable
-  } else {
-    // Mocking window.showSaveFilePicker directly
-    window.showSaveFilePicker = undefined
+  const fileHandleMock = {
+    createWritable: vi.fn(() => Promise.resolve(writableStreamMock)),
   }
+  // stubGlobal (auto-unstubbed after each test) instead of a direct window
+  // assignment: the jsdom window is shared by the whole worker in no-isolate.
+  vi.stubGlobal('showSaveFilePicker', vi.fn(() => Promise.resolve(fileHandleMock)))
 }
 
 const defaultProps: ListMandateProps = {
@@ -122,6 +87,16 @@ function createWrapper(override: Partial<ListMandateProps> = {}) {
     },
   })
 }
+
+beforeEach(() => {
+  armMandateModuleDefaults()
+  // The submit flow passes the loading notification handle to the success one.
+  vi.mocked(showNotification).mockReturnValue(mockedNotification)
+  vi.mocked(mandateService.downloadUnsignedMandate).mockResolvedValue({ data: 'pdf-data' } as AxiosResponse)
+  vi.mocked(mandateService.downloadSignedMandate).mockResolvedValue({ data: 'pdf-data' } as AxiosResponse)
+  vi.mocked(mandateService.terminateMandate).mockResolvedValue({ data: {} } as AxiosResponse)
+  vi.mocked(mandateService.uploadSignedMandate).mockResolvedValue(true)
+})
 
 describe('mandate collection', () => {
   it('renders the mandate table and click on dropdown', async () => {
@@ -264,9 +239,9 @@ describe('mandate collection', () => {
     }
 
     expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: idMock, file })
-    expect(showNotificationMock).toHaveBeenCalledTimes(2)
-    expect(showNotificationMock).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
-    expect(showNotificationMock)
+    expect(vi.mocked(showNotification)).toHaveBeenCalledTimes(2)
+    expect(vi.mocked(showNotification)).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
+    expect(vi.mocked(showNotification))
       .toHaveBeenNthCalledWith(2, notificationMessages, 'success', true, mockedNotification)
 
     expect(trackingSpy).toHaveBeenCalled()

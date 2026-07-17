@@ -1,25 +1,21 @@
+import type { MockInstance } from 'vitest'
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import type { PatchOperation, PatchValue } from '@entities/services/patch-record'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
+import { getPatchOperations } from '@entities/services/patch-record'
+import { patchAccount } from '@entities/services/account'
 
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+let hasPermissionMock: MockInstance
+const mockedGetPatchOperations = vi.mocked(getPatchOperations)
+const mockedPatchAccount = vi.mocked(patchAccount)
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
-
-const mockedGetPatchOperations = vi.hoisted(() => vi.fn(() => (mockedPatchOperations)))
-vi.mock('@entities/services/patch-record/patch-record.service', () => ({
-  getPatchOperations: mockedGetPatchOperations,
-}))
-
-const mockedPatchAccount = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/account', () => ({
-  patchAccount: mockedPatchAccount,
-}))
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  mockedGetPatchOperations.mockImplementation(() => mockedPatchOperations)
+  mockedPatchAccount.mockResolvedValue(undefined)
+})
 
 const ACCOUNT_ID = 5
 const mockedPatchValues: PatchValue[] = [{
@@ -34,10 +30,6 @@ const mockedPatchOperations: PatchOperation[] = [{
 }]
 
 describe('test InformationHelper', () => {
-  afterEach(() => {
-    hasPermissionMock.mockReset()
-  })
-
   describe('getCanEdit', () => {
     const tests = [{
       isCollab: false,
@@ -87,7 +79,7 @@ describe('test InformationHelper', () => {
     })
 
     it('should call logger.error and return true when patchValues is empty', async () => {
-      mockedGetPatchOperations.mockReturnValueOnce([])
+      mockedGetPatchOperations.mockReturnValue([])
 
       const expectedErrorMessage = 'Unmanaged case: patchOperations is empty'
 
@@ -105,7 +97,7 @@ describe('test InformationHelper', () => {
 
     it('should call logger.error and return false when patchAccount throws an error', async () => {
       const errorMessage = 'error'
-      mockedPatchAccount.mockRejectedValueOnce(new Error(errorMessage))
+      mockedPatchAccount.mockRejectedValue(new Error(errorMessage))
 
       await expect(savePatchedAccount(ACCOUNT_ID, mockedPatchValues))
         .rejects.toThrow(errorMessage)

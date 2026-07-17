@@ -2,7 +2,10 @@ import { InvoicesFirstStepFormManager } from './invoices-first-step.form.manager
 import { InvoicesTracking } from '../../services/invoices.tracking.service'
 import type { FormInstance } from 'element-plus'
 
-vi.mock('../../services/invoices.tracking.service')
+beforeEach(() => {
+  vi.spyOn(InvoicesTracking, 'trackDigitizationInitializedSuccess').mockImplementation(() => undefined)
+  vi.spyOn(InvoicesTracking, 'trackDigitizationInitializedFail').mockImplementation(() => undefined)
+})
 
 const createFormRefMock = (validateResult: boolean): FormInstance => ({
   validate: vi.fn().mockImplementation(() => {

@@ -1,20 +1,22 @@
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import type { Ref, WritableComputedRef } from 'vue'
-import { vi } from 'vitest'
+
 import { usePDrawer } from './p-drawer.composable'
 import type { ElDrawerInstanceType } from './PDrawerTypes'
 import * as drawerManager from './p-drawer.manager'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue')
-  return {
-    ...actual,
-    onBeforeUnmount: vi.fn(),
-  }
-})
-
 const drawerTypeMini = 'mini'
 const drawerTypeFullscreen = 'fullscreen'
+
+// usePDrawer is called outside a component here, so its onBeforeUnmount
+// cleanup never runs: every registered outside-click handler must be killed
+// after each test or it would keep firing for the rest of the worker.
+const activeDrawerIds: string[] = []
+const usePDrawerTracked: typeof usePDrawer = (...args) => {
+  const result = usePDrawer(...args)
+  activeDrawerIds.push(result.componentUniqueId)
+  return result
+}
 
 
 describe('p drawer composable', () => {
@@ -23,6 +25,10 @@ describe('p drawer composable', () => {
   let drawerModel: WritableComputedRef<boolean>
 
   beforeEach(() => {
+    // usePDrawer runs outside a component here: neutralize the spy-wrapped
+    // onBeforeUnmount so Vue does not warn about the missing instance (its
+    // cleanup is replaced by the manual kill in afterEach anyway).
+    vi.mocked(onBeforeUnmount).mockImplementation(() => undefined)
     drawerTemplateRef = ref({}) as Ref<ElDrawerInstanceType>
     isDrawerOpened = ref(false)
     drawerModel = computed({
@@ -39,12 +45,16 @@ describe('p drawer composable', () => {
     vi.clearAllTimers()
     vi.useRealTimers()
     vi.restoreAllMocks()
+    for (const drawerId of activeDrawerIds) {
+      drawerManager.killTrackOutsideClick(drawerId)
+    }
+    activeDrawerIds.length = 0
   })
 
   it('should call trackOutsideClickMiniDrawer 50ms after opening the drawer', async () => {
     vi.useFakeTimers()
     const trackOutsideClickSpy = vi.spyOn(drawerManager, 'trackOutsideClickMiniDrawer')
-    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeMini)
+    usePDrawerTracked(drawerTemplateRef, drawerModel, drawerTypeMini)
 
     expect(trackOutsideClickSpy).not.toHaveBeenCalled()
     drawerModel.value = true
@@ -57,7 +67,7 @@ describe('p drawer composable', () => {
   it('should not trackOutsideClickMiniDrawer if drawer type is NOT mini', async () => {
     vi.useFakeTimers()
     const trackOutsideClickSpy = vi.spyOn(drawerManager, 'trackOutsideClickMiniDrawer')
-    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeFullscreen)
+    usePDrawerTracked(drawerTemplateRef, drawerModel, drawerTypeFullscreen)
 
     expect(trackOutsideClickSpy).not.toHaveBeenCalled()
     drawerModel.value = true
@@ -71,7 +81,7 @@ describe('p drawer composable', () => {
     vi.useFakeTimers()
     const killTrackOutsideSpy = vi.spyOn(drawerManager, 'killTrackOutsideClick')
     drawerModel.value = true
-    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeMini)
+    usePDrawerTracked(drawerTemplateRef, drawerModel, drawerTypeMini)
 
     expect(killTrackOutsideSpy).not.toHaveBeenCalled()
     drawerModel.value = false

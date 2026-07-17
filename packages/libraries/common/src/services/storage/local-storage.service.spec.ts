@@ -1,4 +1,4 @@
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 
 import { LocalStorageService } from './local-storage.service'
 
@@ -9,14 +9,14 @@ const localStorageMock = {
   clear: vi.fn(),
 }
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-  writable: true,
-})
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 describe('LocalStorageService', () => {
+  // Stub the worker-shared localStorage per test (restored automatically by
+  // unstubGlobals) instead of overwriting the global at module scope, which
+  // would leak to other files of the worker (doctrine: shared-dom).
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', localStorageMock)
+  })
+
   describe('Token methods', () => {
     it('should set token in localStorage', () => {
       const token = 'test-token'

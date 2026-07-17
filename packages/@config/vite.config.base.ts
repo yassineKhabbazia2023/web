@@ -4,6 +4,23 @@ import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import { viteVirtualModule } from './vite-virtual-module'
 
+// Isolate-safe test settings shared by every project (see the doctrine in
+// docs/guidelines/isolate-safe-tests.md). Exported so standalone configs that
+// do not spread viteConfigBase (e.g. the node-environment toolbox project) stay
+// in sync automatically instead of re-declaring these flags by hand.
+export const ISOLATE_SAFE_TEST_SETTINGS = {
+  // Workers are shared between test files: every project relies on hub mocks +
+  // setupIsolateSafeGuards. A project needing isolation back overrides this.
+  isolate: false,
+  // mockReset (a superset of clearMocks) also restores the implementation given
+  // to vi.fn(impl), so spy-wrapped modules come back real before every test and
+  // unconsumed mockXxxOnce queues are drained.
+  mockReset: true,
+  restoreMocks: true,
+  unstubGlobals: true,
+  unstubEnvs: true,
+} as const
+
 export const DEFAULT_EXTERNALS: (string | RegExp)[] = [
   /^vue/,
   /^pinia/,
@@ -62,13 +79,15 @@ export const viteConfigBase = ({ mode }: { mode: string }): UserConfig =>
       },
       css: false,
       globals: true,
-      environment: 'jsdom',
-      clearMocks: true,
-      restoreMocks: true,
+      // jsdom + a requestAnimationFrame that survives the per-file environment
+      // teardown, so element-plus's uncancellable table timers cannot crash the
+      // run (see the file for the full story).
+      environment: fileURLToPath(new URL('./vitest-stable-raf.environment.ts', import.meta.url)),
+      ...ISOLATE_SAFE_TEST_SETTINGS,
       testTimeout: 30000,
       coverage: {
-        provider: 'istanbul',
-        reporter: ['lcov', 'json', 'html'],
+        provider: 'v8',
+        reporter: ['lcov'],
       },
     },
   }) as UserConfig

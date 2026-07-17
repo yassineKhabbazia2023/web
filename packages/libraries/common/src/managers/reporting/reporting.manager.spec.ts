@@ -1,42 +1,16 @@
+import type { EntitySummary, UserInfo } from '@pulse/common/types'
 import { envVarsMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore, useUserStore } from '../../stores/main'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { ReportingService } from '../../services/reporting/reporting.service'
 import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { ReportingManager } from './reporting.manager'
 
-vi.mock('../feature-flag/feature-flag.manager')
-vi.mock('../../stores/main')
-vi.mock('../current-user/current-user.manager')
-vi.mock('../../services/reporting/reporting.service')
-vi.mock('env-vars', () => envVarsMock)
-
-const mockeduseCurrentEntityStore = vi.mocked(useCurrentEntityStore)
-const mockedUseUserStore = vi.mocked(useUserStore)
-const mockedHasPermission = vi.mocked(CurrentUserManager.hasPermission)
-const mockedGetTotalBIReports = vi.mocked(ReportingService.getTotalBIReports)
-const mockedIsClarityOfferActivated = vi.mocked(FeatureFlagManager.isClarityOfferActivated)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+const userStoreMock = getStoreMock(useUserStore)
 
 describe('ReportingManager.canShowBIReports', () => {
-  let currentEntityStoreMock: any
-  let userStoreMock: any
-
-  beforeEach(() => {
-    currentEntityStoreMock = {
-      currentEntityId: 1,
-      currentEntity: {
-        isClarityVisible: true,
-        isSignatory: true,
-      },
-    }
-    userStoreMock = {
-      isCollab: true,
-    }
-    mockeduseCurrentEntityStore.mockReturnValue(currentEntityStoreMock)
-    mockedUseUserStore.mockReturnValue(userStoreMock)
-    vi.clearAllMocks()
-  })
-
   it.each([
     {
       description: 'returns false if currentEntityId is undefined',
@@ -96,43 +70,26 @@ describe('ReportingManager.canShowBIReports', () => {
     '$description',
     async ({ currentEntityId, hasPowerBIAccess, getTotalBIReports, currentEntity, isCollab, expected }) => {
       currentEntityStoreMock.currentEntityId = currentEntityId
-      currentEntityStoreMock.currentEntity = currentEntity
+      currentEntityStoreMock.currentEntity = currentEntity as unknown as EntitySummary
       userStoreMock.isCollab = isCollab
-      mockedHasPermission.mockReturnValue(hasPowerBIAccess)
-      mockedGetTotalBIReports.mockResolvedValue(getTotalBIReports)
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(hasPowerBIAccess)
+      const getTotalBIReportsSpy = vi.spyOn(ReportingService, 'getTotalBIReports')
+        .mockResolvedValue(getTotalBIReports)
 
       const result = await ReportingManager.canShowBIReports()
 
       expect(result).toBe(expected)
 
       if (currentEntityId !== undefined && hasPowerBIAccess) {
-        expect(mockedGetTotalBIReports).toHaveBeenCalledWith(currentEntityId)
+        expect(getTotalBIReportsSpy).toHaveBeenCalledWith(currentEntityId)
       } else {
-        expect(mockedGetTotalBIReports).not.toHaveBeenCalled()
+        expect(getTotalBIReportsSpy).not.toHaveBeenCalled()
       }
     },
   )
 })
 
 describe('ReportingManager.canShowSmartOfferWidget', () => {
-  let currentEntityStoreMock: any
-  let userStoreMock: any
-
-  beforeEach(() => {
-    currentEntityStoreMock = {
-      currentEntity: {
-        isClarityVisible: true,
-        isSignatory: false,
-      },
-    }
-    userStoreMock = {
-      isCollab: true,
-    }
-    mockeduseCurrentEntityStore.mockReturnValue(currentEntityStoreMock)
-    mockedUseUserStore.mockReturnValue(userStoreMock)
-    vi.clearAllMocks()
-  })
-
   it.each([
     {
       description: 'returns true when clarity is visible and user is collab',
@@ -184,9 +141,9 @@ describe('ReportingManager.canShowSmartOfferWidget', () => {
       expected: false,
     },
   ])('$description', ({ isClarityOfferActivated, currentEntity, user, expected }) => {
-    mockedIsClarityOfferActivated.mockReturnValue(isClarityOfferActivated)
-    currentEntityStoreMock.currentEntity = currentEntity
-    userStoreMock.user = user
+    vi.spyOn(FeatureFlagManager, 'isClarityOfferActivated').mockReturnValue(isClarityOfferActivated)
+    currentEntityStoreMock.currentEntity = currentEntity as unknown as EntitySummary
+    userStoreMock.user = user as unknown as UserInfo
 
     const result = ReportingManager.canShowSmartOfferWidget()
 
@@ -194,10 +151,6 @@ describe('ReportingManager.canShowSmartOfferWidget', () => {
   })
 
   describe('ReportingManager.calculateSmartOfferPrice', () => {
-    beforeEach(() => {
-      vi.clearAllMocks()
-    })
-
     it.each([
       {
         description: 'returns default price when accountNumber is undefined',
@@ -225,8 +178,7 @@ describe('ReportingManager.canShowSmartOfferWidget', () => {
         expected: ReportingManager.SMART_OFFER_DEFAULT_PRICE,
       },
     ])('$description', ({ currentEntity, expected }) => {
-      currentEntityStoreMock = { currentEntity }
-      mockeduseCurrentEntityStore.mockReturnValue(currentEntityStoreMock)
+      currentEntityStoreMock.currentEntity = currentEntity as unknown as EntitySummary
 
       const result = ReportingManager.calculateSmartOfferPrice()
       expect(result).toBe(expected)

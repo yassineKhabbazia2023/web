@@ -1,4 +1,3 @@
-import { expect, describe, it } from 'vitest'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { OperationStatus } from '@entities/enums'
 

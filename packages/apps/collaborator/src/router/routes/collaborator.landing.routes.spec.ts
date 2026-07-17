@@ -3,11 +3,6 @@ import { RouteName } from '@pulse/common/enums'
 import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/collaborator.authenticated.flow.manager'
 import { landingCollaboratorRoutes } from './collaborator.landing.routes'
 
-vi.mock('@collaborator/managers/collaborator.authenticated.flow.manager')
-vi.mock('@pulse/shared/guards', () => ({
-  deepLinkGuard: vi.fn(),
-}))
-
 const landingRoute = landingCollaboratorRoutes[0]
 // beforeEnter is an array of guards: [deepLinkGuard, redirectionGuard]
 const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
@@ -31,7 +26,7 @@ describe('landingCollaboratorRoutes', () => {
   describe('beforeEnter', () => {
     it('should redirect to collaborator landing page', () => {
       const mockLandingPage = { name: RouteName.FOLDERS }
-      vi.mocked(CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage).mockReturnValue(mockLandingPage)
+      vi.spyOn(CollaboratorAuthenticatedFlowManager, 'getCollaboratorLandingPage').mockReturnValue(mockLandingPage)
 
       const result = redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized)
 

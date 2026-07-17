@@ -1,25 +1,16 @@
-import { describe, it, expect, vi } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { apiGatewayGetMock } from '../../__mocks__/vitest'
 import { getMockedUser, getMockedUserContext } from '../../__mocks__'
 
 import { CurrentUserService } from './current-user.service'
 import { API_PREFIXES } from '@common/constants'
-
-vi.mock('../../api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('test current-user.service', () => {
   describe('fetchUserPermissions', () => {
     it('should return current-user', async () => {
       const expectedUrl = 'contact/me'
       const userMock = getMockedUser()
-      apiGatewayGetMock.mockResolvedValueOnce({
+      apiGatewayGetMock.mockResolvedValue({
         data: userMock,
       })
       await CurrentUserService.getCurrentUser()
@@ -31,7 +22,7 @@ describe('test current-user.service', () => {
     it('should call logger when api throws an error', async () => {
       const errorMock = 'error mock'
       const expectedErrorMessage = 'Unable to retrieve current-user'
-      apiGatewayGetMock.mockRejectedValueOnce(errorMock)
+      apiGatewayGetMock.mockRejectedValue(errorMock)
       const currentUser = await CurrentUserService.getCurrentUser()
 
       expect(currentUser).toBeUndefined()
@@ -43,7 +34,7 @@ describe('test current-user.service', () => {
     it('should return context-current-user', async () => {
       const expectedUrl = `${API_PREFIXES.CONNECT}/get-user-information`
       const userMock = getMockedUserContext()
-      apiGatewayGetMock.mockResolvedValueOnce({
+      apiGatewayGetMock.mockResolvedValue({
         data: userMock,
       })
       await CurrentUserService.getCurrentUserContext()
@@ -55,7 +46,7 @@ describe('test current-user.service', () => {
     it('should call logger when api throws an error', async () => {
       const errorMock = 'error mock'
       const expectedErrorMessage = 'Unable to retrieve current-user'
-      apiGatewayGetMock.mockRejectedValueOnce(errorMock)
+      apiGatewayGetMock.mockRejectedValue(errorMock)
       const currentUser = await CurrentUserService.getCurrentUserContext()
 
       expect(currentUser).toBeUndefined()

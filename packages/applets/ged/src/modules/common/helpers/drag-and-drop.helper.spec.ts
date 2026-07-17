@@ -1,4 +1,3 @@
-import { it, expect, describe } from 'vitest'
 import * as dragAndDropHelper from './drag-and-drop.helper'
 
 describe('hasDragType', () => {

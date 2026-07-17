@@ -1,13 +1,9 @@
-import { getIconComponentMock, iconHelperMock } from '@styleguide/__mocks__/icon.helper.mocks'
+import { ElNotification } from 'element-plus'
+import { getIconComponentMock } from '@styleguide/__mocks__/icon.helper.mocks'
 
 import { PNotification, displayNotification } from './PNotification'
 
-vi.mock('../../utils/iconHelper', () => iconHelperMock)
-
-const ElNotificationMock = vi.hoisted(() => vi.fn())
-vi.mock('element-plus', () => ({
-  ElNotification: ElNotificationMock,
-}))
+const ElNotificationMock = vi.mocked(ElNotification)
 
 describe('test PNotification', () => {
   it('call ElNotification with proper arguments', () => {
@@ -20,7 +16,7 @@ describe('test PNotification', () => {
     }
 
     getIconComponentMock.mockReturnValue(mockedIconComponent)
-    ElNotificationMock.mockReturnValue(mockedNotification)
+    ElNotificationMock.mockReturnValue(mockedNotification as unknown as ReturnType<typeof ElNotification>)
 
     const notification = PNotification({
       title,

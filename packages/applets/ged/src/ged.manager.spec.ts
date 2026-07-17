@@ -1,8 +1,6 @@
 import { getServiceDataMockWithFirstIsReadOnly } from '@ged/__mocks__/services.mocks'
 import { GedManager } from './ged.manager'
 
-vi.mock('vue-router')
-
 describe('GedManager', () => {
   describe('find is service read only', () => {
     const serviceWithFirstIsReadOnly = getServiceDataMockWithFirstIsReadOnly()

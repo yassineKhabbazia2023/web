@@ -1,12 +1,9 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
-import { defaultEntityMock } from '@ged/__mocks__/common.import.mocks'
+import { defaultEntityMock } from '@ged/__mocks__/entity.mocks'
 import { fetchServicesFoldersFailMock, fetchServicesFoldersSuccessMock } from './__mocks__/folder.service.mocks'
-import { accountingHubConnectionServiceMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import { servicesDataMock } from '@ged/__mocks__/services.mocks'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
-import { documentsServiceMock } from './__mocks__/documents.service.mocks'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import { fetchServicesFolders } from '@ged/services/Folder'
 import { GedServiceId } from '@ged/enums/ged.enum'
@@ -21,12 +18,13 @@ import {
   renameFolder,
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createMemoryHistory, createRouter, onBeforeRouteUpdate } from 'vue-router'
+import { PNotification } from '@pulse/styleguide'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
+import * as FolderService from '@ged/services/Folder'
+import * as ServicesService from '@ged/services/Services'
+import * as BinDocumentsService from '@ged/services/BinDocuments'
 
-vi.mock('vue-router', async (importOriginal) => ({
-  ...await importOriginal<typeof import('vue-router')>(),
-  onBeforeRouteUpdate: vi.fn(),
-}))
 import { getMockedEntitySummary } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
@@ -35,57 +33,21 @@ import Ged from './Ged.vue'
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
+const spyPNotification = vi.mocked(PNotification)
 
-const spyPNotification = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', async (importOriginal) => {
-  const { ref } = await import('vue')
-  const actual = await importOriginal<typeof import('@pulse/styleguide')>()
-  return {
-    ...actual,
-    PNotification: spyPNotification,
-    AppColors: {
-      RED: 'RED',
-      PRIMARY: 'PRIMARY',
-      GREY_300: 'GREY_300',
-    },
-    useResponsive: () => ({
-      isMobile: ref(false),
-    }),
-  }
-})
-
-vi.mock('@ged/services/Folder', () => ({
-  fetchServicesFolders: fetchServicesFoldersSuccessMock,
-}))
-
-vi.mock('@ged/services/Services', () => ({
-  fetchUserEntityServices: vi.fn(() => {
-    return servicesDataMock
-  }),
-}))
-
-vi.mock('@ged/services/Documents', () => documentsServiceMock)
-
-vi.mock('@ged/services/BinDocuments', () => ({
-  fetchBinDocuments: vi.fn(),
-}))
-
-vi.mock('@ged/modules/Treeview/helpers/folderArrayHelper', async (importActual) => {
-  const actual = await importActual()
-  return {
-    // @ts-ignore
-    ...actual,
-    appendChildFolder: vi.fn(() => {
-      return true
-    }),
-    sortFolderByName: vi.fn(),
-    deleteFolder: vi.fn(),
-    renameFolder: vi.fn(() => {
-      return true
-    }),
-    findFolderDeepById: vi.fn(),
-  }
+beforeEach(() => {
+  armGedServiceDefaults()
+  vi.mocked(onBeforeRouteUpdate).mockImplementation(() => undefined)
+  vi.mocked(FolderService.fetchServicesFolders).mockImplementation(fetchServicesFoldersSuccessMock)
+  vi.mocked(ServicesService.fetchUserEntityServices).mockResolvedValue(servicesDataMock)
+  vi.mocked(BinDocumentsService.fetchBinDocuments).mockImplementation(
+    () => undefined as unknown as ReturnType<typeof BinDocumentsService.fetchBinDocuments>,
+  )
+  vi.mocked(appendChildFolder).mockImplementation(() => true)
+  vi.mocked(sortFolderByName).mockImplementation(() => undefined as unknown as boolean)
+  vi.mocked(deleteFolder).mockImplementation(() => undefined as unknown as boolean)
+  vi.mocked(renameFolder).mockImplementation(() => true)
+  vi.mocked(findFolderDeepById).mockImplementation(() => undefined)
 })
 
 type AppSetup = {

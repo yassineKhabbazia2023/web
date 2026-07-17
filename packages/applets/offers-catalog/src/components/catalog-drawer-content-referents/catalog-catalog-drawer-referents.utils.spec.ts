@@ -1,25 +1,11 @@
 import { ref } from 'vue'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import { useClipboard } from '@vueuse/core'
+import { PNotification } from '@pulse/styleguide'
 import { getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
 
 import { getTableReferentsColumns, getFormattedReferents, copyColumnContent } from './catalog-drawer-content-referents.utils'
 
 const offerReferentsMock = getOfferCatalogReferentListMock()
-
-const useClipboardMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@vueuse/core', () => ({
-  useClipboard: useClipboardMock,
-}))
-
-const PNotificationMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: PNotificationMock,
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
 
 describe('catalog-drawer-content-referents.utils', () => {
   describe('getTableReferentsColumns', () => {
@@ -58,11 +44,11 @@ describe('catalog-drawer-content-referents.utils', () => {
 
     beforeEach(() => {
       isSupportedMock.value = true
-      useClipboardMock
-        .mockReturnValue({
-          copy: copyMock,
-          isSupported: isSupportedMock,
-        })
+      vi.mocked(useClipboard).mockReturnValue({
+        copy: copyMock,
+        isSupported: isSupportedMock,
+      } as unknown as ReturnType<typeof useClipboard>)
+      vi.mocked(PNotification).mockImplementation(() => undefined as unknown as ReturnType<typeof PNotification>)
     })
 
     it('should copy to clipboard when isSupported is true', () => {
@@ -80,7 +66,7 @@ describe('catalog-drawer-content-referents.utils', () => {
 
       expect(copyMock).toHaveBeenCalledExactlyOnceWith(...expectedCopyParameters)
 
-      expect(PNotificationMock).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
+      expect(vi.mocked(PNotification)).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
     })
 
     it('should copy when isSupported is false', () => {
@@ -97,7 +83,7 @@ describe('catalog-drawer-content-referents.utils', () => {
 
       expect(copyMock).not.toHaveBeenCalled()
 
-      expect(PNotificationMock).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
+      expect(vi.mocked(PNotification)).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
     })
   })
 })

@@ -1,33 +1,21 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Mock } from 'vitest'
+
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
+import { apiGatewayPostMock } from '@pulse/common/mocks/vitest'
+import { PNotification } from '@pulse/styleguide'
+import { useRouter } from 'vue-router'
 import ResetPassword from './ResetPassword.vue'
 import { nextTick } from 'vue'
 import { RouteName } from '@pulse/common/enums'
 
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
-}))
-
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
-const mockRouterPush = vi.fn()
-const mockAuthPost = vi.hoisted(() => vi.fn())
-const PNotificationMocked = vi.hoisted(() => vi.fn())
+// '@pulse/common/api' is hub-mocked worker-wide: the spec arms the shared
+// gateway post spy per test (doctrine: shared-hubs).
+const mockAuthPost = apiGatewayPostMock
 
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: PNotificationMocked,
-}))
-
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      post: mockAuthPost,
-    },
-  }),
-}))
+let mockRouterPush: Mock
 
 let wrapper: ComponentWrapper<InstanceType<typeof ResetPassword>>
 
@@ -35,6 +23,9 @@ const createWrapper = () => mount(ResetPassword)
 
 describe('reset password', () => {
   beforeEach(() => {
+    // Shared vue-router spies are armed per test (doctrine: shared-hubs).
+    mockRouterPush = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push: mockRouterPush } as unknown as ReturnType<typeof useRouter>)
     wrapper = createWrapper()
   })
 
@@ -99,7 +90,7 @@ describe('reset password', () => {
     await submitButton.trigger('click')
     await flushPromises()
 
-    expect(PNotificationMocked).toHaveBeenCalledOnce()
+    expect(vi.mocked(PNotification)).toHaveBeenCalledOnce()
   })
 
   it('do not call mockAuthPost when handleSubmit is called without form', async () => {

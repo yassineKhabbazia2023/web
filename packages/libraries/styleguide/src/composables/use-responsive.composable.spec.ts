@@ -9,14 +9,6 @@ import {
 } from './use-responsive.composable'
 import { BREAKPOINT_SIZES } from '../constants/breakpoint.const'
 
-vi.mock('@vueuse/core', async () => {
-  const actual = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
-  return {
-    ...actual,
-    useWindowSize: vi.fn(),
-  }
-})
-
 const mockWindowWidth = (value: number) => {
   vi.mocked(useWindowSize).mockReturnValue({ width: ref(value) } as any)
 }

@@ -11,14 +11,6 @@ import type {
 } from '../types/booking.types'
 import { getMockedAppointmentCount, getMockedAppointments, getMockedBookingServiceConfiguration, getMockExperts } from '../__mocks__'
 
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 const bookingServiceConfigurationMock = getMockedBookingServiceConfiguration()
 
 describe('booking.service', () => {
@@ -130,12 +122,15 @@ describe('booking.service', () => {
 
     it('should return false on API error', async () => {
       const error = new Error('Network error')
-      apiGatewayMock.get.mockRejectedValueOnce(error)
+      // Plain stub (not Once): on a shared worker a stray async caller could
+      // consume a one-shot rejection before the tested call runs.
+      apiGatewayMock.get.mockRejectedValue(error)
 
       const result = await BookingService.getBookingEnabledFlag()
 
       expect(result).toBe(false)
-      expect(loggerMock.error).toHaveBeenCalledWith(error)
+      // The error log can land a microtask later on a shared module graph.
+      await vi.waitFor(() => expect(loggerMock.error).toHaveBeenCalledWith(error))
     })
   })
 

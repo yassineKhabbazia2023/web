@@ -1,14 +1,24 @@
 import type { Mock } from 'vitest'
+import {
+  fetchUnreadNotificationsCount,
+  fetchNotifications,
+  patchNotificationReadStatus,
+  patchAllNotificationsReadStatus,
+} from '../services/notifications.service'
 import { notificationsMock } from './notifications.mocks'
 
-export const fetchUnreadNotificationsCountMock: Mock = vi.fn(() => ({ count: 5 }))
-export const fetchNotificationsMock: Mock = vi.fn(() => ({ notifications: notificationsMock }))
-export const patchNotificationReadStatusMock: Mock = vi.fn()
-export const patchAllNotificationsReadStatusMock: Mock = vi.fn()
+// The notifications service is spy-wrapped project-wide (vitest.setup.ts):
+// these legacy names alias the shared spies so specs keep their assertions.
+export const fetchUnreadNotificationsCountMock: Mock = vi.mocked(fetchUnreadNotificationsCount)
+export const fetchNotificationsMock: Mock = vi.mocked(fetchNotifications)
+export const patchNotificationReadStatusMock: Mock = vi.mocked(patchNotificationReadStatus)
+export const patchAllNotificationsReadStatusMock: Mock = vi.mocked(patchAllNotificationsReadStatus)
 
-export const notificationsServiceMock = {
-  fetchUnreadNotificationsCount: fetchUnreadNotificationsCountMock,
-  fetchNotifications: fetchNotificationsMock,
-  patchNotificationReadStatus: patchNotificationReadStatusMock,
-  patchAllNotificationsReadStatus: patchAllNotificationsReadStatusMock,
+// Legacy default behaviors of the old factory mock: consumer specs arm them
+// per test (beforeEach) instead of relying on module-scope factories.
+export function armNotificationsServiceDefaults(): void {
+  fetchUnreadNotificationsCountMock.mockReturnValue({ count: 5 })
+  fetchNotificationsMock.mockReturnValue({ notifications: notificationsMock })
+  patchNotificationReadStatusMock.mockReturnValue(undefined)
+  patchAllNotificationsReadStatusMock.mockReturnValue(undefined)
 }

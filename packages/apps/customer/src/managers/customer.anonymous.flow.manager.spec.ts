@@ -1,19 +1,14 @@
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { CustomerBootManager } from './customer.boot.manager'
-import { createTestingPinia } from '@pinia/testing'
 import { initProductFruitsAnonymousCustomer, stopProductFruits } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { RouteName } from '@pulse/common/enums'
 
 import { CustomerAnonymousFlowManager } from './customer.anonymous.flow.manager'
 
-createTestingPinia()
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/shared/plugins', () => ({
-  initProductFruitsAnonymousCustomer: vi.fn(),
-  stopProductFruits: vi.fn(),
-}))
+beforeEach(() => {
+  vi.mocked(initProductFruitsAnonymousCustomer).mockImplementation(() => undefined)
+  vi.mocked(stopProductFruits).mockImplementation(() => undefined)
+})
 
 describe('CustomerAnonymousFlowManager', () => {
   describe('enterAnonymousFlow', () => {

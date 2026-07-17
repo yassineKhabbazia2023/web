@@ -1,27 +1,13 @@
 import { useAddAppSettingDialog } from './add-app-setting-dialog.composable'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
 
-vi.mock('@backoffice/services/app-settings-list/app-settings-list.service', () => ({
-  AppSettingsListService: {
-    getAvailableEnvironments: vi.fn(),
-    createAppSetting: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: { info: vi.fn(), error: vi.fn() },
-}))
-
 describe('useAddAppSettingDialog - extra branches', () => {
   const onSuccess = vi.fn()
   const onClose = vi.fn()
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(AppSettingsListService, 'getAvailableEnvironments').mockResolvedValue([])
+    vi.spyOn(AppSettingsListService, 'createAppSetting').mockResolvedValue()
   })
 
   it('validateForm should set error when name format is invalid', async () => {

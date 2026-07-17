@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { apiGatewayGetMock, apiGatewayPostMock } from '@pulse/common/mocks/vitest'
 import type { OnboardingDetails } from '@entities/modules/wallet/types'
 import { createTestAccount, generateAccountNumber } from '.'
 
@@ -14,17 +14,12 @@ export const onboardingDetailsMock: OnboardingDetails = {
   collaboratorGuids: ['guid-1', 'guid-2', 'guid-3'],
 }
 
-const entityCreatorGetMock = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: onboardingDetailsMock.accountNumber })))
-const entityCreatorPostMock = vi.hoisted(() => vi.fn())
+const entityCreatorGetMock = apiGatewayGetMock
+const entityCreatorPostMock = apiGatewayPostMock
 
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: {
-      post: entityCreatorPostMock,
-      get: entityCreatorGetMock,
-    },
-  }),
-}))
+beforeEach(() => {
+  entityCreatorGetMock.mockImplementation(() => Promise.resolve({ data: onboardingDetailsMock.accountNumber }))
+})
 
 describe('entity-creator service', () => {
   describe('createTestAccount', () => {

@@ -5,20 +5,26 @@ import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks'
 import FormSearch from '@entities/components/FormSearch'
 import type { PatchContactPayload } from '@entities/services/contact/contactTypes'
+import { getContactById, patchContact } from '@entities/services/contact'
+import { CurrentUserManager } from '@pulse/common/managers'
 import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/types'
 import type { UsersClientProps } from '../types/users-client.types'
 import { getMockedUser, getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
-import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 
 import UsersClient from './users-client.vue'
 
-vi.mock('@entities/services/contact', () => ({
-  getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
-  patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
-}))
+beforeEach(() => {
+  vi.mocked(getContactById).mockResolvedValue(mockUser)
+  vi.mocked(patchContact).mockImplementation(
+    (_id: number, _accountId: number, contact: PatchContactPayload) =>
+      Promise.resolve(contact as unknown as Awaited<ReturnType<typeof patchContact>>),
+  )
+  vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
+})
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
@@ -34,10 +40,6 @@ const contactsList = generateContactsMock({
 const mockedEntity = getMockedEntity()
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
-vi.mock('@entities/services/wallet')
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
 function createWrapper(entityId?: number) {
   const props: UsersClientProps = {
     entityId,
@@ -69,8 +71,7 @@ describe('test UsersClient', () => {
   beforeEach(async () => {
     currentEntityStoreMock.currentEntity = entitySummaryMock
     userStoreMock.user = userMock
-    mockGatewayGet = vi
-      .spyOn(WalletServices, 'fetchCustomers')
+    mockGatewayGet = vi.mocked(WalletServices.fetchCustomers)
       .mockResolvedValue(contactsList)
     wrapper = createWrapper()
     await nextTick()
@@ -186,8 +187,7 @@ describe('test UsersClient', () => {
         accountId: entityId,
       })
       currentEntityStoreMock.currentEntity = entityWithCustomId
-      fetchAccountContactsSpy = vi
-        .spyOn(WalletServices, 'fetchAccountContacts')
+      fetchAccountContactsSpy = vi.mocked(WalletServices.fetchAccountContacts)
         .mockResolvedValue(mockedResponse)
       wrapper = createWrapper(entityId)
     })

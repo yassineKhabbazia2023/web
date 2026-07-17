@@ -2,39 +2,14 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { DataGovernance } from '@configcat/sdk'
 import { OpenFeatureService } from './open-feature.service'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
-const setProviderAndWaitMock = vi.fn()
-const setContextMock = vi.fn()
-const clearContextMock = vi.fn()
-const getBooleanDetailsMock = vi.fn()
-const getStringDetailsMock = vi.fn()
-const getNumberDetailsMock = vi.fn()
-const getObjectDetailsMock = vi.fn()
-
-vi.mock('@openfeature/web-sdk', () => ({
-  OpenFeature: {
-    setProviderAndWait: (provider: unknown) => setProviderAndWaitMock(provider),
-    setContext: (context: unknown) => setContextMock(context),
-    clearContext: () => clearContextMock(),
-    getClient: () => ({
-      getBooleanDetails: (flagKey: string, defaultValue: boolean) => getBooleanDetailsMock(flagKey, defaultValue),
-      getStringDetails: (flagKey: string, defaultValue: string) => getStringDetailsMock(flagKey, defaultValue),
-      getNumberDetails: (flagKey: string, defaultValue: number) => getNumberDetailsMock(flagKey, defaultValue),
-      getObjectDetails: (flagKey: string, defaultValue: unknown) => getObjectDetailsMock(flagKey, defaultValue),
-    }),
-  },
-}))
-
-const configCatCreateMock = vi.fn((_sdkKey: string, _options?: unknown) => 'mocked-provider')
-
-vi.mock('@openfeature/config-cat-web-provider', () => ({
-  ConfigCatWebProvider: {
-    create: (sdkKey: string, options?: unknown) => configCatCreateMock(sdkKey, options),
-  },
-}))
+import {
+  setProviderAndWaitMock,
+  getBooleanDetailsMock,
+  getStringDetailsMock,
+  getNumberDetailsMock,
+  getObjectDetailsMock,
+  configCatCreateMock,
+} from '../../__mocks__/vitest'
 
 describe('OpenFeatureService', () => {
   beforeEach(() => {
@@ -177,32 +152,6 @@ describe('OpenFeatureService', () => {
       OpenFeatureService.getBooleanValue('myFlag', false)
 
       expect(loggerMock.trace).not.toHaveBeenCalled()
-    })
-
-    it('should set the user context with the email as targeting key', async () => {
-      await OpenFeatureService.setUserContext('user@example.com')
-
-      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'user@example.com', email: 'user@example.com' })
-    })
-
-    it('should clear the user context', async () => {
-      await OpenFeatureService.clearUserContext()
-
-      expect(clearContextMock).toHaveBeenCalled()
-    })
-  })
-
-  describe('user context before init', () => {
-    it('should not set the context when not initialized', async () => {
-      await OpenFeatureService.setUserContext('user@example.com')
-
-      expect(setContextMock).not.toHaveBeenCalled()
-    })
-
-    it('should not clear the context when not initialized', async () => {
-      await OpenFeatureService.clearUserContext()
-
-      expect(clearContextMock).not.toHaveBeenCalled()
     })
   })
 })

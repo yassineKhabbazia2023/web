@@ -2,11 +2,8 @@ import { RSSNewsService } from './rss-news.service'
 import axios from 'axios'
 import { RSS_NEWS_FEED_URL } from '@pulse/common/constants'
 
-// Mock dependencies
-vi.mock('axios')
-vi.mock('@pulse/common/constants', () => ({
-  RSS_NEWS_FEED_URL: 'https://mock-rss-url.com',
-}))
+// axios is mocked worker-wide in vitest.setup.ts: specs arm vi.mocked(axios.get)
+// per test. RSS_NEWS_FEED_URL is a plain constant, asserted with its real value.
 
 describe('RSSNewsService', () => {
   beforeEach(() => {

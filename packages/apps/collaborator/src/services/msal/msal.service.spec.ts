@@ -1,29 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { envVarsMock } from '@pulse/common/mocks'
 import { MsalService } from './msal.service'
 import {
   PublicClientApplication,
   AccountInfo,
   AuthenticationResult,
 } from '@azure/msal-browser'
-
-vi.mock('env-vars', () => envVarsMock)
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    warn: vi.fn(),
-  },
-}))
-
-vi.mock('@azure/msal-browser', () => ({
-  PublicClientApplication: vi.fn(),
-  InteractionRequiredAuthError: class InteractionRequiredAuthError extends Error {
-    constructor(message: string) {
-      super(message)
-      this.name = 'InteractionRequiredAuthError'
-    }
-  },
-}))
 
 describe('MsalService', () => {
   let mockMsalInstance: any
@@ -140,10 +120,9 @@ describe('MsalService', () => {
   describe('getRedirectUri', () => {
     it('should return the correct uri with sub env', () => {
       const uriExpected = 'https://localhost/transverse/collaborateur'
-      Object.defineProperty(window, 'location', {
-        writable: true,
-        value: { href: 'https://localhost/transverse/collaborateur' },
-      })
+      // Stub via vi.stubGlobal so unstubGlobals restores the worker-shared
+      // location after each test (doctrine: shared-dom).
+      vi.stubGlobal('location', { href: 'https://localhost/transverse/collaborateur' })
       const result = (MsalService as any).getRedirectUri('https://localhost/collaborateur')
 
       expect(result).toEqual(uriExpected)

@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getIsServiceSelected, getServiceTag, getTitle } from './OfferProviderProductsUtils'
 import { SubscriptionPriceType } from '@entities/enums'
 

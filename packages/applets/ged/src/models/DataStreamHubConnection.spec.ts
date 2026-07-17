@@ -1,28 +1,14 @@
 import type { HubConnection } from '@microsoft/signalr'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { loggerMock } from '@pulse/toolbox/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { useTokenStore } from '@pulse/common/stores'
+import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 
-const loggerErrorMock = vi.hoisted(() => vi.fn())
-const getTokenMock = vi.hoisted(() => vi.fn())
-const useTokenStoreMock = vi.hoisted(() => vi.fn())
-const startMock = vi.hoisted(() => vi.fn())
-const stopMock = vi.hoisted(() => vi.fn())
-const getNewHubConnectionMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: loggerErrorMock,
-  },
-}))
-
-vi.mock('@pulse/common/stores', () => ({
-  useTokenStore: useTokenStoreMock,
-}))
-
-vi.mock('./DataStreamHubConnectionHelper', () => ({
-  getNewHubConnection: getNewHubConnectionMock,
-}))
+const startMock = vi.fn()
+const stopMock = vi.fn()
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 function createHubConnectionMock(): HubConnection {
   return {
@@ -37,18 +23,15 @@ function createInstance() {
 
 describe('DataStreamHubConnection', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    getTokenMock.mockReturnValue('token')
-    useTokenStoreMock.mockReturnValue({ getToken: getTokenMock })
-    getNewHubConnectionMock.mockReturnValue(createHubConnectionMock())
+    tokenStoreMock.getToken.mockReturnValue('token')
+    vi.mocked(getNewHubConnection).mockReturnValue(createHubConnectionMock())
   })
 
   it('initializes with token store value', () => {
     const instance = createInstance()
 
-    expect(useTokenStoreMock).toHaveBeenCalledOnce()
-    expect(getTokenMock).toHaveBeenCalledOnce()
-    expect(getNewHubConnectionMock).toHaveBeenCalledExactlyOnceWith('hub-url', 'token')
+    expect(tokenStoreMock.getToken).toHaveBeenCalledOnce()
+    expect(vi.mocked(getNewHubConnection)).toHaveBeenCalledExactlyOnceWith('hub-url', 'token')
     expect(instance.getIsConnected()).toBe(false)
   })
 
@@ -69,7 +52,7 @@ describe('DataStreamHubConnection', () => {
 
     await instance.startConnection()
 
-    expect(loggerErrorMock).toHaveBeenCalledExactlyOnceWith('Hub connection to hub-url failed', error)
+    expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith('Hub connection to hub-url failed', error)
   })
 
   it('does not stop connection when instance is not connected', async () => {
@@ -101,6 +84,6 @@ describe('DataStreamHubConnection', () => {
 
     await instance.destroyConnection()
 
-    expect(loggerErrorMock).toHaveBeenCalledWith(error)
+    expect(loggerMock.error).toHaveBeenCalledWith(error)
   })
 })

@@ -1,20 +1,17 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerMock } from '@pulse/toolbox/mocks'
+import type { MockInstance } from 'vitest'
 import { useCommitExplorer } from './use-commit-explorer.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
 import type { AzureDevOpsCommit, AzureDevOpsRef, WorkItem } from '@backoffice/types/azure-devops.type'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/azure-devops/azure-devops.service')
-
-const mockedFetchCommitsForExplorer = vi.mocked(AzureDevOpsService.fetchCommitsForExplorer)
-const mockedGetAllTags = vi.mocked(AzureDevOpsService.getAllTags)
-const mockedGetWorkItemsByIds = vi.mocked(AzureDevOpsService.getWorkItemsByIds)
-const mockedExtractWorkItemIds = vi.mocked(AzureDevOpsService.extractWorkItemIds)
-const mockedExtractWorkItemIdsFromRefs = vi.mocked(AzureDevOpsService.extractWorkItemIdsFromRefs)
-const mockedExtractPrId = vi.mocked(AzureDevOpsService.extractPrId)
-const mockedGetPullRequestWorkItemIds = vi.mocked(AzureDevOpsService.getPullRequestWorkItemIds)
+let mockedFetchCommitsForExplorer: MockInstance
+let mockedGetAllTags: MockInstance
+let mockedGetWorkItemsByIds: MockInstance
+let mockedExtractWorkItemIds: MockInstance
+let mockedExtractWorkItemIdsFromRefs: MockInstance
+let mockedExtractPrId: MockInstance
+let mockedGetPullRequestWorkItemIds: MockInstance
 
 const mockCommits: AzureDevOpsCommit[] = [
   {
@@ -42,9 +39,14 @@ const mockWorkItems: WorkItem[] = [
 describe('useCommitExplorer', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.clearAllMocks()
-    mockedExtractPrId.mockReturnValue(null)
-    mockedExtractWorkItemIdsFromRefs.mockReturnValue([])
+    mockedFetchCommitsForExplorer = vi.spyOn(AzureDevOpsService, 'fetchCommitsForExplorer')
+      .mockResolvedValue({ commits: [], totalCount: 0 })
+    mockedGetAllTags = vi.spyOn(AzureDevOpsService, 'getAllTags').mockResolvedValue([])
+    mockedGetWorkItemsByIds = vi.spyOn(AzureDevOpsService, 'getWorkItemsByIds').mockResolvedValue([])
+    mockedExtractWorkItemIds = vi.spyOn(AzureDevOpsService, 'extractWorkItemIds').mockReturnValue([])
+    mockedExtractWorkItemIdsFromRefs = vi.spyOn(AzureDevOpsService, 'extractWorkItemIdsFromRefs').mockReturnValue([])
+    mockedExtractPrId = vi.spyOn(AzureDevOpsService, 'extractPrId').mockReturnValue(null)
+    mockedGetPullRequestWorkItemIds = vi.spyOn(AzureDevOpsService, 'getPullRequestWorkItemIds').mockResolvedValue([])
   })
 
   it('should initialize with default values', () => {

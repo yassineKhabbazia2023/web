@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getFullName, getFullNameWithUppercaseLastName, getInitials } from './user.utils'
 
 describe('getInitials', () => {

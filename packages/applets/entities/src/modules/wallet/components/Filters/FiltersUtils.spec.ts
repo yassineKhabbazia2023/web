@@ -1,4 +1,3 @@
-import { describe, it } from 'vitest'
 import { getMockedFilterLabels, getMockedEntitiesStatistics } from '@entities/__mocks__/filters.mocks'
 import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
 

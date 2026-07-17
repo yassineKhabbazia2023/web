@@ -1,11 +1,11 @@
-import { vi, describe, it, expect } from 'vitest'
 import { imageResolver } from './imageResolver'
+import { getAssetsBaseUrl } from './imageResolverInit'
 
 const baseCDNUrl = 'https://example.com'
 
-vi.mock('./imageResolverInit', () => ({
-  getAssetsBaseUrl: () => baseCDNUrl,
-}))
+beforeEach(() => {
+  vi.mocked(getAssetsBaseUrl).mockReturnValue(baseCDNUrl)
+})
 
 describe('imageResolver', () => {
   it('should correctly retrieve image url', () => {

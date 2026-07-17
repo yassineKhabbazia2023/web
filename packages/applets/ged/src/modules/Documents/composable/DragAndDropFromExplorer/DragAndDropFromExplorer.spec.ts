@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { ref, type Ref } from 'vue'
-import '@ged/__mocks__/i18n.import.mocks'
-import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
+import { ref, type Ref, defineComponent } from 'vue'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 
+import { mount } from '@vue/test-utils'
 import { useDragAndDropFromExplorer } from '.'
+import { PNotification } from '@pulse/styleguide'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 
 let currentServiceName: Ref<DocumentsProps['currentServiceName']>
 let currentService: Ref<DocumentsProps['currentService']>
@@ -54,17 +54,29 @@ class MockDataTransfer {
   }
 }
 
-vi.mock('@ged/services/Documents', () => documentsServiceMock)
+const spyPNotification = vi.mocked(PNotification)
 
-const spyPNotification = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: spyPNotification,
-  AppColors: {
-    RED: 'RED',
-    PRIMARY: 'PRIMARY',
-    GREY_300: 'GREY_300',
-  },
-}))
+beforeEach(() => {
+  armGedServiceDefaults()
+})
+
+
+// The composable calls useI18n with a local scope, which requires a live
+// component instance: run it inside a real setup() instead of relying on a
+// leaked current instance from previously mounted wrappers.
+// The composable merges its en-US messages into the global i18n created by
+// the setup (locale 'en-US'): the assertions match the resolved translations,
+// deterministic whatever file ran first in the worker.
+function withSetup<T>(runComposable: () => T): T {
+  let result: T | undefined
+  mount(defineComponent({
+    setup() {
+      result = runComposable()
+      return () => null
+    },
+  }))
+  return result as T
+}
 
 describe('drag and drop from explorer composable', () => {
   beforeEach(() => {
@@ -81,14 +93,14 @@ describe('drag and drop from explorer composable', () => {
       isDropZoneVisible,
       isDropFromExplorerConfirmationModalVisible,
       validDroppedFiles,
-    } = useDragAndDropFromExplorer(
+    } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     expect(isDropZoneVisible.value).toBeFalsy()
     expect(isDropFromExplorerConfirmationModalVisible.value).toBeFalsy()
@@ -96,14 +108,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should handle drag over from explorer', () => {
-    const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
+    const { handleDragOverFromExplorer, isDropZoneVisible } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     // Drag Event doesn't exist in test environment
     const mockEvent = {
@@ -120,14 +132,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should handle drag leave from explorer', () => {
-    const { handleDragLeaveFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
+    const { handleDragLeaveFromExplorer, isDropZoneVisible } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     isDropZoneVisible.value = true
     handleDragLeaveFromExplorer()
@@ -139,14 +151,14 @@ describe('drag and drop from explorer composable', () => {
       handleDropFromExplorer,
       validDroppedFiles,
       isDropFromExplorerConfirmationModalVisible,
-    } = useDragAndDropFromExplorer(
+    } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' })
     const dataTransfer = new MockDataTransfer()
@@ -166,14 +178,14 @@ describe('drag and drop from explorer composable', () => {
 
   it('should not handle file drop if folder does not allow upload', async () => {
     selectedFolder.value = rootFolder // Folder without upload permission
-    const { handleDropFromExplorer, validDroppedFiles } = useDragAndDropFromExplorer(
+    const { handleDropFromExplorer, validDroppedFiles } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' })
     const dataTransfer = new MockDataTransfer()
@@ -192,14 +204,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should display success notification when documents are uploaded successfully', async () => {
-    const { handleDropFromExplorer } = useDragAndDropFromExplorer(
+    const { handleDropFromExplorer } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' })
     const dataTransfer = new MockDataTransfer()
@@ -215,7 +227,7 @@ describe('drag and drop from explorer composable', () => {
     await handleDropFromExplorer(event as unknown as DragEvent)
 
     expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
-      message: 'documentsUploaded',
+      message: expect.stringContaining('has been uploaded to'),
       iconName: 'check',
       showClose: true,
       customClass: 'success',
@@ -225,14 +237,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should display connection error notification when upload fails', async () => {
-    const { handleDropFromExplorer } = useDragAndDropFromExplorer(
+    const { handleDropFromExplorer } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const mockFile = new File(['content'], 'fail.txt', { type: 'text/plain' })
     const dataTransfer = new MockDataTransfer()
@@ -248,7 +260,7 @@ describe('drag and drop from explorer composable', () => {
     await handleDropFromExplorer(event as unknown as DragEvent)
 
     expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
-      message: 'connectionLost',
+      message: expect.stringContaining('Connection to server lost'),
       iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
@@ -258,14 +270,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should display pre-upload error notifications', async () => {
-    const { handleDropFromExplorer } = useDragAndDropFromExplorer(
+    const { handleDropFromExplorer } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const emptyFile = new File([], 'empty.txt', { type: 'text/plain' })
     const largeFile = new File(['content'], 'large.txt', { type: 'text/plain' })
@@ -286,7 +298,7 @@ describe('drag and drop from explorer composable', () => {
     await handleDropFromExplorer(event as unknown as DragEvent)
 
     expect(spyPNotification).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      message: 'emptyDocuments',
+      message: expect.stringContaining('empty document'),
       iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
@@ -295,7 +307,7 @@ describe('drag and drop from explorer composable', () => {
     }))
 
     expect(spyPNotification).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      message: 'limitExceededDocuments',
+      message: expect.stringContaining('exceeding the maximum allowed size'),
       iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
@@ -304,7 +316,7 @@ describe('drag and drop from explorer composable', () => {
     }))
 
     expect(spyPNotification).toHaveBeenNthCalledWith(3, expect.objectContaining({
-      message: 'unknowExtensions',
+      message: expect.stringContaining('Unrecognized format for'),
       iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
@@ -314,14 +326,14 @@ describe('drag and drop from explorer composable', () => {
   })
 
   it('should not display the drop zone if the data type isn\'t "Files"', () => {
-    const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
+    const { handleDragOverFromExplorer, isDropZoneVisible } = withSetup(() => useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
       currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
-    )
+    ))
 
     const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' })
     const dataTransfer = new MockDataTransfer()

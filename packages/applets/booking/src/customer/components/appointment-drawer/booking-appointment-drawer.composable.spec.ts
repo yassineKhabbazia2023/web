@@ -7,19 +7,9 @@ import { useBookingCustomerStore, useBookingAppointmentsStore } from '@booking/s
 import { BookingManager } from '@booking/shared/managers/booking.manager'
 import { getMockExperts } from '../../../__mocks__'
 
-vi.mock('vue-i18n', () => ({
-  createI18n: vi.fn(() => ({})),
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
-
-vi.mock('@booking/shared/managers/booking.manager')
-
 describe('useBookingAppointmentDrawer', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.mocked(BookingManager.refreshAvailableExperts).mockReset()
   })
 
   describe('initial state', () => {
@@ -132,7 +122,7 @@ describe('useBookingAppointmentDrawer', () => {
 
   describe('watcher on isOpened', () => {
     it('should reset drawer and load experts when drawer opens and booking is enabled', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const store = useBookingCustomerStore()
       const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
@@ -150,7 +140,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should reset drawer and load experts even when booking is disabled', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const store = useBookingCustomerStore()
       const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
@@ -168,7 +158,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should not reset drawer when drawer closes', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
 
@@ -190,7 +180,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should load experts immediately when composable initialized with drawer already open', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(true)
 
       useBookingAppointmentDrawer(isOpened)
@@ -200,7 +190,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should handle preselected expert when drawer already open on initialization', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const appointmentsStore = useBookingAppointmentsStore()
       const customerStore = useBookingCustomerStore()
 
@@ -221,7 +211,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should auto-select preselected collaborator when drawer opens and expert exists', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const appointmentsStore = useBookingAppointmentsStore()
       const customerStore = useBookingCustomerStore()
@@ -251,7 +241,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should not auto-select when preselected collaborator does not exist in available experts', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const appointmentsStore = useBookingAppointmentsStore()
       const customerStore = useBookingCustomerStore()
@@ -276,7 +266,7 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should not auto-select when no preselected collaborator', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
       const appointmentsStore = useBookingAppointmentsStore()
       const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)

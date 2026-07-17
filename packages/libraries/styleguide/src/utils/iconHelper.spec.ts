@@ -1,11 +1,9 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getIconComponent } from '../utils/iconHelper'
 import { PIXCircle } from '../atoms/PIcon/components'
 
-const defineAsyncComponentMock = vi.hoisted(() => vi.fn())
-vi.mock('vue', () => ({
-  defineAsyncComponent: defineAsyncComponentMock,
-}))
+import { defineAsyncComponent } from 'vue'
+
+const defineAsyncComponentMock = vi.mocked(defineAsyncComponent)
 
 describe('test iconHelper', () => {
   describe('getIconComponent', () => {

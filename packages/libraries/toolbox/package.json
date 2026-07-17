@@ -9,6 +9,7 @@
   "exports": {
     "./types": "./src/types.ts",
     "./mocks": "./src/mocks.ts",
+    "./mocks/spy-module.helper": "./src/__mocks__/spy-module.helper.ts",
     "./utils/array": "./src/utils/array/array.utils.ts",
     "./utils/browser": "./src/utils/browser/browser.utils.ts",
     "./utils/object": "./src/utils/object/object.utils.ts",

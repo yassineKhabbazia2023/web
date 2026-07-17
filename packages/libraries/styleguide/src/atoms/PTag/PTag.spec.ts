@@ -1,5 +1,5 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import PTag from '.'
 import type { PTagProps } from './PTagTypes'
 import type { IconName } from '../../types/IconName.types'

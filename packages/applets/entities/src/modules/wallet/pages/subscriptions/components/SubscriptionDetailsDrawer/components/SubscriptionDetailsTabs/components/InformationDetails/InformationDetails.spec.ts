@@ -1,20 +1,14 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { ProviderName } from '@entities/enums'
 import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
+import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
+import { fetchAccount } from '@entities/services/account'
 import InformationDetails from './InformationDetails.vue'
 import type { SubscriptionOfferServices } from '@entities/types'
 
-const getFormStructureMock = vi.hoisted(() => vi.fn())
-const cleanRecordStructureMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/utils/referential', () => ({
-  getFormStructure: getFormStructureMock,
-  cleanRecordStructure: cleanRecordStructureMock,
-}))
-
-const fetchAccountMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/account', () => ({
-  fetchAccount: fetchAccountMock,
-}))
+const getFormStructureMock = vi.mocked(getFormStructure)
+const cleanRecordStructureMock = vi.mocked(cleanRecordStructure)
+const fetchAccountMock = vi.mocked(fetchAccount)
 
 const subscriptionOfferDetails = {
   providers: [
@@ -43,12 +37,9 @@ const getWrapper = (pageContext?: SubscriptionDetailsContext) => shallowMount(In
 
 describe('InformationDetails', () => {
   beforeEach(() => {
-    getFormStructureMock.mockReset()
-    cleanRecordStructureMock.mockReset()
-    fetchAccountMock.mockReset()
-
     getFormStructureMock.mockResolvedValue([])
-    fetchAccountMock.mockResolvedValue({})
+    cleanRecordStructureMock.mockImplementation(() => undefined)
+    fetchAccountMock.mockResolvedValue({} as unknown as Awaited<ReturnType<typeof fetchAccount>>)
   })
 
   describe('provider form selection', () => {

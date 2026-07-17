@@ -12,11 +12,11 @@ import {
 const entities = getMockedEntities()
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
+import { fetchEntityById } from '@pulse/common/services/entities'
 import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { AccountType, RouteParam, RouteName } from '@pulse/common/enums'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import type { RouteLocationNormalizedGeneric, RouteRecordNormalized } from 'vue-router'
-vi.mock('@pulse/common/managers')
 
 function makeMatchedRecord(name: RouteName): RouteRecordNormalized {
   return { name } as RouteRecordNormalized
@@ -45,10 +45,14 @@ function createMockedRoute(entityId?: string, entityRootRouteName?: RouteName): 
   }
 }
 
-const fetchEntityByIdMock = vi.hoisted(() => vi.fn(() => entitiesServiceMocks.fetchEntityById))
-vi.mock('@pulse/common/services/entities', () => ({
-  fetchEntityById: fetchEntityByIdMock,
-}))
+// The entities service is spy-wrapped project-wide (doctrine: shared-hubs):
+// arm the shared spy per test instead of registering a local factory.
+const fetchEntityByIdMock = vi.mocked(fetchEntityById)
+
+beforeEach(() => {
+  fetchEntityByIdMock.mockResolvedValue(entitiesServiceMocks.fetchEntityById)
+  vi.spyOn(CurrentEntityManager, 'initializeCurrentEntity').mockResolvedValue(undefined)
+})
 
 describe('verify entity change', () => {
   it('allows navigation without fetching entities if target route doesn\'t contain an entity id in the route params', async () => {

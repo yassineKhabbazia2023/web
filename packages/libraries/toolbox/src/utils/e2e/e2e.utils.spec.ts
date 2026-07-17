@@ -1,15 +1,16 @@
+import type { MockInstance } from 'vitest'
 import { waitForMsw } from './e2e.utils'
 
 const globalFlags = globalThis as { __MSW_READY__?: boolean }
 
-const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+let consoleLogSpy: MockInstance
+let consoleWarnSpy: MockInstance
 
 describe('waitForMsw', () => {
   beforeEach(() => {
     delete globalFlags.__MSW_READY__
-    consoleLogSpy.mockClear()
-    consoleWarnSpy.mockClear()
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
 
   afterEach(() => {

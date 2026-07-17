@@ -1,4 +1,4 @@
-import { commonApiGatewayGetSpy } from '@ged/__mocks__/common.import.mocks'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
 import { API_PREFIXES } from '@pulse/common/constants'
@@ -12,13 +12,13 @@ describe('trash documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
     const trashedDocumentValue = 'trashed-document'
 
-    commonApiGatewayGetSpy.mockResolvedValueOnce({
+    apiGatewayGetMock.mockResolvedValueOnce({
       data: trashedDocumentValue,
     })
 
     const trashed = await fetchTrashDocuments(service.ServiceId, accountNumber, accountId)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
       `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/trash/mapped/currentuser`,
       {
         headers: { 'Account-Id': accountId },

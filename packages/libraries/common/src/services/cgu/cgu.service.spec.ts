@@ -1,5 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
-import { apiGatewayMock, apiGatewayGetMock, apiGatewayPatchMock } from '../../__mocks__/vitest'
+import { apiGatewayGetMock, apiGatewayPatchMock } from '../../__mocks__/vitest'
 import {
   getTermsByCurrentUser,
   updateTermsByCurrentUser,
@@ -20,16 +19,10 @@ const termsMock = {
 
 const cguMessageDone = { message: 'Done !' }
 
-vi.mock('../../api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
 describe('getTermsByCurrentUser', () => {
   it('should return cgu accepted by user', async () => {
     const expectedUrl = 'contact/api/contacts/currentuser/terms'
-    apiGatewayGetMock.mockResolvedValueOnce({
+    apiGatewayGetMock.mockResolvedValue({
       data: cguMock,
     })
     const data = await getTermsByCurrentUser()
@@ -43,7 +36,7 @@ describe('getTermsByCurrentUser', () => {
 describe('getLatestTerms', () => {
   it('should return latest terms active', async () => {
     const expectedUrl = 'contact/api/terms/latest'
-    apiGatewayGetMock.mockResolvedValueOnce({
+    apiGatewayGetMock.mockResolvedValue({
       data: termsMock,
     })
     const data = await getLatestTerms()
@@ -57,7 +50,7 @@ describe('getLatestTerms', () => {
 describe('updateTermsByCurrentUser', () => {
   it('should return a message note', async () => {
     const expectedUrl = 'contact/api/contacts/currentuser/terms?termsId=123311'
-    apiGatewayPatchMock.mockResolvedValueOnce({
+    apiGatewayPatchMock.mockResolvedValue({
       data: cguMessageDone,
     })
     const { data } = await updateTermsByCurrentUser(123311)

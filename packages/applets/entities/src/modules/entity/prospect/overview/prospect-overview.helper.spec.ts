@@ -1,12 +1,15 @@
+import type { MockInstance } from 'vitest'
 import { RouteName } from '@pulse/common/enums'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ProspectTabName, ProspectTab } from './prospect-overview.type'
 
 import { getProspectTabAuthorizations, getProspectTabs } from './prospect-overview.helper'
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+let hasPermissionMock: MockInstance
+
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+})
 
 describe('prospect-overview-helper', () => {
   describe('getProspectTabAuthorizations', () => {

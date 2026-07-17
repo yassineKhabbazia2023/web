@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PTable from './'
-import { describe, it, expect } from 'vitest'
+
 
 function createWrapper(pData: any, pStripe = false, pFit = false) {
   const wrapper = shallowMount(PTable, {

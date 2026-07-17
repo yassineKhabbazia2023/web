@@ -1,8 +1,6 @@
-import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { envVarsMock } from '@pulse/common/mocks'
-import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mocks__/launcher.service.mocks'
-import '@launcher/__mocks__/common.import.mocks'
+import type { MockInstance } from 'vitest'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { mockedSilaeUrl } from '@launcher/__mocks__/launcher.service.mocks'
 import { LauncherKey } from './LauncherTypes'
 import * as launcherServices from '@launcher/services/launcherServices'
 import type { AxiosResponse } from 'axios'
@@ -14,10 +12,6 @@ import {
   handleClickAction,
   handleDownload,
 } from './LauncherUtils'
-
-vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 
 function getMockedResponse(disposition = '') {
   return {
@@ -82,12 +76,14 @@ describe('test LauncherUtils', () => {
   })
 
   describe('handleClickAction', () => {
+    beforeEach(() => {
+      // launcherServices is spy-wrapped (real by default): re-arm the canned
+      // SSO url its legacy module mock used to provide (doctrine: shared-hubs).
+      vi.mocked(launcherServices.getSsoSilaeUrl).mockResolvedValue(mockedSilaeUrl)
+    })
+
     it('should call window.open when key is silae', async () => {
-      Object.defineProperty(window, 'location', {
-        value: {
-          href: '',
-        },
-      })
+      vi.stubGlobal('location', { href: '' })
       await handleClickAction(LauncherKey.SILAE)
       const expectedHRef = `mypulse-launch://${mockedSilaeUrl}`
 
@@ -102,9 +98,7 @@ describe('test LauncherUtils', () => {
 
     it('should call logger.error when api throws an error', async () => {
       const thrownError = 'thrown-error'
-      vi
-        .spyOn(launcherServices, 'getSsoSilaeUrl')
-        .mockRejectedValueOnce(thrownError)
+      vi.mocked(launcherServices.getSsoSilaeUrl).mockRejectedValueOnce(thrownError)
       await handleClickAction(LauncherKey.SILAE)
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
@@ -120,16 +114,17 @@ describe('test LauncherUtils', () => {
     const onSilaeDownloadProgress = vi.fn()
 
     beforeEach(() => {
-      downloadApplicationSpy = vi
-        .spyOn(launcherServices, 'downloadApplication')
+      // launcherServices is spy-wrapped (real by default): stub the shared
+      // spies per test via vi.mocked (doctrine: shared-hubs).
+      downloadApplicationSpy = vi.mocked(launcherServices.downloadApplication)
         .mockImplementation((progressPercentCallback: (_: number) => void) => {
           progressPercentCallback(mockedPercent)
 
           return Promise.resolve(mockedResponse)
         })
 
-      saveApplicationSpy = vi
-        .spyOn(launcherServices, 'saveApplication')
+      saveApplicationSpy = vi.mocked(launcherServices.saveApplication)
+        .mockImplementation(() => undefined)
     })
 
     it('should call downloadApplicationSpy and saveApplicationSpy when key is silae', async () => {
@@ -155,9 +150,7 @@ describe('test LauncherUtils', () => {
 
     it('should call logger.error when api throws an error', async () => {
       const thrownError = 'thrown-error'
-      vi
-        .spyOn(launcherServices, 'downloadApplication')
-        .mockRejectedValueOnce(thrownError)
+      vi.mocked(launcherServices.downloadApplication).mockRejectedValueOnce(thrownError)
 
       await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
@@ -169,9 +162,7 @@ describe('test LauncherUtils', () => {
   describe('openSilaeUrl', () => {
     it('should throw error when silaeUrl is empty', async () => {
       const expectedError = 'ssoSilaeUrl is empty'
-      vi
-        .spyOn(launcherServices, 'getSsoSilaeUrl')
-        .mockResolvedValueOnce('')
+      vi.mocked(launcherServices.getSsoSilaeUrl).mockResolvedValueOnce('')
 
       await expect(openSilaeUrl()).rejects.toThrow(expectedError)
     })

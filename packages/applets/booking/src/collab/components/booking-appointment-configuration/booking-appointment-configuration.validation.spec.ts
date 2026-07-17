@@ -3,12 +3,6 @@ import type { FormItemRule } from 'element-plus'
 import type { AppointmentDetails } from './booking-appointment-configuration.types'
 import { useBookingAppointmentValidation } from './booking-appointment-configuration.validation'
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
-
 const createFormData = (overrides: Partial<AppointmentDetails> = {}) => {
   return computed(() => ({
     name: '',

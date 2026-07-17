@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PTree from '../../organisms/PTree'
 import type { PTreeProps } from './PTreeTypes'
@@ -47,11 +46,14 @@ const baseProps: PTreeProps = {
   pNodeKey: 'label',
 }
 
-const createWrapper = mount(PTree, {
+// Wrappers are created per test: the isolate-safe guards auto-unmount every
+// mounted wrapper after each test, so a module-scope wrapper would be dead
+// from the second test on.
+const createWrapper = () => mount(PTree, {
   props: baseProps,
 })
 
-const createWrapperWithScopedSlot = mount(PTree, {
+const createWrapperWithScopedSlot = () => mount(PTree, {
   props: {
     ...baseProps,
     pHasCustomNodes: true,
@@ -63,12 +65,12 @@ const createWrapperWithScopedSlot = mount(PTree, {
 describe('pTree', () => {
   describe('props', () => {
     it('renders component without custom nodes', () => {
-      const wrapper = createWrapper
+      const wrapper = createWrapper()
       expect(wrapper.exists()).toBeTruthy()
     })
 
     it('renders component with custom nodes when pHasCustomNodes is true', () => {
-      const wrapper = createWrapperWithScopedSlot
+      const wrapper = createWrapperWithScopedSlot()
 
       const customTreeNodes = wrapper.findAll('.p-custom-tree-node')
       const expectedNodesLength = treeData.length
@@ -78,7 +80,7 @@ describe('pTree', () => {
 
   describe('intercations', () => {
     it('should receive appropriate payload when node is clicked', async () => {
-      const wrapper = createWrapperWithScopedSlot
+      const wrapper = createWrapperWithScopedSlot()
       const firstCustomTreeNode = wrapper.find('.p-custom-tree-node')
       await firstCustomTreeNode.trigger('click')
       expect(wrapper.emitted()).toHaveProperty('p-tree-node-clicked')

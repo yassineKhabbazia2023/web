@@ -1,18 +1,15 @@
+import { createFlagOverridesFromMap } from '@configcat/sdk'
 import { initOpenFeature } from './open-feature.plugin'
 import { OpenFeatureService } from '@pulse/common/services/open-feature'
 
-vi.mock('@pulse/common/services/open-feature', () => ({
-  OpenFeatureService: {
-    init: vi.fn(),
-  },
-}))
+// '@configcat/sdk' is mocked project-wide (doctrine: shared-hubs): arm the
+// shared spy per test.
+const mockCreateFlagOverridesFromMap = vi.mocked(createFlagOverridesFromMap)
 
-const mockCreateFlagOverridesFromMap = vi.fn().mockReturnValue('flag-overrides')
-
-vi.mock('@configcat/sdk', () => ({
-  createFlagOverridesFromMap: (...args: unknown[]) => mockCreateFlagOverridesFromMap(...args),
-  OverrideBehaviour: { LocalOverRemote: 'localOverRemote' },
-}))
+beforeEach(() => {
+  vi.spyOn(OpenFeatureService, 'init').mockResolvedValue(undefined)
+  mockCreateFlagOverridesFromMap.mockReturnValue('flag-overrides' as unknown as ReturnType<typeof createFlagOverridesFromMap>)
+})
 
 describe('initOpenFeature', () => {
   it('should not init when sdkKey is undefined', async () => {

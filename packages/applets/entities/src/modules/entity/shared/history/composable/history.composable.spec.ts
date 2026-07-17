@@ -6,15 +6,14 @@ import { HistoryService } from '../services/history.service'
 import { getMockedActivity, getMockedActivitiesResponse, getMockedThemes } from '../__mocks__/history.mocks'
 import { useHistory } from './history.composable'
 
-vi.mock('../services/history.service')
-vi.mock('@pulse/toolbox')
-
-const fetchActivitiesMock = vi.mocked(HistoryService.fetchActivities)
-const fetchThemesMock = vi.mocked(HistoryService.fetchThemes)
+const fetchActivitiesMock = vi.fn()
+const fetchThemesMock = vi.fn()
 
 describe('history.composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(HistoryService, 'fetchActivities').mockImplementation(fetchActivitiesMock)
+    vi.spyOn(HistoryService, 'fetchThemes').mockImplementation(fetchThemesMock)
     fetchThemesMock.mockResolvedValue(getMockedThemes())
   })
 

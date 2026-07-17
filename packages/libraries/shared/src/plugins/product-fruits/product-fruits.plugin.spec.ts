@@ -15,49 +15,13 @@ import { getBrowserName } from '@pulse/toolbox/utils/browser'
 import { initHubspot, openHubspot } from '@shared/plugins/hubspot/hubspot.plugin'
 import type { UserInfo } from '@pulse/common/types'
 import { productFruits } from 'product-fruits'
+import dayjs from 'dayjs'
+import { envVarsMock } from '@pulse/common/mocks'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    trace: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/toolbox/utils/browser', () => ({
-  getBrowserName: vi.fn(() => 'chrome'),
-}))
-
-vi.mock('@shared/plugins/hubspot/hubspot.plugin', () => ({
-  initHubspot: vi.fn(),
-  openHubspot: vi.fn(),
-}))
-
-vi.mock('product-fruits', () => ({
-  productFruits: {
-    init: vi.fn(),
-  },
-}))
-
+// The 'product-fruits' SDK is mocked project-wide and the browser util plus the
+// hubspot plugin are spy-wrapped, real by default (doctrine: shared-hubs): the
+// behaviors this spec relies on are re-armed before each test below.
 const mockedProductFruits = vi.mocked(productFruits)
-
-vi.mock('dayjs', () => {
-  const mockDayjs = () => ({
-    format: vi.fn(() => '2025-11-19T11:30:00Z[Z]'),
-  })
-  return {
-    default: mockDayjs,
-  }
-})
-
-vi.mock('env-vars', () => ({
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'anonymous-key',
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'anonymous-key-client',
-  VITE_PRODUCT_FRUITS_KEY: 'collab-key',
-  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'client-key',
-}))
-
-vi.mock('./product-fruits.plugin.scss', () => ({}))
 
 declare let window: {
   productFruits: {
@@ -107,9 +71,12 @@ describe('Product Fruits Plugin', () => {
     productFruitStatus.isActive = false
     productFruitStatus.isInitialized = false
     productFruitConfig.openChat = undefined
-    window.productFruits = mockProductFruits as any
-    window.$productFruits = {}
+    vi.stubGlobal('productFruits', mockProductFruits)
+    vi.stubGlobal('$productFruits', {})
     vi.clearAllMocks()
+    vi.mocked(getBrowserName).mockReturnValue('chrome')
+    vi.mocked(initHubspot).mockReturnValue(undefined)
+    vi.mocked(openHubspot).mockReturnValue(undefined)
   })
 
   describe('initProductFruits()', () => {
@@ -179,7 +146,7 @@ describe('Product Fruits Plugin', () => {
       initProductFruitsAnonymousCustomer()
 
       expect(logger.trace).toHaveBeenCalled()
-      expect(mockedProductFruits.init).toHaveBeenCalledWith('anonymous-key-client', 'fr', { username: 'anonymous' })
+      expect(mockedProductFruits.init).toHaveBeenCalledWith(envVarsMock.VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT, 'fr', { username: 'anonymous' })
     })
   })
 
@@ -190,7 +157,7 @@ describe('Product Fruits Plugin', () => {
       initProductFruitsAnonymousCollab()
 
       expect(logger.trace).toHaveBeenCalled()
-      expect(mockedProductFruits.init).toHaveBeenCalledWith('anonymous-key', 'fr', { username: 'anonymous' })
+      expect(mockedProductFruits.init).toHaveBeenCalledWith(envVarsMock.VITE_PRODUCT_FRUITS_ANONYMOUS_KEY, 'fr', { username: 'anonymous' })
     })
   })
 
@@ -209,7 +176,7 @@ describe('Product Fruits Plugin', () => {
 
       expect(logger.trace).toHaveBeenCalled()
       expect(mockedProductFruits.init).toHaveBeenCalledWith(
-        'client-key',
+        envVarsMock.VITE_PRODUCT_FRUITS_KEY_CLIENT,
         'fr',
         expect.objectContaining({
           username: '123',
@@ -234,7 +201,7 @@ describe('Product Fruits Plugin', () => {
 
       expect(logger.trace).toHaveBeenCalled()
       expect(mockedProductFruits.init).toHaveBeenCalledWith(
-        'collab-key',
+        envVarsMock.VITE_PRODUCT_FRUITS_KEY,
         'fr',
         expect.objectContaining({
           username: '456',
@@ -253,6 +220,12 @@ describe('Product Fruits Plugin', () => {
     })
 
     it('should return product fruits user for client user', () => {
+      // Real dayjs with a frozen clock (no worker-wide dayjs fake: the real
+      // styleguide/element-plus need the genuine module).
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date('2025-11-19T11:30:00Z'))
+      const expectedSignUpAt = dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')
+
       const result = getProductFruitsUser(clientUserInfoMock)
 
       expect(result).toEqual({
@@ -260,12 +233,16 @@ describe('Product Fruits Plugin', () => {
         email: 'client@example.com',
         firstname: 'Alice',
         lastname: 'Johnson',
-        signUpAt: '2025-11-19T11:30:00Z[Z]',
+        signUpAt: expectedSignUpAt,
         role: 'Client',
       })
     })
 
     it('should return product fruits user for collab user', () => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date('2025-11-19T11:30:00Z'))
+      const expectedSignUpAt = dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')
+
       const result = getProductFruitsUser(collabUserInfoMock)
 
       expect(result).toEqual({
@@ -273,7 +250,7 @@ describe('Product Fruits Plugin', () => {
         email: 'collab@example.com',
         firstname: 'Charlie',
         lastname: 'Brown',
-        signUpAt: '2025-11-19T11:30:00Z[Z]',
+        signUpAt: expectedSignUpAt,
         role: 'Collaborateur',
       })
     })

@@ -1,6 +1,6 @@
-import { vi, describe, it, expect } from 'vitest'
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 import { LogLevel } from '@microsoft/signalr'
+import { HubConnectionBuilderMock } from '../__mocks__/vitest'
 
 const HUB_URL = 'https://testhuburl.com'
 const USER_TOKEN = 'testToken'
@@ -9,10 +9,10 @@ interface WithUrlOptions {
   accessTokenFactory: () => string
 }
 
-const withUrlMocked = vi.hoisted(() => vi.fn())
-const configureLoggingMocked = vi.hoisted(() => vi.fn())
-const withAutomaticReconnectMocked = vi.hoisted(() => vi.fn())
-const buildMocked = vi.hoisted(() => vi.fn())
+const withUrlMocked = vi.fn()
+const configureLoggingMocked = vi.fn()
+const withAutomaticReconnectMocked = vi.fn()
+const buildMocked = vi.fn()
 
 const hubConnectionBuilderMocked = {
   withUrl: withUrlMocked,
@@ -21,20 +21,13 @@ const hubConnectionBuilderMocked = {
   build: buildMocked,
 }
 
-const HubConnectionBuilderMocked = vi.hoisted(() => vi.fn(function() {
-  return hubConnectionBuilderMocked
-}))
-
-vi.mock('@microsoft/signalr', async (importActual) => {
-  const signalr = await importActual() as object
-
-  return {
-    ...signalr,
-    HubConnectionBuilder: HubConnectionBuilderMocked,
-  }
-})
-
 describe('getNewHubConnection', () => {
+  beforeEach(() => {
+    HubConnectionBuilderMock.mockImplementation(function() {
+      return hubConnectionBuilderMocked
+    })
+  })
+
   it('returns a HubConnection instance', () => {
     const hubConnectionMocked = 'hub-connection-mocked'
     const accessTokenFactoryCallbackSpy = vi.fn()

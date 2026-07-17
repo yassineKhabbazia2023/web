@@ -1,8 +1,12 @@
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentMock, documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mocks'
 import { generateTestFiles, validDestination } from '@ged/__mocks__/files.mocks'
-import { documentsServiceMock, fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
-import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import { fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
+import { getConnectionDocumentPiaStatusChangedMock, getConnectionMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
+import { armModuleMocks } from '@pulse/toolbox/mocks/spy-module.helper'
+import * as DocumentsService from '@ged/services/Documents'
+import { downloadFile } from '@pulse/common/helpers'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { flushPromises, mount } from '@vue/test-utils'
 import type { DocumentsProps } from './DocumentsTypes'
@@ -40,8 +44,6 @@ const defaultProps: DocumentsProps = {
   gedContext: GedContext.LEGACY,
 }
 
-vi.mock('@ged/services/tracking/tracking.service')
-
 const createWrapper = (
   props: DocumentsProps = defaultProps,
 ): DocumentsWrapper => {
@@ -53,21 +55,15 @@ const createWrapper = (
   })
 }
 
-vi.mock('@ged/services/Documents', () => ({
-  ...documentsServiceMock,
-  fetchDocumentsByKeyWord: fetchDocumentsByKeyWordMock,
-  previewDocument: previewDocumentMock,
-}))
-
-vi.mock('@pulse/common/helpers')
-
-vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: {
-    OnConnectedAsync: onConnectedAsyncMock,
-    OnDisconnectedAsync: onDisconnectedAsyncMock,
-    getConnection: getConnectionDocumentPiaStatusChangedMock,
-  },
-}))
+beforeEach(() => {
+  armGedServiceDefaults()
+  armModuleMocks(DocumentsService, {
+    fetchDocumentsByKeyWord: fetchDocumentsByKeyWordMock,
+    previewDocument: previewDocumentMock,
+  })
+  vi.mocked(downloadFile).mockImplementation(() => undefined)
+  getConnectionMock.mockImplementation(getConnectionDocumentPiaStatusChangedMock)
+})
 
 const generateTestString = (stringLength: number) => {
   let str = ''

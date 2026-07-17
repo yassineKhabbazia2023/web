@@ -1,40 +1,24 @@
+import type { MockInstance } from 'vitest'
 import { usePennylaneAmendment } from './pennylane-amendment.composable'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { getMockedPennylaneAccessResponse } from '@pulse/common/mocks'
+import { PennylaneAmendmentTrackingManager } from '../widgets/gridless/pennylane-sso/pennylane-amendment-tracking.manager'
 
-vi.mock('@pulse/common/services/pennylane', () => ({
-  PennylaneService: {
-    checkPennylaneAccess: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: {
-    isPennylaneAmendmentFlowActivated: vi.fn(),
-  },
-}))
-
-vi.mock('../widgets/gridless/pennylane-sso/pennylane-amendment-tracking.manager', () => ({
-  PennylaneAmendmentTrackingManager: {
-    trackOutroOK: vi.fn(),
-    trackOutroKO: vi.fn(),
-  },
-}))
+let checkPennylaneAccessMock: MockInstance
+let isPennylaneAmendmentFlowActivatedMock: MockInstance
 
 describe('usePennylaneAmendment', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(FeatureFlagManager.isPennylaneAmendmentFlowActivated).mockReturnValue(true)
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
+    checkPennylaneAccessMock = vi.spyOn(PennylaneService, 'checkPennylaneAccess')
+    isPennylaneAmendmentFlowActivatedMock = vi.spyOn(FeatureFlagManager, 'isPennylaneAmendmentFlowActivated').mockReturnValue(true)
+    vi.spyOn(PennylaneAmendmentTrackingManager, 'trackOutroOK').mockImplementation(() => {})
+    vi.spyOn(PennylaneAmendmentTrackingManager, 'trackOutroKO').mockImplementation(() => {})
   })
 
   describe('checkPennylaneAccess', () => {
     it('should populate state when checkPennylaneAccess succeeds', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: false,
           isPennylaneSignatory: true,
@@ -58,7 +42,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should reset state when checkPennylaneAccess fails', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockRejectedValue(new Error('Network error'))
+      checkPennylaneAccessMock.mockRejectedValue(new Error('Network error'))
 
       const {
         canAccessPennylane,
@@ -77,17 +61,17 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should not checkPennylaneAccess when feature flag disabled', async () => {
-      vi.mocked(FeatureFlagManager.isPennylaneAmendmentFlowActivated).mockReturnValue(false)
+      isPennylaneAmendmentFlowActivatedMock.mockReturnValue(false)
 
       const { checkPennylaneAccess } = usePennylaneAmendment()
 
       await checkPennylaneAccess()
 
-      expect(PennylaneService.checkPennylaneAccess).not.toHaveBeenCalled()
+      expect(checkPennylaneAccessMock).not.toHaveBeenCalled()
     })
 
     it('should pass accountId to service', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse(),
       )
 
@@ -95,11 +79,11 @@ describe('usePennylaneAmendment', () => {
 
       await checkPennylaneAccess(123)
 
-      expect(PennylaneService.checkPennylaneAccess).toHaveBeenCalledWith(123)
+      expect(checkPennylaneAccessMock).toHaveBeenCalledWith(123)
     })
 
     it('should call service without accountId when not provided', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse(),
       )
 
@@ -107,13 +91,13 @@ describe('usePennylaneAmendment', () => {
 
       await checkPennylaneAccess()
 
-      expect(PennylaneService.checkPennylaneAccess).toHaveBeenCalledWith(undefined)
+      expect(checkPennylaneAccessMock).toHaveBeenCalledWith(undefined)
     })
   })
 
   describe('shouldShowPennylaneAmendmentDialog', () => {
     it('should be true when access denied and user is signatory', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: false,
           isPennylaneSignatory: true,
@@ -128,7 +112,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should be false when user can access', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: true,
           isPennylaneSignatory: true,
@@ -143,7 +127,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should be false when user is not signatory', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: false,
           isPennylaneSignatory: false,
@@ -158,7 +142,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should be false when access details is null', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue({
+      checkPennylaneAccessMock.mockResolvedValue({
         canAccess: false,
         isPennylaneSignatory: true,
         details: undefined,
@@ -179,7 +163,7 @@ describe('usePennylaneAmendment', () => {
         canAccess: false,
         isPennylaneSignatory: true,
       })
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue({
+      checkPennylaneAccessMock.mockResolvedValue({
         ...response,
         freeTrialEndDate: '',
         billingMonth: '',
@@ -197,7 +181,7 @@ describe('usePennylaneAmendment', () => {
         canAccess: false,
         isPennylaneSignatory: true,
       })
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue({
+      checkPennylaneAccessMock.mockResolvedValue({
         canAccess: false,
         isPennylaneSignatory: true,
         freeTrialEndDate: response.freeTrialEndDate,
@@ -220,7 +204,7 @@ describe('usePennylaneAmendment', () => {
 
   describe('shouldShowPennylaneAccessBlockedDialog', () => {
     it('should be true when access denied and user is not signatory', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: false,
           isPennylaneSignatory: false,
@@ -235,7 +219,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should be false when user can access', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({
           canAccess: true,
           isPennylaneSignatory: false,
@@ -264,7 +248,7 @@ describe('usePennylaneAmendment', () => {
     })
 
     it('should freeze the free trial info for the success dialog', async () => {
-      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+      checkPennylaneAccessMock.mockResolvedValue(
         getMockedPennylaneAccessResponse({ isFreeTrialExpired: true }),
       )
 

@@ -1,42 +1,26 @@
-import { ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
 import { InvoicesService } from '../../services/invoices.service'
 import { getContactById } from '@entities/services/contact'
 import { InvoicesFormStep } from '../../enums'
 import { InvoicesTabState } from '@pulse/common/services/invoices-access'
 import { useInvoicesForm } from './invoices.form.composable'
 
-vi.mock('../../services/invoices.service')
-vi.mock('@entities/services/contact')
-
-const mockTabState = ref<InvoicesTabState | null>(null)
-const mockContactWithAccess = ref<string | null>(null)
-
-// Manual mock needed: useInvoicesAccessStore returns reactive refs that must be controlled from tests (getStoreMock does not support refs)
-vi.mock('@pulse/common/stores', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@pulse/common/stores')>()
-  return {
-    ...original,
-    useInvoicesAccessStore: () => ({
-      tabState: mockTabState,
-      contactWithAccess: mockContactWithAccess,
-    }),
-  }
-})
-
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+// The testing pinia store carries the reactive tabState/contactWithAccess
+// state the composable consumes through storeToRefs.
+const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
 
 describe('useInvoicesForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     userStoreMock.user = { email: 'requester@example.com' } as any
     currentEntityStoreMock.currentEntityId = 123
-    mockTabState.value = null
-    mockContactWithAccess.value = null
-    vi.mocked(InvoicesService.submitIntegration).mockResolvedValue()
+    invoicesAccessStoreMock.tabState = null
+    invoicesAccessStoreMock.contactWithAccess = null
+    vi.spyOn(InvoicesService, 'submitIntegration').mockResolvedValue()
     vi.mocked(getContactById).mockResolvedValue({
       id: 123,
       firstName: 'Jane',
@@ -143,7 +127,7 @@ describe('useInvoicesForm', () => {
 
   describe('status to step mapping via store', () => {
     it('should set currentStep to EMAIL_AND_TERMS when tabState is form-start', () => {
-      mockTabState.value = InvoicesTabState.FORM_START
+      invoicesAccessStoreMock.tabState = InvoicesTabState.FORM_START
 
       const { currentStep } = useInvoicesForm()
 
@@ -151,7 +135,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should set currentStep to VAULT_BEING_CREATED when tabState is form-submitted', () => {
-      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.FORM_SUBMITTED
 
       const { currentStep } = useInvoicesForm()
 
@@ -159,7 +143,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should set currentStep to ACCESS_VAULT when tabState is connection-ready-locked', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_LOCKED
 
       const { currentStep } = useInvoicesForm()
 
@@ -167,7 +151,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should set currentStep to ACCESS_VAULT when tabState is connection-ready-unlocked', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_UNLOCKED
 
       const { currentStep } = useInvoicesForm()
 
@@ -175,7 +159,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should keep currentStep at EMAIL_AND_TERMS when tabState is null', () => {
-      mockTabState.value = null
+      invoicesAccessStoreMock.tabState = null
 
       const { currentStep } = useInvoicesForm()
 
@@ -199,7 +183,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return true when tabState is FORM_SUBMITTED (mapped to VAULT_BEING_CREATED via watch)', () => {
-      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.FORM_SUBMITTED
 
       const { shouldShowVaultBeingCreated } = useInvoicesForm()
 
@@ -231,7 +215,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return true when currentStep is ACCESS_VAULT', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_LOCKED
 
       const { shouldHideFormHeader } = useInvoicesForm()
 
@@ -239,7 +223,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return true when tabState is FORM_SUBMITTED (mapped to VAULT_BEING_CREATED via watch)', () => {
-      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.FORM_SUBMITTED
 
       const { shouldHideFormHeader } = useInvoicesForm()
 
@@ -263,7 +247,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return true when tabState is connection-ready-unlocked', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_UNLOCKED
 
       const { isAllowedToAccessVault } = useInvoicesForm()
 
@@ -271,8 +255,8 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return false when tabState is connection-ready-locked with contactWithAccess', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
-      mockContactWithAccess.value = 'jean.soto@gmail.com'
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_LOCKED
+      invoicesAccessStoreMock.contactWithAccess = 'jean.soto@gmail.com'
 
       const { isAllowedToAccessVault, contactWithAccess } = useInvoicesForm()
 
@@ -289,7 +273,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return true when access is denied and step is ACCESS_VAULT', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_LOCKED
 
       const { shouldShowVaultAccessDenied } = useInvoicesForm()
 
@@ -297,7 +281,7 @@ describe('useInvoicesForm', () => {
     })
 
     it('should return false when access is granted and step is ACCESS_VAULT', () => {
-      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+      invoicesAccessStoreMock.tabState = InvoicesTabState.CONNECTION_READY_UNLOCKED
 
       const { shouldShowVaultAccessDenied } = useInvoicesForm()
 

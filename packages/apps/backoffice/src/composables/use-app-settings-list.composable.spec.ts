@@ -1,17 +1,9 @@
 import { nextTick } from 'vue'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { useAppSettingsList } from './use-app-settings-list.composable'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
 import { displayNotification } from '@pulse/styleguide'
 import { FilterCode } from '@backoffice/types/app-settings-list.type'
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@backoffice/services/app-settings-list/app-settings-list.service')
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
-const mockedAppSettingsListService = vi.mocked(AppSettingsListService, { deep: true })
 const mockedDisplayNotification = vi.mocked(displayNotification)
 
 describe('useAppSettingsList', () => {
@@ -52,7 +44,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     await manager.initialize()
@@ -66,7 +58,7 @@ describe('useAppSettingsList', () => {
 
   it('should handle fetch error', async () => {
     const error = new Error('Fetch failed')
-    mockedAppSettingsListService.getAppSettingsList.mockRejectedValue(error)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockRejectedValue(error)
 
     const manager = useAppSettingsList()
     await manager.initialize()
@@ -85,7 +77,7 @@ describe('useAppSettingsList', () => {
       page: 2,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     await manager.handlePageChange(2)
@@ -100,7 +92,7 @@ describe('useAppSettingsList', () => {
     }
 
     expect(manager.pagination.value.currentPage).toBe(2)
-    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+    expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledExactlyOnceWith(expectedParams)
   })
 
   it('should handle page size change and reset to page 1', async () => {
@@ -110,7 +102,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 50,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.pagination.value.currentPage = 3
@@ -127,7 +119,7 @@ describe('useAppSettingsList', () => {
 
     expect(manager.pagination.value.pageSize).toBe(50)
     expect(manager.pagination.value.currentPage).toBe(1)
-    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+    expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledExactlyOnceWith(expectedParams)
   })
 
   it('should handle refresh successfully', async () => {
@@ -137,13 +129,13 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.refreshAppSettingsList.mockResolvedValue()
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'refreshAppSettingsList').mockResolvedValue()
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     await manager.handleRefresh()
 
-    expect(mockedAppSettingsListService.refreshAppSettingsList).toHaveBeenCalledExactlyOnceWith()
+    expect(vi.mocked(AppSettingsListService.refreshAppSettingsList)).toHaveBeenCalledExactlyOnceWith()
     expect(mockedDisplayNotification).toHaveBeenCalledExactlyOnceWith(
       'success',
       'Synchronisation réussie avec Azure App Configuration',
@@ -153,7 +145,7 @@ describe('useAppSettingsList', () => {
 
   it('should handle refresh error', async () => {
     const error = new Error('Refresh failed')
-    mockedAppSettingsListService.refreshAppSettingsList.mockRejectedValue(error)
+    vi.spyOn(AppSettingsListService, 'refreshAppSettingsList').mockRejectedValue(error)
 
     const manager = useAppSettingsList()
     await manager.handleRefresh()
@@ -172,7 +164,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.pagination.value.currentPage = 3
@@ -191,7 +183,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.pagination.value.currentPage = 3
@@ -210,7 +202,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.searchQuery.value = 'test'
@@ -226,7 +218,7 @@ describe('useAppSettingsList', () => {
 
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+      expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledExactlyOnceWith(expectedParams)
     })
   })
 
@@ -237,7 +229,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.searchQuery.value = 'te'
@@ -253,7 +245,7 @@ describe('useAppSettingsList', () => {
 
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+      expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledExactlyOnceWith(expectedParams)
     })
   })
 
@@ -264,7 +256,7 @@ describe('useAppSettingsList', () => {
       page: 1,
       pageSize: 25,
     }
-    mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+    vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
     const manager = useAppSettingsList()
     manager.selectedDomains.value = ['domain1', 'domain2']
@@ -280,7 +272,7 @@ describe('useAppSettingsList', () => {
 
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+      expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledExactlyOnceWith(expectedParams)
     })
   })
 
@@ -292,7 +284,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.selectedFilters.value = [FilterCode.MISSING]
@@ -308,7 +300,7 @@ describe('useAppSettingsList', () => {
 
       await nextTick()
       await vi.waitFor(() => {
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -319,7 +311,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.selectedFilters.value = [FilterCode.INCOHERENT]
@@ -335,7 +327,7 @@ describe('useAppSettingsList', () => {
 
       await nextTick()
       await vi.waitFor(() => {
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -346,7 +338,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.selectedFilters.value = [FilterCode.MISSING, FilterCode.INCOHERENT]
@@ -362,7 +354,7 @@ describe('useAppSettingsList', () => {
 
       await nextTick()
       await vi.waitFor(() => {
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -373,7 +365,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.pagination.value.currentPage = 3
@@ -392,7 +384,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.selectedFilters.value = []
@@ -408,7 +400,7 @@ describe('useAppSettingsList', () => {
 
       await nextTick()
       await vi.waitFor(() => {
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -419,7 +411,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.searchQuery.value = 'test'
@@ -437,7 +429,7 @@ describe('useAppSettingsList', () => {
 
       await nextTick()
       await vi.waitFor(() => {
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -448,7 +440,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       // Test with reversed order
@@ -466,7 +458,7 @@ describe('useAppSettingsList', () => {
       await nextTick()
       await vi.waitFor(() => {
         // Should still pass both as true regardless of order
-        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+        expect(vi.mocked(AppSettingsListService.getAppSettingsList)).toHaveBeenCalledWith(expectedParams)
       })
     })
 
@@ -477,7 +469,7 @@ describe('useAppSettingsList', () => {
         page: 1,
         pageSize: 25,
       }
-      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+      vi.spyOn(AppSettingsListService, 'getAppSettingsList').mockResolvedValue(mockResponse)
 
       const manager = useAppSettingsList()
       manager.selectedFilters.value = [FilterCode.MISSING]

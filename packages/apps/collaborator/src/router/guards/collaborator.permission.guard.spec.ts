@@ -1,21 +1,14 @@
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { hasPermissionMock } from '@pulse/common/mocks/vitest'
 import { collaboratorPermissionGuard } from './collaborator.permission.guard'
 import { PERMISSIONS_META } from '@pulse/common/constants'
-import { createTestingPinia } from '@pinia/testing'
+import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/collaborator.authenticated.flow.manager'
 
-createTestingPinia()
-
-vi.mock('@pulse/toolbox')
-
-vi.mock('@collaborator/managers/collaborator.authenticated.flow.manager', () => ({
-  CollaboratorAuthenticatedFlowManager: {
-    getCollaboratorLandingPage: () => ({ name: 'home' }),
-  },
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
-}))
+beforeEach(() => {
+  vi.spyOn(CurrentUserManager, 'hasPermission').mockImplementation(hasPermissionMock)
+  vi.spyOn(CollaboratorAuthenticatedFlowManager, 'getCollaboratorLandingPage')
+    .mockReturnValue({ name: 'home' } as unknown as ReturnType<typeof CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage>)
+})
 
 describe('collaboratorPermissionGuard', () => {
   it.each([

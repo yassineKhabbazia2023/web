@@ -2,13 +2,6 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useBookingCollabStore } from '@pulse/common/stores'
 import { useBookingDrawer } from './booking-drawer.composable'
 
-vi.mock('vue-i18n', () => ({
-  createI18n: vi.fn(() => ({})),
-  useI18n: () => ({
-    t: (key: string) => key,
-  }),
-}))
-
 describe('booking-drawer.composable', () => {
   beforeEach(() => {
     setActivePinia(createPinia())

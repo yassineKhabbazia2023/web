@@ -10,12 +10,14 @@ const mocks = vi.hoisted(() => {
   }
 })
 
+// eslint-disable-next-line no-restricted-syntax -- doctrine: shared-hubs (data-file fixture local to this own-spec, not a module hub)
 vi.mock('../../../../../package.json', () => {
   return {
     default: mocks.packageJson,
   }
 })
 
+// eslint-disable-next-line no-restricted-syntax -- doctrine: shared-hubs (data-file fixture local to this own-spec, not a module hub)
 vi.mock('../../../../../version.json', () => {
   return {
     default: mocks.versionJson,

@@ -1,10 +1,10 @@
 import { defineComponent, ref, nextTick } from 'vue'
+import { onConnectedAsyncMock, onDisconnectedAsyncMock, getConnectionMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import type { Ref, PropType } from 'vue'
-import { describe, it, vi, expect } from 'vitest'
+
 import { flushPromises, mount } from '@vue/test-utils'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentsResponsePayload } from '@ged/__mocks__/documents.mocks'
-import { onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { Folder } from '@ged/models/Folder'
 import { Permissions } from '@ged/models/Permissions'
@@ -13,15 +13,9 @@ import { usePiaStatusSync } from './PiaStatusSync'
 
 const getConnectionOnMocked = vi.hoisted(() => vi.fn())
 
-vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: {
-    OnConnectedAsync: onConnectedAsyncMock,
-    OnDisconnectedAsync: onDisconnectedAsyncMock,
-    getConnection: vi.fn(() => ({
-      on: getConnectionOnMocked,
-    })),
-  },
-}))
+beforeEach(() => {
+  getConnectionMock.mockImplementation(() => ({ on: getConnectionOnMocked }))
+})
 
 const testComponent = defineComponent({
   template: '<div />',
@@ -57,7 +51,7 @@ const DOCUMENT_ID = '1234567890'
 describe('usePiaStatusSync', () => {
   it('should not update the pia status and permissions of the document when the pia status does NOT change', () => {
     const selectedFolder = ref<Folder | null>(foldersData[1][1])
-    const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
+    const documents = ref<DocumentsWithTableStructure | null>(structuredClone(documentsResponsePayload))
     getWrapper(selectedFolder, documents)
 
     const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === DOCUMENT_ID)
@@ -67,7 +61,7 @@ describe('usePiaStatusSync', () => {
 
   it('should update the pia status and permissions of the document when the pia status changes', async () => {
     const selectedFolder = ref<Folder | null>(foldersData[1][1])
-    const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
+    const documents = ref<DocumentsWithTableStructure | null>(structuredClone(documentsResponsePayload))
     getConnectionOnMocked.mockImplementation((_: string, done: Function) => {
       const newDocumentStatusAndUpdate : DocumentStatusUpdateResponse = {
         folderId: 1,
@@ -94,7 +88,7 @@ describe('usePiaStatusSync', () => {
 
   it('should use OnDisconnectedAsync on folder change', async () => {
     const fakeFolder = ref<Folder | null>(null)
-    const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
+    const documents = ref<DocumentsWithTableStructure | null>(structuredClone(documentsResponsePayload))
     getWrapper(fakeFolder, documents)
 
     await nextTick()
@@ -110,7 +104,7 @@ describe('usePiaStatusSync', () => {
 
   it('should not use OnConnectedAsync on null folder change', async () => {
     const fakeFolder = ref<Folder | null>(foldersData[1][1])
-    const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
+    const documents = ref<DocumentsWithTableStructure | null>(structuredClone(documentsResponsePayload))
     getWrapper(fakeFolder, documents)
 
     await nextTick()

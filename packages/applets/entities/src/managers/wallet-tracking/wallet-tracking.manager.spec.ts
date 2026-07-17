@@ -5,8 +5,6 @@ import { MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { LastActivityPeriodInDays } from '@entities/enums'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('WalletTrackingManager', () => {
   describe('trackCustomFilterValidated', () => {
     it('should track with ["none"] when no filters are active', () => {

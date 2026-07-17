@@ -4,30 +4,24 @@ import { useCatalogDrawerContentRecommendation } from './catalog-drawer-content-
 import { displayNotification } from '@pulse/styleguide'
 import { withSetup } from '@pulse/toolbox/utils/test'
 
-vi.mock('vue-i18n', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('vue-i18n')>()
-  return {
-    ...actual,
-    useI18n: () => ({
-      t: (key: string) => key,
-    }),
-  }
-})
-vi.mock('../../services/offers-catalog.service')
-vi.mock('../../managers/offers-catalog-tracking/offers-catalog-tracking.manager')
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
 const mockClipboard = {
   writeText: vi.fn(),
 }
-Object.assign(navigator, { clipboard: mockClipboard })
 
 const OFFER_ID = 123
 const ID_OFFER_RESPONSE = 'response-456'
 
 describe('useCatalogDrawerContentRecommendation', () => {
+  beforeEach(() => {
+    vi.mocked(displayNotification).mockImplementation(() => undefined)
+    // jsdom has no clipboard: stub the whole navigator for the test
+    // (unstubGlobals restores the real one after each test).
+    vi.stubGlobal('navigator', { clipboard: mockClipboard })
+    vi.spyOn(OffersCatalogTrackingManager, 'trackExplicationResult').mockImplementation(() => undefined)
+    vi.spyOn(OffersCatalogTrackingManager, 'trackSaleResult').mockImplementation(() => undefined)
+    vi.spyOn(OffersCatalogTrackingManager, 'trackEvaluation').mockImplementation(() => undefined)
+  })
+
   describe('onGenerateReason', () => {
     it('should set loading state and fetch reason successfully', async () => {
       vi.mocked(getSalesPitch).mockResolvedValueOnce({ reason: 'Test reason', sale: '' })

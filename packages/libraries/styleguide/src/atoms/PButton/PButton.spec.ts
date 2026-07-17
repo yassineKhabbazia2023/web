@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PButton from './'
-import { describe, it, expect } from 'vitest'
+
 
 describe('test for PButton', () => {
   it('render correctly', () => {

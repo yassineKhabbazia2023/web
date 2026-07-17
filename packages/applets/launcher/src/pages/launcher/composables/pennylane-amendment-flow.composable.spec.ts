@@ -7,18 +7,6 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { getMockedPennylaneAccessResponse } from '@pulse/common/mocks'
 
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: {
-    isPennylaneAmendmentFlowActivated: vi.fn(() => true),
-  },
-}))
-
-vi.mock('@pulse/common/services/pennylane', () => ({
-  PennylaneService: {
-    checkPennylaneAccess: vi.fn(),
-  },
-}))
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 describe('usePennylaneAmendmentFlow', () => {
@@ -31,7 +19,7 @@ describe('usePennylaneAmendmentFlow', () => {
     vi.clearAllMocks()
     currentEntityStoreMock.currentEntityId = 123
     vi.mocked(FeatureFlagManager.isPennylaneAmendmentFlowActivated).mockReturnValue(true)
-    vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(mockAccessResponse)
+    vi.spyOn(PennylaneService, 'checkPennylaneAccess').mockResolvedValue(mockAccessResponse)
   })
 
   describe('initial state', () => {

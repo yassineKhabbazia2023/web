@@ -1,4 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { SessionStorageService, CookieService } from '@pulse/common/services/storage'
 import { pennylaneSsoGuard } from './pennylane-sso.guard'
 const mockCookieGet = vi.fn()
 const mockCookieRemove = vi.fn()
@@ -6,40 +7,19 @@ const mockGetSamlSsoContext = vi.fn()
 const mockRemoveSamlSsoContext = vi.fn()
 const mockIsPennylaneSsoRedirectActivated = vi.fn()
 
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: {
-    isPennylaneSsoRedirectActivated: () => mockIsPennylaneSsoRedirectActivated(),
-  },
-}))
-
-vi.mock('@pulse/common/services/storage', () => ({
-  SessionStorageService: {
-    getSamlSsoContext: (...args: unknown[]) => mockGetSamlSsoContext(...args),
-    removeSamlSsoContext: (...args: unknown[]) => mockRemoveSamlSsoContext(...args),
-  },
-  CookieService: {
-    get: (...args: unknown[]) => mockCookieGet(...args),
-    remove: (...args: unknown[]) => mockCookieRemove(...args),
-  },
-  SsoProvider: {
-    PENNYLANE: 'pennylane',
-  },
-}))
-
-vi.mock('@pulse/common/enums', () => ({
-  RouteName: {
-    PENNYLANE_SSO_PROXY: 'pennylane-sso-proxy',
-  },
-}))
-
-vi.mock('@pulse/common/constants', () => ({
-  SSO_ORIGIN_COOKIE: 'sso-origin',
-  SSO_ORIGIN_RYDGE: 'rydge',
-}))
+beforeEach(() => {
+  vi.spyOn(FeatureFlagManager, 'isPennylaneSsoRedirectActivated')
+    .mockImplementation(() => mockIsPennylaneSsoRedirectActivated())
+  vi.mocked(CookieService.get).mockImplementation((...args: unknown[]) => mockCookieGet(...args))
+  vi.mocked(CookieService.remove).mockImplementation((...args: unknown[]) => mockCookieRemove(...args))
+  vi.mocked(SessionStorageService.getSamlSsoContext)
+    .mockImplementation((...args: unknown[]) => mockGetSamlSsoContext(...args))
+  vi.mocked(SessionStorageService.removeSamlSsoContext)
+    .mockImplementation((...args: unknown[]) => mockRemoveSamlSsoContext(...args))
+})
 
 describe('pennylaneSsoGuard', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     mockIsPennylaneSsoRedirectActivated.mockReturnValue(true)
   })
 

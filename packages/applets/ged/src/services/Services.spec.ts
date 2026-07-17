@@ -1,5 +1,4 @@
-import { describe, it, expect } from 'vitest'
-import { commonApiGatewayGetSpy } from '@ged/__mocks__/common.import.mocks'
+import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import { accountId, accountNumber, entityId } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
 import { GedServiceId } from '@ged/enums/ged.enum'
@@ -30,7 +29,7 @@ describe('services service', () => {
   it('should return folder object', async () => {
     await fetchUserEntityServices(accountNumber, accountId, GedContext.LEGACY)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(`/ged/accounts/${accountNumber}/ged-services/currentuser`, {
+    expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(`/ged/accounts/${accountNumber}/ged-services/currentuser`, {
       headers: { 'Account-Id': accountId },
     })
   })
@@ -43,14 +42,14 @@ describe('services service', () => {
     }
 
     await fetchServiceMailToGedInformation(entityId, service, accountId)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(`/ged/api/${service.ServiceId}/${entityId}/mail2ged/informations`, {
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(`/ged/api/${service.ServiceId}/${entityId}/mail2ged/informations`, {
       headers: { 'Account-Id': accountId },
     })
 
   })
 
   it('should call the fetchServiceMailToGedInformation with appropriate url and parameters for each given service', async () => {
-    commonApiGatewayGetSpy
+    apiGatewayGetMock
       .mockResolvedValueOnce({ data: [{}] })
       .mockResolvedValueOnce({ data: [{}] })
 
@@ -68,10 +67,10 @@ describe('services service', () => {
     ]
 
     await fetchServicesMailToGedInformation(entityId, services, accountId)
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(`/ged/api/${services[0].ServiceId}/${entityId}/mail2ged/informations`, {
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(`/ged/api/${services[0].ServiceId}/${entityId}/mail2ged/informations`, {
       headers: { 'Account-Id': accountId },
     })
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(`/ged/api/${services[1].ServiceId}/${entityId}/mail2ged/informations`, {
+    expect(apiGatewayGetMock).toHaveBeenCalledWith(`/ged/api/${services[1].ServiceId}/${entityId}/mail2ged/informations`, {
       headers: { 'Account-Id': accountId },
     })
   })
@@ -88,7 +87,7 @@ describe('services service', () => {
       gedContext,
       expectedServices,
     }) => {
-      commonApiGatewayGetSpy
+      apiGatewayGetMock
         .mockResolvedValue({ data: servicesDataMock })
       const services = await fetchUserEntityServices(
         accountNumber,

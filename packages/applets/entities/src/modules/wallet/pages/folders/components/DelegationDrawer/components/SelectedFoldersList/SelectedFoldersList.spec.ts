@@ -1,14 +1,9 @@
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { createI18n } from 'vue-i18n'
 import { PTable } from '@pulse/styleguide/components'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 import { getMockedEntities } from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
-
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
 
 function formatFoldersProps(
   folders: Entity[],
@@ -32,15 +27,12 @@ const createWrapper = (
 ): VueWrapper => {
   return mount(CollapsableFoldersList, {
     props,
-    global: {
-      provide: {
-        i18n,
-      },
-    },
   })
 }
 
-let wrapper = createWrapper()
+// Never mount at module scope: it runs at import time, before the guards'
+// beforeEach, capturing the previous file's stubs (doctrine: shared-dom).
+let wrapper: VueWrapper
 
 describe('selected folders list', () => {
   beforeEach(() => {

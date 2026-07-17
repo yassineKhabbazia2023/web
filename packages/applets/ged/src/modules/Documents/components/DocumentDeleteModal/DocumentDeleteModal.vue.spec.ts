@@ -1,17 +1,13 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { loggerMock } from '@pulse/toolbox/mocks'
-import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { deleteDocuments } from '@ged/services/Documents'
-import { createI18n } from 'vue-i18n'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import { type DocumentDeleteModalTypesProps } from './DocumentDeleteModalTypes'
 
 import DocumentDeleteModal from './DocumentDeleteModal.vue'
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+import { armGedServiceDefaults } from '@ged/__mocks__/arm-ged-services.mocks'
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
@@ -20,27 +16,18 @@ const defaultProps: DocumentDeleteModalTypesProps = {
   entityId: 'ent',
   accountId: 1234,
 }
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
-
 const createWrapper = (
   props: DocumentDeleteModalTypesProps = defaultProps,
 ) => {
   return mount(DocumentDeleteModal, {
     props,
-    global: {
-      provide: {
-        i18n,
-      },
-    },
   })
 }
 
-vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
-vi.mock('@ged/services/tracking/tracking.service')
-vi.mock('@pulse/styleguide')
+beforeEach(() => {
+  armGedServiceDefaults()
+})
 
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'ConfirmationPopup' })
 
@@ -214,7 +201,9 @@ describe('deleteFolderConfirmationPopup', () => {
     })
 
     it('should track with "false" when document has failed to delete', async () => {
-      vi.mocked(deleteDocuments).mockImplementationOnce(() => Promise.reject())
+      // Persistent stub: the deletion must fail for the whole test (the
+      // global mock reset re-arms the default behavior before the next one).
+      vi.mocked(deleteDocuments).mockRejectedValue(new Error('deletion failed'))
 
       const popup = findConfirmationPopup(wrapper)
       await popup.vm.$emit('on-confirm-button-click')

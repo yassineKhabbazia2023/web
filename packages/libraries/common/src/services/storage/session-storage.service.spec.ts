@@ -1,4 +1,4 @@
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 
 import { SessionStorageService } from './session-storage.service'
 import { SsoProvider } from './session-storage.service.enums'
@@ -11,16 +11,12 @@ const sessionStorageMock = {
   clear: vi.fn(),
 }
 
-Object.defineProperty(window, 'sessionStorage', {
-  value: sessionStorageMock,
-  writable: true,
-})
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 describe('SessionStorageService', () => {
+  // Stub the worker-shared sessionStorage per test (restored automatically by
+  // unstubGlobals) instead of overwriting the global at module scope, which
+  // would leak to other files of the worker (doctrine: shared-dom).
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.stubGlobal('sessionStorage', sessionStorageMock)
   })
 
   // #region Generic storage methods tests

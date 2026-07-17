@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+
 import { ElSteps } from 'element-plus'
 import { PStepStatus } from './PSteps.enums'
 import PICheck from '../../atoms/PIcon/components/PICheck.vue'

@@ -7,13 +7,6 @@ import type { Folder, FolderProperties } from '@ged/models/Folder'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
-vi.mock('@pulse/styleguide', () => ({
-  AppColors: {
-    RED: 'RED',
-    PRIMARY: 'PRIMARY',
-  },
-}))
-
 const fold: Folder = {
   id: 1,
   children: [
@@ -90,7 +83,7 @@ describe('props', () => {
       },
     ]
     it.each(iconMappingCases)(
-      'validate icons mapping with "%s"',
+      'validate icons mapping with $folderIconName',
       ({ folderIconName, expectedIcon }) => {
         const folder = { ...fold, iconName: folderIconName }
 

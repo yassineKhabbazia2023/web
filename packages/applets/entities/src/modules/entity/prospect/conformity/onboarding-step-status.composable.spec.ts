@@ -1,29 +1,22 @@
 import { flushPromises } from '@vue/test-utils'
+import type { MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
-import { loggerMock } from '@pulse/toolbox/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { useOnboardingStepStatus } from './onboarding-step-status.composable'
 import { OnboardingStep, OnboardingStepStatus } from './prospect-conformity.enums'
 
-vi.mock('@entities/services/prospects/prospects.service')
-// Keep isNotNullNorEmpty real (used in the guard); only the logger is mocked.
-vi.mock('@pulse/toolbox', async (importOriginal) => ({
-  ...await importOriginal<object>(),
-  logger: loggerMock,
-}))
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-const fetchOnboardingStepMock = vi.mocked(ProspectsService.fetchOnboardingStep)
+
+let fetchOnboardingStepMock: MockInstance
 
 const accountIdMock = 1971
 
 describe('onboarding-step-status.composable', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     currentEntityStoreMock.currentEntityId = accountIdMock
-    fetchOnboardingStepMock.mockResolvedValue({
+    fetchOnboardingStepMock = vi.spyOn(ProspectsService, 'fetchOnboardingStep').mockResolvedValue({
       id: OnboardingStep.CommercialProposal,
       status: OnboardingStepStatus.Completed,
     })

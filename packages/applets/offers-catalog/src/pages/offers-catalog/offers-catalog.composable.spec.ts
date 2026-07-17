@@ -5,35 +5,27 @@ import { OffersCatalogTrackingManager } from '../../managers/offers-catalog-trac
 import { APICallStatus } from '@pulse/common/enums'
 import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffersRecommendations } from '../../services/offers-catalog.service'
 
 import { useOffersCatalog } from './offers-catalog.composable'
 
 const offersCatalogResponseMock = getOffersCatalogResponseMock()
-const offerPdfMock = 'offer pdf mock'
+// The runtime string stands in for the ArrayBuffer: the composable only feeds
+// it to new Blob(), which accepts both.
+const offerPdfMock = 'offer pdf mock' as unknown as ArrayBuffer
 const offerDetailsMock = getOfferCatalogDetailsResponseMock()
 const referentsMock = getOfferCatalogReferentListMock()
 
-const getOffersCatalogMock = vi.hoisted(() => vi.fn())
-const getOfferCatalogPdfMock = vi.hoisted(() => vi.fn())
-const getOfferCatalogDetailsMock = vi.hoisted(() => vi.fn())
-const getOffersRecommendationsMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
-vi.mock('../../managers/offers-catalog-tracking/offers-catalog-tracking.manager')
-
-vi.mock('../../services/offers-catalog.service', () => ({
-  getOffersCatalog: getOffersCatalogMock,
-  getOfferCatalogPdf: getOfferCatalogPdfMock,
-  getOfferCatalogDetails: getOfferCatalogDetailsMock,
-  getOffersRecommendations: getOffersRecommendationsMock,
-}))
-
-vi.mock('@pulse/toolbox/utils/array')
+const getOffersCatalogMock = vi.mocked(getOffersCatalog)
+const getOfferCatalogPdfMock = vi.mocked(getOfferCatalogPdf)
+const getOfferCatalogDetailsMock = vi.mocked(getOfferCatalogDetails)
+const getOffersRecommendationsMock = vi.mocked(getOffersRecommendations)
 
 describe('offers-catalog.composable', () => {
+  beforeEach(() => {
+    vi.spyOn(OffersCatalogTrackingManager, 'trackSearch').mockImplementation(() => undefined)
+  })
+
   describe('useOffersCatalog', () => {
     it('should initialize properly', () => {
       const expectedCards: OfferDescription[] = []

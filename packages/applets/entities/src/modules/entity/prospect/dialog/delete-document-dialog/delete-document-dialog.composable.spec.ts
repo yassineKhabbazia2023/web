@@ -4,12 +4,10 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import { useDeleteDocumentDialog } from './delete-document-dialog.composable'
 import type { DeleteDocumentDialogProps } from './delete-document-dialog.types'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
+beforeEach(() => {
+  vi.spyOn(ProspectsService, 'deleteProspectDocument').mockResolvedValue(undefined)
+  vi.mocked(displayNotification).mockImplementation(() => undefined)
+})
 
 const I18N_KEY = 'entities.prospect.deleteDocumentDialog'
 const accountIdMock = 1971

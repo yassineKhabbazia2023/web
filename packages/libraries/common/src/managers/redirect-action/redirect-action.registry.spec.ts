@@ -4,10 +4,6 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { RouteName } from '@pulse/common/enums'
 import { RedirectActionRegistry } from './redirect-action.registry'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-}))
-
 const ACTION = 'some-action'
 
 beforeEach(() => {

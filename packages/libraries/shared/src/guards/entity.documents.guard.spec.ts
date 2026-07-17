@@ -9,9 +9,6 @@ import {
   pennylaneGedV2BeforeEnter,
 } from './entity.documents.guard'
 
-vi.mock('@pulse/common/managers')
-vi.mock('@pulse/toolbox')
-
 function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGeneric {
   return {
     path: '/dossier/123/ged',
@@ -29,7 +26,7 @@ function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGe
 describe('gedLegacyBeforeEnter', () => {
   describe('when user has GED UX V2', () => {
     beforeEach(() => {
-      vi.mocked(PennylanePermissionsManager.isGedUxV2).mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'isGedUxV2').mockReturnValue(true)
     })
 
     it('should redirect to social management when notificationType is GSDocumentUploaded', () => {
@@ -83,12 +80,12 @@ describe('gedLegacyBeforeEnter', () => {
 
   describe('when user does not have GED UX V2', () => {
     beforeEach(() => {
-      vi.mocked(PennylanePermissionsManager.isGedUxV2).mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'isGedUxV2').mockReturnValue(false)
     })
 
     it('should deny access when user has Pennylane Accounting permission', () => {
-      vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(true)
-      vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(false)
       const to = createMockedRoute()
 
       const result = gedLegacyBeforeEnter(to)
@@ -97,8 +94,8 @@ describe('gedLegacyBeforeEnter', () => {
     })
 
     it('should deny access when user has Social Management V2 permission', () => {
-      vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(false)
-      vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(true)
       const to = createMockedRoute()
 
       const result = gedLegacyBeforeEnter(to)
@@ -107,8 +104,8 @@ describe('gedLegacyBeforeEnter', () => {
     })
 
     it('should deny access when user has both Pennylane permissions', () => {
-      vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(true)
-      vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(true)
+      vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(true)
       const to = createMockedRoute()
 
       const result = gedLegacyBeforeEnter(to)
@@ -117,8 +114,8 @@ describe('gedLegacyBeforeEnter', () => {
     })
 
     it('should allow access when user has no Pennylane permissions', () => {
-      vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(false)
-      vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(false)
+      vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(false)
       const to = createMockedRoute()
 
       const result = gedLegacyBeforeEnter(to)
@@ -130,7 +127,7 @@ describe('gedLegacyBeforeEnter', () => {
 
 describe('pennylaneSocialManagementBeforeEnter', () => {
   it('should allow access when user has Social Management V2 permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
+    vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(true)
 
     const result = pennylaneSocialManagementBeforeEnter()
 
@@ -138,7 +135,7 @@ describe('pennylaneSocialManagementBeforeEnter', () => {
   })
 
   it('should deny access when user does not have Social Management V2 permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
+    vi.spyOn(PennylanePermissionsManager, 'hasSocialManagementV2').mockReturnValue(false)
 
     const result = pennylaneSocialManagementBeforeEnter()
 
@@ -148,7 +145,7 @@ describe('pennylaneSocialManagementBeforeEnter', () => {
 
 describe('pennylaneAccountingBeforeEnter', () => {
   it('should allow access when user has Pennylane Accounting permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(true)
+    vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(true)
 
     const result = pennylaneAccountingBeforeEnter()
 
@@ -156,7 +153,7 @@ describe('pennylaneAccountingBeforeEnter', () => {
   })
 
   it('should deny access when user does not have Pennylane Accounting permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(false)
+    vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(false)
 
     const result = pennylaneAccountingBeforeEnter()
 
@@ -166,7 +163,7 @@ describe('pennylaneAccountingBeforeEnter', () => {
 
 describe('pennylaneGedV2BeforeEnter', () => {
   it('should allow access when user has Pennylane Accounting GED V2 permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission).mockReturnValue(true)
+    vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingGedV2Permission').mockReturnValue(true)
 
     const result = pennylaneGedV2BeforeEnter()
 
@@ -174,7 +171,7 @@ describe('pennylaneGedV2BeforeEnter', () => {
   })
 
   it('should deny access when user does not have Pennylane Accounting GED V2 permission', () => {
-    vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission).mockReturnValue(false)
+    vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingGedV2Permission').mockReturnValue(false)
 
     const result = pennylaneGedV2BeforeEnter()
 

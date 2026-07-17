@@ -1,14 +1,16 @@
-import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PCalendar from '.'
 import type { PCalendarProps } from './PCalendarTypes'
 import { itemsGroupedByDate } from './PCalendar.mocks'
 
-const getDateTypeMock = vi.hoisted(() => vi.fn(() => 'current-month'))
-vi.mock('./PCalendarUtils', () => ({
-  getDateType: getDateTypeMock,
-}))
+import { getDateType } from './PCalendarUtils'
+
+const getDateTypeMock = vi.mocked(getDateType)
+
+beforeEach(() => {
+  getDateTypeMock.mockImplementation(() => 'current-month')
+})
 
 const defaultProps: PCalendarProps = {
   pItemsGroupedByDate: itemsGroupedByDate,

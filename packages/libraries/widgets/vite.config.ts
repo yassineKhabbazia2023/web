@@ -6,6 +6,5 @@ export default ({ mode }: ConfigEnv) =>
     mode,
     packageName: '@pulse/widgets',
     rootDir: import.meta.url,
-    setupFiles: ['vitest.setup.ts'],
     minify: true,
   })

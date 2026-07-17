@@ -1,18 +1,14 @@
 import { computed, nextTick, ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
 import { withSetup } from '@pulse/toolbox/utils/test'
-import { fetchNotificationsMock, notificationsServiceMock } from '../../__mocks__/notification.service.mocks'
-import { trackFeedCenterTabConsultationMock, trackingServiceMock } from '../../__mocks__/tracking.service.mocks'
+import { fetchNotificationsMock, armNotificationsServiceDefaults } from '../../__mocks__/notification.service.mocks'
+import { trackFeedCenterTabConsultationMock } from '../../__mocks__/tracking.service.mocks'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import { useUserStore } from '@pulse/common/stores'
 import { getMockedFavoriteEntities } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
-
-vi.mock('../../services/notifications.service', () => notificationsServiceMock)
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('../../services/tracking/tracking.service', () => trackingServiceMock)
 
 const userStore = getStoreMock(useUserStore)
 
@@ -31,6 +27,10 @@ function initializeTestState(initialDrawervalue = false) {
 
   return { unreadNotificationsCount, isDrawerOpened, drawerOpenedValue }
 }
+
+beforeEach(() => {
+  armNotificationsServiceDefaults()
+})
 
 describe('feed center drawer composable', () => {
   beforeEach(() => {

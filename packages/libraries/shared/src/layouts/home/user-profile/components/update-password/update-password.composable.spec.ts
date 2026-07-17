@@ -1,20 +1,35 @@
+import type { MockInstance } from 'vitest'
 import { PStrengthLevel } from '@pulse/styleguide/types'
 import { useUpdatePassword, type UpdatePasswordTranslations } from './update-password.composable'
 import { UpdatePasswordManager } from './update-password.manager'
 
-vi.mock('@pulse/common/stores', () => ({
-  useUserStore: () => ({
-    getUserId: () => 12345,
-  }),
-}))
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { useUserStore } from '@pulse/common/stores'
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: {
-    error: vi.fn(),
-  },
-}))
+const userStoreMock = getStoreMock(useUserStore)
 
-vi.mock('./update-password.manager')
+let validatePasswordFormMock: MockInstance
+let updateUserPasswordMock: MockInstance<typeof UpdatePasswordManager.updateUserPassword>
+let displaySuccessNotificationMock: MockInstance
+let displayErrorNotificationMock: MockInstance
+let logPasswordUpdateErrorMock: MockInstance
+let isInvalidCredentialsErrorMock: MockInstance
+let isPasswordAlreadyUsedErrorMock: MockInstance
+let getErrorMessageMock: MockInstance
+
+beforeEach(() => {
+  userStoreMock.getUserId.mockReturnValue(12345)
+
+  // doctrine: static-classes — UpdatePasswordManager is a static class, stubbed per test
+  validatePasswordFormMock = vi.spyOn(UpdatePasswordManager, 'validatePasswordForm').mockReturnValue(false)
+  updateUserPasswordMock = vi.spyOn(UpdatePasswordManager, 'updateUserPassword').mockResolvedValue()
+  displaySuccessNotificationMock = vi.spyOn(UpdatePasswordManager, 'displaySuccessNotification').mockReturnValue()
+  displayErrorNotificationMock = vi.spyOn(UpdatePasswordManager, 'displayErrorNotification').mockReturnValue()
+  logPasswordUpdateErrorMock = vi.spyOn(UpdatePasswordManager, 'logPasswordUpdateError').mockReturnValue()
+  isInvalidCredentialsErrorMock = vi.spyOn(UpdatePasswordManager, 'isInvalidCredentialsError').mockReturnValue(false)
+  isPasswordAlreadyUsedErrorMock = vi.spyOn(UpdatePasswordManager, 'isPasswordAlreadyUsedError').mockReturnValue(false)
+  getErrorMessageMock = vi.spyOn(UpdatePasswordManager, 'getErrorMessage').mockReturnValue('')
+})
 
 const mockTranslations: UpdatePasswordTranslations = {
   notificationSuccess: 'notificationSuccess',
@@ -50,10 +65,10 @@ describe('useUpdatePassword', () => {
       reset: vi.fn(),
     } as any
 
-    vi.mocked(UpdatePasswordManager.validatePasswordForm).mockReturnValue(true)
+    validatePasswordFormMock.mockReturnValue(true)
 
     expect(composable.isFormValid.value).toBe(true)
-    expect(UpdatePasswordManager.validatePasswordForm).toHaveBeenCalledWith(
+    expect(validatePasswordFormMock).toHaveBeenCalledWith(
       'current',
       'new',
       'new',
@@ -84,16 +99,16 @@ describe('useUpdatePassword', () => {
     composable.formModel.currentPassword = 'current'
     composable.formModel.newPassword = 'new'
 
-    vi.mocked(UpdatePasswordManager.updateUserPassword).mockResolvedValue()
+    updateUserPasswordMock.mockResolvedValue()
 
     await composable.handleSubmit()
 
     expect(composable.isLoading.value).toBe(false)
-    expect(UpdatePasswordManager.updateUserPassword).toHaveBeenCalledWith(
+    expect(updateUserPasswordMock).toHaveBeenCalledWith(
       { oldPassword: 'current', newPassword: 'new' },
       12345,
     )
-    expect(UpdatePasswordManager.displaySuccessNotification).toHaveBeenCalledWith('notificationSuccess')
+    expect(displaySuccessNotificationMock).toHaveBeenCalledWith('notificationSuccess')
     expect(composable.formRef.value?.resetFields).toHaveBeenCalledOnce()
     expect(composable.passwordFieldsRef.value?.reset).toHaveBeenCalledOnce()
   })
@@ -111,7 +126,7 @@ describe('useUpdatePassword', () => {
     await composable.handleSubmit()
 
     expect(logger.error).toHaveBeenCalledWith('Can\'t update password:', expect.any(Error))
-    expect(UpdatePasswordManager.updateUserPassword).not.toHaveBeenCalled()
+    expect(updateUserPasswordMock).not.toHaveBeenCalled()
   })
 
   it('should handle INVALID_LOGIN_CODE error during password update', async () => {
@@ -132,15 +147,15 @@ describe('useUpdatePassword', () => {
     composable.formModel.newPassword = 'new'
 
     const mockError = new Error('Invalid credentials')
-    vi.mocked(UpdatePasswordManager.updateUserPassword).mockRejectedValue(mockError)
-    vi.mocked(UpdatePasswordManager.isInvalidCredentialsError).mockReturnValue(true)
-    vi.mocked(UpdatePasswordManager.isPasswordAlreadyUsedError).mockReturnValue(false)
+    updateUserPasswordMock.mockRejectedValue(mockError)
+    isInvalidCredentialsErrorMock.mockReturnValue(true)
+    isPasswordAlreadyUsedErrorMock.mockReturnValue(false)
 
     await composable.handleSubmit()
 
-    expect(UpdatePasswordManager.isInvalidCredentialsError).toHaveBeenCalledWith(mockError)
+    expect(isInvalidCredentialsErrorMock).toHaveBeenCalledWith(mockError)
     expect(composable.formRef.value?.validateField).toHaveBeenCalledWith('currentPassword')
-    expect(UpdatePasswordManager.displayErrorNotification).not.toHaveBeenCalled()
+    expect(displayErrorNotificationMock).not.toHaveBeenCalled()
   })
 
   it('should handle CNT111 error during password update', async () => {
@@ -161,15 +176,15 @@ describe('useUpdatePassword', () => {
     composable.formModel.newPassword = 'new'
 
     const mockError = new Error('Password already used')
-    vi.mocked(UpdatePasswordManager.updateUserPassword).mockRejectedValue(mockError)
-    vi.mocked(UpdatePasswordManager.isInvalidCredentialsError).mockReturnValue(false)
-    vi.mocked(UpdatePasswordManager.isPasswordAlreadyUsedError).mockReturnValue(true)
+    updateUserPasswordMock.mockRejectedValue(mockError)
+    isInvalidCredentialsErrorMock.mockReturnValue(false)
+    isPasswordAlreadyUsedErrorMock.mockReturnValue(true)
 
     await composable.handleSubmit()
 
-    expect(UpdatePasswordManager.isPasswordAlreadyUsedError).toHaveBeenCalledWith(mockError)
+    expect(isPasswordAlreadyUsedErrorMock).toHaveBeenCalledWith(mockError)
     expect(composable.formRef.value?.validateField).toHaveBeenCalledWith('newPassword')
-    expect(UpdatePasswordManager.displayErrorNotification).not.toHaveBeenCalled()
+    expect(displayErrorNotificationMock).not.toHaveBeenCalled()
   })
 
   it('should handle other errors during password update', async () => {
@@ -190,20 +205,20 @@ describe('useUpdatePassword', () => {
     composable.formModel.newPassword = 'new'
 
     const mockError = new Error('Some error')
-    vi.mocked(UpdatePasswordManager.updateUserPassword).mockRejectedValue(mockError)
-    vi.mocked(UpdatePasswordManager.isInvalidCredentialsError).mockReturnValue(false)
-    vi.mocked(UpdatePasswordManager.isPasswordAlreadyUsedError).mockReturnValue(false)
-    vi.mocked(UpdatePasswordManager.getErrorMessage).mockReturnValue('Error message')
+    updateUserPasswordMock.mockRejectedValue(mockError)
+    isInvalidCredentialsErrorMock.mockReturnValue(false)
+    isPasswordAlreadyUsedErrorMock.mockReturnValue(false)
+    getErrorMessageMock.mockReturnValue('Error message')
 
     await composable.handleSubmit()
 
-    expect(UpdatePasswordManager.logPasswordUpdateError).toHaveBeenCalledWith(mockError)
-    expect(UpdatePasswordManager.getErrorMessage).toHaveBeenCalledWith(mockError, {
+    expect(logPasswordUpdateErrorMock).toHaveBeenCalledWith(mockError)
+    expect(getErrorMessageMock).toHaveBeenCalledWith(mockError, {
       notificationError: 'notificationError',
       wrongCurrentPassword: 'wrongCurrentPassword',
       passwordAlreadyUsed: 'passwordAlreadyUsed',
     })
-    expect(UpdatePasswordManager.displayErrorNotification).toHaveBeenCalledWith('Error message')
+    expect(displayErrorNotificationMock).toHaveBeenCalledWith('Error message')
   })
 
   it('should return early from handleSubmit when formRef is not set', async () => {
@@ -213,6 +228,6 @@ describe('useUpdatePassword', () => {
 
     await composable.handleSubmit()
 
-    expect(UpdatePasswordManager.updateUserPassword).not.toHaveBeenCalled()
+    expect(updateUserPasswordMock).not.toHaveBeenCalled()
   })
 })

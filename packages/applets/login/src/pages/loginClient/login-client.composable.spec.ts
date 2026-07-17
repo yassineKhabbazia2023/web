@@ -1,34 +1,29 @@
 import { flushPromises } from '@vue/test-utils'
+import type { Mock, MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
+import { LoginService } from '@pulse/common/services/login'
+import { useRouter } from 'vue-router'
 
 import { useLoginClient } from './login-client.composable'
-
-const mockRouterPush = vi.hoisted(() => vi.fn())
-const authenticateCustomerMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-vi.mock('@pulse/common/services/login', () => ({
-  LoginService: {
-    authenticate: authenticateCustomerMock,
-  },
-}))
-vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
-vi.mock('vue-router', () => ({
-  useRouter: () => ({ push: mockRouterPush }),
-}))
 
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
 
+let authenticateCustomerMock: MockInstance
+let mockRouterPush: Mock
+
 describe('useLoginClient', () => {
+  beforeEach(() => {
+    authenticateCustomerMock = vi.spyOn(LoginService, 'authenticate').mockResolvedValue()
+    mockRouterPush = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push: mockRouterPush } as unknown as ReturnType<typeof useRouter>)
+  })
+
   it('authenticates and redirects to LANDING when terms are current', async () => {
     const [result] = withSetup(() => useLoginClient())
     result.email.value = INPUT_EMAIL_VALUE

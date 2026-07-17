@@ -2,10 +2,6 @@ import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly, extractWorkItemIdsFromCl
 import { displayNotification } from '@pulse/styleguide'
 import type { WorkItemsByTeam } from '@backoffice/types/azure-devops.type'
 
-vi.mock('@pulse/styleguide', () => ({
-  displayNotification: vi.fn(),
-}))
-
 const mockWorkItemsByTeam: WorkItemsByTeam = {
   'Team Alpha': [
     { id: 1, title: 'Feature A', type: 'User Story', state: 'Closed', webUrl: 'https://dev.azure.com/1', team: 'Team Alpha' },
@@ -145,8 +141,8 @@ describe('extractWorkItemIdsFromClipboard', () => {
 })
 
 describe('copyWorkItemsAsTeamsExport', () => {
-  let capturedHtml = ''
-  let capturedText = ''
+  let capturedHtml: string
+  let capturedText: string
   let mockWrite: ReturnType<typeof vi.fn>
 
   beforeEach(() => {
@@ -279,8 +275,8 @@ describe('copyWorkItemsAsTeamsExport', () => {
 })
 
 describe('copyWorkItemsOnly', () => {
-  let capturedHtml = ''
-  let capturedText = ''
+  let capturedHtml: string
+  let capturedText: string
   let mockWrite: ReturnType<typeof vi.fn>
 
   beforeEach(() => {

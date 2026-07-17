@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getMockedFields } from './PDynamicFields.mocks'
 import { getInternalFields } from './PDynamicFieldsUtils'
 
@@ -23,7 +22,7 @@ describe('pDynamicFieldsUtils', () => {
       pReadonly: true,
       disabledFieldKeys: ['person.lastname'],
     }]
-    it.each(tests)('should return mapped fields %s', async ({ pReadonly, disabledFieldKeys }) => {
+    it.each(tests)('should return mapped fields with pReadonly $pReadonly and disabledFieldKeys $disabledFieldKeys', async ({ pReadonly, disabledFieldKeys }) => {
       const fields = getMockedFields('companyIdentification', pReadonly)
       const internalFields = getInternalFields(fields, model, pReadonly, disabledFieldKeys)
 

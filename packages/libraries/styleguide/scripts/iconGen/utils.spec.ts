@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
+import { type MockInstance } from 'vitest'
 import * as pulseIconGenLib from './lib'
 import * as commonUtils from '../common/utils'
 
 import { generateComponents, generateIcons } from './utils'
 import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVGO_CONFIG } from './mocks'
 
+// eslint-disable-next-line no-restricted-syntax -- doctrine: shared-hubs (node build-script spec: hubbing these fs-writing script mocks in vitest.setup.ts would leak them into the jsdom component worker)
 vi.mock('./lib', () => {
   return {
     getIcons: vi.fn(),
@@ -15,6 +16,7 @@ vi.mock('./lib', () => {
   }
 })
 
+// eslint-disable-next-line no-restricted-syntax -- doctrine: shared-hubs (node build-script spec: hubbing these fs-writing script mocks in vitest.setup.ts would leak them into the jsdom component worker)
 vi.mock('../common/utils', () => {
   return {
     clearFolder: vi.fn(),

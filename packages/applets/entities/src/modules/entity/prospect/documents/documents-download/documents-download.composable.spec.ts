@@ -9,13 +9,6 @@ import { ConformityDocumentsService } from '@entities/services/conformity-docume
 import { getConformityDocumentMock, getDocumentsListItemMock } from '@entities/__mocks__'
 import { useDocumentsDownload } from './documents-download.composable'
 
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({ t: (key: string) => key }),
-}))
-vi.mock('@entities/services/conformity-documents')
-vi.mock('@pulse/common/helpers')
-vi.mock('@pulse/styleguide')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const setCurrentEntity = (accountId: number | undefined): void => {
@@ -26,7 +19,10 @@ const setCurrentEntity = (accountId: number | undefined): void => {
 
 describe('useDocumentsDownload', () => {
   beforeEach(() => {
-    vi.mocked(ConformityDocumentsService.getConformityDocumentContent).mockResolvedValue(new Blob(['binary']))
+    vi.spyOn(ConformityDocumentsService, 'getConformityDocuments').mockResolvedValue([])
+    vi.spyOn(ConformityDocumentsService, 'getConformityDocumentContent').mockResolvedValue(new Blob(['binary']))
+    vi.mocked(downloadFile).mockImplementation(() => undefined)
+    vi.mocked(displayNotification).mockImplementation(() => undefined)
   })
 
   it('downloads only the selected documents when at least one is selected', async () => {

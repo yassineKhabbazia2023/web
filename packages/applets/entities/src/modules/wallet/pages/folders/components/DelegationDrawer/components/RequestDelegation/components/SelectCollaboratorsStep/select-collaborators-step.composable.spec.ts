@@ -6,8 +6,6 @@ import { AUTO_SELECT_COUNT, INITIAL_PAGE_SIZE, MAX_SELECTED_COLLABORATORS } from
 import { mockCollabsData, createMockCollab } from '@entities/__mocks__/collab-data.mocks'
 import type { Collab } from '@entities/types'
 
-vi.mock('@entities/services/collaborator')
-
 const mockCollaborators = mockCollabsData
 
 function mockApiResponse(items = mockCollaborators) {

@@ -5,12 +5,6 @@ import { SupportingDocumentType } from '@entities/enums'
 import { getConformityDocumentMock, getSupportingDocumentsResponseMock } from '@entities/__mocks__'
 import { ConformityDocumentsService } from './conformity-documents.service'
 
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    gateway: apiGatewayMock,
-  },
-}))
-
 const prospectId = 602
 const accountId = 602
 

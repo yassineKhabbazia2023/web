@@ -1,17 +1,21 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockedPermissionCodes } from '@entities/__mocks__/permissions.mocks'
-import { mockUpdateUserPermission, authorizationServiceMock, rightDrawerUtilsMocks } from '@entities/__mocks__/vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
+import {
+  armAuthorizationServiceMocks,
+  armRightDrawerUtilsMocks,
+  updateUserPermissionsMock,
+} from '@entities/__mocks__/vitest'
+import { loggerErrorSpy } from '@pulse/toolbox/mocks'
+import { restoreRealUseI18n } from '@pulse/common/mocks/vitest'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { mockedCollaboratorsList1 } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import * as collaboratorServices from '@entities/services/collaborator'
 import type { CollabRightsDrawerProps } from './CollabRightsDrawerTypes'
 import CollabRightsDrawer from '.'
-import { createTestingPinia } from '@pinia/testing'
 
 // Mocks
 const mockedCollabRoles = getMockedCollabRoles()
@@ -25,26 +29,22 @@ const mockedSelectedRoleId = mockedCollabRoles.find(
   (r) => r.name === rowData.role,
 )?.id
 
-vi.mock('@entities/services/authorization', () => authorizationServiceMock)
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-  FeatureFlagManager: featureFlagManagerMock,
-}))
-vi.mock('@entities/services/collaborator')
-vi.mock('@entities/components/ManageRightsDrawer/utils', () => rightDrawerUtilsMocks)
-
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
+beforeEach(() => {
+  restoreRealUseI18n()
+  armAuthorizationServiceMocks()
+  armRightDrawerUtilsMocks()
+  vi.mocked(collaboratorServices.updateCollaborator).mockResolvedValue(
+    undefined as unknown as Awaited<ReturnType<typeof collaboratorServices.updateCollaborator>>,
+  )
+  vi.mocked(useRoute).mockReturnValue({
     params: {
       id: mockedAccountId,
     },
-  }),
-  useRouter: () => ({
+  } as unknown as RouteLocationNormalizedLoaded)
+  vi.mocked(useRouter).mockReturnValue({
     go: vi.fn(),
-  }),
-}))
-
-createTestingPinia()
+  } as unknown as Router)
+})
 
 const defaultProps = {
   rowData,
@@ -159,12 +159,12 @@ describe('collabRightsDrawer', () => {
       })
       nextPreviousButtons.vm.$emit('click-primary-cta')
 
-      expect(mockUpdateUserPermission).toHaveBeenCalledExactlyOnceWith(1, null, mockedPermissionCodes)
+      expect(updateUserPermissionsMock).toHaveBeenCalledExactlyOnceWith(1, null, mockedPermissionCodes)
     })
     it('should display a console error if the request to update permissions fails', async () => {
 
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      mockUpdateUserPermission.mockRejectedValue(expectedErrorMessage)
+      updateUserPermissionsMock.mockRejectedValue(expectedErrorMessage)
       wrapper = createWrapper()
       await flushPromises()
 

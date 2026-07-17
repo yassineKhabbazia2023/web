@@ -4,13 +4,11 @@ import { ProspectsManager } from './prospects.manager'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import type { SearchCriteria } from '@entities/modules/wallet/types'
 
-vi.mock('@entities/services/prospects/prospects.service')
-vi.mock('@pulse/toolbox', () => ({
-  logger: { error: vi.fn() },
-}))
-vi.mock('@pulse/toolbox/utils/validator', () => ({
-  isNotNullNorEmpty: (value: unknown) => value !== null && value !== undefined && value !== '',
-}))
+const fetchProspectsAccountsMock = vi.fn()
+
+beforeEach(() => {
+  vi.spyOn(ProspectsService, 'fetchProspectsAccounts').mockImplementation(fetchProspectsAccountsMock)
+})
 
 const defaultSearchCriteria: SearchCriteria = {
   currentPage: 1,
@@ -52,7 +50,7 @@ describe('ProspectsManager', () => {
 
   describe('fetchProspectsData', () => {
     it('calls ProspectsService with correct search params', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [],
         currentPage: 1,
         totalItems: 0,
@@ -61,14 +59,14 @@ describe('ProspectsManager', () => {
 
       await ProspectsManager.fetchProspectsData({ ...defaultSearchCriteria, search: 'test' })
 
-      const calledParams = vi.mocked(ProspectsService.fetchProspectsAccounts).mock.calls[0][0]
+      const calledParams = fetchProspectsAccountsMock.mock.calls[0][0]
       expect(calledParams?.get('pageNumber')).toBe('1')
       expect(calledParams?.get('pageSize')).toBe('15')
       expect(calledParams?.get('search')).toBe('test')
     })
 
     it('includes sorting params when provided', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [],
         currentPage: 1,
         totalItems: 0,
@@ -80,13 +78,13 @@ describe('ProspectsManager', () => {
         sorting: { field: 'companyName', descending: true },
       })
 
-      const calledParams = vi.mocked(ProspectsService.fetchProspectsAccounts).mock.calls[0][0]
+      const calledParams = fetchProspectsAccountsMock.mock.calls[0][0]
       expect(calledParams?.get('sorting.field')).toBe('companyName')
       expect(calledParams?.get('sorting.descending')).toBe('true')
     })
 
     it('does not include empty search param', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [],
         currentPage: 1,
         totalItems: 0,
@@ -95,12 +93,12 @@ describe('ProspectsManager', () => {
 
       await ProspectsManager.fetchProspectsData(defaultSearchCriteria)
 
-      const calledParams = vi.mocked(ProspectsService.fetchProspectsAccounts).mock.calls[0][0]
+      const calledParams = fetchProspectsAccountsMock.mock.calls[0][0]
       expect(calledParams?.has('search')).toBe(false)
     })
 
     it('includes pageNumber even when it is 0', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [],
         currentPage: 0,
         totalItems: 0,
@@ -109,12 +107,12 @@ describe('ProspectsManager', () => {
 
       await ProspectsManager.fetchProspectsData({ ...defaultSearchCriteria, currentPage: 0 })
 
-      const calledParams = vi.mocked(ProspectsService.fetchProspectsAccounts).mock.calls[0][0]
+      const calledParams = fetchProspectsAccountsMock.mock.calls[0][0]
       expect(calledParams?.get('pageNumber')).toBe('0')
     })
 
     it('includes sorting.descending when it is false', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [],
         currentPage: 1,
         totalItems: 0,
@@ -126,13 +124,13 @@ describe('ProspectsManager', () => {
         sorting: { field: 'companyName', descending: false },
       })
 
-      const calledParams = vi.mocked(ProspectsService.fetchProspectsAccounts).mock.calls[0][0]
+      const calledParams = fetchProspectsAccountsMock.mock.calls[0][0]
       expect(calledParams?.get('sorting.descending')).toBe('false')
     })
 
     it('maps response items to ProspectWalletData and returns pagination info', async () => {
       const mockProspect = getMockedProspectAccountRow()
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValueOnce({
+      fetchProspectsAccountsMock.mockResolvedValueOnce({
         items: [mockProspect],
         currentPage: 1,
         totalItems: 1,
@@ -149,7 +147,7 @@ describe('ProspectsManager', () => {
     })
 
     it('returns empty result on error', async () => {
-      vi.mocked(ProspectsService.fetchProspectsAccounts).mockRejectedValueOnce(new Error('API error'))
+      fetchProspectsAccountsMock.mockRejectedValueOnce(new Error('API error'))
 
       const result = await ProspectsManager.fetchProspectsData(defaultSearchCriteria)
 

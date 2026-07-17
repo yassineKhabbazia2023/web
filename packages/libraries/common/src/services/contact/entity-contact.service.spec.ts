@@ -8,10 +8,6 @@ import type { ContactResponseItem } from './contact.types'
 
 import { EntityContactService } from './entity-contact.service'
 
-vi.mock('@pulse/toolbox')
-vi.mock('@pulse/common/api')
-vi.mock('../../api/interceptors/request-token.interceptor')
-
 const accountId = 42
 
 const userStoreMock = getStoreMock(useUserStore)
@@ -34,7 +30,7 @@ describe('EntityContactService', () => {
 
   describe('getProspectContacts', () => {
     it('should call the account contacts endpoint', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({ data: [] })
+      vi.mocked(api.gateway.get).mockResolvedValue({ data: [] })
 
       await EntityContactService.getProspectContacts(accountId)
 
@@ -77,7 +73,7 @@ describe('EntityContactService', () => {
         labels: [],
       })
 
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [clpContact, amContact, otherCollab, withoutLabels],
       })
 
@@ -104,7 +100,7 @@ describe('EntityContactService', () => {
     it('should use the backend customerLabel for a customer user', async () => {
       userStoreMock.isCollab = false
 
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte', customerLabel: 'Mon conseiller' }],
@@ -131,7 +127,7 @@ describe('EntityContactService', () => {
         labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
       })
 
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [amContact, clpContact],
       })
 
@@ -144,7 +140,7 @@ describe('EntityContactService', () => {
     })
 
     it('should keep one contact with one role unchanged when the user appears once', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             firstName: 'Anna',
@@ -169,7 +165,7 @@ describe('EntityContactService', () => {
     })
 
     it('should merge distinct roles from multiple labels on the same contact', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             firstName: 'Oussema',
@@ -207,7 +203,7 @@ describe('EntityContactService', () => {
     })
 
     it('should not duplicate identical role labels from the same contact labels', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             firstName: 'Anna',
@@ -248,7 +244,7 @@ describe('EntityContactService', () => {
         labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
       })
 
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [firstContact, secondContact],
       })
 
@@ -273,7 +269,7 @@ describe('EntityContactService', () => {
     })
 
     it('should filter out contacts whose labels field is missing', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({ labels: undefined }),
         ],
@@ -285,7 +281,7 @@ describe('EntityContactService', () => {
     })
 
     it('should fall back to landPhone when mobilePhone is missing', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             mobilePhone: undefined,
@@ -300,7 +296,7 @@ describe('EntityContactService', () => {
     })
 
     it('should fall back to mobilePhone when landPhone is an empty string', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             landPhone: '',
@@ -315,7 +311,7 @@ describe('EntityContactService', () => {
     })
 
     it('should default phoneNumber to empty string when both phones are empty strings', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             landPhone: '',
@@ -330,7 +326,7 @@ describe('EntityContactService', () => {
     })
 
     it('should default the role to an empty string when the label for the user type is missing', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             labels: [{ code: CollaboratorRole.CLP, customerLabel: 'Mon conseiller' }],
@@ -344,7 +340,7 @@ describe('EntityContactService', () => {
     })
 
     it('should default phoneNumber to empty string when both phones are missing', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+      vi.mocked(api.gateway.get).mockResolvedValue({
         data: [
           buildApiItem({
             mobilePhone: undefined,
@@ -360,7 +356,7 @@ describe('EntityContactService', () => {
 
     it('should return an empty array and log the error when the API call fails', async () => {
       const error = new Error('boom')
-      vi.mocked(api.gateway.get).mockRejectedValueOnce(error)
+      vi.mocked(api.gateway.get).mockRejectedValue(error)
 
       const result = await EntityContactService.getProspectContacts(accountId)
 
@@ -372,7 +368,7 @@ describe('EntityContactService', () => {
     })
 
     it('should return an empty array when the response data is missing', async () => {
-      vi.mocked(api.gateway.get).mockResolvedValueOnce({ data: undefined })
+      vi.mocked(api.gateway.get).mockResolvedValue({ data: undefined })
 
       const result = await EntityContactService.getProspectContacts(accountId)
 

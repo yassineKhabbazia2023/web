@@ -3,8 +3,6 @@ import { InvoicesTabState } from '@pulse/common/services/invoices-access'
 import { InvoicesTracking } from './invoices.tracking.service'
 import { InvoicesFormStep } from '../enums'
 
-vi.mock('@pulse/common/services/amplitude')
-
 describe('InvoicesTracking', () => {
   describe('trackDigitizationInitializedSuccess', () => {
     it('should track invoice digitization initialized with succeeded result', () => {

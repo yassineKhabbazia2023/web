@@ -5,16 +5,6 @@ import { getInvoicesAccessResponseMock } from '../../__mocks__'
 
 import { InvoicesAccessService } from './invoices-access.service'
 
-vi.mock('@pulse/common/api', () => ({
-  api: ({
-    gateway: apiGatewayMock,
-  }),
-}))
-
-vi.mock('env-vars', () => ({
-  VITE_API_GATEWAY: 'https://api.mock.com',
-}))
-
 describe('InvoicesAccessService', () => {
   describe('fetchInvoicesAccess', () => {
     it('should return mapped access data on successful response', async () => {

@@ -1,60 +1,37 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { LogLevel } from '@microsoft/signalr'
+import { HubConnectionBuilderMock } from '@pulse/common/mocks/vitest'
 
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 
-const withUrlMock = vi.hoisted(() => vi.fn())
-const configureLoggingMock = vi.hoisted(() => vi.fn())
-const withAutomaticReconnectMock = vi.hoisted(() => vi.fn())
-const buildMock = vi.hoisted(() => vi.fn())
-const hubConnectionBuilderConstructorMock = vi.hoisted(() => vi.fn())
+const withUrlMock = vi.fn()
+const configureLoggingMock = vi.fn()
+const withAutomaticReconnectMock = vi.fn()
+const buildMock = vi.fn()
 
-vi.mock('@microsoft/signalr', () => {
-  const builder = {
-    withUrl: withUrlMock,
-    configureLogging: configureLoggingMock,
-    withAutomaticReconnect: withAutomaticReconnectMock,
-    build: buildMock,
-  }
-
-  withUrlMock.mockReturnValue(builder)
-  configureLoggingMock.mockReturnValue(builder)
-  withAutomaticReconnectMock.mockReturnValue(builder)
-  hubConnectionBuilderConstructorMock.mockImplementation(function HubConnectionBuilderMock() {
-    return builder
-  })
-
-  return {
-    HubConnectionBuilder: hubConnectionBuilderConstructorMock,
-    LogLevel: {
-      Information: 'Information',
-    },
-  }
-})
+const hubConnectionBuilderMock = {
+  withUrl: withUrlMock,
+  configureLogging: configureLoggingMock,
+  withAutomaticReconnect: withAutomaticReconnectMock,
+  build: buildMock,
+}
 
 describe('getNewHubConnection', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    const builder = {
-      withUrl: withUrlMock,
-      configureLogging: configureLoggingMock,
-      withAutomaticReconnect: withAutomaticReconnectMock,
-      build: buildMock,
-    }
-    withUrlMock.mockReturnValue(builder)
-    configureLoggingMock.mockReturnValue(builder)
-    withAutomaticReconnectMock.mockReturnValue(builder)
-    hubConnectionBuilderConstructorMock.mockImplementation(function HubConnectionBuilderMock() {
-      return builder
+    HubConnectionBuilderMock.mockImplementation(function() {
+      return hubConnectionBuilderMock
     })
+    withUrlMock.mockReturnValue(hubConnectionBuilderMock)
+    configureLoggingMock.mockReturnValue(hubConnectionBuilderMock)
+    withAutomaticReconnectMock.mockReturnValue(hubConnectionBuilderMock)
     buildMock.mockReturnValue('connection-instance')
   })
 
   it('builds a signalR connection with hub url and token', () => {
     const result = getNewHubConnection('hub-url', 'token-value')
 
-    expect(hubConnectionBuilderConstructorMock).toHaveBeenCalledOnce()
+    expect(HubConnectionBuilderMock).toHaveBeenCalledOnce()
     expect(withUrlMock).toHaveBeenCalledOnce()
-    expect(configureLoggingMock).toHaveBeenCalledExactlyOnceWith('Information')
+    expect(configureLoggingMock).toHaveBeenCalledExactlyOnceWith(LogLevel.Information)
     expect(withAutomaticReconnectMock).toHaveBeenCalledOnce()
     expect(buildMock).toHaveBeenCalledOnce()
     expect(result).toBe('connection-instance')

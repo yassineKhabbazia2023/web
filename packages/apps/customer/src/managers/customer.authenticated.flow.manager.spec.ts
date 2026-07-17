@@ -6,7 +6,7 @@ import {
   getPermissionsMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
+import { getStoreMock, stubCurrentEntityManager } from '@pulse/common/mocks/vitest'
 import { initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -19,57 +19,27 @@ import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse
 import { RouteName } from '@pulse/common/enums'
 import { BookingManager } from '@pulse/booking/managers'
 import { ProspectsService } from '@pulse/entities/services/prospect'
+import type { QueryResult, Entity, EntitySummary, CguTerms } from '@pulse/common/types'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
-vi.mock('@pulse/common/services/current-user')
-vi.mock('@pulse/common/services/permissions')
-vi.mock('@customer/services/entities/entity.service')
-vi.mock('@pulse/common/services/entities')
-vi.mock('@pulse/common/managers', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@pulse/common/managers')>()
-  return {
-    ...actual,
-    CurrentEntityManager: {
-      initializeCurrentEntity: vi.fn(),
-      getLocalStorageEntityId: vi.fn(),
-      setLocalStorageEntityId: vi.fn(),
-      clearLocalStorageEntityId: vi.fn(),
-      clearCurrentEntity: vi.fn(),
-      fetchInvoicesAccess: vi.fn(),
-    },
-  }
+beforeEach(async () => {
+  vi.spyOn(CurrentUserService, 'getCurrentUserContext').mockResolvedValue(undefined)
+  vi.mocked(fetchUserPermissions).mockResolvedValue(undefined)
+  vi.mocked(fetchEntities).mockResolvedValue(undefined as unknown as QueryResult<Entity>)
+  vi.mocked(fetchEntityById).mockResolvedValue(undefined as unknown as EntitySummary)
+  vi.mocked(getTermsByCurrentUser).mockResolvedValue(undefined as unknown as CguTerms)
+  vi.mocked(initProductFruitsAuthenticatedCustomer).mockImplementation(() => undefined)
+  vi.mocked(getProductFruitsUser).mockReturnValue(undefined)
+  vi.mocked(stopProductFruits).mockImplementation(() => undefined)
+  await stubCurrentEntityManager()
+  vi.spyOn(BookingManager, 'setupBookingForCustomer').mockResolvedValue(undefined)
+  vi.spyOn(BookingManager, 'refreshAvailableExperts').mockResolvedValue(undefined)
+  vi.spyOn(ProspectsService, 'fetchProspectsAccounts')
+    .mockResolvedValue(undefined as unknown as Awaited<ReturnType<typeof ProspectsService.fetchProspectsAccounts>>)
+  vi.spyOn(OpenFeatureService, 'setUserContext').mockResolvedValue(undefined)
+  vi.spyOn(OpenFeatureService, 'clearUserContext').mockResolvedValue(undefined)
 })
-vi.mock('@pulse/common/services/cgu')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-vi.mock('@pulse/common/services/open-feature', () => ({
-  OpenFeatureService: {
-    setUserContext: vi.fn(),
-    clearUserContext: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/shared/plugins', () => ({
-  initProductFruitsAuthenticatedCustomer: vi.fn(),
-  getProductFruitsUser: vi.fn(),
-  stopProductFruits: vi.fn(),
-}))
-
-vi.mock('@pulse/booking/managers', () => ({
-  BookingManager: {
-    setupBookingForCustomer: vi.fn(),
-    refreshAvailableExperts: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/entities/services/prospect', () => ({
-  ProspectsService: {
-    fetchProspectsAccounts: vi.fn(),
-  },
-}))
 
 const userMock = getMockedUserContext()
 const permissionsMock = getPermissionsMock()
@@ -357,10 +327,9 @@ describe('CustomerAuthenticatedFlowManager', () => {
 
   describe('redirectWrongUser', () => {
     it('should redirect to collaborator app with current pathname', () => {
-      Object.defineProperty(globalThis, 'location', {
-        value: { href: '', pathname: '/mon-compte' },
-        writable: true,
-      })
+      // Stub via vi.stubGlobal so unstubGlobals restores the worker-shared
+      // location after each test (doctrine: shared-dom).
+      vi.stubGlobal('location', { href: '', pathname: '/mon-compte' })
 
       CustomerAuthenticatedFlowManager.redirectWrongUser()
 

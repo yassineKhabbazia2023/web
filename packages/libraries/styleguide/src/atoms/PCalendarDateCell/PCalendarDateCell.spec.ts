@@ -1,6 +1,4 @@
-import { vi, describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import { vueuseCoreMock } from '@styleguide/__mocks__/vueuse.mocks'
 import type { VueWrapper } from '@vue/test-utils'
 import type { PCalendarDateCellProps } from './PCalendarDateCellTypes'
 import PCalendarCellNumber from '../../atoms/PCalendarCellNumber'
@@ -8,8 +6,6 @@ import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendar.mocks'
 import PTaskItem from '../../atoms/PTaskItem'
 
 import PCalendarDateCell from '.'
-
-vi.mock('@vueuse/core', () => vueuseCoreMock)
 
 const defaultProps: PCalendarDateCellProps = {
   pActiveDate: '2024-03-01',

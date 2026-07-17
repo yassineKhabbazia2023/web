@@ -1,28 +1,18 @@
+import type { MockInstance } from 'vitest'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { isMobileDevice, logger } from '@pulse/toolbox'
 import { openTermsPdfInNewTab, downloadTermsPdf } from './pennylane-terms.helper'
 
-vi.mock('@pulse/common/services/pennylane', () => ({
-  PennylaneService: {
-    getTermsContent: vi.fn(),
-  },
-}))
-
-vi.mock('@pulse/toolbox', () => ({
-  isMobileDevice: vi.fn(),
-  logger: {
-    error: vi.fn(),
-  },
-}))
-
-const mockGetTermsContent = vi.mocked(PennylaneService.getTermsContent)
 const mockLoggerError = vi.mocked(logger.error)
 const mockIsMobileDevice = vi.mocked(isMobileDevice)
+
+let mockGetTermsContent: MockInstance
 
 describe('pennylane-terms.helper', () => {
   const mockPdfData = new ArrayBuffer(8)
 
   beforeEach(() => {
+    mockGetTermsContent = vi.spyOn(PennylaneService, 'getTermsContent')
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock-url')
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
   })

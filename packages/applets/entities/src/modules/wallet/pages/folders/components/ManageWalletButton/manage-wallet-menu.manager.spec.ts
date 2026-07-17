@@ -1,18 +1,17 @@
+import type { MockInstance } from 'vitest'
 import { ManageWalletMenuManager } from './manage-wallet-menu.manager'
 import { ManageWalletAction } from '@entities/modules/wallet/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ManageWalletMenuTranslations } from './manage-wallet-button.types'
 
-const hasPermissionMock = vi.fn(() => false)
+let hasPermissionMock: MockInstance
 const isDelegationRequestTabsActivatedMock = vi.fn(() => false)
 
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: {
-    hasPermission: (...args: unknown[]) => hasPermissionMock(...(args as [])),
-  },
-  FeatureFlagManager: {
-    isDelegationRequestTabsActivated: () => isDelegationRequestTabsActivatedMock(),
-  },
-}))
+beforeEach(() => {
+  hasPermissionMock = armCurrentUserPermissions(false)
+  vi.spyOn(FeatureFlagManager, 'isDelegationRequestTabsActivated').mockImplementation(isDelegationRequestTabsActivatedMock)
+})
 
 const translations: ManageWalletMenuTranslations = {
   delegateWallet: 'Delegate',

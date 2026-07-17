@@ -8,16 +8,12 @@ import type { SupportingDocumentItem } from '@entities/services/conformity-docum
 import { getSupportingDocumentItemMock, getUploadedSupportingDocumentMock } from '@entities/__mocks__'
 import { useSupportingDocuments } from './supporting-documents.composable'
 
-vi.mock('@entities/services/conformity-documents')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox')
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-const uploadConformityDocumentMock = vi.mocked(ConformityDocumentsService.uploadConformityDocument)
+const uploadConformityDocumentMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
 const emitMock = vi.fn()
 
-let itemsMock: SupportingDocumentItem[] = []
+let itemsMock: SupportingDocumentItem[]
 
 const optionsMock = {
   saveSuccessMessage: 'saveSuccess',
@@ -32,6 +28,8 @@ const secondFileMock = new File(['content'], 'statuts-2.pdf', { type: 'applicati
 describe('supporting-documents.composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(ConformityDocumentsService, 'uploadConformityDocument').mockImplementation(uploadConformityDocumentMock)
+    displayNotificationMock.mockImplementation(() => undefined)
     currentEntityStoreMock.currentEntityId = accountIdMock
     itemsMock = []
   })

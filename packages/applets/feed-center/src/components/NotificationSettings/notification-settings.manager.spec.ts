@@ -20,10 +20,6 @@ import { NotificationSettingsManager } from './notification-settings.manager'
 
 getStoreMock(useFeedCenterStore)
 
-vi.mock('../../services/notifications.service')
-vi.mock('@pulse/styleguide')
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-
 describe('NotificationSettingsManager', () => {
   describe('hasAtLeastOneSettingEnabled', () => {
     it.each([

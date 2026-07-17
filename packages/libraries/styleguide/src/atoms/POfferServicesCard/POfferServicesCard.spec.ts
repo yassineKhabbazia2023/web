@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'

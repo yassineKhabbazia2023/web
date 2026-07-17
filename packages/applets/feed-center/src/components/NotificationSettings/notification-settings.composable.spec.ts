@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { useNotificationSettings } from './notification-settings.composable'
@@ -12,8 +11,6 @@ import {
   getDomainNotificationSettingsAfterDisableAll,
   getDomainNotificationSettingsAfterEnableAllWithNulls,
 } from '../../__mocks__/notification-settings.mocks'
-
-vi.mock('../../services/notifications.service')
 
 const mockNotificationSettings: NotificationSettingsConfiguration = {
   domainSettings: [

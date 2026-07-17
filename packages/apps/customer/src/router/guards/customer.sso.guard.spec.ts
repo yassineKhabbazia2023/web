@@ -2,36 +2,13 @@ import { FeatureFlagManager } from '@pulse/common/managers'
 import { SessionStorageService } from '@pulse/common/services/storage'
 import { customerSsoGuard } from './customer.sso.guard'
 
-vi.mock('@pulse/common/managers', () => ({
-  FeatureFlagManager: {
-    isPennylaneSsoRedirectActivated: vi.fn(),
-  },
-}))
-vi.mock('@pulse/common/services/storage', () => ({
-  SessionStorageService: {
-    setSamlSsoContext: vi.fn(),
-  },
-  SsoProvider: {
-    PENNYLANE: 'pennylane',
-  },
-  SsoQueryParam: {
-    SP_NAME: 'spName',
-    SAML_CONTEXT: 'samlContext',
-    MODE: 'mode',
-  },
-}))
-
 
 describe('customerSsoGuard', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(FeatureFlagManager, 'isPennylaneSsoRedirectActivated').mockReturnValue(false)
   })
 
   describe('when feature flag is disabled', () => {
-    beforeEach(() => {
-      vi.mocked(FeatureFlagManager.isPennylaneSsoRedirectActivated).mockReturnValue(false)
-    })
-
     it('should proceed without storing SSO context even if query params are present', () => {
       const toRoute: any = {
         query: {
@@ -50,7 +27,7 @@ describe('customerSsoGuard', () => {
 
   describe('when feature flag is enabled', () => {
     beforeEach(() => {
-      vi.mocked(FeatureFlagManager.isPennylaneSsoRedirectActivated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isPennylaneSsoRedirectActivated').mockReturnValue(true)
     })
 
     it('should store SSO context when Pennylane query params are present', () => {

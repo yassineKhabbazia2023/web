@@ -1,5 +1,6 @@
 import { getMockedOperations, getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { getPaginationMock } from '@pulse/common/mocks'
+import { apiGatewayGetMock, apiGatewayPatchMock } from '@pulse/common/mocks/vitest'
 import { OperationStatus } from '@entities/enums'
 import type { AccountOperations } from './registry.type'
 import {
@@ -11,21 +12,10 @@ import {
 const mockedAccountId = 125
 const mockedOperations = getMockedOperations()
 
-const mocks = vi.hoisted(() => ({
-  get: vi.fn(),
-  patch: vi.fn(),
-}))
-
-vi.mock('@pulse/common/api', () => {
-  return {
-    api: ({
-      gateway: {
-        get: mocks.get,
-        patch: mocks.patch,
-      },
-    }),
-  }
-})
+const mocks = {
+  get: apiGatewayGetMock,
+  patch: apiGatewayPatchMock,
+}
 
 describe('operation service', () => {
   describe('fetchOperationsForAccount', () => {

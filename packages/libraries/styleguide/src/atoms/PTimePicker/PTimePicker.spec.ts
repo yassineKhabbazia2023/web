@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
+
 import PTimePicker from '.'
 import type { PTimePickerProps } from './PTimePickerTypes'
 

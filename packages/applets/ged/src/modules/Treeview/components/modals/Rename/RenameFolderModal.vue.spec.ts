@@ -52,7 +52,7 @@ describe('props', () => {
     const btnValidationCases = getMockedButtonTest(folderName)
 
     it.each(btnValidationCases)(
-      'button validation with "%s"',
+      'button validation with $label',
       async ({ typedValue, isBtnDisabled }) => {
         const props: RenameFolderModalProps = {
           ...defaultProps,
@@ -86,7 +86,7 @@ describe('props', () => {
       },
     ]
     it.each(showErrorMsgCases)(
-      'error message display with "%s"',
+      'error message display with $typedValue',
       async ({ typedValue, isErrorMsgShown }) => {
         const props: RenameFolderModalProps = {
           ...defaultProps,
@@ -120,7 +120,7 @@ describe('props', () => {
       },
     ]
     it.each(errorMsgValueCases)(
-      'error message value assertion with "%s"',
+      'error message value assertion with $typedValue',
       async ({ typedValue, expectedValue, isFolderNameExits }) => {
         const props: RenameFolderModalProps = {
           ...defaultProps,

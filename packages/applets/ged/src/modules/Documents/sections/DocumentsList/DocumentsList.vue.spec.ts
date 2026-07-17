@@ -85,7 +85,10 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = wrapper.findComponent({ name: 'PTable' })
+      // PTable declares none of el-table's events: they reach the parent through
+      // attrs fallthrough onto ElTable. Emit on ElTable, the component that really
+      // owns them, otherwise Vue warns about an undeclared emit.
+      const table = wrapper.findComponent({ name: 'ElTable' })
       await nextTick()
       table.vm.$emit('sort-change', JSON.parse(emitPayload))
       await nextTick()
@@ -99,7 +102,7 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = wrapper.findComponent({ name: 'PTable' })
+      const table = wrapper.findComponent({ name: 'ElTable' })
       await nextTick()
 
       table.vm.$emit(
@@ -168,7 +171,7 @@ describe('documentList', () => {
 
     it('should emit table-row-double-clicked when double clicking a document row', async () => {
       wrapper = createWrapper()
-      const table = wrapper.findComponent({ name: 'PTable' })
+      const table = wrapper.findComponent({ name: 'ElTable' })
       const fakeRow = getDocumentTableRow()
       const fakeLabel = { label: documentsResponsePayload.documentHeaders[0].columnName }
       await table.vm.$emit('row-dblclick', fakeRow, fakeLabel)
@@ -180,7 +183,7 @@ describe('documentList', () => {
 
     it('should NOT emit table-row-double-clicked when double clicking a document row', async () => {
       wrapper = createWrapper()
-      const table = wrapper.findComponent({ name: 'PTable' })
+      const table = wrapper.findComponent({ name: 'ElTable' })
       const fakeRow = getDocumentTableRow()
       const fakeLabel = { label: 'unknown column label' }
       await table.vm.$emit('row-dblclick', fakeRow, fakeLabel)
@@ -277,7 +280,7 @@ describe('documentList', () => {
     describe('DocumentsList - Right-click a row should open toolbox', () => {
       it('should trigger toolbox action when right-clicking on a row', async () => {
         wrapper = createWrapper()
-        const table = wrapper.findComponent({ name: 'PTable' })
+        const table = wrapper.findComponent({ name: 'ElTable' })
         const mockedRow = { permissions: [] }
         const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
 
@@ -291,7 +294,7 @@ describe('documentList', () => {
       it('should correctly set toolbox style on right-click', async () => {
         vi.useFakeTimers()
         wrapper = createWrapper()
-        const table = wrapper.findComponent({ name: 'PTable' })
+        const table = wrapper.findComponent({ name: 'ElTable' })
         const mockedRow = { permissions: [] }
         const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
 
