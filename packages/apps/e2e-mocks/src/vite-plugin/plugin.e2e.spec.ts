@@ -117,13 +117,13 @@ describe('e2ePlugin — proxy mounting (configureServer)', () => {
     expect(createProxyMiddleware).toHaveBeenCalledWith(expect.objectContaining({ defaultMode: 'mock' }))
   })
 
-  it('falls back to hybrid mode and the /proxy-api prefix when nothing is configured', () => {
+  it('falls back to remote-first mode and the /proxy-api prefix when nothing is configured', () => {
     process.env.VITE_PROXY_ENABLED = 'true'
     const plugin = e2ePlugin({ app: 'customer', proxy: { target: 'https://remote.example.test' } })
     const server = createServer()
 
     callConfigureServer(plugin, server)
 
-    expect(createProxyMiddleware).toHaveBeenCalledWith(expect.objectContaining({ defaultMode: 'hybrid', pathPrefix: '/proxy-api', recordOnHybridMiss: true }))
+    expect(createProxyMiddleware).toHaveBeenCalledWith(expect.objectContaining({ defaultMode: 'remote-first', pathPrefix: '/proxy-api', recordOnHybridMiss: true }))
   })
 })

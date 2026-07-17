@@ -1,7 +1,7 @@
 /**
  * Self-contained HTML page served at `/__proxy__`.
- * Lets the developer switch the proxy mode (passthrough / mock / hybrid) and browse the list
- * of recorded mocks. Pure HTML + vanilla JS, no framework or build step required.
+ * Lets the developer switch the proxy mode (passthrough / mock / hybrid / remote-first) and browse
+ * the list of recorded mocks. Pure HTML + vanilla JS, no framework or build step required.
  */
 export const PROXY_UI_HTML = `<!doctype html>
 <html lang="en">
@@ -42,6 +42,7 @@ export const PROXY_UI_HTML = `<!doctype html>
       <button data-mode="passthrough">Passthrough <span class="badge">record</span></button>
       <button data-mode="mock">Mock only</button>
       <button data-mode="hybrid">Hybrid</button>
+      <button data-mode="remote-first">Remote first <span class="badge">fallback</span></button>
     </div>
     <div class="target" id="target"></div>
   </div>

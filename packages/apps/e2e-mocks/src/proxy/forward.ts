@@ -67,6 +67,7 @@ export function buildForwardHeaders(incomingHeaders: NodeJS.Dict<string | string
  * Forwards a recorded request to the remote API and returns the response in our recorded format.
  * - All non-hop-by-hop headers (including Authorization and cookies) are forwarded verbatim.
  * - The response body is fully buffered, then normalized using its Content-Type.
+ * - When `timeoutMs` is provided, the fetch is aborted (rejects) once the delay elapses.
  */
 export async function forwardToTarget(
   target: string,
@@ -74,12 +75,16 @@ export async function forwardToTarget(
   pathAndQuery: string,
   headers: Record<string, string>,
   body: Buffer,
+  timeoutMs?: number,
 ): Promise<RecordedResponse> {
   const url = joinUrl(target, pathAndQuery)
   const init: RequestInit = {
     method: method.toUpperCase(),
     headers,
     redirect: 'manual',
+  }
+  if (timeoutMs !== undefined) {
+    init.signal = AbortSignal.timeout(timeoutMs)
   }
   if (method.toUpperCase() !== 'GET' && method.toUpperCase() !== 'HEAD' && body.length > 0) {
     init.body = new Uint8Array(body)

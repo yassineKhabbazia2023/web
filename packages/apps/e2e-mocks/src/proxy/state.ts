@@ -2,10 +2,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import type { ProxyMode } from '../types/proxy.type.ts'
 
-const VALID_MODES: ReadonlySet<ProxyMode> = new Set(['passthrough', 'mock', 'hybrid'])
+const VALID_MODES: ReadonlySet<ProxyMode> = new Set(['passthrough', 'mock', 'hybrid', 'remote-first'])
 
 /**
- * Returns true when the given value is one of the three supported proxy modes.
+ * Returns true when the given value is one of the supported proxy modes.
  */
 export function isProxyMode(value: unknown): value is ProxyMode {
   return typeof value === 'string' && VALID_MODES.has(value as ProxyMode)

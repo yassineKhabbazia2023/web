@@ -14,10 +14,11 @@ afterEach(() => {
 })
 
 describe('isProxyMode', () => {
-  it('returns true for the three supported modes', () => {
+  it('returns true for the four supported modes', () => {
     expect(isProxyMode('passthrough')).toBe(true)
     expect(isProxyMode('mock')).toBe(true)
     expect(isProxyMode('hybrid')).toBe(true)
+    expect(isProxyMode('remote-first')).toBe(true)
   })
 
   it('returns false for unknown values', () => {

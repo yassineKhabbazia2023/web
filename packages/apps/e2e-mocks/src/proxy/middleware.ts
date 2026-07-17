@@ -33,7 +33,7 @@ const RECORDABLE_RESPONSE_HEADERS: ReadonlySet<string> = new Set([
 ])
 
 /**
- * Builds a Connect-style middleware that implements the three-mode recording proxy.
+ * Builds a Connect-style middleware that implements the four-mode recording proxy.
  *
  * Routes handled:
  *   GET    /__proxy__          -> HTML control panel
@@ -53,7 +53,8 @@ export function createProxyMiddleware(options: ProxyOptions): (
   const recordedDir = options.recordedDir ?? path.resolve(process.cwd(), 'recorded')
   const pathPrefix = options.pathPrefix ?? '/proxy-api'
   const recordOnHybridMiss = options.recordOnHybridMiss ?? true
-  const state = new ProxyState(recordedDir, options.defaultMode ?? 'hybrid')
+  const remoteTimeoutMs = options.remoteTimeoutMs ?? 10_000
+  const state = new ProxyState(recordedDir, options.defaultMode ?? 'remote-first')
 
   return function proxyMiddleware(req, res, next) {
     const url = req.url ?? '/'
@@ -74,6 +75,7 @@ export function createProxyMiddleware(options: ProxyOptions): (
       mode: state.getMode(),
       pathPrefix,
       recordOnHybridMiss,
+      remoteTimeoutMs,
     }).catch((err) => sendError(res, 502, err))
   }
 }
@@ -100,6 +102,17 @@ async function handleProxy(req: IncomingMessage, res: ServerResponse, ctx: Dispa
     query: recordedRequest.query,
     body: recordedRequest.body,
   })
+
+  if (ctx.mode === 'remote-first') {
+    return handleRemoteFirst(req, res, ctx, {
+      stripped,
+      pathname,
+      method,
+      hash,
+      bodyBuffer,
+      recordedRequest,
+    })
+  }
 
   if (ctx.mode === 'mock' || ctx.mode === 'hybrid') {
     const cached = loadMock(ctx.recordedDir, pathname, method, hash)
@@ -133,6 +146,69 @@ async function handleProxy(req: IncomingMessage, res: ServerResponse, ctx: Dispa
   }
 
   sendResponse(res, response, hash, 'remote')
+}
+
+type RemoteFirstRequestContext = {
+  stripped: string
+  pathname: string
+  method: string
+  hash: string
+  bodyBuffer: Buffer
+  recordedRequest: RecordedRequest
+}
+
+/**
+ * 'remote-first' dispatch: calls the remote API first (with a timeout) and refreshes the recorded
+ * mock on success. When the remote times out, is unreachable or answers 5xx, the recorded mock
+ * (if any) is served as a fallback; otherwise the failure is propagated to the client.
+ * 5xx responses are never recorded so a transient outage cannot poison the fallback cache.
+ */
+async function handleRemoteFirst(
+  req: IncomingMessage,
+  res: ServerResponse,
+  ctx: DispatchContext,
+  request: RemoteFirstRequestContext,
+): Promise<void> {
+  const { stripped, pathname, method, hash, bodyBuffer, recordedRequest } = request
+
+  let response: RecordedResponse | null
+  try {
+    const forwardHeaders = buildForwardHeaders(req.headers)
+    response = await forwardToTarget(ctx.target, method, stripped, forwardHeaders, bodyBuffer, ctx.remoteTimeoutMs)
+  } catch {
+    // Timeout or network failure: candidate for the mock fallback below
+    response = null
+  }
+
+  const isFallbackTrigger = response === null || response.status >= 500
+  if (isFallbackTrigger === false && response !== null) {
+    const sanitizedResponse: RecordedResponse = {
+      ...response,
+      headers: filterHeaders(response.headers, RECORDABLE_RESPONSE_HEADERS),
+    }
+    saveMock(ctx.recordedDir, pathname, {
+      hash,
+      recordedAt: new Date().toISOString(),
+      request: recordedRequest,
+      response: sanitizedResponse,
+    })
+    sendResponse(res, response, hash, 'remote')
+    return
+  }
+
+  const cached = loadMock(ctx.recordedDir, pathname, method, hash)
+  if (cached !== null) {
+    sendResponse(res, cached.response, cached.hash, 'mock-fallback')
+    return
+  }
+
+  if (response !== null) {
+    // 5xx with no recorded fallback: propagate the remote response as-is
+    sendResponse(res, response, hash, 'remote')
+    return
+  }
+
+  sendError(res, 504, new Error(`Remote unreachable (timeout or network error) and no recorded mock for ${method} ${pathname} (hash=${hash})`))
 }
 
 function stripPrefix(rawUrl: string, pathPrefix: string): string {
@@ -180,7 +256,7 @@ async function handleControl(
     }
     const candidate = (parsed as { mode?: unknown }).mode
     if (isProxyMode(candidate) === false) {
-      return sendJson(res, 400, { error: 'Invalid mode', allowed: ['passthrough', 'mock', 'hybrid'] })
+      return sendJson(res, 400, { error: 'Invalid mode', allowed: ['passthrough', 'mock', 'hybrid', 'remote-first'] })
     }
     state.setMode(candidate)
     return sendJson(res, 200, { mode: state.getMode() })
@@ -205,7 +281,7 @@ async function handleControl(
   sendJson(res, 404, { error: 'Unknown proxy control route', route })
 }
 
-function sendResponse(res: ServerResponse, response: RecordedResponse, hash: string, source: 'mock' | 'remote'): void {
+function sendResponse(res: ServerResponse, response: RecordedResponse, hash: string, source: 'mock' | 'remote' | 'mock-fallback'): void {
   res.statusCode = response.status
   for (const [key, value] of Object.entries(response.headers)) {
     res.setHeader(key, value)

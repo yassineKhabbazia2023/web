@@ -3,8 +3,10 @@
  * - 'passthrough': forwards every request to the remote API and records the response as a JSON mock
  * - 'mock': serves only from recorded mocks; returns 404 when no match is found
  * - 'hybrid': tries the recorded mocks first, then forwards to the remote API on miss (and records)
+ * - 'remote-first': forwards to the remote API first and refreshes the recorded mock; falls back
+ *   to the recorded mock (if any) when the remote times out, is unreachable or answers 5xx
  */
-export type ProxyMode = 'passthrough' | 'mock' | 'hybrid'
+export type ProxyMode = 'passthrough' | 'mock' | 'hybrid' | 'remote-first'
 
 /**
  * Options for the local recording/replay proxy
@@ -25,7 +27,7 @@ export type ProxyOptions = {
   /**
    * Initial mode when the dev server boots.
    * Overridden by the persisted mode file (if any) and by the in-memory mode set via API.
-   * @default 'hybrid'
+   * @default 'remote-first'
    */
   defaultMode?: ProxyMode
 
@@ -42,6 +44,13 @@ export type ProxyOptions = {
    * @default true
    */
   recordOnHybridMiss?: boolean
+
+  /**
+   * Timeout (in ms) applied to the remote call in 'remote-first' mode before falling back
+   * to the recorded mock. Other modes are not affected.
+   * @default 10000
+   */
+  remoteTimeoutMs?: number
 }
 
 /**
@@ -89,6 +98,7 @@ export type DispatchContext = {
   mode: ProxyMode
   pathPrefix: string
   recordOnHybridMiss: boolean
+  remoteTimeoutMs: number
 }
 
 /**

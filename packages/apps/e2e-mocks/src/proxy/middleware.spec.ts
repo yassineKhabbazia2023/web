@@ -4,7 +4,7 @@ import path from 'node:path'
 import { Readable } from 'node:stream'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { createProxyMiddleware } from './middleware'
-import { saveMock } from './storage'
+import { loadMock, saveMock } from './storage'
 import { hashRequest } from './match'
 import type { ProxyOptions, RecordedMock } from '../types/proxy.type'
 
@@ -276,6 +276,107 @@ describe('createProxyMiddleware — hybrid mode', () => {
     await waitForEnd(getBody)
 
     expect(fetchMock).toHaveBeenCalledOnce()
+    expect(fs.existsSync(path.join(tmpDir, 'api', 'missing'))).toBe(false)
+  })
+})
+
+describe('createProxyMiddleware — remote-first mode', () => {
+  it('forwards to the remote target and refreshes the recorded mock, even when a cache entry exists', async () => {
+    const mock = seedMock('/api/users', 'GET')
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ fresh: true }), { status: 200, headers: { 'content-type': 'application/json' } }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getHeaders, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/users' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(fetchMock).toHaveBeenCalledOnce()
+    expect(getHeaders()['x-proxy-source']).toBe('remote')
+    expect(JSON.parse(String(getBody()))).toEqual({ fresh: true })
+
+    const refreshed = loadMock(tmpDir, '/api/users', 'GET', mock.hash)
+    expect(refreshed?.response.body.data).toEqual({ fresh: true })
+  })
+
+  it('passes the remote timeout to the fetch call', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 204 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw', remoteTimeoutMs: 5000 }))
+    const { res, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/users' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ signal: expect.any(AbortSignal) }))
+  })
+
+  it('falls back to the cached mock when the remote answers 5xx', async () => {
+    seedMock('/api/users', 'GET')
+    const fetchMock = vi.fn().mockResolvedValue(new Response('Service Unavailable', { status: 503 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getStatus, getHeaders, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/users' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(getStatus()).toBe(200)
+    expect(getHeaders()['x-proxy-source']).toBe('mock-fallback')
+    expect(JSON.parse(String(getBody()))).toEqual({ cached: true })
+  })
+
+  it('falls back to the cached mock when the remote call fails (timeout or network error)', async () => {
+    seedMock('/api/users', 'GET')
+    const fetchMock = vi.fn().mockRejectedValue(new Error('The operation timed out'))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getStatus, getHeaders, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/users' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(getStatus()).toBe(200)
+    expect(getHeaders()['x-proxy-source']).toBe('mock-fallback')
+    expect(JSON.parse(String(getBody()))).toEqual({ cached: true })
+  })
+
+  it('propagates the 5xx response when no cached mock exists', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('Service Unavailable', { status: 503 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getStatus, getHeaders, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/missing' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(getStatus()).toBe(503)
+    expect(getHeaders()['x-proxy-source']).toBe('remote')
+  })
+
+  it('returns 504 when the remote call fails and no cached mock exists', async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new Error('connection refused'))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getStatus, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/missing' }), res, () => {})
+    await waitForEnd(getBody)
+
+    expect(getStatus()).toBe(504)
+  })
+
+  it('does not record 5xx responses so they cannot poison the fallback cache', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('Boom', { status: 500 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const middleware = createProxyMiddleware(buildOptions({ defaultMode: 'remote-first', pathPrefix: '/gtw' }))
+    const { res, getBody } = createRes()
+
+    middleware(createReq({ url: '/gtw/api/missing' }), res, () => {})
+    await waitForEnd(getBody)
+
     expect(fs.existsSync(path.join(tmpDir, 'api', 'missing'))).toBe(false)
   })
 })

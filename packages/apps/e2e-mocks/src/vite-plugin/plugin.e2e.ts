@@ -200,7 +200,7 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       const proxyTarget = process.env.VITE_PROXY_TARGET ?? options.proxy?.target
       if (process.env.VITE_PROXY_ENABLED === 'true' && proxyTarget !== undefined && proxyTarget !== '') {
         const envMode = process.env.VITE_PROXY_MODE
-        const defaultMode: ProxyMode = isProxyModeEnv(envMode) ? envMode : (options.proxy?.defaultMode ?? 'hybrid')
+        const defaultMode: ProxyMode = isProxyModeEnv(envMode) ? envMode : (options.proxy?.defaultMode ?? 'remote-first')
         const recordedDir = options.proxy?.recordedDir
           ?? path.resolve(__dirname, '../../recorded')
         server.middlewares.use(createProxyMiddleware({
@@ -209,6 +209,7 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
           defaultMode,
           pathPrefix: options.proxy?.pathPrefix ?? '/proxy-api',
           recordOnHybridMiss: options.proxy?.recordOnHybridMiss ?? true,
+          remoteTimeoutMs: options.proxy?.remoteTimeoutMs,
         }))
         /* eslint-disable-next-line no-console */
         console.log(`[proxy] mounted on ${options.proxy?.pathPrefix ?? '/proxy-api'} -> ${proxyTarget} (mode=${defaultMode})`)
@@ -245,5 +246,5 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
 }
 
 function isProxyModeEnv(value: string | undefined): value is ProxyMode {
-  return value === 'passthrough' || value === 'mock' || value === 'hybrid'
+  return value === 'passthrough' || value === 'mock' || value === 'hybrid' || value === 'remote-first'
 }
