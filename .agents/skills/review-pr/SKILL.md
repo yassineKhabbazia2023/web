@@ -58,6 +58,7 @@ Beyond style, analyze whether the code is **functionally correct** and whether t
 - **Intent gap** — anything the PR claims to do (per its commits/branch) but does not, or does only partially.
 - **i18n** — every translation key added or renamed must exist in BOTH locale files (`fr-FR.json` and `en-US.json`) of the applet. Flag hardcoded user-facing strings in templates.
 - **Security** — flag `v-html` on non-sanitized data, secrets/tokens/URLs that should be environment variables, and sensitive data written to logs.
+- **Testability** — new interactive elements (buttons, inputs, links, selects) and containers targeted by E2E tests must carry a `data-testid`, kebab-case and prefixed by the feature. Dynamic values use `:data-testid` with a stable domain id.
 - **Stories** — if a component with a `.stories.ts` file changed its props/behavior, check the story still reflects it.
 
 Report logic/flow findings with the same severity scale (Step 3). When the correct behavior is **ambiguous**, raise a **question for the author** instead of inventing a fix you are unsure about.

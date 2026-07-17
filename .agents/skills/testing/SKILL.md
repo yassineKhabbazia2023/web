@@ -22,6 +22,10 @@ description: Unit testing requirements, Vitest guidelines, mock patterns, and te
 ## Testing Attributes
 
 - Use `data-testid` for test selectors (not `data-test-id`)
+- **When**: every new or modified interactive element (button, input, link, select/dropdown) and every container targeted by an E2E test (drawer, table, row, card) must carry a `data-testid`
+- **Naming**: kebab-case, prefixed by the domain/feature, suffixed by the element role (`-button`, `-input`, `-drawer`, `-table`, `-list`, `-link`). Examples: `information-save-button`, `prospect-search-input`
+- **Dynamic values**: use `:data-testid` with a stable domain id/key, never a loop index, e.g. `` :data-testid="`collaborator-item-${collaborator.contactId}`" ``
+- **Styleguide components**: do not hardcode a `data-testid` on the tag — pass the `pTestId` prop when the component exposes one (it forwards it to `data-testid`)
 
 ## Testing Guidelines
 

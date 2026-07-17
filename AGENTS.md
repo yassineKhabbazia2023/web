@@ -118,6 +118,7 @@ When using more than 2 CSS classes, use multi-line format:
 - **Never reference `props.xxx` in templates.** It's unnecessary in Vue 3: `defineProps` return values are already available directly in the template (e.g. `{{ bookingId }}`, not `{{ props.bookingId }}`). This only applies to templates — using `const props = defineProps<...>()` and `props.xxx` in the script is fine and does not need to be destructured.
 - **Never prefix props with a leading `p` (e.g. `pDisabled`, `pType`).** That `p` prefix is a `@pulse/styleguide` component convention only (see `PSkewedButtonProps` etc. in `packages/libraries/styleguide`). Components in apps, applets, and other libraries must use plain, unprefixed prop names (e.g. `disabled`, `type`).
 - **UI components always come from `@pulse/styleguide`** (e.g. `import { PButton } from '@pulse/styleguide/components'`). Never render `el-*` tags directly — element-plus is an implementation detail of the styleguide (importing its types is fine). For user notifications, use `PNotification` / `displayNotification` from `@pulse/styleguide`.
+- Add a `data-testid` (kebab-case, prefixed by the feature, suffixed by the element role) on interactive elements and containers targeted by E2E tests — see the `testing` skill.
 
 ### i18n
 
