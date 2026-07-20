@@ -547,6 +547,7 @@
           }
         },
         "loadError": "Une erreur est survenue. Veuillez rafraîchir la page.",
+        "stepAccessDeniedMessage": "Vous ne disposez pas des droits nécessaires pour accéder à cette rubrique. Contactez la personne désignée comme signataire sur votre dossier afin de modifier vos droits d'accès",
         "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",
         "stepPlaceholderHint": "Cliquez sur une étape dans le tracker à gauche pour naviguer ici.",
         "proposal": {

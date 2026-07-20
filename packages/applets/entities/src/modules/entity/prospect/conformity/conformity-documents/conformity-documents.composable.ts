@@ -1,4 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { useCurrentEntityStore } from '@pulse/common/stores'
@@ -10,10 +11,18 @@ import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enu
 import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import type { ConformityDocumentsEmits } from './conformity-documents.types'
 
-export function useConformityDocuments(emit: ConformityDocumentsEmits) {
+export function useConformityDocuments(
+  emit: ConformityDocumentsEmits,
+  hasSupportingDocumentsAccess: Ref<boolean>,
+  hasComplementaryDocumentsAccess: Ref<boolean>,
+) {
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-  const { status, isLoadingStatus, reloadStatus } = useOnboardingStepStatus(OnboardingStep.SupportingDocuments)
+  // Only the supporting-documents card consumes this status, so a denied access skips the fetch.
+  const { status, isLoadingStatus, reloadStatus } = useOnboardingStepStatus(
+    OnboardingStep.SupportingDocuments,
+    hasSupportingDocumentsAccess,
+  )
 
   const isLoadingSupportingDocuments = ref(true)
   // True when the shared /supporting-documents fetch failed, so both sections show an alert.
@@ -40,14 +49,22 @@ export function useConformityDocuments(emit: ConformityDocumentsEmits) {
 
   // While loading/error, items are empty: keep both cards so loaders/error alerts still show.
   // Once loaded successfully, render each card only if the API returned matching documents.
+  // A denied card always stays visible: it carries the access-denied message instead of data.
   const shouldDisplaySupportingDocuments = computed(
-    () => isLoading.value || hasError.value || predefinedItems.value.length > 0,
+    () => hasSupportingDocumentsAccess.value === false
+      || isLoading.value || hasError.value || predefinedItems.value.length > 0,
   )
   const shouldDisplayComplementaryDocuments = computed(
-    () => isLoading.value || hasError.value || complementaryItem.value !== undefined,
+    () => hasComplementaryDocumentsAccess.value === false
+      || isLoading.value || hasError.value || complementaryItem.value !== undefined,
   )
 
   const loadSupportingDocuments = async () => {
+    // The fetch is shared by both cards: skip it only when neither can show data.
+    if (hasSupportingDocumentsAccess.value === false && hasComplementaryDocumentsAccess.value === false) {
+      isLoadingSupportingDocuments.value = false
+      return
+    }
     if (currentEntityId.value === undefined) {
       isLoadingSupportingDocuments.value = false
       return

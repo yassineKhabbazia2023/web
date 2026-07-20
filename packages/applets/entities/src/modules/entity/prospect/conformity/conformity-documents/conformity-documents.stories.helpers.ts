@@ -1,6 +1,7 @@
 import type { StoryObj } from '@storybook/vue3-vite'
-import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import { getMockedEntitySummary, getMockedUser } from '@pulse/common/mocks'
+import { CustomerPermission } from '@pulse/common/enums'
 import { SupportingDocumentType } from '@entities/enums'
 import { getSupportingDocumentItemMock, getUploadedSupportingDocumentMock } from '@entities/__mocks__'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
@@ -79,6 +80,11 @@ function mockConformityDocuments(
 ): void {
   useUserStore().setUser(getMockedUser({ isCollab: isCollaborator }))
   useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1 }))
+  // Customer stories need the dossier-scoped conformity permissions, otherwise
+  // both cards render the access-denied message instead of the documents.
+  usePermissionsStore().setCurrentEntityPermissions([
+    CustomerPermission.ACCEDER_CONFORMITE_DOCUMENTS_JUSTIFICATIFS,
+  ])
   ConformityDocumentsService.getSupportingDocuments = state === 'error'
     ? () => Promise.reject(new Error('Supporting documents request failed (404)'))
     : () => Promise.resolve(RESPONSES[state])

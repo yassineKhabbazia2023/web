@@ -86,6 +86,9 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
     CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
     CollaboratorPermission.ACCEDER_RAPPORTS_BI,
   ],
+  PROSPECT_DOCUMENTS: [
+    CustomerPermission.ACCEDER_DOSSIER_DOCUMENTS_PROSPECT,
+  ],
   USERS: [
     CustomerPermission.CONSULTER_UTILISATEURS,
     CollaboratorPermission.ACCEDER_ONGLET_UTILISATEURS,

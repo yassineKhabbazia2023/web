@@ -69,7 +69,7 @@
           <template #default="scope">
             <PToolbox
               trigger="click"
-              :pElements="menuElements"
+              :pElements="getMenuElements(scope.row)"
               @p-toolbox-item-clicked="($event: string) => handleToolboxItemClick($event, scope.row)"
             >
               <PButton
@@ -166,7 +166,6 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { computed } from 'vue'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
@@ -212,7 +211,9 @@ const { d, t } = useI18n({
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
-const props = defineProps<UsersListProps>()
+const props = withDefaults(defineProps<UsersListProps>(), {
+  canRemoveSignatoryUsers: true,
+})
 const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
@@ -226,8 +227,7 @@ const {
   removeUser,
   userInformation,
 } = MENU_ACTIONS_NAME
-
-const menuElements = computed<PToolboxItemProps[]>(() =>
+const getMenuElements = (row: ExtendedUser): PToolboxItemProps[] =>
   [
     {
       pIconName: 'person',
@@ -249,7 +249,9 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.DELETE_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.DELETE_USER)
+        && props.isInAnEntityPage
+        && (props.canRemoveSignatoryUsers === true || row.isSignatory !== true),
     },
   ]
     .filter(({ display }) => display)
@@ -258,8 +260,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue,
       pActionName,
       pState,
-    })) as PToolboxItemProps[],
-)
+    })) as PToolboxItemProps[]
 
 const handleToolboxItemClick = (action: string, row: ExtendedUser) => {
   if (action === UserActions.MODIFY_RIGHTS) {

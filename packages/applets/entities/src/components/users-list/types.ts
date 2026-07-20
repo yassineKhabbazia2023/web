@@ -8,4 +8,6 @@ export interface UsersListProps {
   isAccountManagement?: boolean
   // Hides the entire "Options" column when false
   canManageUsers?: boolean
+  // Hides the "Remove user" action on signatory rows when false (defaults to true)
+  canRemoveSignatoryUsers?: boolean
 }

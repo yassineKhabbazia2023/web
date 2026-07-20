@@ -8,7 +8,9 @@ import type { OnboardingStep, OnboardingStepStatus } from './prospect-conformity
 
 // Each conformity section owns its own status: the /steps (plural) call only feeds the stepper,
 // while every section that needs its status fetches it from the individual /step endpoint.
-export function useOnboardingStepStatus(stepId: OnboardingStep) {
+// Sections denied by permissions are not mounted by the parent, so they never reach this fetch.
+// isEnabled is only for a section that stays mounted without access (conformity-documents).
+export function useOnboardingStepStatus(stepId: OnboardingStep, isEnabled?: Ref<boolean>) {
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const status = ref<OnboardingStepStatus>()
@@ -18,6 +20,11 @@ export function useOnboardingStepStatus(stepId: OnboardingStep) {
   const isRefreshingStatus = ref(false)
 
   const loadStatus = async (loadingFlag: Ref<boolean>): Promise<void> => {
+    // A denied section never renders its status, so it must not be fetched.
+    if (isEnabled?.value === false) {
+      loadingFlag.value = false
+      return
+    }
     if (isNotNullNorEmpty(currentEntityId.value) === false) {
       loadingFlag.value = false
       return

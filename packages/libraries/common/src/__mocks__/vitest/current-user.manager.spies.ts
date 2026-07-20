@@ -5,6 +5,7 @@ export const setCurrentUserMock: Mock = vi.fn()
 export const initializeCurrentUserMock: Mock = vi.fn()
 export const logoutMock: Mock = vi.fn()
 export const hasPermissionMock: Mock = vi.fn((_: Permission[]) => true)
+export const hasCurrentEntityPermissionMock: Mock = vi.fn((_: Permission[]) => true)
 export const initTokenMock: Mock = vi.fn()
 export const persistTokenMock: Mock = vi.fn()
 
@@ -13,6 +14,7 @@ export const CurrentUserManagerMock = {
   initializeCurrentUser: initializeCurrentUserMock,
   logout: logoutMock,
   hasPermission: hasPermissionMock,
+  hasCurrentEntityPermission: hasCurrentEntityPermissionMock,
   initToken: initTokenMock,
   persistToken: persistTokenMock,
 }

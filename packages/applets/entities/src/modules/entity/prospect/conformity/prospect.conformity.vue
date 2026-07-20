@@ -78,6 +78,14 @@
               v-if="step.id === OnboardingStep.SupportingDocuments"
               @refresh-steps="loadOnboardingSteps"
             />
+            <!-- Denied steps keep their title and anchor but never mount the section (no fetch). -->
+            <ConformityStepCard
+              v-else-if="hasStepAccess(step.id) === false"
+              :pStepId="step.slug"
+              :pTitle="t(step.labelKey)"
+            >
+              <ConformityAccessDeniedMessage />
+            </ConformityStepCard>
             <ConformityStepCard
               v-else
               :pStepId="step.slug"
@@ -146,8 +154,10 @@ import EngagementLetter from './engagement-letter/engagement-letter.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import ConformityStepCard from './components/conformity-step-card/conformity-step-card.vue'
 import ConformityStepper from './components/conformity-stepper/conformity-stepper.vue'
+import ConformityAccessDeniedMessage from './components/conformity-access-denied-message/conformity-access-denied-message.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import { useOnboardingSteps } from './onboarding-steps.composable'
+import { useConformityAccess } from './conformity-access.composable'
 import Beneficiaries from './beneficiaries/beneficiaries.vue'
 import Payment from './payment/payment.vue'
 import DocumentsConsultDrawer from '../documents/documents-consult-drawer/documents-consult-drawer.vue'
@@ -176,6 +186,8 @@ const {
   isLoadingSteps,
   reload: loadOnboardingSteps,
 } = useOnboardingSteps(() => currentEntityId.value)
+
+const { hasStepAccess } = useConformityAccess()
 
 // First step still to complete, in display order. Returns null while statuses
 // are loading (nothing to focus yet) or once every step is completed.

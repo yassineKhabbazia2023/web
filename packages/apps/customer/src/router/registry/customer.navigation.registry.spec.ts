@@ -224,7 +224,7 @@ describe('registerCustomerNavigationItems', () => {
   })
 
   describe('prospect entity navigation items', () => {
-    const context = createNavigationContext({})
+    const context = createNavigationContext({ hasUsers: true })
 
     it('should register prospect homepage, overview and conformity items', () => {
       const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)

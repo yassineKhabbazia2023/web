@@ -223,7 +223,7 @@ describe('registerCollaboratorNavigationItems', () => {
   })
 
   describe('prospect entity navigation items', () => {
-    const context = createNavigationContext({})
+    const context = createNavigationContext({ isCollab: true })
 
     it('should register prospect homepage, overview and conformity items', () => {
       const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)

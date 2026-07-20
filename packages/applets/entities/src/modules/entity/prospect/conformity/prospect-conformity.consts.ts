@@ -1,3 +1,5 @@
+import { CustomerPermission } from '@pulse/common/enums'
+import type { Permission } from '@pulse/common/types'
 import { OnboardingStep, ProspectConformitySection } from './prospect-conformity.enums'
 import type { ProspectConformityStep } from './prospect-conformity.types'
 
@@ -25,6 +27,22 @@ export const PROSPECT_CONFORMITY_STEP_SLUGS: Record<OnboardingStep, string> = {
   [OnboardingStep.PaymentMethod]: 'moyens-de-paiement',
   [OnboardingStep.EngagementLetter]: 'lettre-de-mission',
 }
+
+// Dossier-scoped customer permissions gating the DETAIL of each step (title and
+// status stay visible to everyone). Collaborators bypass these checks entirely.
+export const PROSPECT_CONFORMITY_STEP_PERMISSIONS: Record<OnboardingStep, Permission[]> = {
+  [OnboardingStep.Beneficiary]: [CustomerPermission.ACCEDER_CONFORMITE_BENEFICIAIRES_EFFECTIFS],
+  [OnboardingStep.SupportingDocuments]: [CustomerPermission.ACCEDER_CONFORMITE_DOCUMENTS_JUSTIFICATIFS],
+  [OnboardingStep.CommercialProposal]: [CustomerPermission.ACCEDER_CONFORMITE_PROPOSITION_COMMERCIALE],
+  [OnboardingStep.PaymentMethod]: [CustomerPermission.ACCEDER_CONFORMITE_MOYENS_PAIEMENT],
+  [OnboardingStep.EngagementLetter]: [CustomerPermission.ACCEDER_CONFORMITE_LETTRE_MISSION],
+}
+
+// The complementary documents card lives inside the SupportingDocuments step and
+// shares its permission: there is no dedicated complementary-documents permission.
+export const PROSPECT_CONFORMITY_COMPLEMENTARY_DOCUMENTS_PERMISSIONS: Permission[] = [
+  CustomerPermission.ACCEDER_CONFORMITE_DOCUMENTS_JUSTIFICATIFS,
+]
 
 export const PROSPECT_CONFORMITY_STEPS: readonly ProspectConformityStep[] = [
   { id: OnboardingStep.Beneficiary, slug: PROSPECT_CONFORMITY_STEP_SLUGS[OnboardingStep.Beneficiary], labelKey: `${I18N_KEY}.steps.beneficiary`, section: ProspectConformitySection.Identity },

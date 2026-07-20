@@ -429,10 +429,26 @@ export const entitiesHandlers = [
       CustomerPermission.ACCEDER_OFFRES_SOUSCRITES,
     ]
 
+    // Le Beau Prospect - all conformity steps granted except the payment method,
+    // to showcase the access-denied step message
+    const prospectPermissions = [
+      CustomerPermission.ACCEDER_CONFORMITE_BENEFICIAIRES_EFFECTIFS,
+      CustomerPermission.ACCEDER_CONFORMITE_DOCUMENTS_JUSTIFICATIFS,
+      CustomerPermission.ACCEDER_CONFORMITE_PROPOSITION_COMMERCIALE,
+      CustomerPermission.ACCEDER_CONFORMITE_LETTRE_MISSION,
+      CustomerPermission.ACCEDER_DOSSIER_DOCUMENTS_PROSPECT,
+      CustomerPermission.CONSULTER_UTILISATEURS,
+      CustomerPermission.AJOUTER_UTILISATEUR,
+      CustomerPermission.SUPPRIMER_UTILISATEUR,
+      CustomerPermission.GERER_DROITS_UTILISATEURS,
+      CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE,
+    ]
+
     const permissionsMap: Record<number, string[]> = {
       [MockEntityId.BASIC]: basicPermissions,
       [MockEntityId.LEGACY_GED]: legacyGedPermissions,
       [MockEntityId.PENNYLANE]: pennylanePermissions,
+      [MockEntityId.PROSPECT]: prospectPermissions,
     }
 
     const permissions = permissionsMap[accountId] ?? basicPermissions

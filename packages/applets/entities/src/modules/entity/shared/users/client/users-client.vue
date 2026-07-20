@@ -48,6 +48,7 @@
           :data="state.data"
           :isInAnEntityPage="!!entityId"
           :canManageUsers="!!entityId"
+          :canRemoveSignatoryUsers="currentAccountType !== AccountType.PROSPECT"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
@@ -122,7 +123,7 @@ import type { UsersClientProps, State } from '../types/users-client.types'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { ContactType } from '@pulse/common/enums'
+import { AccountType, ContactType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { useSort } from '@pulse/common/composables/sort'
 

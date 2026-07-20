@@ -1,6 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { CUSTOMER_ROUTES } from '@customer/router/customer.routes'
-import { FEATURE_FLAG_META, IS_UNITARY_VIEW_META, LAYOUT_GRAY_BACKGROUND_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import {
+  ACCOUNT_PERMISSIONS,
+  FEATURE_FLAG_META,
+  IS_UNITARY_VIEW_META,
+  LAYOUT_GRAY_BACKGROUND_META,
+  LAYOUT_NO_PADDING_META,
+  PERMISSIONS_META,
+} from '@pulse/common/constants'
 import { Feature } from '@pulse/common/enums'
 
 /**
@@ -37,6 +44,9 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
         path: CUSTOMER_ROUTES.entity.prospect.documents.path,
         name: CUSTOMER_ROUTES.entity.prospect.documents.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectDocuments),
+        meta: {
+          [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.PROSPECT_DOCUMENTS,
+        },
       },
       // PROSPECT OVERVIEW
       {

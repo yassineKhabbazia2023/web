@@ -547,6 +547,7 @@
           }
         },
         "loadError": "An error occurred. Please refresh the page.",
+        "stepAccessDeniedMessage": "You do not have the necessary rights to access this section. Contact the person designated as signatory on your dossier to change your access rights",
         "stepPlaceholderTitle": "This is the « {label} » step screen.",
         "stepPlaceholderHint": "Click a step in the tracker on the left to navigate here.",
         "proposal": {

@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 import UsersList from './'
+import type { UsersListProps } from './types'
 
 let hasPermissionMock: MockInstance
 
@@ -29,27 +30,26 @@ const toolBoxElementsWithoutPermissions = [
   },
 ]
 
-const createWrapper = (): VueWrapper<any> => {
-  const props = {
-    data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
-      initials: getInitials(firstName, lastName),
-      fullName: `${firstName} ${lastName}`,
-      firstName,
-      lastName,
-      isSignatory: false,
-      isOwner: false,
-      isLoggedUser: false,
-      type: ContactType.CUSTOMER,
-      status: 'Declared',
-      globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
-      ...rest,
-    })),
-    isInAnEntityPage: true,
-    canManageUsers: true,
-  }
-
-  return shallowMount(UsersList, {
-    props,
+const createWrapper = (props?: Partial<UsersListProps>): VueWrapper<any> =>
+  shallowMount(UsersList, {
+    props: {
+      data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
+        initials: getInitials(firstName, lastName),
+        fullName: `${firstName} ${lastName}`,
+        firstName,
+        lastName,
+        isSignatory: false,
+        isOwner: false,
+        isLoggedUser: false,
+        type: ContactType.CUSTOMER,
+        status: 'Declared',
+        globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
+        ...rest,
+      })),
+      isInAnEntityPage: true,
+      canManageUsers: true,
+      ...props,
+    },
     global: {
       stubs: {
         PResponsiveTable: {
@@ -85,7 +85,6 @@ const createWrapper = (): VueWrapper<any> => {
       },
     },
   })
-}
 
 describe('users-list', () => {
   beforeEach(() => {
@@ -165,6 +164,38 @@ describe('users-list', () => {
       pValue: 'modifyRights',
       pActionName: 'modifyRights',
       pState: 'default',
+    })
+  })
+
+  describe('signatory removal rule', () => {
+    const signatoryRow = { contactId: 123, isSignatory: true }
+    const nonSignatoryRow = { contactId: 456, isSignatory: false }
+
+    it('should hide the remove action on a signatory row when canRemoveSignatoryUsers is false', () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper({ canRemoveSignatoryUsers: false })
+
+      const actionNames = wrapper.vm.getMenuElements(signatoryRow).map(({ pActionName }: { pActionName: string }) => pActionName)
+
+      expect(actionNames).not.toContain(UserActions.REMOVE_USER)
+    })
+
+    it('should keep the remove action on a non-signatory row when canRemoveSignatoryUsers is false', () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper({ canRemoveSignatoryUsers: false })
+
+      const actionNames = wrapper.vm.getMenuElements(nonSignatoryRow).map(({ pActionName }: { pActionName: string }) => pActionName)
+
+      expect(actionNames).toContain(UserActions.REMOVE_USER)
+    })
+
+    it('should keep the remove action on a signatory row when canRemoveSignatoryUsers is true by default', () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+
+      const actionNames = wrapper.vm.getMenuElements(signatoryRow).map(({ pActionName }: { pActionName: string }) => pActionName)
+
+      expect(actionNames).toContain(UserActions.REMOVE_USER)
     })
   })
 

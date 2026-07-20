@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
@@ -21,6 +22,13 @@ const emitMock = vi.fn()
 
 const accountIdMock = 602
 
+const mountComposable = ({ hasSupportingAccess = true, hasComplementaryAccess = true } = {}) => {
+  const [result] = withSetup(() =>
+    useConformityDocuments(emitMock, ref(hasSupportingAccess), ref(hasComplementaryAccess)),
+  )
+  return result
+}
+
 describe('conformity-documents.composable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -36,7 +44,7 @@ describe('conformity-documents.composable', () => {
 
   describe('initial loading on mount', () => {
     it('should fetch the supporting documents and split them by category', async () => {
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
 
       expect(result.isLoading.value).toBe(true)
 
@@ -53,7 +61,7 @@ describe('conformity-documents.composable', () => {
     it('should not fetch the documents when there is no current entity', async () => {
       currentEntityStoreMock.currentEntityId = undefined
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(getSupportingDocumentsMock).not.toHaveBeenCalled()
@@ -63,7 +71,7 @@ describe('conformity-documents.composable', () => {
     it('should leave the lists empty when the fetch fails', async () => {
       getSupportingDocumentsMock.mockRejectedValue(new Error('API Error'))
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.predefinedItems.value).toEqual([])
@@ -77,7 +85,7 @@ describe('conformity-documents.composable', () => {
         documents: [getSupportingDocumentItemMock({ type: SupportingDocumentType.KBIS })],
       })
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.complementaryDocuments.value).toEqual([])
@@ -87,7 +95,7 @@ describe('conformity-documents.composable', () => {
 
   describe('reload', () => {
     it('should fetch the supporting documents again', async () => {
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       await result.reload()
@@ -100,7 +108,7 @@ describe('conformity-documents.composable', () => {
 
   describe('onSupportingDocumentsChanged', () => {
     it('should reload the documents and step status, then ask the parent to refresh the onboarding steps', async () => {
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       await result.onSupportingDocumentsChanged()
@@ -118,7 +126,7 @@ describe('conformity-documents.composable', () => {
         status: OnboardingStepStatus.Completed,
       })
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(fetchOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.SupportingDocuments)
@@ -126,7 +134,7 @@ describe('conformity-documents.composable', () => {
     })
 
     it('should keep isCompleted false while the step is not completed', async () => {
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.isCompleted.value).toBe(false)
@@ -137,7 +145,7 @@ describe('conformity-documents.composable', () => {
     it('should hide both sections when the API returns no document', async () => {
       getSupportingDocumentsMock.mockResolvedValue({ documents: [] })
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.shouldDisplaySupportingDocuments.value).toBe(false)
@@ -149,7 +157,7 @@ describe('conformity-documents.composable', () => {
         documents: [getSupportingDocumentItemMock({ type: SupportingDocumentType.COMPLEMENTARY })],
       })
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.shouldDisplaySupportingDocuments.value).toBe(false)
@@ -161,7 +169,7 @@ describe('conformity-documents.composable', () => {
         documents: [getSupportingDocumentItemMock({ type: SupportingDocumentType.KBIS })],
       })
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
@@ -171,7 +179,7 @@ describe('conformity-documents.composable', () => {
     it('should display both sections when the API returns supporting and complementary documents', async () => {
       getSupportingDocumentsMock.mockResolvedValue(getSupportingDocumentsResponseMock())
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
@@ -179,7 +187,7 @@ describe('conformity-documents.composable', () => {
     })
 
     it('should keep both sections visible while loading', () => {
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
 
       expect(result.isLoading.value).toBe(true)
       expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
@@ -189,10 +197,68 @@ describe('conformity-documents.composable', () => {
     it('should keep both sections visible on fetch error so the alert is shown', async () => {
       getSupportingDocumentsMock.mockRejectedValue(new Error('API Error'))
 
-      const [result] = withSetup(() => useConformityDocuments(emitMock))
+      const result = mountComposable()
       await flushPromises()
 
       expect(result.hasError.value).toBe(true)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+  })
+
+  describe('access gating', () => {
+    it('should skip the fetch and keep both cards visible when both accesses are denied', async () => {
+      const result = mountComposable({ hasSupportingAccess: false, hasComplementaryAccess: false })
+      await flushPromises()
+
+      expect(getSupportingDocumentsMock).not.toHaveBeenCalled()
+      expect(result.isLoading.value).toBe(false)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should still fetch and force the supporting card visible when only the supporting access is denied', async () => {
+      getSupportingDocumentsMock.mockResolvedValue({
+        documents: [getSupportingDocumentItemMock({ type: SupportingDocumentType.COMPLEMENTARY })],
+      })
+
+      const result = mountComposable({ hasSupportingAccess: false })
+      await flushPromises()
+
+      expect(getSupportingDocumentsMock).toHaveBeenCalledWith(accountIdMock)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should skip the step status fetch when the supporting access is denied', async () => {
+      const result = mountComposable({ hasSupportingAccess: false })
+      await flushPromises()
+
+      // Only the supporting card consumes the status, so a denied access must not call /steps/:stepId.
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isCompleted.value).toBe(false)
+      // The complementary card still needs isLoading to settle.
+      expect(result.isLoading.value).toBe(false)
+    })
+
+    it('should skip both fetches when both accesses are denied', async () => {
+      const result = mountComposable({ hasSupportingAccess: false, hasComplementaryAccess: false })
+      await flushPromises()
+
+      expect(getSupportingDocumentsMock).not.toHaveBeenCalled()
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isLoading.value).toBe(false)
+    })
+
+    it('should still fetch and force the complementary card visible when only the complementary access is denied', async () => {
+      getSupportingDocumentsMock.mockResolvedValue({
+        documents: [getSupportingDocumentItemMock({ type: SupportingDocumentType.KBIS })],
+      })
+
+      const result = mountComposable({ hasComplementaryAccess: false })
+      await flushPromises()
+
+      expect(getSupportingDocumentsMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
       expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
     })

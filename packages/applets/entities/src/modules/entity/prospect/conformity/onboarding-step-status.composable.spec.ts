@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import type { MockInstance } from 'vitest'
 import { withSetup } from '@pulse/toolbox/utils/test'
@@ -82,6 +83,42 @@ describe('onboarding-step-status.composable', () => {
 
       expect(result.isRefreshingStatus.value).toBe(false)
       expect(result.isLoadingStatus.value).toBe(false)
+    })
+  })
+
+  describe('isEnabled', () => {
+    it('should not fetch and stop loading when disabled', async () => {
+      const [result] = withSetup(
+        () => useOnboardingStepStatus(OnboardingStep.CommercialProposal, ref(false)),
+      )
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      // The section must not stay stuck on its skeleton.
+      expect(result.isLoadingStatus.value).toBe(false)
+      expect(result.status.value).toBeUndefined()
+    })
+
+    it('should not re-fetch on reloadStatus when disabled', async () => {
+      const [result] = withSetup(
+        () => useOnboardingStepStatus(OnboardingStep.CommercialProposal, ref(false)),
+      )
+      await flushPromises()
+
+      await result.reloadStatus()
+
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isRefreshingStatus.value).toBe(false)
+    })
+
+    it('should fetch when enabled', async () => {
+      const [result] = withSetup(
+        () => useOnboardingStepStatus(OnboardingStep.CommercialProposal, ref(true)),
+      )
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.CommercialProposal)
+      expect(result.status.value).toBe(OnboardingStepStatus.Completed)
     })
   })
 

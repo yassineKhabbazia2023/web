@@ -1,7 +1,7 @@
 import type { NavigationContext, NavigationItemConfig } from '../types/navigation.types'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { AccountType, PennylanePermission } from '@pulse/common/enums'
-import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
+import { ACCOUNT_PERMISSIONS, ACTION_PERMISSIONS } from '@pulse/common/constants'
 /**
  * Factory to create a mock NavigationContext with customizable overrides
  */
@@ -46,8 +46,12 @@ export function createNavigationContext(options: {
   hasSocialManagementV2?: boolean
   hasApps?: boolean
   hasUsers?: boolean
+  hasAddUsers?: boolean
+  hasDeleteUser?: boolean
+  hasModifyRightsUser?: boolean
   hasOffers?: boolean
   hasInformation?: boolean
+  hasProspectDocuments?: boolean
   shouldShowRydgeInvoicesTab?: boolean
 }): NavigationContext {
   return {
@@ -76,11 +80,23 @@ export function createNavigationContext(options: {
       if (permission === ACCOUNT_PERMISSIONS.USERS) {
         return options.hasUsers ?? false
       }
+      if (permission === ACTION_PERMISSIONS.ADD_USERS) {
+        return options.hasAddUsers ?? false
+      }
+      if (permission === ACTION_PERMISSIONS.DELETE_USER) {
+        return options.hasDeleteUser ?? false
+      }
+      if (permission === ACTION_PERMISSIONS.MODIFY_RIGHTS_USER) {
+        return options.hasModifyRightsUser ?? false
+      }
       if (permission === ACCOUNT_PERMISSIONS.OFFER) {
         return options.hasOffers ?? false
       }
       if (permission === ACCOUNT_PERMISSIONS.INFORMATION) {
         return options.hasInformation ?? false
+      }
+      if (permission === ACCOUNT_PERMISSIONS.PROSPECT_DOCUMENTS) {
+        return options.hasProspectDocuments ?? false
       }
       return false
     },
