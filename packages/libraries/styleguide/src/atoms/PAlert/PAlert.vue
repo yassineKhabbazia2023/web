@@ -77,34 +77,49 @@ const iconName = computed<PIconProps['pName']>(() => {
 
   padding: 12px 16px;
 
-  color: var(--p-gray-900);
+  color: var(--p-text-body);
   background-color: var(--p-black-rock-100);
 
+  &__icon {
+    color: var(--p-black-rock-900)
+  }
+
   &--type-main {
-    color: var(--p-gray-900);
     #{$self}__icon {
       color: var(--p-black-rock-900)
     }
   }
 
   &--type-success {
-    color: var(--p-green-800);
     background-color: var(--p-green-100);
+
+    #{$self}__icon {
+      color: var(--p-green-800)
+    }
   }
 
   &--type-warning {
-    color: var(--p-orange-800);
     background-color: var(--p-orange-100);
+
+    #{$self}__icon {
+      color: var(--p-orange-800)
+    }
   }
 
   &--type-danger {
-    color: var(--p-red-800);
     background-color: var(--p-red-100);
+
+    #{$self}__icon {
+      color: var(--p-red-800)
+    }
   }
 
   &--type-information {
-    color: var(--p-mint-tulip-800);
     background-color: var(--p-teal-100);
+
+    #{$self}__icon {
+      color: var(--p-mint-tulip-800)
+    }
   }
   &__close-btn {
     appearance: none;
