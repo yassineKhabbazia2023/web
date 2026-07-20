@@ -44,6 +44,10 @@ const meta: Meta<typeof PButton> = {
       control: 'boolean',
       description: 'Applique un style actif au bouton',
     },
+    pIsUnderlined: {
+      control: 'boolean',
+      description: 'Souligne le texte du bouton',
+    },
     pTag: {
       control: 'text',
       description: 'Élément HTML à utiliser comme tag (par défaut: button)',
@@ -57,6 +61,7 @@ const meta: Meta<typeof PButton> = {
     pLoading: false,
     pIconOnly: false,
     pIsActive: false,
+    pIsUnderlined: false,
     pTag: 'button',
   },
 }
@@ -154,6 +159,21 @@ export const Active: Story = {
   }),
   args: {
     pType: 'active',
+  },
+}
+
+// Underlined variant
+export const Underlined: Story = {
+  render: (args) => ({
+    components: { PButton },
+    setup() {
+      return { args }
+    },
+    template: '<PButton v-bind="args">Bouton souligné</PButton>',
+  }),
+  args: {
+    pType: 'tertiary',
+    pIsUnderlined: true,
   },
 }
 

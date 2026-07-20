@@ -24,6 +24,19 @@
       :key="section.key"
       :pTitle="section.title"
     >
+      <template
+        v-if="section.key === ProspectConformitySection.Documents"
+        #title-action
+      >
+        <PButton
+          pType="tertiary"
+          pIsUnderlined
+          data-testid="conformity-view-documents-button"
+          @click="$emit('view-documents')"
+        >
+          {{ t('entities.prospect.conformity.viewDocumentsLink') }}
+        </PButton>
+      </template>
       <PCompletionTrackerListItem
         v-for="step in section.steps"
         :key="step.id"
@@ -41,12 +54,13 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PAlert,
+  PButton,
   PCompletionTracker,
   PCompletionTrackerList,
   PCompletionTrackerListItem,
 } from '@pulse/styleguide/components'
 import type { PCompletionTrackerListItemStatus } from '@pulse/styleguide/types'
-import { OnboardingStepStatus } from '../../prospect-conformity.enums'
+import { OnboardingStepStatus, ProspectConformitySection } from '../../prospect-conformity.enums'
 import {
   PROSPECT_CONFORMITY_SECTION_ORDER,
   PROSPECT_CONFORMITY_SECTION_TITLE_KEYS,
@@ -58,6 +72,7 @@ const props = defineProps<ConformityStepperProps>()
 
 defineEmits<{
   select: [stepSlug: string]
+  'view-documents': []
 }>()
 
 const { t } = useI18n()

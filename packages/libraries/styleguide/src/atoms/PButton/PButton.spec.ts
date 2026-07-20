@@ -62,4 +62,13 @@ describe('test for PButton', () => {
 
     expect(wrapper.findComponent({ name: 'PButton' }).attributes('class')).toContain('p-button--active')
   })
+  it('applies the underlined class', () => {
+    const wrapper = shallowMount(PButton, {
+      props: {
+        pIsUnderlined: true,
+      },
+    })
+
+    expect(wrapper.findComponent({ name: 'PButton' }).attributes('class')).toContain('p-button--is-underlined')
+  })
 })

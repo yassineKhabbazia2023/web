@@ -78,13 +78,6 @@
       "
     >
       <PButton
-        pType="secondary"
-        class="flex--grow-1 flex--basis-0"
-        @click="openDocumentsConsultDrawer"
-      >
-        {{ t('entities.prospect.conformity.conformityDocuments.consult') }}
-      </PButton>
-      <PButton
         pType="primary"
         class="flex--grow-1 flex--basis-0"
         :pDisabled="canSave === false || isCompleted"
@@ -122,7 +115,6 @@ import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conform
 import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
-import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
 import DeleteDocumentDialog from '@entities/modules/entity/prospect/dialog/delete-document-dialog/delete-document-dialog.vue'
 import { useSupportingDocuments } from './supporting-documents.composable'
 import type { SupportingDocumentsEmits, SupportingDocumentsProps } from './supporting-documents.types'
@@ -161,8 +153,6 @@ const {
   saveErrorMessage: t('entities.prospect.conformity.conformityDocuments.saveError'),
   getItems: () => props.items,
 }, emit)
-
-const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const onUploadFileDeleted = (documentType: SupportingDocumentType, deletedFile: UploadFile | UploadRawFile): void => {
   const rawFile = getRawFile(deletedFile)

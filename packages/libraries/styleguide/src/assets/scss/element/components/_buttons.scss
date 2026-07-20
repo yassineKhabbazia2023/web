@@ -262,6 +262,10 @@ $button-padding-horizontal: (
       color: var(--p-button-danger-text-press);
     }
   }
+
+  &.p-button--is-underlined {
+    text-decoration: underline;
+  }
 }
 
 .el-button-group {

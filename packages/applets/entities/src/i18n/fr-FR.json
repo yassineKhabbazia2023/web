@@ -346,6 +346,7 @@
       "conformity": {
         "title": "Étapes",
         "description": "Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert.",
+        "viewDocumentsLink": "Voir les documents",
         "completedAlert": {
           "title": "Votre dossier est complet",
           "description": "Votre expert reviendra prochainement vers vous pour activer la mission et vous transmettre votre compte client"
@@ -392,7 +393,6 @@
           "save": "Enregistrer",
           "saveSuccess": "{count} document(s) enregistré(s) pour {beneficiary}",
           "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
-          "viewDocumentsButton": "Consulter",
           "saveDocumentsButton": "Enregistrer ces documents",
           "validateAllBeneficiariesButton": "Valider l'ensemble des bénéficiaires",
           "validateSuccess": "Les bénéficiaires ont été validés avec succès",
@@ -409,7 +409,6 @@
           "save": "Enregistrer ces documents",
           "saveSuccess": "Les documents ont bien été enregistrés",
           "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
-          "consult": "Consulter",
           "documentTypeLabels": {
             "KBIS": "Extrait Kbis",
             "STATUTS": "Statuts",
@@ -428,8 +427,7 @@
           "uploadDeleteButtonTitle": "Supprimer le document",
           "save": "Enregistrer ces documents",
           "saveSuccess": "Les documents ont bien été enregistrés",
-          "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
-          "consult": "Consulter"
+          "saveError": "Une erreur est survenue lors de l'enregistrement des documents"
         },
         "payment": {
           "title": "Mandat SEPA",

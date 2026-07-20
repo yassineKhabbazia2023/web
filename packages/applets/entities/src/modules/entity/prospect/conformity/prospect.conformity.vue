@@ -32,6 +32,7 @@
           :areAllStepsCompleted="areAllStepsCompleted"
           :selectedId="selectedId"
           @select="onStepClick"
+          @view-documents="documentsConsultDrawerStore.openDocumentsConsultDrawer"
         />
       </aside>
       <div

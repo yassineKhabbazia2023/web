@@ -70,13 +70,6 @@
       "
     >
       <PButton
-        pType="secondary"
-        class="flex--grow-1 flex--basis-0"
-        @click="openDocumentsConsultDrawer"
-      >
-        {{ t('entities.prospect.conformity.complementaryDocuments.consult') }}
-      </PButton>
-      <PButton
         pType="primary"
         class="flex--grow-1 flex--basis-0"
         :pDisabled="hasPendingUploads === false"
@@ -103,7 +96,6 @@ import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conform
 import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
-import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
 import { useComplementaryDocuments } from './complementary-documents.composable'
 import type { ComplementaryDocumentsEmits, ComplementaryDocumentsProps } from './complementary-documents.types'
 import {
@@ -129,8 +121,6 @@ const {
   saveSuccessMessage: t('entities.prospect.conformity.complementaryDocuments.saveSuccess'),
   saveErrorMessage: t('entities.prospect.conformity.complementaryDocuments.saveError'),
 }, emit)
-
-const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const onUploadFileDeleted = (deletedFile: UploadFile | UploadRawFile): void => {
   const rawFile = getRawFile(deletedFile)

@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<PButtonProps>(), {
   pSize: 'default',
   pIconOnly: false,
   pIsActive: false,
+  pIsUnderlined: false,
   pTag: 'button',
 })
 
@@ -64,6 +65,7 @@ const pClassMapper = computed(() => {
     { 'p-button--icon': props.pIconOnly },
     buttonTypeClass,
     { 'p-button--is-active': props.pIsActive },
+    { 'p-button--is-underlined': props.pIsUnderlined },
   ]
 })
 </script>

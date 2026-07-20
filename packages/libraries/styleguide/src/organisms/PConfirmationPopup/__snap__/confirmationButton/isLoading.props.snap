@@ -3,6 +3,7 @@
   "pDisabled": false,
   "pIconOnly": false,
   "pIsActive": false,
+  "pIsUnderlined": false,
   "pLoading": true,
   "pSize": "small",
   "pTag": "button",

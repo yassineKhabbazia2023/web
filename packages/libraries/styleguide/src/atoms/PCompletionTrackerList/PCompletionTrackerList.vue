@@ -2,14 +2,23 @@
   <div class="p-completion-tracker-list">
     <div
       class="
-        p-completion-tracker-list__title
-        font-bold
-        font-size--14
+        flex
+        flex--justify-content-space-between
+        flex--align-items-center
         margin-bottom--4
       "
-      data-testid="completion-tracker-list-title"
     >
-      {{ pTitle }}
+      <div
+        class="
+          p-completion-tracker-list__title
+          font-bold
+          font-size--14
+        "
+        data-testid="completion-tracker-list-title"
+      >
+        {{ pTitle }}
+      </div>
+      <slot name="title-action" />
     </div>
     <div
       class="

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PCompletionTrackerList from './PCompletionTrackerList.vue'
 import PCompletionTrackerListItem from '../PCompletionTrackerListItem/PCompletionTrackerListItem.vue'
+import PButton from '../PButton'
 
 const meta: Meta<typeof PCompletionTrackerList> = {
   title: 'Atoms/PCompletionTrackerList',
@@ -34,6 +35,27 @@ export const Default: Story = {
     template: `
       <div style="width: 400px;">
         <PCompletionTrackerList v-bind="args">
+          <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="incomplete" pSecondaryText="CNI manquante" :pSelected="true" />
+          <PCompletionTrackerListItem pLabel="Informations Entite(s)" pStatus="completed" />
+          <PCompletionTrackerListItem pLabel="Vos documents administratifs" pStatus="incomplete" />
+        </PCompletionTrackerList>
+      </div>
+    `,
+  }),
+}
+
+export const WithTitleAction: Story = {
+  render: (args) => ({
+    components: { PCompletionTrackerList, PCompletionTrackerListItem, PButton },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div style="width: 400px;">
+        <PCompletionTrackerList v-bind="args">
+          <template #title-action>
+            <PButton pType="tertiary">Voir les documents</PButton>
+          </template>
           <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="incomplete" pSecondaryText="CNI manquante" :pSelected="true" />
           <PCompletionTrackerListItem pLabel="Informations Entite(s)" pStatus="completed" />
           <PCompletionTrackerListItem pLabel="Vos documents administratifs" pStatus="incomplete" />

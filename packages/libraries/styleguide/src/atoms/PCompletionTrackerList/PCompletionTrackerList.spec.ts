@@ -29,5 +29,13 @@ describe('pCompletionTrackerList', () => {
 
       expect(wrapper.find('.test-item').exists()).toBe(true)
     })
+
+    it('should render title-action slot content', () => {
+      const wrapper = createWrapper(defaultProps, {
+        'title-action': '<button class="test-action">Action</button>',
+      })
+
+      expect(wrapper.find('.test-action').exists()).toBe(true)
+    })
   })
 })

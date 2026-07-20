@@ -117,7 +117,6 @@
             :isSaving="isSaving"
             :isValidating="isValidatingAll"
             :beneficiaryStepStatus="beneficiaryStepStatus"
-            @view-documents="openDocumentsConsultDrawer"
             @save-documents="onSaveUploadedFiles"
             @validate-all-beneficiaries="onValidateAllBeneficiaries"
           />
@@ -162,7 +161,6 @@ import type { FormInstance, PDropdownOption, UploadFile, UploadRawFile } from '@
 import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
-import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
 import { BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS } from './beneficiaries.constants'
 import { buildBeneficiaryFormRules } from './beneficiaries.validation'
 import { useBeneficiaries } from './beneficiaries.composable'
@@ -174,8 +172,6 @@ import BeneficiaryDocumentUpload from './components/beneficiary-document-upload/
 import DeleteDocumentDialog from '../../dialog/delete-document-dialog/delete-document-dialog.vue'
 
 const { t } = useI18n()
-
-const { openDocumentsConsultDrawer } = useDocumentsConsultDrawerStore()
 
 const emits = defineEmits<UseBeneficiariesEmits>()
 

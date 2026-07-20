@@ -9,16 +9,6 @@
       "
     >
       <PButton
-        pType="secondary"
-        class="
-          flex--grow-1
-          flex--basis-0
-        "
-        @click="emit('view-documents')"
-      >
-        {{ t('entities.prospect.conformity.beneficiaries.viewDocumentsButton') }}
-      </PButton>
-      <PButton
         pType="primary"
         class="
           flex--grow-1

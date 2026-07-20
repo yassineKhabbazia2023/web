@@ -14,5 +14,6 @@ export interface PButtonProps {
   pSize?: 'default' | 'small'
   pIconOnly?: boolean
   pIsActive?: boolean
+  pIsUnderlined?: boolean
   pTag?: string | Component
 }
