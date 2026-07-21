@@ -8,6 +8,7 @@ const meta: Meta<typeof ConformityDocuments> = {
   title: 'Applets/Entities/Prospect/Conformity/ConformityDocuments/Client',
   component: ConformityDocuments,
   tags: ['autodocs'],
+  args: { hasSupportingDocumentsStep: true },
   render: renderWithState('partial'),
 }
 
@@ -32,4 +33,10 @@ export const AllUploaded: Story = {
 // The shared /supporting-documents request failed: both sections show the error alert.
 export const LoadError: Story = {
   render: renderWithState('error'),
+}
+
+// /steps did not return the SupportingDocuments step: only the complementary card renders.
+export const StepAbsent: Story = {
+  args: { hasSupportingDocumentsStep: false },
+  render: renderWithState('partial'),
 }

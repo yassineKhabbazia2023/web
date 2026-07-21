@@ -14,7 +14,7 @@
     >
       <ConformityAccessDeniedMessage v-if="hasSupportingDocumentsAccess === false" />
       <PAlert
-        v-else-if="hasError"
+        v-else-if="hasSupportingDocumentsError"
         class="margin-top--4"
         pType="danger"
         :pClosable="false"
@@ -67,19 +67,22 @@ import SupportingDocuments from './components/supporting-documents/supporting-do
 import ComplementaryDocuments from './components/complementary-documents/complementary-documents.vue'
 import { useConformityAccess } from '../conformity-access.composable'
 import { useConformityDocuments } from './conformity-documents.composable'
-import type { ConformityDocumentsEmits } from './conformity-documents.types'
+import type { ConformityDocumentsEmits, ConformityDocumentsProps } from './conformity-documents.types'
 
 const { t } = useI18n()
 
+const props = defineProps<ConformityDocumentsProps>()
 const emit = defineEmits<ConformityDocumentsEmits>()
 
 const { hasStepAccess, hasComplementaryDocumentsAccess } = useConformityAccess()
 const hasSupportingDocumentsAccess = computed(() => hasStepAccess(OnboardingStep.SupportingDocuments))
+const hasSupportingDocumentsStep = computed(() => props.hasSupportingDocumentsStep)
 
 const {
   isLoading,
   isCompleted,
   hasError,
+  hasSupportingDocumentsError,
   predefinedItems,
   complementaryDocuments,
   complementaryMaxFiles,
@@ -87,5 +90,10 @@ const {
   shouldDisplayComplementaryDocuments,
   reload,
   onSupportingDocumentsChanged,
-} = useConformityDocuments(emit, hasSupportingDocumentsAccess, hasComplementaryDocumentsAccess)
+} = useConformityDocuments(
+  emit,
+  hasSupportingDocumentsStep,
+  hasSupportingDocumentsAccess,
+  hasComplementaryDocumentsAccess,
+)
 </script>

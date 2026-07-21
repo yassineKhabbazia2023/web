@@ -22,9 +22,9 @@ const emitMock = vi.fn()
 
 const accountIdMock = 602
 
-const mountComposable = ({ hasSupportingAccess = true, hasComplementaryAccess = true } = {}) => {
+const mountComposable = ({ hasSupportingStep = true, hasSupportingAccess = true, hasComplementaryAccess = true } = {}) => {
   const [result] = withSetup(() =>
-    useConformityDocuments(emitMock, ref(hasSupportingAccess), ref(hasComplementaryAccess)),
+    useConformityDocuments(emitMock, ref(hasSupportingStep), ref(hasSupportingAccess), ref(hasComplementaryAccess)),
   )
   return result
 }
@@ -138,6 +138,43 @@ describe('conformity-documents.composable', () => {
       await flushPromises()
 
       expect(result.isCompleted.value).toBe(false)
+    })
+  })
+
+  describe('step status fetch failure', () => {
+    beforeEach(() => {
+      fetchOnboardingStepMock.mockRejectedValue(new Error('API Error (404)'))
+    })
+
+    it('should keep the supporting card visible with the error even when the API returns no document', async () => {
+      getSupportingDocumentsMock.mockResolvedValue({ documents: [] })
+
+      const result = mountComposable()
+      await flushPromises()
+
+      expect(result.hasSupportingDocumentsError.value).toBe(true)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
+      // The complementary card does not consume the step status: it keeps its own display logic.
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(false)
+    })
+
+    it('should surface the error on the supporting card even when the documents fetch succeeds', async () => {
+      const result = mountComposable()
+      await flushPromises()
+
+      expect(result.hasSupportingDocumentsError.value).toBe(true)
+      // The shared documents fetch succeeded: the complementary card must not show an alert.
+      expect(result.hasError.value).toBe(false)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should not report a status error when the status fetch is skipped (step absent)', async () => {
+      const result = mountComposable({ hasSupportingStep: false })
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.hasSupportingDocumentsError.value).toBe(false)
     })
   })
 
@@ -261,6 +298,53 @@ describe('conformity-documents.composable', () => {
       expect(getSupportingDocumentsMock).toHaveBeenCalledWith(accountIdMock)
       expect(result.shouldDisplaySupportingDocuments.value).toBe(true)
       expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+  })
+
+  describe('supporting step absence', () => {
+    it('should hide the supporting card even when the API returns predefined documents', async () => {
+      const result = mountComposable({ hasSupportingStep: false })
+      await flushPromises()
+
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(false)
+      // The complementary card keeps its own display logic (the response holds a complementary item).
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should skip the step status fetch and settle loading on the documents fetch alone', async () => {
+      const result = mountComposable({ hasSupportingStep: false })
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isCompleted.value).toBe(false)
+      expect(result.isLoading.value).toBe(false)
+    })
+
+    it('should hide the supporting card while loading and keep the complementary card visible', () => {
+      const result = mountComposable({ hasSupportingStep: false })
+
+      expect(result.isLoading.value).toBe(true)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(false)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should hide the supporting card on fetch error and keep the complementary card visible', async () => {
+      getSupportingDocumentsMock.mockRejectedValue(new Error('API Error'))
+
+      const result = mountComposable({ hasSupportingStep: false })
+      await flushPromises()
+
+      expect(result.hasError.value).toBe(true)
+      expect(result.shouldDisplaySupportingDocuments.value).toBe(false)
+      expect(result.shouldDisplayComplementaryDocuments.value).toBe(true)
+    })
+
+    it('should still fetch the documents for the complementary card', async () => {
+      const result = mountComposable({ hasSupportingStep: false })
+      await flushPromises()
+
+      expect(getSupportingDocumentsMock).toHaveBeenCalledWith(accountIdMock)
+      expect(result.complementaryDocuments.value).toHaveLength(1)
     })
   })
 })

@@ -21,6 +21,19 @@ export function useOnboardingSteps(getAccountId: () => number | null | undefined
     PROSPECT_CONFORMITY_STEPS.filter((step) => stepStatusById.value.has(step.id)),
   )
 
+  // Loop entries for the content column: availableSteps plus, ALWAYS, the
+  // SupportingDocuments entry. This is purely an ordering concern: the
+  // conformity-documents section must mount even when the API omits the step
+  // (its complementary card renders no matter what), and keeping it a loop entry
+  // is what preserves its natural position among the other cards. What the
+  // section displays is not decided here but by its hasSupportingDocumentsStep
+  // prop. The stepper, which must not gain an entry, keeps availableSteps.
+  const displayedSteps = computed(() =>
+    PROSPECT_CONFORMITY_STEPS.filter(
+      (step) => stepStatusById.value.has(step.id) || step.id === OnboardingStep.SupportingDocuments,
+    ),
+  )
+
   const completedCount = computed(
     () => onboardingSteps.value.filter((step) => step.status === OnboardingStepStatus.Completed).length,
   )
@@ -56,6 +69,7 @@ export function useOnboardingSteps(getAccountId: () => number | null | undefined
   return {
     stepStatusById,
     availableSteps,
+    displayedSteps,
     completedCount,
     totalCount,
     areAllStepsCompleted,

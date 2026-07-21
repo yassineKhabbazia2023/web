@@ -9,6 +9,7 @@ const meta: Meta<typeof ConformityDocuments> = {
   title: 'Applets/Entities/Prospect/Conformity/ConformityDocuments/Collaborator',
   component: ConformityDocuments,
   tags: ['autodocs'],
+  args: { hasSupportingDocumentsStep: true },
   render: renderWithState('partial'),
 }
 

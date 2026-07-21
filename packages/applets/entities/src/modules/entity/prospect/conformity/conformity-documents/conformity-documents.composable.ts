@@ -13,15 +13,25 @@ import type { ConformityDocumentsEmits } from './conformity-documents.types'
 
 export function useConformityDocuments(
   emit: ConformityDocumentsEmits,
+  hasSupportingDocumentsStep: Ref<boolean>,
   hasSupportingDocumentsAccess: Ref<boolean>,
   hasComplementaryDocumentsAccess: Ref<boolean>,
 ) {
   const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-  // Only the supporting-documents card consumes this status, so a denied access skips the fetch.
-  const { status, isLoadingStatus, reloadStatus } = useOnboardingStepStatus(
+  // Only the supporting-documents card consumes this status, so a step absent
+  // from /steps or a denied access skips the fetch.
+  const shouldFetchSupportingDocumentsStatus = computed(
+    () => hasSupportingDocumentsStep.value === true && hasSupportingDocumentsAccess.value === true,
+  )
+  const {
+    status,
+    isLoadingStatus,
+    hasStatusError,
+    reloadStatus,
+  } = useOnboardingStepStatus(
     OnboardingStep.SupportingDocuments,
-    hasSupportingDocumentsAccess,
+    shouldFetchSupportingDocumentsStatus,
   )
 
   const isLoadingSupportingDocuments = ref(true)
@@ -47,12 +57,19 @@ export function useConformityDocuments(
     () => complementaryItem.value?.maxFiles ?? PROSPECT_DOCUMENT_DEFAULT_MAX_FILES,
   )
 
+  // The supporting card depends on two fetches (its documents and its step status):
+  // a failure of either one must surface on the card instead of hiding it.
+  const hasSupportingDocumentsError = computed(() => hasError.value || hasStatusError.value)
+
   // While loading/error, items are empty: keep both cards so loaders/error alerts still show.
   // Once loaded successfully, render each card only if the API returned matching documents.
-  // A denied card always stays visible: it carries the access-denied message instead of data.
+  // A step absent from /steps has no supporting card at all: only the complementary card renders.
+  // A denied card (step present, access denied) always stays visible: it carries the
+  // access-denied message instead of data.
   const shouldDisplaySupportingDocuments = computed(
-    () => hasSupportingDocumentsAccess.value === false
-      || isLoading.value || hasError.value || predefinedItems.value.length > 0,
+    () => hasSupportingDocumentsStep.value === true
+      && (hasSupportingDocumentsAccess.value === false
+        || isLoading.value || hasSupportingDocumentsError.value || predefinedItems.value.length > 0),
   )
   const shouldDisplayComplementaryDocuments = computed(
     () => hasComplementaryDocumentsAccess.value === false
@@ -98,6 +115,7 @@ export function useConformityDocuments(
     isLoading,
     isCompleted,
     hasError,
+    hasSupportingDocumentsError,
     predefinedItems,
     complementaryDocuments,
     complementaryMaxFiles,

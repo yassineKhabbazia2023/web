@@ -53,6 +53,24 @@ describe('onboarding-step-status.composable', () => {
     })
   })
 
+  describe('disabled fetch', () => {
+    it('should not fetch and stop loading when isEnabled is false', async () => {
+      const [result] = withSetup(() => useOnboardingStepStatus(OnboardingStep.CommercialProposal, ref(false)))
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).not.toHaveBeenCalled()
+      expect(result.isLoadingStatus.value).toBe(false)
+      expect(result.status.value).toBeUndefined()
+    })
+
+    it('should fetch when isEnabled is true', async () => {
+      withSetup(() => useOnboardingStepStatus(OnboardingStep.CommercialProposal, ref(true)))
+      await flushPromises()
+
+      expect(fetchOnboardingStepMock).toHaveBeenCalledWith(accountIdMock, OnboardingStep.CommercialProposal)
+    })
+  })
+
   describe('reloadStatus', () => {
     it('should re-fetch the step and refresh the exposed status', async () => {
       const [result] = withSetup(() => useOnboardingStepStatus(OnboardingStep.CommercialProposal))
@@ -131,6 +149,28 @@ describe('onboarding-step-status.composable', () => {
 
       expect(result.status.value).toBeUndefined()
       expect(result.isLoadingStatus.value).toBe(false)
+      expect(result.hasStatusError.value).toBe(true)
+    })
+
+    it('should keep hasStatusError false when the fetch succeeds', async () => {
+      const [result] = withSetup(() => useOnboardingStepStatus(OnboardingStep.CommercialProposal))
+      await flushPromises()
+
+      expect(result.hasStatusError.value).toBe(false)
+    })
+
+    it('should reset hasStatusError when a reload succeeds after a failure', async () => {
+      fetchOnboardingStepMock.mockRejectedValueOnce(new Error('API Error'))
+
+      const [result] = withSetup(() => useOnboardingStepStatus(OnboardingStep.CommercialProposal))
+      await flushPromises()
+
+      expect(result.hasStatusError.value).toBe(true)
+
+      await result.reloadStatus()
+
+      expect(result.hasStatusError.value).toBe(false)
+      expect(result.status.value).toBe(OnboardingStepStatus.Completed)
     })
   })
 })

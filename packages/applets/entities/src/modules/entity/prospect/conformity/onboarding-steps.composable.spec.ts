@@ -89,6 +89,42 @@ describe('onboarding-steps.composable', () => {
     })
   })
 
+  describe('displayedSteps', () => {
+    it('should equal availableSteps when the API returns the SupportingDocuments step', async () => {
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
+      await flushPromises()
+
+      expect(result.displayedSteps.value).toEqual(result.availableSteps.value)
+    })
+
+    it('should keep the SupportingDocuments entry at its natural position when the API omits it', async () => {
+      fetchOnboardingStepsMock.mockResolvedValue([
+        { id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.Completed },
+        { id: OnboardingStep.Beneficiary, status: OnboardingStepStatus.ToDo },
+        { id: OnboardingStep.EngagementLetter, status: OnboardingStepStatus.InReview },
+      ])
+
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
+      await flushPromises()
+
+      expect(result.displayedSteps.value.map((step) => step.id)).toEqual([
+        OnboardingStep.Beneficiary,
+        OnboardingStep.SupportingDocuments,
+        OnboardingStep.CommercialProposal,
+        OnboardingStep.EngagementLetter,
+      ])
+    })
+
+    it('should contain only the SupportingDocuments entry when the API returns no steps', async () => {
+      fetchOnboardingStepsMock.mockResolvedValue([])
+
+      const [result] = withSetup(() => useOnboardingSteps(() => accountIdMock))
+      await flushPromises()
+
+      expect(result.displayedSteps.value.map((step) => step.id)).toEqual([OnboardingStep.SupportingDocuments])
+    })
+  })
+
   describe('areAllStepsCompleted', () => {
     it('should be true when every step returned by the API is completed', async () => {
       fetchOnboardingStepsMock.mockResolvedValue([

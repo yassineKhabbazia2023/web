@@ -70,12 +70,13 @@
         </PSkeleton>
         <template v-else>
           <template
-            v-for="step in availableSteps"
+            v-for="step in displayedSteps"
             :key="step.id"
           >
             <!-- The conformity-documents parent renders its own supporting documents + complementary cards. -->
             <ConformityDocuments
               v-if="step.id === OnboardingStep.SupportingDocuments"
+              :hasSupportingDocumentsStep="hasSupportingDocumentsStep"
               @refresh-steps="loadOnboardingSteps"
             />
             <!-- Denied steps keep their title and anchor but never mount the section (no fetch). -->
@@ -180,6 +181,7 @@ const contentRef = useTemplateRef<HTMLElement>('contentRef')
 const {
   stepStatusById,
   availableSteps,
+  displayedSteps,
   completedCount,
   totalCount,
   areAllStepsCompleted,
@@ -188,6 +190,8 @@ const {
 } = useOnboardingSteps(() => currentEntityId.value)
 
 const { hasStepAccess } = useConformityAccess()
+
+const hasSupportingDocumentsStep = computed(() => stepStatusById.value.has(OnboardingStep.SupportingDocuments))
 
 // First step still to complete, in display order. Returns null while statuses
 // are loading (nothing to focus yet) or once every step is completed.
