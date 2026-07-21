@@ -5,7 +5,9 @@ export interface BeneficiaryFormState {
   documentType: BeneficiaryDocumentType | null
   firstName: string
   lastName: string
-  files: File[]
+  // Indexed by upload zone (CNI: 0 = recto, 1 = verso); a zone without a valid
+  // selected file holds undefined, so positions never shift between zones
+  files: (File | undefined)[]
 }
 
 export type BeneficiaryFormRules = Record<'documentType' | 'lastName' | 'firstName', FormItemRule[]>

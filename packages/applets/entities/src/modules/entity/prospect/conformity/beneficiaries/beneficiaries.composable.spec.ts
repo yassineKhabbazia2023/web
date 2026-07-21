@@ -198,6 +198,41 @@ describe('beneficiaries.composable', () => {
     })
   })
 
+  describe('zone-aware file handling', () => {
+    it('should store a selected file in its zone slot', async () => {
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      const verso = getFileMock('cni-verso.pdf')
+      result.onFilesSelected(1, [verso])
+
+      // The recto zone stays empty so the verso keeps its slot
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([undefined, verso])
+    })
+
+    it('should ignore an empty selection', async () => {
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      result.onFilesSelected(0, [])
+
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([])
+    })
+
+    it('should clear a zone slot without shifting the others', async () => {
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      const recto = getFileMock('cni-recto.pdf')
+      const verso = getFileMock('cni-verso.pdf')
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [recto, verso]
+
+      result.onFileDeleted(0)
+
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([undefined, verso])
+    })
+  })
+
   describe('onSave', () => {
     it('should upload the documents of the active beneficiary and reload the list', async () => {
       const [result] = withSetup(() => useBeneficiaries(emitMock))
@@ -265,6 +300,19 @@ describe('beneficiaries.composable', () => {
       expect(uploadBeneficiaryDocumentsMock).not.toHaveBeenCalled()
     })
 
+    it('should not upload anything when a CNI zone slot is empty because its file was rejected', async () => {
+      const [result] = withSetup(() => useBeneficiaries(emitMock))
+      await flushPromises()
+
+      // The recto was rejected by its upload zone: only the verso slot holds a file
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].documentType = BeneficiaryDocumentType.CNI
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [undefined, getFileMock('cni-verso.pdf')]
+
+      await result.onSave()
+
+      expect(uploadBeneficiaryDocumentsMock).not.toHaveBeenCalled()
+    })
+
     it('should upload the missing file of a partially uploaded CNI', async () => {
       fetchBeneficiariesMock.mockResolvedValue(getBeneficiariesResponseMock({
         beneficiaries: [
@@ -279,8 +327,9 @@ describe('beneficiaries.composable', () => {
       const [result] = withSetup(() => useBeneficiaries(emitMock))
       await flushPromises()
 
+      // The recto already exists server-side: the verso zone (index 1) holds the only local file
       const missingFile = getFileMock('cni-verso.pdf')
-      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [missingFile]
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [undefined, missingFile]
 
       await result.onSave()
 

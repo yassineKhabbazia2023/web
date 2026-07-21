@@ -1,3 +1,4 @@
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import {
   BENEFICIARY_MAX_FILES_COUNT,
   BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE,
@@ -45,11 +46,44 @@ export class BeneficiariesManager {
     return BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE[documentType]
   }
 
+  // Place a file in its upload zone, keeping the zone-indexed layout intact:
+  // skipped zones are filled with undefined so positions never shift between zones
+  // (CNI: 0 = recto, 1 = verso; passport: 0 = passport)
+  static setFileAtZone(
+    files: (File | undefined)[],
+    zoneIndex: number,
+    file: File,
+  ): (File | undefined)[] {
+    const nextFiles = [...files]
+    while (nextFiles.length < zoneIndex) {
+      nextFiles.push(undefined)
+    }
+    nextFiles[zoneIndex] = file
+    return nextFiles
+  }
+
+  // Clear a zone slot without shifting the others: splicing would turn the verso
+  // into the recto after deleting the recto, so the slot is only emptied
+  static clearFileAtZone(
+    files: (File | undefined)[],
+    zoneIndex: number,
+  ): (File | undefined)[] {
+    const nextFiles = [...files]
+    nextFiles[zoneIndex] = undefined
+    return nextFiles
+  }
+
+  // `formState.files` is zone-indexed and may contain undefined slots (e.g. a file
+  // rejected by the upload zone is never stored), so `files.length` cannot be trusted
+  static getSelectedFiles(formState: BeneficiaryFormState | undefined): File[] {
+    return formState?.files.filter(isNotNullNorEmpty) ?? []
+  }
+
   static getAttachmentsCount(
     beneficiary: Beneficiary,
     formState: BeneficiaryFormState | undefined,
   ): number {
-    return beneficiary.documents.length + (formState?.files.length ?? 0)
+    return beneficiary.documents.length + this.getSelectedFiles(formState).length
   }
 
   static canAddFiles(
@@ -66,7 +100,7 @@ export class BeneficiariesManager {
     if (formState === undefined) {
       return false
     }
-    return formState.files.length > 0
+    return this.getSelectedFiles(formState).length > 0
       || formState.documentType !== beneficiary.documentType
       || formState.firstName !== beneficiary.firstName
       || formState.lastName !== beneficiary.lastName
@@ -97,7 +131,7 @@ export class BeneficiariesManager {
       return false
     }
     return (
-      formState.files.length > 0
+      this.getSelectedFiles(formState).length > 0
       && this.hasRequiredFilesCount(beneficiary, formState)
       && this.isFormStateDirty(beneficiary, formState)
     )

@@ -106,8 +106,8 @@
             :beneficiary="beneficiary"
             :formState="formStateByBeneficiaryId[beneficiary.beneficiaryId]"
             :beneficiaryStepStatus="beneficiaryStepStatus"
-            @files-selected="(zoneIndex, files) => onFilesSelectedWrapper(zoneIndex, files)"
-            @file-deleted="(zoneIndex, file) => onUploadFileDeletedWrapper(zoneIndex, file)"
+            @files-selected="onFilesSelected"
+            @file-deleted="(zoneIndex) => onFileDeleted(zoneIndex)"
             @document-deletion-requested="(document) => onRequestDocumentDeletion(beneficiary.beneficiaryId, document)"
           />
 
@@ -157,7 +157,7 @@ import {
   PTabs,
   PLoader,
 } from '@pulse/styleguide/components'
-import type { FormInstance, PDropdownOption, UploadFile, UploadRawFile } from '@pulse/styleguide/types'
+import type { FormInstance, PDropdownOption } from '@pulse/styleguide/types'
 import ConformitySectionSkeleton from '../components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '../components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
@@ -187,11 +187,12 @@ const {
   activeBeneficiary,
   activeBeneficiaryId,
   formStateByBeneficiaryId,
-  activeFormState,
   hasActiveAttachments,
   canSaveActiveDocuments,
   isDeleteDialogOpen,
   documentPendingDeletion,
+  onFilesSelected,
+  onFileDeleted,
   onRequestDocumentDeletion,
   onDocumentDeleted,
   onSave,
@@ -242,38 +243,6 @@ const documentTypeOptions = computed<PDropdownOption[]>(() =>
     pLabel: t(BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS[documentType]),
   })),
 )
-
-// Zone-aware file selection handler
-const onFilesSelectedWrapper = (zoneIndex: number, selectedFiles: File[]) => {
-  if (activeBeneficiary.value === undefined || activeFormState.value === undefined) {
-    return
-  }
-
-  if (selectedFiles.length === 0) {
-    return
-  }
-
-  // Build new files array with zone awareness
-  // For CNI: files[0] = recto, files[1] = verso
-  // For PASSPORT: files[0] = passport
-  const newFiles = [...activeFormState.value.files]
-  newFiles[zoneIndex] = selectedFiles[0] // Each zone accepts 1 file max
-  activeFormState.value.files = newFiles
-}
-
-// Zone-aware file deletion handler
-const onUploadFileDeletedWrapper = (
-  zoneIndex: number,
-  _deletedFile: UploadFile | UploadRawFile,
-) => {
-  if (activeBeneficiary.value === undefined || activeFormState.value === undefined) {
-    return
-  }
-
-  const newFiles = [...activeFormState.value.files]
-  newFiles.splice(zoneIndex, 1)
-  activeFormState.value.files = newFiles
-}
 
 // Save uploaded files
 const onSaveUploadedFiles = async () => {

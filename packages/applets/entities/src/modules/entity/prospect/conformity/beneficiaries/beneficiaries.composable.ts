@@ -109,6 +109,24 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     },
   })
 
+  // Zone-aware file selection: each upload zone accepts a single file and keeps
+  // its own slot (CNI recto/verso), so the layout is rebuilt through the manager
+  const onFilesSelected = (zoneIndex: number, selectedFiles: File[]) => {
+    const formState = activeFormState.value
+    if (formState === undefined || selectedFiles.length === 0) {
+      return
+    }
+    formState.files = BeneficiariesManager.setFileAtZone(formState.files, zoneIndex, selectedFiles[0])
+  }
+
+  const onFileDeleted = (zoneIndex: number) => {
+    const formState = activeFormState.value
+    if (formState === undefined) {
+      return
+    }
+    formState.files = BeneficiariesManager.clearFileAtZone(formState.files, zoneIndex)
+  }
+
   const onRequestDocumentDeletion = (beneficiaryId: string, document: BeneficiaryDocument) => {
     documentPendingDeletion.value = { beneficiaryId, document }
   }
@@ -137,9 +155,10 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
       return
     }
 
+    const selectedFiles = BeneficiariesManager.getSelectedFiles(formState)
     if (
       formState.documentType === null ||
-      formState.files.length === 0 ||
+      selectedFiles.length === 0 ||
       BeneficiariesManager.hasRequiredFilesCount(activeBeneficiary, formState) === false ||
       BeneficiariesManager.isFormStateDirty(activeBeneficiary, formState) === false
     ) {
@@ -151,13 +170,13 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
         currentEntityId.value,
         activeBeneficiaryId.value,
         formState.documentType,
-        formState.files,
+        selectedFiles,
       )
       displayNotification(
         'success',
         t(BENEFICIARIES_I18N_KEYS.SAVE_SUCCESS, {
           beneficiary: `${activeBeneficiary.firstName} ${activeBeneficiary.lastName}`,
-          count: formState.files.length,
+          count: selectedFiles.length,
         }),
       )
       await loadBeneficiaries()
@@ -209,6 +228,8 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     canSaveActiveDocuments,
     isDeleteDialogOpen,
     documentPendingDeletion,
+    onFilesSelected,
+    onFileDeleted,
     onRequestDocumentDeletion,
     onDocumentDeleted,
     onSave,
