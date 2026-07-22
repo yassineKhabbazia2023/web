@@ -42,9 +42,14 @@ stages:
       displayName: 'Install dependencies'
 
     - script: |
+        mkdir -p $(Build.ArtifactStagingDirectory)/audit
+        echo "Capturing audit report before fix..."
+        npm audit --json > $(Build.ArtifactStagingDirectory)/audit/audit-before.json || true
         echo "Running npm audit fix..."
         npm audit fix --min-release-age=0 || true
         echo "Audit fix completed (exit code ignored)"
+        echo "Capturing audit report after fix..."
+        npm audit --json > $(Build.ArtifactStagingDirectory)/audit/audit-after.json || true
       displayName: 'Run audit fix'
 
     - script: |
@@ -59,6 +64,75 @@ stages:
         fi
       name: detectChanges
       displayName: 'Detect changes'
+
+    - script: |
+        node - <<'NODE_SCRIPT'
+        const fs = require('fs')
+        const path = require('path')
+
+        const auditDir = process.env.AUDIT_DIR
+
+        const readAudit = (fileName) => {
+          try {
+            return JSON.parse(fs.readFileSync(path.join(auditDir, fileName), 'utf8'))
+          } catch {
+            return { vulnerabilities: {} }
+          }
+        }
+
+        // Flatten npm audit v2 report into one entry per (package, advisory)
+        const collectAdvisories = (audit) => {
+          const advisories = new Map()
+          for (const [packageName, info] of Object.entries(audit.vulnerabilities ?? {})) {
+            for (const via of info.via ?? []) {
+              if (typeof via !== 'object' || via === null) continue
+              const url = via.url ?? ''
+              const code = url.includes('github.com/advisories/') ? url.split('/').pop() : String(via.source ?? '')
+              advisories.set(`${packageName}|${code}`, {
+                packageName,
+                severity: via.severity ?? '',
+                code,
+                title: via.title ?? '',
+                range: via.range ?? '',
+                url,
+              })
+            }
+          }
+          return advisories
+        }
+
+        const before = collectAdvisories(readAudit('audit-before.json'))
+        const after = collectAdvisories(readAudit('audit-after.json'))
+        const fixed = [...before.entries()]
+          .filter(([key]) => after.has(key) === false)
+          .map(([, advisory]) => advisory)
+
+        const markdownEscape = (value) => String(value).replaceAll('|', '\\|')
+        const lines = [
+          '## 🔒 Npm audit fix automatique',
+          '',
+          'PR créée automatiquement par le pipeline quotidien `npm audit fix`.',
+          '',
+        ]
+        if (fixed.length > 0) {
+          lines.push(`### Vulnérabilités corrigées (${fixed.length})`, '')
+          lines.push('| Paquet | Sévérité | Code | Advisory |')
+          lines.push('|---|---|---|---|')
+          for (const advisory of fixed) {
+            const codeLink = advisory.url !== '' ? `[${advisory.code}](${advisory.url})` : advisory.code
+            lines.push(`| \`${markdownEscape(advisory.packageName)}\` | ${advisory.severity} | ${codeLink} | ${markdownEscape(advisory.title)} |`)
+          }
+        } else {
+          lines.push('Aucune advisory résolue identifiée par comparaison des rapports `npm audit` (mise à jour du lockfile uniquement).')
+        }
+        fs.writeFileSync(path.join(auditDir, 'pr-description.md'), lines.join('\n') + '\n')
+
+        console.log(`Fixed advisories: ${fixed.length}`)
+        NODE_SCRIPT
+      condition: eq(variables['detectChanges.hasChanges'], 'true')
+      env:
+        AUDIT_DIR: $(Build.ArtifactStagingDirectory)/audit
+      displayName: 'Generate PR description'
 
     - pwsh: |
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "user",$env:SYSTEM_ACCESSTOKEN)))
@@ -116,11 +190,22 @@ stages:
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "user",$env:SYSTEM_ACCESSTOKEN)))
         $headers = @{Authorization=("Basic {0}" -f $base64AuthInfo)}
         $url = '$(System.CollectionUri)$(System.TeamProject)/_apis/git/repositories/$(Build.Repository.ID)/pullrequests?api-version=7.1'
+
+        $descriptionPath = '$(Build.ArtifactStagingDirectory)/audit/pr-description.md'
+        $description = 'This PR is automatically created by the daily npm audit fix pipeline to patch detected vulnerabilities.'
+        if (Test-Path $descriptionPath) {
+          $description = Get-Content $descriptionPath -Raw
+        }
+        # Azure DevOps limits PR descriptions to 4000 characters
+        if ($description.Length -gt 3900) {
+          $description = $description.Substring(0, 3900) + "`n... (liste tronquée)"
+        }
+
         $body = @{
           sourceRefName = 'refs/heads/$(branchName)'
           targetRefName = '$(Build.SourceBranch)'
           title         = 'fix(security): corriger les vulnérabilités npm (audit fix automatique)'
-          description   = 'This PR is automatically created by the daily npm audit fix pipeline to patch detected vulnerabilities.'
+          description   = $description
           workItemRefs  = @(@{ id = '59819' })
         } | ConvertTo-Json -Depth 5
 
