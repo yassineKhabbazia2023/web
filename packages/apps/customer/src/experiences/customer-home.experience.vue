@@ -6,7 +6,7 @@
     >
       <template #header-actions>
         <BookingCustomerHeaderWidget v-if="shouldShowBooking === true" />
-        <FeedCenterHeaderWidget v-if="shouldShowFeedCenter === true" />
+        <FeedCenterHeaderWidget />
       </template>
     </MobileHomeLayout>
     <HomeLayout
@@ -17,7 +17,7 @@
     >
       <template #header-actions>
         <BookingCustomerHeaderWidget v-if="shouldShowBooking === true" />
-        <FeedCenterHeaderWidget v-if="shouldShowFeedCenter === true" />
+        <FeedCenterHeaderWidget />
       </template>
     </HomeLayout>
 
@@ -75,7 +75,6 @@ const { isMobile } = useResponsive()
 const shouldShowMobileLayout = computed(() =>
   FeatureFlagManager.isResponsiveActivated() && isMobile.value === true,
 )
-const shouldShowFeedCenter = computed(() => FeatureFlagManager.isFeedCenterActivated())
 const shouldShowBooking = computed(() => bookingStore.getIsBookingEnabled() === true)
 
 const { favoriteEntities } = storeToRefs(userStore)

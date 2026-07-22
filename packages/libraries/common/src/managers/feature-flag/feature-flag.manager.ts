@@ -40,10 +40,6 @@ export class FeatureFlagManager {
     return value === 'true'
   }
 
-  static isFeedCenterActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.FEED_CENTER)
-  }
-
   static isGigyaSsoActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.GIGYA_SSO)
   }

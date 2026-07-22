@@ -2,7 +2,6 @@
   <div>
     <Teleport to="body">
       <FeedCenterDrawer
-        v-if="FeatureFlagManager.isFeedCenterActivated()"
         v-model="isFeedCenterOpened"
         :unreadNotificationsCount="unreadNotificationsCount"
         @notifications-updated="setNotificationsCount"

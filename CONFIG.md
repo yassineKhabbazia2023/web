@@ -44,7 +44,6 @@ window.EnvVars = envVars
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_CONFIGCAT_SDK_KEY | Clé SDK ConfigCat pour les feature flags distants via OpenFeature |
 | VITE_CUSTOMER_BOOKING_ACTIVATED | Si booking est activé pour les clients. |
-| VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
 | VITE_GED_V2_ENABLED | Affichage de la page Ged Comptabilité de Pennylane |
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 

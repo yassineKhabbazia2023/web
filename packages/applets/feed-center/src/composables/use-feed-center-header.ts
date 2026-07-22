@@ -1,6 +1,5 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { logger } from '@pulse/toolbox'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { fetchUnreadNotificationsCount } from '../services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '../constants'
 import { trackFeedcenterOpened } from '../services/tracking/tracking.service'
@@ -11,10 +10,6 @@ export function useFeedCenterHeader() {
   const isNotificationSettingsDrawerOpened = ref(false)
 
   async function setNotificationsCount() {
-    if (!FeatureFlagManager.isFeedCenterActivated()) {
-      return
-    }
-
     try {
       const { count } = await fetchUnreadNotificationsCount()
       unreadNotificationsCount.value = count

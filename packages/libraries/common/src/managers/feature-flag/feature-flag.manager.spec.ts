@@ -38,18 +38,6 @@ describe('FeatureFlagManager', () => {
     })
 
   describe.each(tests)(
-    'isFeedCenterActivated',
-    ({
-      value,
-      expected,
-    }) => {
-      it('should return $expected when value is $value', () => {
-        window.EnvVars[Feature.FEED_CENTER] = value
-        expect(FeatureFlagManager.isFeedCenterActivated()).toBe(expected)
-      })
-    })
-
-  describe.each(tests)(
     'isMailToPennylaneActivated',
     ({
       value,
