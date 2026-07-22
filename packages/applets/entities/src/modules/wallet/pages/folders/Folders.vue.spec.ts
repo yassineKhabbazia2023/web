@@ -34,7 +34,7 @@ import ManageWalletButton from './components/ManageWalletButton/ManageWalletButt
 import { MISSION_TYPE } from '@entities/constants'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
-import { DESKTOP_FOLDERS_PAGE_SIZE, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
+import { DESKTOP_FOLDERS_PAGE_SIZE, I18N_KEY, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
 
 import Folders from './Folders.vue'
 
@@ -448,7 +448,7 @@ describe('deploy', () => {
     expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({
       accountIds: [targetedFolder.accountId],
     })
-    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'removeFromFoldersSuccessSingle')
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', `${I18N_KEY}.removeFromFoldersSuccessSingle`)
   })
 
   it('displays the remaining collaborator modal and sends all selected folders for removal', async () => {
@@ -548,8 +548,8 @@ describe('deploy', () => {
     await flushPromises()
 
     expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({ accountIds: selectedFolderIds })
-    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'removeFromFoldersSuccessMultiple')
-    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSuccessMultiple', { count: 2 })
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', `${I18N_KEY}.removeFromFoldersSuccessMultiple`)
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.removeFromFoldersSuccessMultiple`, { count: 2 })
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(0)
   })
@@ -597,17 +597,17 @@ describe('deploy', () => {
 
     expect(displayNotificationMock).toHaveBeenCalledWith(
       'warning',
-      'removeFromFoldersPartialSuccess',
+      `${I18N_KEY}.removeFromFoldersPartialSuccess`,
     )
     // The identity `t` returns the raw key, so nested translations surface as keys:
     // this pins both the interpolated counts and the singular/plural key choices.
-    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersPartialSuccess', {
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.removeFromFoldersPartialSuccess`, {
       succeededCount: 1,
       selectedCount: 3,
-      succeededFolderLabel: 'removeFromFoldersSucceededFolderLabel',
-      remainingFoldersFailureMessage: 'removeFromFoldersRemainingFailureMultiple',
+      succeededFolderLabel: `${I18N_KEY}.removeFromFoldersSucceededFolderLabel`,
+      remainingFoldersFailureMessage: `${I18N_KEY}.removeFromFoldersRemainingFailureMultiple`,
     })
-    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSucceededFolderLabel', 1)
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.removeFromFoldersSucceededFolderLabel`, 1)
   })
 
   it('displays a warning notification when one folder remains unprocessed', async () => {
@@ -653,15 +653,15 @@ describe('deploy', () => {
 
     expect(displayNotificationMock).toHaveBeenCalledWith(
       'warning',
-      'removeFromFoldersPartialSuccess',
+      `${I18N_KEY}.removeFromFoldersPartialSuccess`,
     )
-    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersPartialSuccess', {
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.removeFromFoldersPartialSuccess`, {
       succeededCount: 2,
       selectedCount: 3,
-      succeededFolderLabel: 'removeFromFoldersSucceededFolderLabel',
-      remainingFoldersFailureMessage: 'removeFromFoldersRemainingFailureSingle',
+      succeededFolderLabel: `${I18N_KEY}.removeFromFoldersSucceededFolderLabel`,
+      remainingFoldersFailureMessage: `${I18N_KEY}.removeFromFoldersRemainingFailureSingle`,
     })
-    expect(translateSpy).toHaveBeenCalledWith('removeFromFoldersSucceededFolderLabel', 2)
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.removeFromFoldersSucceededFolderLabel`, 2)
   })
 
   it('opens the entity creator drawer for the create test account action', async () => {
@@ -1273,7 +1273,7 @@ describe('deploy', () => {
 
       // Assert: Button exists and triggers correct fetch
       expect(clearAllButton.exists()).toBe(true)
-      expect(clearAllButton.text().trim()).toBe('clearAll')
+      expect(clearAllButton.text().trim()).toBe(`${I18N_KEY}.clearAll`)
 
       // Call count explanation:
       // 1 - onMounted → fetchAccountList()

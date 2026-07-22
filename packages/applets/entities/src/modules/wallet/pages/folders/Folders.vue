@@ -39,14 +39,14 @@
             @click="onEntityCreatorDrawerOpen"
           >
             <PIcon class="el-button__icon--left" pName="plusLg" />
-            {{ t('createTestAccount') }}
+            {{ t(`${I18N_KEY}.createTestAccount`) }}
           </PButton>
           <PButton
             pType="secondary"
             pSize="small"
             @click="openSelectedFoldersDelegationDrawer"
           >
-            {{ t('delegation', selectedFolders.length) }}
+            {{ t(`${I18N_KEY}.delegation`, selectedFolders.length) }}
           </PButton>
         </template>
         <PButton
@@ -58,7 +58,7 @@
           @click="onManageAccessButtonClick"
         >
           <span>
-            {{ t('manageAccess') }}
+            {{ t(`${I18N_KEY}.manageAccess`) }}
           </span>
           <PPastille
             v-if="manageAccessCount !== undefined"
@@ -115,7 +115,7 @@
         @click="openFiltersDrawer"
       >
         <PIcon pName="sliders" />
-        <span class="padding-left--2">{{ t('filter') }}</span>
+        <span class="padding-left--2">{{ t(`${I18N_KEY}.filter`) }}</span>
         <Transition name="fade">
           <PPastille
             v-if="accountFiltersCount > 0"
@@ -139,7 +139,7 @@
             class="font-medium text-underline"
             data-testid="account-deploy__clear-filters-text"
           >
-            {{ t('clearAll') }}
+            {{ t(`${I18N_KEY}.clearAll`) }}
           </span>
         </PButton>
       </Transition>
@@ -183,7 +183,7 @@
       </PPagination>
       <PSamePagePagination
         v-else-if="hasMoreResults"
-        :pLabel="t('showMoreResults')"
+        :pLabel="t(`${I18N_KEY}.showMoreResults`)"
         :pLoading="isLoadingMore"
         class="margin-top--6"
         pTestIdRoot="folders"
@@ -226,9 +226,10 @@
 </template>
 
 <script lang='ts' setup>
-import { logger } from '@pulse/toolbox'
+import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { onMounted, ref, watch, useTemplateRef, nextTick, computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import {
   PLoader,
   PButton,
@@ -237,649 +238,150 @@ import {
   PIcon,
   PSamePagePagination,
 } from '@pulse/styleguide/components'
-import { displayNotification, useResponsive } from '@pulse/styleguide'
-import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { checkLastCollaboratorOnAccounts, removeCurrentUserFromAccounts } from '@entities/services/account'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { CurrentUserManager } from '@pulse/common/managers'
-import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
-import type { Entity, SortingCriteria } from '@pulse/common/types'
-import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
-import { storeToRefs } from 'pinia'
+import { useResponsive } from '@pulse/styleguide'
+import { useUserStore } from '@pulse/common/stores'
+import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
-import { getPaginationLabel } from '@pulse/common/utils'
-import { ENTITY_STATUS_COLOR } from '@entities/constants'
-import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
-import { fetchWalletData } from './FoldersUtils'
-import type {
-  SearchCriteria,
-  SearchResult,
-  DeploymentStatus,
-  RegularWalletData,
-} from '@entities/modules/wallet/types'
-import { useFolderSelection, getSelectedFolderFromRow } from './folder-selection.composable'
-import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
+import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
+import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
+import { TrackingLocalisation } from '@entities/enums'
+import type { AccountRow } from '@entities/types'
+import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
+import type { EntityStatus } from '@entities/modules/wallet/enums'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
-import { RemoveFromFoldersManager } from './components/RemoveFromFoldersConfirmationModal/remove-from-folders.manager'
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
-import { getDefaultAccountFilters } from './components/AccountFiltersDrawer/account-filters-drawer.utils'
-import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
-import type { AccountFilters, AccountRow } from '@entities/types'
-import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
-import { TrackingLocalisation } from '@entities/enums'
-import { useUserStore } from '@pulse/common/stores'
-import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
-import { fetchAccountOperations } from '@entities/services/registry'
-import { useSort } from '@pulse/common/composables/sort'
-import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
-import {
-  DESKTOP_FOLDERS_PAGE_SIZE,
-  MOBILE_FOLDERS_PAGE_SIZE,
-  FOLDERS_PAGE_SIZES_DESKTOP,
-  FOLDERS_PAGE_SIZES_MOBILE,
-} from './folders.consts'
+import { useFolders } from './folders.composable'
+import { useFoldersAccountFilters } from './folders-account-filters.composable'
+import { useFoldersManageAccess } from './folders-manage-access.composable'
+import { useFoldersOffersDrawer } from './folders-offers-drawer.composable'
+import { useFoldersWalletActions } from './folders-wallet-actions.composable'
+import { I18N_KEY } from './folders.consts'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-  messages: {
-    'en-US': {
-      search: 'Search by company name, folder ID, first name, last name, and email of the executive',
-      searchShort: 'Search...',
-      toDeploy: 'To Deploy',
-      inProgress: 'In progress',
-      connected: 'Connected',
-      clearAll: 'Clear all',
-      filter: 'Filter',
-      on: 'on',
-      delegation: 'My delegations | Delegate my folder | Delegate my folders',
-      createTestAccount: 'Create a test account',
-      manageAccess: 'Manage access',
-      showMoreResults: 'Show more results',
-      removeFromFoldersCheckError: 'The withdrawal action could not be prepared. Please try again in a few moments.',
-      removeFromFoldersSuccessSingle: 'You removed yourself from the selected folder.',
-      removeFromFoldersSuccessMultiple: 'You removed yourself from the {count} selected folders.',
-      removeFromFoldersPartialSuccess: 'You removed yourself from {succeededCount} {succeededFolderLabel} out of {selectedCount}. {remainingFoldersFailureMessage}',
-      removeFromFoldersSucceededFolderLabel: 'folder | folders',
-      removeFromFoldersRemainingFailureSingle: 'The remaining folder could not be processed, please try again.',
-      removeFromFoldersRemainingFailureMultiple: 'The remaining folders could not be processed, please try again.',
-      removeFromFoldersFailure: 'Your withdrawal could not be completed. Please try again in a few moments.',
-    },
-    'fr-FR': {
-      search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant',
-      searchShort: 'Rechercher...',
-      toDeploy: 'A déployer',
-      inProgress: 'En cours',
-      connected: 'Connecté',
-      clearAll: 'Tout effacer',
-      filter: 'Filtrer',
-      on: 'sur',
-      delegation: 'Mes délégations | Déléguer le dossier | Déléguer les dossiers',
-      createTestAccount: 'Créer un compte de test',
-      manageAccess: 'Gérer les accès',
-      showMoreResults: 'Afficher plus de résultats',
-      removeFromFoldersCheckError: 'L’action de retrait n’a pas pu être préparée. Réessayez dans quelques instants.',
-      removeFromFoldersSuccessSingle: 'Vous vous êtes retiré du dossier sélectionné.',
-      removeFromFoldersSuccessMultiple: 'Vous vous êtes retiré des {count} dossiers sélectionnés.',
-      removeFromFoldersPartialSuccess: 'Vous vous êtes retiré de {succeededCount} {succeededFolderLabel} sur {selectedCount}. {remainingFoldersFailureMessage}',
-      removeFromFoldersSucceededFolderLabel: 'dossier | dossiers',
-      removeFromFoldersRemainingFailureSingle: 'Le dossier restant n’a pas pu être traité, réessayez.',
-      removeFromFoldersRemainingFailureMultiple: 'Les dossiers restant n’ont pas pu être traités, réessayez.',
-      removeFromFoldersFailure: 'Votre retrait n’a pas pu aboutir. Réessayez dans quelques instants.',
-    },
-  },
-})
-
+// #region Composables
+const { t } = useI18n()
 const router = useRouter()
-const route = useRoute()
-const userStore = useUserStore()
-const { isCollab, user } = storeToRefs(userStore)
+const { isCollab, user } = storeToRefs(useUserStore())
 const { isMobile } = useResponsive()
 const {
   isLoadMorePaginationActivated,
   isManageWalletMenuActivated,
 } = useWalletFeatureFlags()
 
-const searchPlaceholder = computed(() =>
-  isMobile.value ? t('searchShort') : t('search'),
-)
+// Registered first so the manage access count is requested before the folders list,
+// as it was when both loads lived in a single onMounted hook.
+const {
+  isManageAccessDrawerOpened,
+  manageAccessCount,
+  hasManageAccess,
+  isManageAccessButtonDisabled,
+  onManageAccessButtonClick,
+  onUpdateManageAccessDrawerOpened,
+} = useFoldersManageAccess()
 
-const pageSizes = computed(() =>
-  isMobile.value ? FOLDERS_PAGE_SIZES_MOBILE : FOLDERS_PAGE_SIZES_DESKTOP,
-)
-const currentFoldersPageSize = computed(() =>
-  isMobile.value ? MOBILE_FOLDERS_PAGE_SIZE : DESKTOP_FOLDERS_PAGE_SIZE,
-)
+const {
+  isLoading,
+  isLoadingMore,
+  searchCriteria,
+  searchResult,
+  selectedFolders,
+  selectedFolderIds,
+  selectedFolderCustomerRelationStatus,
+  searchPlaceholder,
+  pageSizes,
+  paginationLabel,
+  hasMoreResults,
+  totalAccounts,
+  fetchAccountList,
+  fetchTableDataAndFavorites,
+  handleAddFavorite,
+  loadMoreResults,
+  handleSearchValueSubmitted,
+  handlePageRangeChanged,
+  onUpdateCurrentPage,
+  handleSortAccount,
+  resetSearchCriteria,
+} = useFolders()
 
-const paginationLabel = computed(() => getPaginationLabel(t('on'), {
-  currentPage: searchCriteria.value.currentPage,
-  limit: searchCriteria.value.limit,
-  data: searchResult.value.items,
-  totalItems: searchResult.value.totalItems,
-}))
+const {
+  hasActiveFilters,
+  isFiltersDrawerOpen,
+  accountFilters,
+  accountFiltersCount,
+  openFiltersDrawer,
+  applyAccountFilters,
+  clearAllAccountFilters,
+} = useFoldersAccountFilters(searchCriteria)
 
-const searchBar = ref()
-const isLoading = ref(true)
-const isLoadingMore = ref(false)
-const shouldAppendNextFetch = ref(false)
-const selectedCompanyName = ref('')
+const {
+  isEntityCreatorDrawerOpen,
+  hasEntityCreatorPermission,
+  onEntityCreatorDrawerOpen,
+  onWalletAction,
+  isDelegationDrawerOpened,
+  delegationInitialTab,
+  foldersToDelegate,
+  openSelectedFoldersDelegationDrawer,
+  handleDisplayDelegationDrawer,
+  isBulkCustomerRelationDrawerOpened,
+  targetCustomerRelationStatus,
+  customerRelationDrawerFolders,
+  handleDisplayCustomerRelationDrawer,
+  handleBulkCustomerRelationUpdated,
+  handleBulkCustomerRelationDrawerVisibilityUpdate,
+  isRemoveFromFoldersModalOpened,
+  isRemoveFromFoldersLoading,
+  hasRemainingCollaboratorFolder,
+  foldersToRemoveIds,
+  handleDisplayRemoveCurrentUserFromFolderModal,
+  confirmRemoveFromFolders,
+} = useFoldersWalletActions(selectedFolders, selectedFolderIds, fetchTableDataAndFavorites)
 
-const isManageAccessDrawerOpened = ref(false)
+const {
+  openOffersDrawer,
+  hasOffersDrawer,
+  selectedCompanyName,
+  selectedAccountNumber,
+  selectedAccountId,
+  onClickDeploy,
+  onOfferSaved,
+} = useFoldersOffersDrawer(fetchAccountList)
+// #endregion
 
-// #region ResendActivationEmail
+// #region State
+const searchBar = useTemplateRef<InstanceType<typeof FormSearch>>('searchBar')
+
 const selectedAccount = ref<AccountRow>()
 const isResendActivationEmailDrawerVisible = ref(false)
+// #endregion
 
-const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
+// #region Methods
+function handleDisplayResendActivationEmailDrawer(account: AccountRow) {
   selectedAccount.value = account
   isResendActivationEmailDrawerVisible.value = true
 }
-// #endregion
 
-// #region Account Filter Drawer State and Logic
-const hasActiveFilters = ref(false)
-const isFiltersDrawerOpen = ref(false)
-const accountFilters = ref<AccountFilters>(getDefaultAccountFilters())
-
-const openFiltersDrawer = () => {
-  isFiltersDrawerOpen.value = true
-}
-
-const closeFiltersDrawer = () => {
-  isFiltersDrawerOpen.value = false
-}
-
-const accountFiltersCount = computed(() => {
-  const {
-    isFavoriteFilter,
-    isCustomerRelationFilter,
-    missionTypeFilter,
-    deploymentStatusFilter,
-    lastActivityPeriodFilter,
-  } = accountFilters.value
-
-  return (isFavoriteFilter ? 1 : 0) +
-    (isCustomerRelationFilter ? 1 : 0) +
-    (missionTypeFilter !== undefined && missionTypeFilter.length > 0 ? 1 : 0) +
-    (deploymentStatusFilter !== undefined && deploymentStatusFilter.length > 0 ? 1 : 0) +
-    (lastActivityPeriodFilter !== undefined ? 1 : 0)
-})
-
-const applyAccountFilters = (appliedFilters: AccountFilters) => {
-  accountFilters.value = appliedFilters
-  searchCriteria.value = {
-    ...searchCriteria.value,
-    isFavoriteFilter: appliedFilters.isFavoriteFilter,
-    isCustomerRelationFilter: appliedFilters.isCustomerRelationFilter,
-    filterByMissionType: appliedFilters.missionTypeFilter,
-    filterByDeploymentStatus: appliedFilters.deploymentStatusFilter,
-    filterByLastActivityPeriodInDays: appliedFilters.lastActivityPeriodFilter,
-  }
-  closeFiltersDrawer()
-}
-
-const clearAllAccountFilters = () => {
-  accountFilters.value = getDefaultAccountFilters()
-  searchCriteria.value = {
-    ...searchCriteria.value,
-    isFavoriteFilter: false,
-    isCustomerRelationFilter: false,
-    filterByMissionType: undefined,
-    filterByDeploymentStatus: undefined,
-    filterByLastActivityPeriodInDays: undefined,
-  }
-  hasActiveFilters.value = false
-  closeFiltersDrawer()
-}
-// #endregion
-
-// delegation part
-const isDelegationDrawerOpened = ref(false)
-const delegationInitialTab = ref<DelegationTab>()
-const rowDelegationFolder = ref<SelectedFolder>()
-
-const foldersToDelegate = computed<SelectedFolder[]>(() =>
-  rowDelegationFolder.value !== undefined ? [rowDelegationFolder.value] : selectedFolders.value,
-)
-
-const openDelegationDrawerOnTab = (tab: DelegationTab) => {
-  rowDelegationFolder.value = undefined
-  delegationInitialTab.value = tab
-  isDelegationDrawerOpened.value = true
-}
-
-const openSelectedFoldersDelegationDrawer = () => {
-  rowDelegationFolder.value = undefined
-  delegationInitialTab.value = undefined
-  isDelegationDrawerOpened.value = true
-}
-
-const isBulkCustomerRelationDrawerOpened = ref(false)
-const targetCustomerRelationStatus = ref(false)
-const rowCustomerRelationFolder = ref<SelectedFolder>()
-const customerRelationDrawerFolders = computed<SelectedFolder[]>(() =>
-  rowCustomerRelationFolder.value !== undefined ? [rowCustomerRelationFolder.value] : selectedFolders.value,
-)
-
-function openBulkCustomerRelationDrawer(targetStatus: boolean) {
-  targetCustomerRelationStatus.value = targetStatus
-  isBulkCustomerRelationDrawerOpened.value = true
-}
-
-async function handleBulkCustomerRelationUpdated(succeededAccountIds: number[]) {
-  const succeededAccountIdSet = new Set(succeededAccountIds)
-  selectedFolders.value = selectedFolders.value.map(folder => ({
-    ...folder,
-    isCustomerRelation: succeededAccountIdSet.has(folder.id)
-      ? targetCustomerRelationStatus.value
-      : folder.isCustomerRelation,
-  }))
-  isBulkCustomerRelationDrawerOpened.value = false
-  rowCustomerRelationFolder.value = undefined
-  await fetchTableDataAndFavorites()
-}
-
-function handleBulkCustomerRelationDrawerVisibilityUpdate(isOpened: boolean) {
-  if (isOpened === false) {
-    rowCustomerRelationFolder.value = undefined
-  }
-}
-
-const handleDisplayCustomerRelationDrawer = (
-  row: RegularWalletData,
-  targetStatus: boolean,
-) => {
-  rowCustomerRelationFolder.value = getSelectedFolderFromRow(row)
-  openBulkCustomerRelationDrawer(targetStatus)
-}
-
-const handleDisplayDelegationDrawer = (row: RegularWalletData) => {
-  rowDelegationFolder.value = getSelectedFolderFromRow(row)
-  delegationInitialTab.value = undefined
-  isDelegationDrawerOpened.value = true
-}
-
-const isRemoveFromFoldersModalOpened = ref(false)
-const isRemoveFromFoldersLoading = ref(false)
-const hasRemainingCollaboratorFolder = ref(false)
-const rowRemoveCurrentUserFolderId = ref<number>()
-
-const foldersToRemoveIds = computed<number[]>(() =>
-  rowRemoveCurrentUserFolderId.value !== undefined ? [rowRemoveCurrentUserFolderId.value] : selectedFolderIds.value,
-)
-
-async function checkLastCollaboratorAndOpenRemovalModal() {
-  if (foldersToRemoveIds.value.length === 0) {
-    return
-  }
-
-  try {
-    const remainingCollaboratorCheck = await checkLastCollaboratorOnAccounts(foldersToRemoveIds.value)
-
-    hasRemainingCollaboratorFolder.value = remainingCollaboratorCheck.isLastCollaboratorOnAny
-    isRemoveFromFoldersModalOpened.value = true
-  } catch (error) {
-    logger.error('Unable to check remaining collaborator accounts', error)
-    displayNotification('error', t('removeFromFoldersCheckError'))
-  }
-}
-
-async function openRemoveFromFoldersConfirmationModal() {
-  rowRemoveCurrentUserFolderId.value = undefined
-  await checkLastCollaboratorAndOpenRemovalModal()
-}
-
-const handleDisplayRemoveCurrentUserFromFolderModal = async (row: RegularWalletData) => {
-  rowRemoveCurrentUserFolderId.value = row.accountId
-  await checkLastCollaboratorAndOpenRemovalModal()
-}
-
-async function confirmRemoveFromFolders() {
-  if (foldersToRemoveIds.value.length === 0) {
-    return
-  }
-
-  isRemoveFromFoldersLoading.value = true
-  try {
-    const response = await removeCurrentUserFromAccounts({ accountIds: foldersToRemoveIds.value })
-    const succeededCount = response.succeeded.length
-    const selectedCount = response.succeeded.length + response.failed.length
-    const failedCount = selectedCount - succeededCount
-    const successMessageKey = selectedCount === 1
-      ? 'removeFromFoldersSuccessSingle'
-      : 'removeFromFoldersSuccessMultiple'
-    const remainingFoldersFailureMessageKey = failedCount === 1
-      ? 'removeFromFoldersRemainingFailureSingle'
-      : 'removeFromFoldersRemainingFailureMultiple'
-    const notification = RemoveFromFoldersManager.getNotification(response, selectedCount, {
-      success: t(successMessageKey, { count: selectedCount }),
-      partialSuccess: t('removeFromFoldersPartialSuccess', {
-        succeededCount,
-        selectedCount,
-        succeededFolderLabel: t('removeFromFoldersSucceededFolderLabel', succeededCount),
-        remainingFoldersFailureMessage: t(remainingFoldersFailureMessageKey),
-      }),
-      failure: t('removeFromFoldersFailure'),
-    })
-
-    displayNotification(notification.type, notification.message)
-    isRemoveFromFoldersModalOpened.value = false
-
-    if (succeededCount > 0) {
-      const succeededAccountIds = new Set(response.succeeded.map(({ accountId }) => accountId))
-      selectedFolderIds.value = selectedFolderIds.value
-        .filter(accountId => succeededAccountIds.has(accountId) === false)
-      await fetchTableDataAndFavorites()
-    }
-  } catch (error) {
-    logger.error('Unable to remove current user from selected folders', error)
-    displayNotification('error', t('removeFromFoldersFailure'))
-  } finally {
-    isRemoveFromFoldersLoading.value = false
-  }
-}
-
-const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void | Promise<void>> = {
-  [ManageWalletAction.DELEGATE_WALLET]: () => openDelegationDrawerOnTab(DelegationTab.DELEGATE_WALLET),
-  [ManageWalletAction.DELEGATE_FOLDERS]: () => openSelectedFoldersDelegationDrawer(),
-  [ManageWalletAction.DECLARE_CUSTOMER_RELATION]: () => openBulkCustomerRelationDrawer(true),
-  [ManageWalletAction.REMOVE_CUSTOMER_RELATION]: () => openBulkCustomerRelationDrawer(false),
-  [ManageWalletAction.REMOVE_FROM_FOLDERS]: () => openRemoveFromFoldersConfirmationModal(),
-  [ManageWalletAction.VIEW_PERMANENT_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PERMANENT_DELEGATIONS),
-  [ManageWalletAction.REQUEST_DELEGATION]: () => openDelegationDrawerOnTab(DelegationTab.REQUEST_DELEGATION),
-  [ManageWalletAction.PENDING_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PENDING_REQUESTS),
-  [ManageWalletAction.CREATE_TEST_ACCOUNT]: () => {
-    onEntityCreatorDrawerOpen()
-  },
-}
-
-const onWalletAction = (action: ManageWalletAction) => WALLET_ACTION_HANDLERS[action]()
-
-// table part
-const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
-  {
-    text: t('toDeploy'),
-    color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
-    iconName: 'arrowUpCircle',
-  },
-  {
-    text: t('inProgress'),
-    color: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
-    iconName: 'arrowRepeat',
-  },
-  {
-    text: t('connected'),
-    color: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
-    iconName: 'checkCircle',
-  },
-] as const
-
-// #region entity creator drawer
-const isEntityCreatorDrawerOpen = ref(false)
-const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.ENTITY_CREATOR))
-
-const hasManageAccess = computed(() =>
-  CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MANAGE_ACCESS),
-)
-
-const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)
-
-const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
-// #endregion
-
-const searchCriteria = ref<SearchCriteria>({
-  currentPage: 0,
-  limit: currentFoldersPageSize.value,
-  search: '',
-  sorting: {
-    field: '',
-    descending: false,
-  },
-  filterByDeploymentStatus: undefined,
-  filterByMissionType: undefined,
-  filterByLastActivityPeriodInDays: undefined,
-  isFavoriteFilter: false,
-  isCustomerRelationFilter: false,
-})
-
-const searchResult = ref<SearchResult<RegularWalletData>>({
-  currentPage: 0,
-  items: [],
-  totalPage: 0,
-  totalItems: 0,
-})
-const { selectedFolders, selectedFolderIds } = useFolderSelection(searchResult)
-
-const selectedFolderCustomerRelationStatus = computed(() =>
-  selectedFolders.value.length === 1
-    ? selectedFolders.value[0].isCustomerRelation
-    : undefined,
-)
-
-function retrieveAndBindAccountsQuery() {
-  const { accountNumbers } = route.query
-  if (!accountNumbers) {
-    return
-  }
-
-  if (Array.isArray(accountNumbers)) {
-    searchCriteria.value.search = accountNumbers.at(0) ?? undefined
-  } else {
-    searchCriteria.value.search = `${accountNumbers ?? ''}`
-  }
-}
-
-const routeQuery = computed(() => route.query)
-watch(routeQuery, () => {
-  if (route.name === RouteName.FOLDERS) {
-    retrieveAndBindAccountsQuery()
-    router.replace({
-      query: {},
-    })
-  }
-}, {
-  immediate: true,
-})
-
-onBeforeRouteUpdate((to, from) => {
-  if (to.name === from.name && to.query !== from.query) {
-    retrieveAndBindAccountsQuery()
-  }
-})
-
-const handleSearchValueSubmitted = (searchValue: string) => {
-  searchCriteria.value.currentPage = 1
-  searchCriteria.value.search = searchValue
-}
-
-function handlePageRangeChanged(pageRange: number) {
-  WalletTrackingManager.trackPaginationSizeChanged(pageRange)
-  searchCriteria.value.currentPage = 1
-  searchCriteria.value.limit = pageRange
-}
-
-function onUpdateCurrentPage(currentPage: number) {
-  WalletTrackingManager.trackPaginationPageClicked(currentPage)
-  searchCriteria.value.currentPage = currentPage
-}
-
-const hasMoreResults = computed(() =>
-  searchResult.value.items.length < searchResult.value.totalItems,
-)
-
-const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
-  // map from updated store
-  const entitiesInFavorite = data?.map((item: Entity) => ({
-    ...item,
-    color: 'persian',
-  })) as Entity[]
-
-  userStore.setFavoriteEntities(entitiesInFavorite)
-}
-
-async function fetchAccountList(shouldAppendResults = false) {
-  if (shouldAppendResults) {
-    isLoadingMore.value = true
-  } else {
-    isLoading.value = true
-  }
-
-  try {
-    const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, { ...searchCriteria.value })
-
-    searchResult.value.items = shouldAppendResults
-      ? [...searchResult.value.items, ...queryResult.items]
-      : queryResult.items
-    searchResult.value.currentPage = queryResult.currentPage
-    searchResult.value.totalPage = queryResult.totalPage
-    searchResult.value.totalItems = queryResult.totalItems
-  } catch (e) {
-    logger.error('Error while fetching data', e)
-  } finally {
-    if (shouldAppendResults) {
-      isLoadingMore.value = false
-    } else {
-      isLoading.value = false
-    }
-  }
-}
-
-async function onManageAccessButtonClick() {
-  if (hasManageAccess.value && (manageAccessCount.value ?? 0) > 0) {
-    AmplitudeService.track('Registry Validation Initiated', {
-      registry_validation_initialisation_localisation: 'portefeuille',
-    })
-    isManageAccessDrawerOpened.value = true
-  }
-}
-
-const fetchTableDataAndFavorites = async () => {
-  const [, data] = await Promise.all([
-    fetchAccountList(),
-    fetchFavoriteEntities(),
-  ])
-  putEntitiesInCommonFavorite(data)
-}
-
-const handleAddFavorite = async (accountId: number, isFavorite: boolean) => {
-  await manageFavoriteEntities(accountId, isFavorite)
-  await fetchTableDataAndFavorites()
-}
-
-function loadMoreResults() {
-  if (isLoadingMore.value === true || hasMoreResults.value === false) {
-    return
-  }
-
-  const nextPage = searchResult.value.currentPage + 1
-
-  shouldAppendNextFetch.value = true
-  isLoadingMore.value = true
-  WalletTrackingManager.trackPaginationPageClicked(nextPage)
-  searchCriteria.value.currentPage = nextPage
-}
-
-const manageAccessCount = ref<number>()
-async function refreshPageCount() {
-  // we just want the totalItems from the api
-  const { totalItems } = await fetchAccountOperations(1, 1)
-
-  manageAccessCount.value = totalItems
-}
-
-async function loadManageAccessCount() {
-  if (!hasManageAccess.value) {
-    return
-  }
-  await refreshPageCount()
-}
-
-async function onUpdateManageAccessDrawerOpened(isOpened: boolean) {
-  if (!isOpened) {
-    await loadManageAccessCount()
-  }
-}
-
-async function onOfferSaved() {
-  await fetchAccountList()
-  openOffersDrawer.value = false
-}
-
-const totalAccounts = ref(0)
-
-onMounted(async () => {
-  loadManageAccessCount()
-  await fetchTableDataAndFavorites()
-  totalAccounts.value = searchResult.value.totalItems // Store the nb of total account for later use
-})
-
-watch(searchCriteria, async () => {
-  const shouldAppendResults = shouldAppendNextFetch.value
-  shouldAppendNextFetch.value = false
-  await fetchAccountList(shouldAppendResults)
-}, { deep: true })
-
-watch(currentFoldersPageSize, (limit) => {
-  searchCriteria.value.currentPage = 0
-  searchCriteria.value.limit = limit
-})
-
-const openOffersDrawer = ref(false)
-const hasOffersDrawer = ref(false)
-const selectedAccountNumber = ref<string>('')
-const selectedAccountId = ref<number | undefined>()
-const offersDrawerRef = useTemplateRef<InstanceType<typeof OffersDrawer>>('offersDrawer')
-
-const onClickDeploy = async (accountId: number, accountNumber: string, companyName: string) => {
-  hasOffersDrawer.value = true
-  selectedAccountNumber.value = accountNumber
-  selectedAccountId.value = accountId
-  selectedCompanyName.value = companyName
-  await nextTick() // needed otherwise offersDrawerRef.value is not defined yet
-  offersDrawerRef.value?.initDrawerForCurrentAccount()
-  openOffersDrawer.value = true
-}
-const onClickFolder = (entityId: number) => {
+function onClickFolder(entityId: number) {
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
-const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
-  searchCriteria.value = {
-    currentPage: 0,
-    limit: currentFoldersPageSize.value,
-    filterByDeploymentStatus: [filterValue.toString()],
-    sorting: {
-      field: '',
-      descending: false,
-    },
-  }
-  searchBar.value.clearSearch()
-}
-const handleRemoveFilter = () => {
-  searchCriteria.value = {
-    currentPage: 0,
-    limit: currentFoldersPageSize.value,
-    sorting: {
-      field: '',
-      descending: false,
-    },
-  }
-  searchBar.value.clearSearch()
+
+function handleFilterByDeploymentStatus(filterValue: EntityStatus) {
+  resetSearchCriteria(filterValue)
+  searchBar.value?.clearSearch()
 }
 
-const { handleSortCriteria } = useSort()
-
-const handleSortAccount = (param: SortingCriteria) => {
-  handleSortCriteria(param, searchCriteria.value)
+function handleRemoveFilter() {
+  resetSearchCriteria()
+  searchBar.value?.clearSearch()
 }
+// #endregion
 
 defineExpose({
   handleAddFavorite,
@@ -893,15 +395,5 @@ defineExpose({
 .account-deploy__filters {
   // Prevents layout shift when dynamic UI elements like the "Clear" button are shown.
   min-height: 44px;
-}
-
-// Ensures a smooth transition when the filter count disappears
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

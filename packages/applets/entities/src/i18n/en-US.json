@@ -136,6 +136,28 @@
         "generalAssembly": "General assembly minutes",
         "engagementLetter": "Engagement letter"
       },
+      "foldersPage": {
+        "search": "Search by company name, folder ID, first name, last name, and email of the executive",
+        "searchShort": "Search...",
+        "toDeploy": "To Deploy",
+        "inProgress": "In progress",
+        "connected": "Connected",
+        "clearAll": "Clear all",
+        "filter": "Filter",
+        "on": "on",
+        "delegation": "My delegations | Delegate my folder | Delegate my folders",
+        "createTestAccount": "Create a test account",
+        "manageAccess": "Manage access",
+        "showMoreResults": "Show more results",
+        "removeFromFoldersCheckError": "The withdrawal action could not be prepared. Please try again in a few moments.",
+        "removeFromFoldersSuccessSingle": "You removed yourself from the selected folder.",
+        "removeFromFoldersSuccessMultiple": "You removed yourself from the {count} selected folders.",
+        "removeFromFoldersPartialSuccess": "You removed yourself from {succeededCount} {succeededFolderLabel} out of {selectedCount}. {remainingFoldersFailureMessage}",
+        "removeFromFoldersSucceededFolderLabel": "folder | folders",
+        "removeFromFoldersRemainingFailureSingle": "The remaining folder could not be processed, please try again.",
+        "removeFromFoldersRemainingFailureMultiple": "The remaining folders could not be processed, please try again.",
+        "removeFromFoldersFailure": "Your withdrawal could not be completed. Please try again in a few moments."
+      },
       "prospectsPage": {
         "search": "Search by company name, client code, SIRET",
         "searchShort": "Search...",

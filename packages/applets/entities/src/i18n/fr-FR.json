@@ -136,6 +136,28 @@
         "generalAssembly": "Procès verbal d'assemblée générale",
         "engagementLetter": "Lettre de mission"
       },
+      "foldersPage": {
+        "search": "Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant",
+        "searchShort": "Rechercher...",
+        "toDeploy": "A déployer",
+        "inProgress": "En cours",
+        "connected": "Connecté",
+        "clearAll": "Tout effacer",
+        "filter": "Filtrer",
+        "on": "sur",
+        "delegation": "Mes délégations | Déléguer le dossier | Déléguer les dossiers",
+        "createTestAccount": "Créer un compte de test",
+        "manageAccess": "Gérer les accès",
+        "showMoreResults": "Afficher plus de résultats",
+        "removeFromFoldersCheckError": "L’action de retrait n’a pas pu être préparée. Réessayez dans quelques instants.",
+        "removeFromFoldersSuccessSingle": "Vous vous êtes retiré du dossier sélectionné.",
+        "removeFromFoldersSuccessMultiple": "Vous vous êtes retiré des {count} dossiers sélectionnés.",
+        "removeFromFoldersPartialSuccess": "Vous vous êtes retiré de {succeededCount} {succeededFolderLabel} sur {selectedCount}. {remainingFoldersFailureMessage}",
+        "removeFromFoldersSucceededFolderLabel": "dossier | dossiers",
+        "removeFromFoldersRemainingFailureSingle": "Le dossier restant n’a pas pu être traité, réessayez.",
+        "removeFromFoldersRemainingFailureMultiple": "Les dossiers restant n’ont pas pu être traités, réessayez.",
+        "removeFromFoldersFailure": "Votre retrait n’a pas pu aboutir. Réessayez dans quelques instants."
+      },
       "prospectsPage": {
         "search": "Rechercher par raison sociale, code client, SIRET",
         "searchShort": "Rechercher...",
