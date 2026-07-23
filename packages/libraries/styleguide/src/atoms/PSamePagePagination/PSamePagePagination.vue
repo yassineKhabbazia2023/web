@@ -15,7 +15,7 @@
       "
       pType="default"
       pSize="small"
-      :data-testid="`${pTestIdRoot}-load-more-button`"
+      :data-testid="`${pTestId}-load-more-button`"
       @click="emit('load-more')"
     >
       <PIcon
@@ -38,7 +38,7 @@ import type { PSamePagePaginationProps } from './PSamePagePaginationTypes'
 
 withDefaults(defineProps<PSamePagePaginationProps>(), {
   pLoading: false,
-  pTestIdRoot: 'psame-page-pagination',
+  pTestId: 'psame-page-pagination',
 })
 
 const emit = defineEmits<{

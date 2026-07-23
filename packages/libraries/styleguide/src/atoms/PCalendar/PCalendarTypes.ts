@@ -10,4 +10,5 @@ export interface PCalendarProps {
   // This should start with monday and end with sunday
   // This means you might include days from the previous and next month
   pInitialDateRange?: [Date, Date]
+  pTestId?: string
 }

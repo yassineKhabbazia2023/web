@@ -7,5 +7,6 @@
   "pLoading": true,
   "pSize": "small",
   "pTag": "button",
+  "pTestId": undefined,
   "pType": "primary",
 }

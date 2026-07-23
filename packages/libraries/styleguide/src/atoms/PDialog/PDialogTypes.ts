@@ -13,4 +13,5 @@ export interface PDialogProps {
   pCloseIconName?: IconName
   pFullscreen?: boolean
   pAppendToBody?: boolean
+  pTestId?: string
 }

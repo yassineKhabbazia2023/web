@@ -54,6 +54,7 @@ export interface PDropdownProps extends PSelectProps {
   modelValue?: any // temporarly
   pOptions: PDropdownOption[]
   pCheckAllLabel?: string
+  pTestId?: string
 }
 
 export interface DropdownGroup {

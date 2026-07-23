@@ -7,6 +7,7 @@
     :border="pBorder"
     :size="pSize"
     :name="pName"
+    :data-testid="pTestId"
   >
     <slot />
   </ElRadio>
@@ -22,6 +23,7 @@ withDefaults(defineProps<PRadioProps>(), {
   pBorder: false,
   pSize: undefined,
   pName: undefined,
+  pTestId: undefined,
 })
 
 const modelValue = defineModel<PRadioValue>()

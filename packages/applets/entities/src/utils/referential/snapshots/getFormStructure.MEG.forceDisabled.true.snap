@@ -257,6 +257,7 @@
             "trigger": "change",
           },
         ],
+        "pTestId": "offer-fiscal-exercise-start-date",
       },
       {
         "isStoredHasNumber": true,

@@ -2,6 +2,7 @@
   <div>
     <PDialog
       v-model="internalValue"
+      pTestId="entities-confirmation-dialog"
       :pTitle="title"
       pWidth="480px"
       destroyOnClose

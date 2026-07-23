@@ -19,6 +19,7 @@
       :pSearchInvalidMessage="t('invalidSearch')"
       :pPlaceholder="t('searchPlaceholder')"
       pSize="small"
+      pTestId="access-management-search-input"
       class="margin-y--3 max-width-400"
       @update:p-search="onUpdateSearchTerm"
     />

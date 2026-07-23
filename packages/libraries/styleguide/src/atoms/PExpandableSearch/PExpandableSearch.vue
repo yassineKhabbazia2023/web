@@ -1,7 +1,7 @@
 <template>
   <div
     class="p-expandable-search flex flex--align-items-center flex--justify-content-start"
-    data-testid="expandable-search"
+    :data-testid="pTestId ?? 'expandable-search'"
   >
     <PButton
       v-if="!isSearchOpen"

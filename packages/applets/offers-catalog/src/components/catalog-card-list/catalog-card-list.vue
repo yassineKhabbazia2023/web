@@ -31,6 +31,7 @@
       :similarityScore="similarityScore"
       :isSmartSearchEnabled="isSmartSearchEnabled"
       :offerRecommendationsId="offerRecommendationsId"
+      :data-testid="`offers-catalog-card-${id}`"
       class="cursor-pointer"
       @click="onCardClick(id)"
     />

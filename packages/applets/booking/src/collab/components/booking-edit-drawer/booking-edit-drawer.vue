@@ -73,6 +73,7 @@
         <PButton
           pType="primary"
           :pLoading="isSaving"
+          pTestId="booking-edit-save-button"
           @click="handleSave"
         >
           {{ t('buttons.save') }}

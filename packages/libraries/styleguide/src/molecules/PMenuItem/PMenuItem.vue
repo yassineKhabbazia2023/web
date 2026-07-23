@@ -4,6 +4,7 @@
     :route="pRoute"
     :disabled="pDisabled"
     class="p-menu-item"
+    :data-testid="pTestId"
   >
     <template v-if="slots.title" #title>
       <PIcon
@@ -34,5 +35,6 @@ const slots = useSlots()
 withDefaults(defineProps<PMenuItemProps>(), {
   pRoute: undefined,
   pDisabled: false,
+  pTestId: undefined,
 })
 </script>

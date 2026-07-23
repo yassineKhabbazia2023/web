@@ -5,4 +5,5 @@ export interface PTabsProps {
   pStretch?: boolean
   pBeforeLeave?: (_newName: string | number, _oldName: string | number) => Promise<boolean | void>
   pSmartWidth?: boolean
+  pTestId?: string
 }

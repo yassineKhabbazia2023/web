@@ -7,6 +7,7 @@
     :tabPosition="pTabPosition"
     :stretch="pStretch"
     :beforeLeave="pBeforeLeave"
+    :data-testid="pTestId"
   >
     <slot />
   </ElTabs>
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<PTabsProps>(), {
   pTabPosition: 'top',
   pStretch: false,
   pBeforeLeave: undefined,
+  pTestId: undefined,
 })
 const emit = defineEmits<{
   'update:modelValue': [string | number]

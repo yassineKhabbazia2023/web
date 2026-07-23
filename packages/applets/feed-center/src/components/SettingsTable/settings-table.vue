@@ -23,6 +23,7 @@
         <PCheckbox
           v-if="scope.row.emailValue !== null"
           :modelValue="scope.row.emailValue"
+          data-testid="feed-center-email-checkbox"
           @update:model-value="
             (isChecked: boolean) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.EMAIL)
           "
@@ -40,6 +41,7 @@
         <PCheckbox
           v-if="scope.row.feedcenterValue !== null"
           :modelValue="scope.row.feedcenterValue === true"
+          data-testid="feed-center-in-rydge-checkbox"
           @update:model-value="
             (isChecked: boolean) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.FEED_CENTER)
           "

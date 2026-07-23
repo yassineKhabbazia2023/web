@@ -12,6 +12,7 @@
     :uniqueOpened="pUniqueOpened"
     :menuTrigger="pMenuTrigger"
     :collapseTransition="pCollapseTransition"
+    :data-testid="pTestId"
   >
     <slot />
   </ElMenu>
@@ -31,5 +32,6 @@ withDefaults(defineProps<PMenuProps>(), {
   pUniqueOpened: false,
   pMenuTrigger: 'hover',
   pCollapseTransition: true,
+  pTestId: undefined,
 })
 </script>

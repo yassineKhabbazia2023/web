@@ -7,6 +7,7 @@
     :trigger="pTrigger"
     :title="pTitle"
     :width="212"
+    :data-testid="pTestId"
   >
     <div class="el-popover__content">
       <slot name="content" />
@@ -24,5 +25,6 @@ import type { PPopoverProps } from './PPopoverTypes'
 withDefaults(defineProps<PPopoverProps>(), {
   pPlacement: 'top',
   pDisabled: false,
+  pTestId: undefined,
 })
 </script>

@@ -21,6 +21,7 @@
     :tabIndex="pTabIndex"
     :ariaLabel="pLabel"
     :style="cssStyle"
+    :data-testid="pTestId"
   />
 </template>
 
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<PSwitchProps>(), {
   pId: undefined,
   pTabIndex: undefined,
   pLabel: undefined,
+  pTestId: undefined,
 })
 
 const modelValue = defineModel<boolean>({ default: false })

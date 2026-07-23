@@ -8,6 +8,7 @@
     :header-cell-style="pHeaderCellStyle"
     :cell-style="pCellStyle"
     :row-key="pRowKey"
+    :data-testid="pTestId"
   >
     <slot />
     <template #empty>
@@ -41,6 +42,7 @@ withDefaults(defineProps<PTableProps>(), {
   pRowKey: undefined,
   pEmptyText: 'Aucune donnée',
   pEmptyIconName: 'infoCircle',
+  pTestId: undefined,
 })
 
 // handle row selection background color not implemented by element plus

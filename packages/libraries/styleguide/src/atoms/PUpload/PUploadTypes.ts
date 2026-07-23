@@ -22,6 +22,7 @@ export interface UploadProps {
   pShowDeleteButton?: boolean
   pLabel?: string
   pInitialFiles?: UploadFile[]
+  pTestId?: string
 }
 
 export interface FileRejectionOptions {

@@ -8,4 +8,5 @@ export interface PFormSearchProps {
   pClearable?: boolean
   pDisabled?: boolean
   pSize?: 'large' | 'default' | 'small'
+  pTestId?: string
 }

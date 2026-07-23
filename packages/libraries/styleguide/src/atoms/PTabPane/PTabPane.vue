@@ -5,7 +5,7 @@
     :name="pName"
     :closable="pClosable"
     :lazy="pLazy"
-    data-testid="p-tab-pane"
+    :data-testid="pTestId ?? 'p-tab-pane'"
   >
     <slot />
 
@@ -59,5 +59,6 @@ withDefaults(defineProps<PTabPaneProps>(), {
   pName: undefined,
   pClosable: false,
   pLazy: false,
+  pTestId: undefined,
 })
 </script>

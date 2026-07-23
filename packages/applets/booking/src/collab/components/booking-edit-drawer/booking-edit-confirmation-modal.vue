@@ -1,6 +1,7 @@
 <template>
   <PDialog
     v-model="isModalOpen"
+    pTestId="booking-edit-confirmation-dialog"
     pWidth="500px"
     :pShowClose="false"
     pAlignCenter
@@ -28,6 +29,7 @@
     <template #footer>
       <PButton
         pType="secondary"
+        pTestId="booking-edit-confirmation-cancel-button"
         @click="handleCancel"
       >
         {{ t('booking-edit-confirmation-modal.exitButton') }}
@@ -35,6 +37,7 @@
       <PButton
         pType="primary"
         :pLoading="isLoading"
+        pTestId="booking-edit-confirmation-confirm-button"
         @click="handleConfirm"
       >
         {{ t('booking-edit-confirmation-modal.confirmButton') }}

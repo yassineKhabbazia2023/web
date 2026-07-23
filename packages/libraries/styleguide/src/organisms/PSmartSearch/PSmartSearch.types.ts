@@ -10,4 +10,5 @@ export interface PSmartSearchProps {
   pSearchInvalidMessage?: string
   pAutofocus?: boolean
   pShowSmartSearchToggle?: boolean
+  pTestId?: string
 }

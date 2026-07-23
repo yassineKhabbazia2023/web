@@ -10,4 +10,5 @@ export interface PEmailInputFieldProps {
   pDomainPartPlaceholder?: string
   pLocalPartDisabled?: boolean
   pDomainPartDisabled?: boolean
+  pTestId?: string
 }

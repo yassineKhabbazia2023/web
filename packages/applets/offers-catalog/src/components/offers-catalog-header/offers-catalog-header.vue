@@ -34,6 +34,7 @@
       <span class="flex--grow-1 flex--shrink-1 flex--basis-0" />
       <PSmartSearch
         ref="pSmartSearch"
+        pTestId="offers-catalog-search"
         :pSearch="localSearchTerm"
         :pAiEnabled="aiEnabled"
         :pShowSmartSearchToggle="isSmartSearchEnabled"

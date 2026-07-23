@@ -5,6 +5,7 @@
     :pFetchSuggestions="getCollaboratorsSuggestions"
     :pDisabled="disabled"
     valueKey="id"
+    pTestId="add-collaborators-autocomplete"
     @select="handleCollaboratorSelection"
   >
     <template #default="{ item }">

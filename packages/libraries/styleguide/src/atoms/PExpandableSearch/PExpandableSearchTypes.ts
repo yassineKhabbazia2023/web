@@ -8,4 +8,5 @@ export interface PExpandableSearchProps {
   pPlaceholder?: string
   pSearchContent?: string
   pType?: PButtonProps['pType']
+  pTestId?: string
 }

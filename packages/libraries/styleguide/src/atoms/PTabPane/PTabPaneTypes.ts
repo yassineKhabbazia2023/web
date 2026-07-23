@@ -10,4 +10,5 @@ export interface PTabPaneProps {
   pIconName?: IconName
   pTooltip?: PTooltipProps
   pCount?: number | string
+  pTestId?: string
 }

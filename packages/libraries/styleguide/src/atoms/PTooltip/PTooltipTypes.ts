@@ -6,4 +6,5 @@ export interface PTooltipProps {
   pPlacement?: PlacementOptions
   pShowAfter?: number // ms
   pHideAfter?: number // ms
+  pTestId?: string
 }

@@ -26,6 +26,7 @@
       <li
         v-for="expert in formattedExperts"
         :key="expert.id"
+        :data-testid="`booking-expert-item-${expert.id}`"
         class="
           flex
           flex--direction-column

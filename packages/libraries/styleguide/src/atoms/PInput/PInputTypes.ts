@@ -30,4 +30,5 @@ export interface PInputProps {
   pTabindex?: number | string
   pValidateEvent?: boolean
   pInputStyle?: string | CSSProperties | CSSProperties[] | string[]
+  pTestId?: string
 }

@@ -2,6 +2,7 @@
   <div
     class="flex flex--align-items-center"
     style="width: 100%"
+    :data-testid="pTestId"
   >
     <PInput
       v-model="emailAddress.localPart"

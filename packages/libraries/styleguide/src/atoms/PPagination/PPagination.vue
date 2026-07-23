@@ -6,7 +6,7 @@
       :pOptions="pageSizeOptions"
       :pPlaceholder="pageSizePlaceholder"
       pPlacement="top"
-      :data-testid="`${pTestIdRoot}-pagination-select`"
+      :data-testid="`${pTestId}-pagination-select`"
       p-popper-class="p-pagination__popper"
       class="p-pagination__select"
     />
@@ -19,13 +19,13 @@
       :pageSizes="pPageSizes"
       :total="pTotal"
       layout="prev, pager, next"
-      :data-testid="`${pTestIdRoot}-pagination-pages`"
+      :data-testid="`${pTestId}-pagination-pages`"
     />
 
     <div
       v-if="pShowTotalPageCounter"
       class="p-pagination__total-page-counter"
-      :data-testid="`${pTestIdRoot}-pagination-counter`"
+      :data-testid="`${pTestId}-pagination-counter`"
     >
       <slot />
     </div>
@@ -40,7 +40,7 @@ import PDropdown from '../../molecules/PDropdown'
 import type { PDropdownProps } from '../../molecules/PDropdown/PDropdownTypes'
 
 const props = withDefaults(defineProps<PaginationProps>(), {
-  pTestIdRoot: 'ppagination',
+  pTestId: 'ppagination',
 })
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
 

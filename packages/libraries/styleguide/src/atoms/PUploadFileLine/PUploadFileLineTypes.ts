@@ -11,4 +11,5 @@ export interface PUploadFileLineProps {
   pMessage?: string
   pColor?: 'persian' | 'white'
   pIsMultiLine?: boolean
+  pTestId?: string
 }

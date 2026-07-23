@@ -17,6 +17,7 @@
         :pClearable="pClearable"
         :pSize="pSize"
         :pDisabled="pDisabled"
+        :data-testid="pTestId"
         pPrefixIconName="search"
         pName="search"
         pType="search"

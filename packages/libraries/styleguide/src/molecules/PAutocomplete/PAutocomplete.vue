@@ -16,6 +16,7 @@
     :highlightFirstItem="pHighlightFirstItem"
     :fitInputWidth="pFitInputWidth"
     :selectWhenUnmatched="pSelectWhenUnmatched"
+    :data-testid="pTestId"
   >
     <template #default="slotProps">
       <slot v-bind="slotProps" />
@@ -50,6 +51,7 @@ const props = withDefaults(defineProps<PAutocompleteProps>(), {
   pTeleported: true,
   pHighlightFirstItem: false,
   pFitInputWidth: false,
+  pTestId: undefined,
 })
 
 // Element Plus does not natively support a minimum character threshold on autocomplete

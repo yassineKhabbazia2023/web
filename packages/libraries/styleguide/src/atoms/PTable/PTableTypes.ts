@@ -11,4 +11,5 @@ export interface PTableProps {
   pEmptyText?: string
   pEmptyIconName?: IconName
   pEmptyActionLabel?: string
+  pTestId?: string
 }

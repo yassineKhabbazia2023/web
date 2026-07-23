@@ -6,4 +6,5 @@ export interface PRadioProps {
   pBorder?: boolean
   pSize?: 'large' | 'default' | 'small'
   pName?: string
+  pTestId?: string
 }

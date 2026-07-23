@@ -10,6 +10,7 @@
     :size="pSize"
     :modalClass="pModalClass"
     :withHeader="pWithHeader"
+    :data-testid="pTestId"
   >
     <template #header>
       <div
@@ -26,6 +27,7 @@
             pIconOnly
             pSize="small"
             class="p-drawer__close-button"
+            data-testid="p-drawer-close"
             @click="$emit('close-drawer-button')"
           >
             <PIcon pName="x" />
@@ -43,6 +45,7 @@
               flex--align-items-center
               cursor-pointer
             "
+              data-testid="p-drawer-toolbox-gear"
             >
               <PIcon
                 pName="gear"

@@ -7,4 +7,5 @@ export interface PMenuItemProps {
   pDisabled?: boolean
   pIconLeftName?: IconName
   pIconRightName?: IconName
+  pTestId?: string
 }

@@ -59,7 +59,7 @@
             class="prospect-creation-step-contact__dropdown"
             :pOptions="getRoleOptionsFor(interlocutor.id)"
             :pPlaceholder="t('entities.wallet.prospect.form.contact.rolePlaceholder')"
-            :data-testid="`prospect-interlocutor-role-dropdown-${interlocutor.id}`"
+            :data-testid="`prospect-selected-collaborator-${interlocutor.email}`"
           >
             <template #empty>
               <p

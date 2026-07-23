@@ -65,6 +65,7 @@
         "pDisabled": false,
         "pFieldKey": "accounting.fiscalExerciseStartDate",
         "pFieldType": "date",
+        "pTestId": "offer-fiscal-exercise-start-date",
         "pLabel": "Début de l'exercice",
         "pRules": [{ 
           "required": true, 

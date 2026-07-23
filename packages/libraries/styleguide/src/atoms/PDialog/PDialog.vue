@@ -13,6 +13,7 @@
     :showClose="pShowClose"
     :destroyOnClose="pDestroyOnClose"
     :closeIcon="closeIcon"
+    :data-testid="pTestId"
     @close="handleClose"
   >
     <slot />
@@ -41,6 +42,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pCloseIconName: 'x',
   pFullscreen: false,
   pAppendToBody: false,
+  pTestId: undefined,
 })
 
 const dialogModel = computed({

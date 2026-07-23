@@ -9,6 +9,7 @@
     :expandCloseIcon="expandCloseIcon"
     :expandOpenIcon="expandOpenIcon"
     class="p-submenu"
+    :data-testid="pTestId"
   >
     <template #title>
       <PIcon
@@ -37,6 +38,7 @@ withDefaults(defineProps<PSubMenuProps>(), {
   pShowTimeout: undefined,
   pHideTimeout: undefined,
   pDisabled: false,
+  pTestId: undefined,
 })
 
 const expandCloseIcon = computed(() => getIconComponent('caretDown'))

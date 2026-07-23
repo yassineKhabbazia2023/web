@@ -2,6 +2,7 @@
   <ElButtonGroup
     :type="computedType"
     :size="pSize"
+    :data-testid="pTestId"
   >
     <slot />
   </ElButtonGroup>
@@ -14,6 +15,7 @@ import { type PButtonGroupProps, injectionButtonKey } from './PButtonGroupTypes'
 const props = withDefaults(defineProps<PButtonGroupProps>(), {
   pType: 'default',
   pSize: 'default',
+  pTestId: undefined,
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']

@@ -63,7 +63,7 @@ describe('pSamePagePagination', () => {
   it('should render custom test id root', () => {
     const wrapper = createWrapper({
       ...defaultProps,
-      pTestIdRoot: 'wallet',
+      pTestId: 'wallet',
     })
 
     const button = wrapper.findComponent({ name: 'PButton' })

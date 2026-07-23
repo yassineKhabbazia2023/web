@@ -8,4 +8,5 @@ export interface PSubMenuProps {
   pHideTimeout?: number
   pDisabled?: boolean
   pIconName?: IconName
+  pTestId?: string
 }

@@ -129,6 +129,7 @@
 
         <PButton
           pType="primary"
+          pTestId="booking-timeslots-next-button"
           @click="emit('next-step')"
         >
           {{ t('booking-configuration.buttons.next') }}

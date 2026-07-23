@@ -19,4 +19,5 @@ export interface PAutocompleteProps {
   pTeleported?: boolean
   pHighlightFirstItem?: boolean
   pFitInputWidth?: boolean
+  pTestId?: string
 }

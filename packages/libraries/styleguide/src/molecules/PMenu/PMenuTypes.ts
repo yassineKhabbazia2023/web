@@ -8,4 +8,5 @@ export interface PMenuProps {
   pUniqueOpened?: boolean
   pMenuTrigger?: 'hover' | 'click'
   pCollapseTransition?: boolean
+  pTestId?: string
 }

@@ -16,4 +16,5 @@ export interface PButtonProps {
   pIsActive?: boolean
   pIsUnderlined?: boolean
   pTag?: string | Component
+  pTestId?: string
 }

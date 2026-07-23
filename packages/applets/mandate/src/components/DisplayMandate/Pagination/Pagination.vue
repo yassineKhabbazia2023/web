@@ -6,7 +6,7 @@
     :pPageSizeSelectorSuffix="pageRangeSelectorSuffix"
     :pPageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
     :pPageSize="limit"
-    pTestIdRoot="mandate"
+    pTestId="mandate"
     :pCurrentPage="currentPage"
     @update:p-current-page="handleCurrentChange"
     @on-page-range-changed="handleSizeChange"

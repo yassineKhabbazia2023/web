@@ -25,4 +25,5 @@ export interface PSwitchProps {
   pId?: string
   pTabIndex?: string | number
   pLabel?: string
+  pTestId?: string
 }

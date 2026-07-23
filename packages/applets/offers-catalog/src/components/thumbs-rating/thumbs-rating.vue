@@ -4,6 +4,7 @@
     <PButton
       :pType="thumbsDownProperties.type"
       pSize="small"
+      pTestId="offers-catalog-rating-thumbs-down-button"
       :pDisabled="modelValue !== null"
       @click.stop="onNegativeClick"
     >
@@ -12,6 +13,7 @@
     <PButton
       :pType="thumbsUpProperties.type"
       pSize="small"
+      pTestId="offers-catalog-rating-thumbs-up-button"
       :pDisabled="modelValue !== null"
       @click.stop="onPositiveClick"
     >

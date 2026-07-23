@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :data-testid="pTestId">
     <div
       v-if="pHasHeader"
       class="flex cursor-pointer flex--align-items-center"

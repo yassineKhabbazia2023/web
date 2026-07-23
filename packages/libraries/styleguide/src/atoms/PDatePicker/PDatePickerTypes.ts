@@ -25,4 +25,5 @@ export interface PDatePickerProps<T extends PDatePickerModelValue = PDatePickerM
   pEndPlaceholder?: string
   pTeleported?: boolean
   pPopperClass?: string
+  pTestId?: string
 }

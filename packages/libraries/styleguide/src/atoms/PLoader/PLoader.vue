@@ -1,6 +1,7 @@
 <template>
   <PIcon
     class="p-loader"
+    data-testid="p-loader"
     :size="pSize"
   >
     <component

@@ -112,6 +112,7 @@
         <PButton
           pType="secondary"
           pSize="small"
+          pTestId="booking-schedule-appointment-button"
           @click="onClickScheduleAppointment"
         >
           {{ t('scheduleAppointment') }}

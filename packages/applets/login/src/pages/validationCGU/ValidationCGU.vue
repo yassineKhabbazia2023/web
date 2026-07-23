@@ -18,6 +18,7 @@
         <PCheckbox
           ref="checkbox"
           v-model="formValue.terms"
+          pTestId="cgu-terms-checkbox"
           class="
             validation-cgu__checkbox
             font-base font-normal

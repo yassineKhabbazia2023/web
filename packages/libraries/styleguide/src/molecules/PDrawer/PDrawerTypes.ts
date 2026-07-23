@@ -19,6 +19,7 @@ export interface PDrawerProps {
   pSuffixUnderTitle?: boolean
   pHeaderToolbox?: PToolboxProps
   pBeforeClose?: PBeforeCloseFn
+  pTestId?: string
 }
 
 export type ElDrawerInstanceType = InstanceType<typeof ElDrawer>

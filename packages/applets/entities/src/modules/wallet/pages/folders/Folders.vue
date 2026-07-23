@@ -234,7 +234,7 @@
         :pLabel="t(`${I18N_KEY}.showMoreResults`)"
         :pLoading="isLoadingMore"
         class="margin-top--6"
-        pTestIdRoot="folders"
+        pTestId="folders"
         @load-more="loadMoreResults"
       />
       <ResendActivationEmailDrawer

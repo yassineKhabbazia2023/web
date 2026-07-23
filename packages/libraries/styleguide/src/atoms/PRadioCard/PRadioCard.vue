@@ -1,5 +1,8 @@
 <template>
-  <div class="p-radio-card">
+  <div
+    class="p-radio-card"
+    :data-testid="pTestId"
+  >
     <PRadio
       :pLabel="pLabel"
       :pDisabled="pDisabled"

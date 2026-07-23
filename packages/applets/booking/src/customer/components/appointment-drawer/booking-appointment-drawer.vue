@@ -3,6 +3,7 @@
     :model-value="isOpened"
     :pTitle="t('booking-appointment-drawer.title')"
     pSize="33%"
+    pTestId="booking-appointment-drawer"
     @close="closeDrawer"
     @close-drawer-button="closeDrawer"
   >
@@ -32,6 +33,7 @@
             pType="secondary"
             pPlain
             class="margin-right--4"
+            pTestId="booking-appointment-previous-button"
             @click="goToPreviousStep"
           >
             {{ t('booking-configuration.buttons.previous') }}
@@ -43,7 +45,7 @@
           v-if="currentStep !== BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT"
           pType="primary"
           pPlain
-          data-testid="catalog-drawer-close-button"
+          pTestId="booking-appointment-close-button"
           @click="closeDrawer"
         >
           {{ t('booking-appointment-drawer.close') }}

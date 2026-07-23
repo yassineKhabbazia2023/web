@@ -3,6 +3,7 @@
     v-model="internalModelValue"
     class="p-calendar"
     :range="pInitialDateRange"
+    :data-testid="pTestId"
   >
     <template #header>
       <!-- Display none isn't enough, we must empty the header and then use display  -->

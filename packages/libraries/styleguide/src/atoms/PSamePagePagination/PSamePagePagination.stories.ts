@@ -22,7 +22,7 @@ const meta: Meta<typeof PSamePagePagination> = {
       control: 'boolean',
       description: 'Whether the load-more action is loading',
     },
-    pTestIdRoot: {
+    pTestId: {
       control: 'text',
       description: 'Root used to generate data-testid attributes',
     },
@@ -30,7 +30,7 @@ const meta: Meta<typeof PSamePagePagination> = {
   args: {
     pLabel: 'Show more results',
     pLoading: false,
-    pTestIdRoot: 'psame-page-pagination',
+    pTestId: 'psame-page-pagination',
   },
 }
 

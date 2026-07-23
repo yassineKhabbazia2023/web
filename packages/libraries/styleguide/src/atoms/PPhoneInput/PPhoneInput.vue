@@ -5,6 +5,7 @@
       flex
       flex-gap--2
     "
+    :data-testid="pTestId"
   >
     <ElSelect
       v-model="selectedCountry"
@@ -63,6 +64,7 @@ const props = withDefaults(defineProps<PPhoneInputProps>(), {
   pCountryDisabled: false,
   pPlaceholder: '',
   pPreferredCountries: () => [],
+  pTestId: undefined,
 })
 
 const model = defineModel<string>({ default: '' })

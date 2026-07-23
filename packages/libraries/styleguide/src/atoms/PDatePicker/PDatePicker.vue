@@ -15,6 +15,7 @@
     :placeholder="pPlaceholder"
     :clearable="pClearable"
     :teleported="pTeleported"
+    :data-testid="pTestId"
     @change="handleChange"
     @calendar-change="calendarChange"
     @panel-change="panelChange"
@@ -53,6 +54,7 @@ const props = withDefaults(defineProps<PDatePickerProps<T>>(), {
   pUnlinkPanels: false,
   pRangeSeparator: '-',
   pTeleported: true,
+  pTestId: undefined,
 })
 
 const emit = defineEmits<{

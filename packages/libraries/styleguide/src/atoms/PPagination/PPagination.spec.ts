@@ -109,7 +109,7 @@ describe('pPagination', () => {
     it('should have root name in attribute data-testid', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pTestIdRoot: 'wallet',
+        pTestId: 'wallet',
       })
       const select = wrapper.findComponent({ name: 'PDropdown' })
       const pagination = wrapper.findComponent({ name: 'ElPagination' })

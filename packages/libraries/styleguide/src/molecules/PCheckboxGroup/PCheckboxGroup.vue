@@ -4,6 +4,7 @@
     :disabled="pDisabled"
     :min="pMin"
     :max="pMax"
+    :data-testid="pTestId"
   >
     <slot />
   </ElCheckboxGroup>
@@ -15,5 +16,6 @@ import type { PCheckboxGroupProps } from './PCheckboxGroupTypes'
 
 withDefaults(defineProps<PCheckboxGroupProps>(), {
   pDisabled: undefined,
+  pTestId: undefined,
 })
 </script>

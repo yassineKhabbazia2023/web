@@ -2,7 +2,7 @@
   <div
     class="p-smart-search"
     :class="{ 'p-smart-search--disabled': pDisabled }"
-    data-testid="p-smart-search"
+    :data-testid="pTestId ?? 'p-smart-search'"
   >
     <Transition
       name="fade-drop"

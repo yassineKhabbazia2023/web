@@ -5,6 +5,7 @@
     :pShowClose="!pNoCloseButton"
     :pAlignCenter="pAlignCenter"
     :pDestroyOnClose="pDestroyOnClose"
+    :data-testid="pTestId"
     @close="onClickClose"
   >
     <slot />

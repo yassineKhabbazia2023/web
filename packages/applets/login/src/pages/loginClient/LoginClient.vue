@@ -49,6 +49,7 @@
       <router-link
         to="/resetPassword"
         class="forgot-password-btn font-semibold text-right"
+        data-testid="login-forgot-password-link"
       >
         {{ t('forgotPassword') }}
       </router-link>

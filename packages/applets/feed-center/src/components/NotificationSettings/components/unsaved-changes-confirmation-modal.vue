@@ -4,6 +4,7 @@
     :pTitle="t('feedCenter.settingsDrawer.unsavedChanges.title')"
     pWidth="420px"
     pDestroyOnClose
+    data-testid="feed-center-unsaved-changes-dialog"
   >
     <div class="text-color--neutral-gray-700">
       {{ t('feedCenter.settingsDrawer.unsavedChanges.content') }}

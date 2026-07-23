@@ -6,6 +6,7 @@
     :placement="pPlacement"
     :showAfter="pShowAfter"
     :hideAfter="pHideAfter"
+    :data-testid="pTestId"
   >
     <slot />
   </ElTooltip>
@@ -19,6 +20,7 @@ import type { PTooltipProps } from './PTooltipTypes'
 const props = withDefaults(defineProps<PTooltipProps>(), {
   disabled: false,
   pPlacement: 'top',
+  pTestId: undefined,
 })
 
 const isEnabled = computed(() => {

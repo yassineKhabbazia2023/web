@@ -3,4 +3,5 @@ export interface PRadioCardProps {
   pTitle: string
   pDescription?: string
   pDisabled?: boolean
+  pTestId?: string
 }

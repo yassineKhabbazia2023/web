@@ -204,6 +204,7 @@
           <PCheckbox
             :model-value="isFolderSelected(scope.row.accountId)"
             :disabled="false"
+            data-testid="wallet-folder-select-checkbox"
             @update:model-value="toggleSelectedFolder(scope.row.accountId)"
           />
         </template>

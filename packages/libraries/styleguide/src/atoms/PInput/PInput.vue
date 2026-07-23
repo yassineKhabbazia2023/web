@@ -30,6 +30,7 @@
     :validateEvent="pValidateEvent"
     :inputStyle="pInputStyle"
     :class="{'p-input--focused': isInputFocused}"
+    :data-testid="pTestId"
     @focus="isInputFocused=true"
     @blur="isInputFocused=false"
   >
@@ -92,6 +93,7 @@ const props = withDefaults(defineProps<PInputProps>(), {
   pTabindex: undefined,
   pValidateEvent: true,
   pInputStyle: () => mutable({} as const),
+  pTestId: undefined,
 })
 const inputRef = ref<InstanceType<typeof ElInput>>()
 

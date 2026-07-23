@@ -21,6 +21,7 @@
               :pCircle="item.pButtonName === '' ? true : false"
               :pLoading="item.pButton.pLoading"
               :pDisabled="item.pButton.pDisabled"
+              pTestId="p-action-bar-upload-btn"
               :pSize="item.pButton.pSize"
               :class="[
                 'p-action-bar__left-btn',

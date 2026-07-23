@@ -37,6 +37,7 @@
     :maxCollapseTags="pMaxCollapseTags"
     :popperOptions="pPopperOptions"
     :ariaLabel="pAriaLabel"
+    :data-testid="pTestId"
     @change="emit('change', $event)"
   >
     <template
@@ -211,6 +212,7 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pValidateEvent: true,
   pValueKey: 'value',
   pPopperOptions: () => ({}),
+  pTestId: undefined,
 })
 
 const emit = defineEmits<{

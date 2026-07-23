@@ -8,6 +8,7 @@
     v-model:file-list="files"
     class="p-upload"
     :class="pClassMapper"
+    :data-testid="pTestId"
     v-bind="$attrs"
     :httpRequest="emitFilesEvent"
     :multiple="pMultiple"
@@ -68,7 +69,7 @@
     :pHasButton="pShowDeleteButton"
     pButtonIconName="trash"
     :pTitleButton="pDeleteButtonTitle"
-    data-testid="upload-single-file"
+    :data-testid="pTestId ?? 'upload-single-file'"
     v-bind="$attrs"
     @on-click-file-action="removeFile(files[0])"
   />

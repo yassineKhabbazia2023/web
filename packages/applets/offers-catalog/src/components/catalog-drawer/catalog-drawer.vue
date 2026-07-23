@@ -1,6 +1,7 @@
 <template>
   <PDrawer
     v-model:modelValue="internalIsOpened"
+    pTestId="offers-catalog-drawer"
     :p-title="offer.title"
     pSize="60%"
     @close-drawer-button="closeDrawer"

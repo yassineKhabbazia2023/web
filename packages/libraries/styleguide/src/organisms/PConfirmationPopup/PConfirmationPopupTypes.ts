@@ -8,4 +8,5 @@ export interface PConfirmationPopupProps {
   pAlignCenter?: boolean
   pNoCloseButton?: boolean
   pDestroyOnClose?: boolean
+  pTestId?: string
 }

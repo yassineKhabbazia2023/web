@@ -46,7 +46,7 @@
       :pTotal="totalDocuments"
       pShowTotalPageCounter
       :pPageSizes="pageSizes"
-      pTestIdRoot="pennylane-ged-v2"
+      pTestId="pennylane-ged-v2"
       pPageSizeSelectorSuffix=""
     >
       <p>{{ paginationLabel }}</p>

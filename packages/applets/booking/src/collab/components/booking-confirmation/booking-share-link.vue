@@ -39,10 +39,12 @@
         v-model="localBookingUrl"
         pReadonly
         class="flex--grow-1 margin-right--3"
+        pTestId="booking-share-link-input"
       />
       <PButton
         :pType="copyButtonType"
         :class="{ 'copy-button--copied': isCopied }"
+        pTestId="booking-share-link-copy-button"
         @click="copyToClipboard"
       >
         <PIcon

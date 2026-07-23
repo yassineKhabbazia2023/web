@@ -4,6 +4,7 @@
     :pLabel="formItemLabel"
     :pRules="pRules"
     :class="pCssClass"
+    :data-testid="fieldTestId"
     class="flex"
   >
     <PEmailInputField
@@ -134,6 +135,12 @@ const modelValue = defineModel<T>()
 
 const formItemLabel = computed(() => {
   return props.pFieldType !== 'checkbox' ? props.pLabel : ''
+})
+
+// Expose a stable hook on the form-item root (falls through to el-form-item) so
+// tests can scope the field and its native el-form-item__error without touching the control's testid.
+const fieldTestId = computed(() => {
+  return props.pTestId !== undefined ? `${props.pTestId}-field` : undefined
 })
 
 const internalValue = computed({

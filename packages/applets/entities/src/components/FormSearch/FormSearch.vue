@@ -8,6 +8,7 @@
     <PFormItem prop="search" :pHasMargin="false">
       <PInput
         v-model="formValues.search"
+        pTestId="entities-search-input"
         :pPlaceholder="placeholder"
         :pAutofocus="isDesktop"
         pPrefixIconName="search"

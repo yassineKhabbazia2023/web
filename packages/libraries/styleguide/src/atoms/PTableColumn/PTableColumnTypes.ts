@@ -39,4 +39,5 @@ export interface PTableColumnProps {
   pFilterMultiple?: boolean
   pFilterMethod?: (_value: any, _row: any, _column: any) => void
   pFilteredValue?: []
+  pTestId?: string
 }

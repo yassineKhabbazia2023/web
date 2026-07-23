@@ -2,6 +2,7 @@
   <div
     class="p-upload-file-line"
     :class="pClassMapper"
+    :data-testid="pTestId"
   >
     <template v-if="pIsMultiLine">
       <div class="p-upload-file-line__content">

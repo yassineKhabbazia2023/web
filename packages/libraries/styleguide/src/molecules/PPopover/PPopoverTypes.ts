@@ -7,4 +7,5 @@ export interface PPopoverProps {
   pShowArrow?: boolean
   pTrigger: TriggerOptionsType
   pTitle: string
+  pTestId?: string
 }

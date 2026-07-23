@@ -27,6 +27,7 @@
     :filterMultiple="pFilterMultiple"
     :filterMethod="pFilterMethod"
     :filteredValue="pFilteredValue"
+    :data-testid="pTestId"
   >
     <template v-if="!!slots['header']" #header>
       <slot name="header" />
@@ -71,5 +72,6 @@ withDefaults(defineProps<PTableColumnProps>(), {
   pFilterMultiple: true,
   pFilterMethod: undefined,
   pFilteredValue: undefined,
+  pTestId: undefined,
 })
 </script>

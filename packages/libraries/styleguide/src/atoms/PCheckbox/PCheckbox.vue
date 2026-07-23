@@ -8,6 +8,7 @@
     :value="pLabel"
     :disabled="pDisabled"
     :model-value="model"
+    :data-testid="pTestId"
     @update:model-value="onUpdateModelValue"
   >
     <template v-if="$slots.default">
@@ -27,6 +28,7 @@ withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
   pLabelLeft: false,
   pDisabled: undefined,
+  pTestId: undefined,
 })
 
 const onUpdateModelValue = (value: CheckboxValueType) => {

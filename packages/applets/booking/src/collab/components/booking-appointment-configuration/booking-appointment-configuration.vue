@@ -66,7 +66,10 @@
 
       <!-- Online switch (outside PFormItem because no validation is needed) -->
       <div class="flex flex--items-center flex-gap--3 margin-top--2">
-        <PSwitch v-model="formData.isOnline" />
+        <PSwitch
+          v-model="formData.isOnline"
+          pTestId="booking-config-online-toggle"
+        />
         <label
           class="
             flex
@@ -110,6 +113,7 @@
 
         <PButton
           pType="primary"
+          pTestId="booking-config-next-button"
           @click="handleNextStep"
         >
           {{ t('booking-configuration.buttons.next') }}

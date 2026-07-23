@@ -7,6 +7,7 @@
     :size="buttonSizeParent"
     :class="pClassMapper"
     :tag="pTag"
+    :data-testid="pTestId"
   >
     <template #loading>
       <PIcon class="is-loading" pName="loader" />
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<PButtonProps>(), {
   pIsActive: false,
   pIsUnderlined: false,
   pTag: 'button',
+  pTestId: undefined,
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']

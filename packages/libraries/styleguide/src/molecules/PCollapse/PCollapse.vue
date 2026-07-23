@@ -1,5 +1,8 @@
 <template>
-  <ElCollapse :accordion="pAccordion">
+  <ElCollapse
+    :accordion="pAccordion"
+    :data-testid="pTestId"
+  >
     <slot />
   </ElCollapse>
 </template>
@@ -10,5 +13,6 @@ import type { PCollapseProps } from './PCollapseTypes'
 
 withDefaults(defineProps<PCollapseProps>(), {
   pAccordion: false,
+  pTestId: undefined,
 })
 </script>

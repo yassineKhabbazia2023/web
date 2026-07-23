@@ -61,6 +61,7 @@
               v-if="dropdownsByActionCode?.[authorizationAction.code]?.isVisible === true"
               :modelValue="additionalOptionByActionCode?.[authorizationAction.code]"
               :pPlaceholder="dropdownsByActionCode[authorizationAction.code].placeholder"
+              :pAriaLabel="dropdownsByActionCode[authorizationAction.code].placeholder"
               :pOptions="dropdownsByActionCode[authorizationAction.code].options"
               pHasRadioButton
               fitInputWidth

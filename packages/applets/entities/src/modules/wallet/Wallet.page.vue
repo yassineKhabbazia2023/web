@@ -17,6 +17,7 @@
       <PTabPane
         v-for="tab in tabs"
         :key="tab.route"
+        :pTestId="`wallet-tab-${tab.route}`"
         :pLabel="t(tab.title)"
         :pCount="tab.count"
         :name="tab.route"

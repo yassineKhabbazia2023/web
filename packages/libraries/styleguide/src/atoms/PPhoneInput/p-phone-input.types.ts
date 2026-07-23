@@ -12,6 +12,7 @@ export interface PPhoneInputProps {
   pCountryDisabled?: boolean
   pPlaceholder?: string
   pPreferredCountries?: CountryCode[]
+  pTestId?: string
 }
 
 export interface UsePhoneInputOptions {

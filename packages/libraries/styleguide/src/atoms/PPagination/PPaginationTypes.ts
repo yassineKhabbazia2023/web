@@ -8,5 +8,5 @@ export interface PaginationProps {
   // named v-model
   pCurrentPage?: number
   pPageSize?: number
-  pTestIdRoot?: string
+  pTestId?: string
 }
