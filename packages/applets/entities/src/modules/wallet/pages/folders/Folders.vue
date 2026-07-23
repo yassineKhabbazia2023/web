@@ -146,7 +146,7 @@
     </div>
     <Transition name="fade">
       <PStickyBar
-        v-if="selectedFolders.length > 0"
+        v-if="isWalletV2Activated && selectedFolders.length > 0"
         :top="SELECTED_FOLDERS_STICKY_BAR_TOP"
         class="
           bg--jungle-75
@@ -325,6 +325,7 @@ const { isMobile } = useResponsive()
 const {
   isLoadMorePaginationActivated,
   isManageWalletMenuActivated,
+  isWalletV2Activated,
 } = useWalletFeatureFlags()
 
 // Registered first so the manage access count is requested before the folders list,

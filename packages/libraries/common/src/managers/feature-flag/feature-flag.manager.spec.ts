@@ -90,6 +90,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isWalletV2Activated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isWalletV2Activated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.WALLET_V2, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isWalletV2Activated()).toBe(false)
+    })
+  })
+
   describe('isFeatureActivated with OpenFeature flag', () => {
     it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

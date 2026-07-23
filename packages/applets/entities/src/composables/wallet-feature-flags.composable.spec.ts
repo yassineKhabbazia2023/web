@@ -4,6 +4,7 @@ import { useWalletFeatureFlags } from './wallet-feature-flags.composable'
 const isLastActivityFeatureActivatedSpy = vi.fn(() => false)
 const isWalletTableLoadMorePaginationActivatedSpy = vi.fn(() => false)
 const isManageWalletMenuActivatedSpy = vi.fn(() => false)
+const isWalletV2ActivatedSpy = vi.fn(() => false)
 
 type WalletFeatureFlagKey = keyof ReturnType<typeof useWalletFeatureFlags>
 
@@ -12,9 +13,11 @@ describe('useWalletFeatureFlags', () => {
     vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedSpy)
     vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedSpy)
     vi.spyOn(FeatureFlagManager, 'isManageWalletMenuActivated').mockImplementation(isManageWalletMenuActivatedSpy)
+    vi.spyOn(FeatureFlagManager, 'isWalletV2Activated').mockImplementation(isWalletV2ActivatedSpy)
     isLastActivityFeatureActivatedSpy.mockReturnValue(false)
     isWalletTableLoadMorePaginationActivatedSpy.mockReturnValue(false)
     isManageWalletMenuActivatedSpy.mockReturnValue(false)
+    isWalletV2ActivatedSpy.mockReturnValue(false)
   })
 
   it.each([
@@ -54,6 +57,18 @@ describe('useWalletFeatureFlags', () => {
       expectedValue: true,
       description: 'enabled',
     },
+    {
+      flagName: 'isWalletV2Activated' as WalletFeatureFlagKey,
+      mockFn: isWalletV2ActivatedSpy,
+      expectedValue: false,
+      description: 'disabled',
+    },
+    {
+      flagName: 'isWalletV2Activated' as WalletFeatureFlagKey,
+      mockFn: isWalletV2ActivatedSpy,
+      expectedValue: true,
+      description: 'enabled',
+    },
   ])('returns $flagName as $expectedValue when feature flag is $description', ({ flagName, mockFn, expectedValue }) => {
     mockFn.mockReturnValue(expectedValue)
 
@@ -62,19 +77,22 @@ describe('useWalletFeatureFlags', () => {
     expect(result[flagName].value).toBe(expectedValue)
   })
 
-  it('returns all three feature flags with correct values', () => {
+  it('returns all feature flags with correct values', () => {
     isLastActivityFeatureActivatedSpy.mockReturnValue(true)
     isWalletTableLoadMorePaginationActivatedSpy.mockReturnValue(false)
     isManageWalletMenuActivatedSpy.mockReturnValue(true)
+    isWalletV2ActivatedSpy.mockReturnValue(true)
 
     const {
       isLastActivityFeatureActivated,
       isLoadMorePaginationActivated,
       isManageWalletMenuActivated,
+      isWalletV2Activated,
     } = useWalletFeatureFlags()
 
     expect(isLastActivityFeatureActivated.value).toBe(true)
     expect(isLoadMorePaginationActivated.value).toBe(false)
     expect(isManageWalletMenuActivated.value).toBe(true)
+    expect(isWalletV2Activated.value).toBe(true)
   })
 })

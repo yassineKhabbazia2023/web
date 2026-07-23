@@ -14,9 +14,14 @@ export function useWalletFeatureFlags() {
     FeatureFlagManager.isManageWalletMenuActivated(),
   )
 
+  const isWalletV2Activated = computed(() =>
+    FeatureFlagManager.isWalletV2Activated(),
+  )
+
   return {
     isLastActivityFeatureActivated,
     isLoadMorePaginationActivated,
     isManageWalletMenuActivated,
+    isWalletV2Activated,
   }
 }

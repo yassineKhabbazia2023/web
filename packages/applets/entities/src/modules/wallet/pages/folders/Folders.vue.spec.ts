@@ -85,12 +85,14 @@ let hasPermissionMock: MockInstance
 const isManageWalletMenuActivatedMock = vi.fn()
 const isWalletTableLoadMorePaginationActivatedMock = vi.fn()
 const isLastActivityFeatureActivatedMock = vi.fn()
+const isWalletV2ActivatedMock = vi.fn()
 
 beforeEach(() => {
   hasPermissionMock = armCurrentUserPermissions(false)
   vi.spyOn(FeatureFlagManager, 'isManageWalletMenuActivated').mockImplementation(isManageWalletMenuActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedMock)
+  vi.spyOn(FeatureFlagManager, 'isWalletV2Activated').mockImplementation(isWalletV2ActivatedMock)
   armRegistryServiceMocks()
   vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
   fetchFavoriteEntitiesMock.mockResolvedValue([])
@@ -159,6 +161,7 @@ describe('deploy', () => {
     isManageWalletMenuActivatedMock.mockReturnValue(true)
     isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
     isLastActivityFeatureActivatedMock.mockReturnValue(false)
+    isWalletV2ActivatedMock.mockReturnValue(true)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
     checkLastCollaboratorOnAccountsMock.mockResolvedValue({
       isLastCollaboratorOnAny: false,
@@ -177,6 +180,7 @@ describe('deploy', () => {
     isManageWalletMenuActivatedMock.mockReturnValue(true)
     isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
     isLastActivityFeatureActivatedMock.mockReturnValue(false)
+    isWalletV2ActivatedMock.mockReturnValue(true)
   })
 
   it('should call setFavoriteEntities', async () => {
@@ -214,6 +218,21 @@ describe('deploy', () => {
   it('does not display the selected folders sticky bar without selected folders', async () => {
     const wrapper = createWrapper()
     await flushPromises()
+
+    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
+  })
+
+  it('does not display the selected folders sticky bar when the wallet V2 feature flag is disabled', async () => {
+    isWalletV2ActivatedMock.mockReturnValue(false)
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
 
     expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
   })

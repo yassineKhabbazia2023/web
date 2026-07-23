@@ -11,6 +11,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.MANAGE_WALLET_MENU,
   Feature.PROSPECT_EXPERIENCE,
   Feature.WALLET_TABLE_LOAD_MORE_PAGINATION,
+  Feature.WALLET_V2,
 ])
 
 declare let window: {
@@ -90,5 +91,9 @@ export class FeatureFlagManager {
 
   static isWalletTableLoadMorePaginationActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.WALLET_TABLE_LOAD_MORE_PAGINATION)
+  }
+
+  static isWalletV2Activated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.WALLET_V2)
   }
 }
