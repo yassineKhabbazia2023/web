@@ -34,7 +34,12 @@ import ManageWalletButton from './components/ManageWalletButton/ManageWalletButt
 import { MISSION_TYPE } from '@entities/constants'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
-import { DESKTOP_FOLDERS_PAGE_SIZE, I18N_KEY, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
+import {
+  DESKTOP_FOLDERS_PAGE_SIZE,
+  I18N_KEY,
+  MOBILE_FOLDERS_PAGE_SIZE,
+  SELECTED_FOLDERS_STICKY_BAR_TOP,
+} from './folders.consts'
 
 import Folders from './Folders.vue'
 
@@ -46,6 +51,7 @@ const displayNotificationMock = vi.mocked(displayNotification)
 // The hub wires useResponsive to the shared mock backed by this ref: driving it
 // is how the specs below switch between the desktop and mobile layouts.
 const isMobileMock = isMobileMockRef
+
 const accountOperationsListMock = getAccountOperationsListMock()
 
 const mockedQueryResult = getMockedWalletQueryResult()
@@ -134,6 +140,11 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Folders>> =>
             'modelValue',
           ],
         },
+        PStickyBar: {
+          name: 'PStickyBar',
+          template: '<div class="p-sticky-bar"><slot /></div>',
+          props: ['top'],
+        },
       },
     },
   })
@@ -198,6 +209,41 @@ describe('deploy', () => {
 
     expect(manageWalletButton.props('selectedFoldersCount')).toBe(1)
     expect(manageWalletButton.props('isSelectedFolderCustomerRelation')).toBe(firstFolder.isCustomerRelation)
+  })
+
+  it('does not display the selected folders sticky bar without selected folders', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
+  })
+
+  it('displays a sticky selected folders bar and clears the selection', async () => {
+    const { t: translateSpy } = stubUseI18nWithIdentityT()
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    const selectedFoldersStickyBar = wrapper.find('[data-testid="selected-folders-sticky-bar"]')
+    expect(selectedFoldersStickyBar.exists()).toBe(true)
+    expect(wrapper.findComponent({ name: 'PStickyBar' }).props('top')).toBe(SELECTED_FOLDERS_STICKY_BAR_TOP)
+    expect(wrapper.find('[data-testid="selected-folders-total-count"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="selected-folders-sticky-count"]').exists()).toBe(true)
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.totalFoldersCount`, mockedQueryResult.totalItems)
+    expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.selectedFoldersCount`, selectedFolderIds.length)
+    expect(wrapper.find('[data-testid="selected-folders-clear-button"]').text()).toContain('X')
+
+    await wrapper.find('[data-testid="selected-folders-clear-button"]').trigger('click')
+    await nextTick()
+
+    expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(0)
+    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
   })
 
   it('forwards the customer relation status for a related single folder', async () => {

@@ -144,6 +144,54 @@
         </PButton>
       </Transition>
     </div>
+    <Transition name="fade">
+      <PStickyBar
+        v-if="selectedFolders.length > 0"
+        :top="SELECTED_FOLDERS_STICKY_BAR_TOP"
+        class="
+          bg--jungle-75
+          flex
+          flex--align-items-center
+          flex--justify-content-space-between
+          flex-gap--6
+          height--10
+          margin-bottom--3
+          padding-x--6
+          shadow--2
+          text-color--black-rock-900
+        "
+        data-testid="selected-folders-sticky-bar"
+      >
+        <p
+          class="font-semibold"
+          data-testid="selected-folders-total-count"
+        >
+          {{ t(`${I18N_KEY}.totalFoldersCount`, searchResult.totalItems) }}
+        </p>
+        <div class="flex flex--align-items-center flex-gap--6">
+          <p
+            class="font-semibold"
+            data-testid="selected-folders-sticky-count"
+          >
+            {{ t(`${I18N_KEY}.selectedFoldersCount`, selectedFolders.length) }}
+          </p>
+          <PButton
+            class="
+              font-semibold
+              padding--0
+              text-color--jungle-500
+            "
+            pType="default"
+            pSize="small"
+            data-testid="selected-folders-clear-button"
+            @click="clearSelectedFolders"
+          >
+            <span>{{ t(`${I18N_KEY}.deselectSelectedFolders`) }}</span>
+            <span class="font-bold margin-left--3">X</span>
+          </PButton>
+        </div>
+      </PStickyBar>
+    </Transition>
     <div
       v-if="isLoading"
       class="loader flex flex--justify-content-center flex--align-items-center"
@@ -237,6 +285,7 @@ import {
   PPagination,
   PIcon,
   PSamePagePagination,
+  PStickyBar,
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
@@ -263,7 +312,10 @@ import { useFoldersAccountFilters } from './folders-account-filters.composable'
 import { useFoldersManageAccess } from './folders-manage-access.composable'
 import { useFoldersOffersDrawer } from './folders-offers-drawer.composable'
 import { useFoldersWalletActions } from './folders-wallet-actions.composable'
-import { I18N_KEY } from './folders.consts'
+import {
+  I18N_KEY,
+  SELECTED_FOLDERS_STICKY_BAR_TOP,
+} from './folders.consts'
 
 // #region Composables
 const { t } = useI18n()
@@ -366,6 +418,10 @@ const isResendActivationEmailDrawerVisible = ref(false)
 function handleDisplayResendActivationEmailDrawer(account: AccountRow) {
   selectedAccount.value = account
   isResendActivationEmailDrawerVisible.value = true
+}
+
+function clearSelectedFolders() {
+  selectedFolderIds.value = []
 }
 
 function onClickFolder(entityId: number) {
