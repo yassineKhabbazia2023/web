@@ -30,6 +30,9 @@ export class AccountManager {
         } catch (e) {
           logger.warn(`Failed to add contact to entity, accountId = ${accountId}, email = ${email}`, e)
         }
+      } else if (error?.response?.status === HTTP_RESPONSES.UNPROCESSABLE_ENTITY) {
+        // Business validation error: propagate so the caller can surface it on the email field
+        throw error
       } else {
         logger.warn(`Failed create user for account, accountId = ${accountId}, email = ${email}`, error)
       }

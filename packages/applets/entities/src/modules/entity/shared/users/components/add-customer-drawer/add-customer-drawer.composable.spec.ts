@@ -7,6 +7,7 @@ import { displayNotification } from '@pulse/styleguide'
 
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { CollaboratorPermission, AccountType } from '@pulse/common/enums'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccount)
 const saveUserPermissionsMock = vi.mocked(saveUserPermissions)
@@ -301,6 +302,55 @@ describe('add-customer-drawer.composable', () => {
         } else {
           expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith(...expectedDisplayNotificationCalledWith)
         }
+      })
+    })
+
+    describe('first step - unprocessable entity (422)', () => {
+      function makeUnprocessableEntityError(errorMessage?: string) {
+        return {
+          response: {
+            status: HTTP_RESPONSES.UNPROCESSABLE_ENTITY,
+            data: { errorMessage },
+          },
+        }
+      }
+
+      function fillValidFirstStep(api: ReturnType<typeof useAddCustomerDrawer>) {
+        api.newContact.value.email = correctEmailMock
+        api.newContact.value.firstname = 'toto'
+        api.newContact.value.lastname = 'toto'
+      }
+
+      it('should display the server message under the email field and stay on the step', async () => {
+        const serverMessage = 'La création d\'un prospect avec une adresse email \'@rydge.fr\' est interdite'
+        createOrAddCustomerToAccountMock.mockRejectedValue(makeUnprocessableEntityError(serverMessage))
+        displayNotificationMock.mockClear()
+
+        const api = useAddCustomerDrawer(initializationParamaters)
+        fillValidFirstStep(api)
+
+        const isSuccess = await api.submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
+
+        expect(isSuccess).toBe(false)
+        expect(api.emailErrorMessage.value).toBe(serverMessage)
+        expect(api.addCustomerDrawerStepIndex.value).toBe(0) // stays on the email step
+        expect(api.isNextButtonLoading.value).toBe(false)
+        expect(displayNotificationMock).not.toHaveBeenCalled() // no generic toast, the field message replaces it
+      })
+
+      it('should fall back to the generic failure when the 422 body has no errorMessage', async () => {
+        createOrAddCustomerToAccountMock.mockRejectedValue(makeUnprocessableEntityError(undefined))
+        displayNotificationMock.mockClear()
+
+        const api = useAddCustomerDrawer(initializationParamaters)
+        fillValidFirstStep(api)
+
+        const isSuccess = await api.submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
+
+        expect(isSuccess).toBe(false)
+        expect(api.emailErrorMessage.value).toBe('')
+        expect(api.addCustomerDrawerStepIndex.value).toBe(0)
+        expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith('error', initializationParamaters.addCustomerFailedMessage)
       })
     })
 

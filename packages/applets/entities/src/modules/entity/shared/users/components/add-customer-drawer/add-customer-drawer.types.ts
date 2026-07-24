@@ -16,6 +16,11 @@ export interface Contact {
   lastname: string
 }
 
+// Body returned by the createCustomer endpoint on a 422 business validation error
+export interface CreateCustomerErrorResponse {
+  errorMessage?: string
+}
+
 export interface UseAddCustomerDrawerOptions {
   invalidEmailAdresseMessage: string
   alreadyAddedToAccountMessage: string

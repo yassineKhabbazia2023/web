@@ -18,9 +18,8 @@
           <PFormItem
             class="margin-bottom--4"
             :pLabel="t('email.address')"
-            pValidateStatus="success"
+            :pValidateStatus="emailErrorMessage !== '' ? 'error' : 'success'"
             pRequired
-            :pShowMessage="false"
             :pError="emailErrorMessage"
           >
             <PInput
@@ -64,13 +63,6 @@
         </PForm>
       </template>
     </PBlockHeader>
-    <PAlert
-      v-if="emailErrorMessage"
-      pType="danger"
-      class="margin-top--2"
-    >
-      {{ emailErrorMessage }}
-    </PAlert>
   </div>
 </template>
 
@@ -80,7 +72,6 @@ import {
   PForm,
   PFormItem,
   PInput,
-  PAlert,
   PBlockHeader,
 } from '@pulse/styleguide/components'
 import type { AddCustomerStepAddEmailProps } from './add-customer-step-add-email.types'

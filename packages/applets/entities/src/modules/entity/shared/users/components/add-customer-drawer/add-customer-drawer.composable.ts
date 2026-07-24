@@ -4,9 +4,11 @@ import { AccountManager } from '@entities/managers/account/account.manager'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { displayNotification } from '@pulse/styleguide'
 import { useDebounce, logger } from '@pulse/toolbox'
-import { getEmailIsValid, getNameIsValid } from '@pulse/toolbox/utils/validator'
+import { getEmailIsValid, getNameIsValid, isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
+import type { AxiosError } from 'axios'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
-import type { Contact, UseAddCustomerDrawerOptions } from './add-customer-drawer.types'
+import type { Contact, UseAddCustomerDrawerOptions, CreateCustomerErrorResponse } from './add-customer-drawer.types'
 import { saveUserPermissions, getPennylaneRoleLabelByCode } from '@entities/components/ManageRightsDrawer/utils'
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
@@ -225,8 +227,16 @@ export function useAddCustomerDrawer({
         isSuccess = true
       }
     } catch (error) {
-      logger.warn(error)
-      onboardingFailed()
+      const axiosError = error as AxiosError<CreateCustomerErrorResponse>
+      const serverMessage = axiosError.response?.data?.errorMessage
+      if (axiosError.response?.status === HTTP_RESPONSES.UNPROCESSABLE_ENTITY && isNotNullNorEmpty(serverMessage)) {
+        // Business validation error: display the server message under the email field, keep the user on the step
+        emailErrorMessage.value = serverMessage
+        amplitudeTrack('failed')
+      } else {
+        logger.warn(error)
+        onboardingFailed()
+      }
     } finally {
       isNextButtonLoading.value = false
     }

@@ -71,6 +71,24 @@ describe('AccountManager', () => {
       expect(newCustomerId).toStrictEqual(contactIdMock)
     })
 
+    it('should rethrow the error when the server returns an unprocessable entity (422)', async () => {
+      const errorMock = {
+        response: {
+          status: HTTP_RESPONSES.UNPROCESSABLE_ENTITY,
+          data: { errorMessage: 'Email domain is not allowed' },
+        },
+      }
+
+      createCustomerMock.mockRejectedValue(errorMock)
+
+      await expect(
+        AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock, accountTypeMock),
+      ).rejects.toBe(errorMock)
+
+      expect(addContactToEntityMock).not.toHaveBeenCalled()
+      expect(fetchAccountContactsByEmailMock).not.toHaveBeenCalled()
+    })
+
     it('should not return customerId when something wrong occurs', async () => {
       const errorMock = 'error mock'
 
