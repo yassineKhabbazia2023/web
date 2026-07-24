@@ -53,16 +53,21 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
         path: CUSTOMER_ROUTES.entity.prospect.overview.root.path,
         name: CUSTOMER_ROUTES.entity.prospect.overview.root.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectOverview),
-        redirect: { name: CUSTOMER_ROUTES.entity.prospect.overview.users.name },
         children: [
           {
             path: CUSTOMER_ROUTES.entity.prospect.overview.users.path,
             name: CUSTOMER_ROUTES.entity.prospect.overview.users.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.USERS,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectUsers),
           },
           {
             path: CUSTOMER_ROUTES.entity.prospect.overview.info.path,
             name: CUSTOMER_ROUTES.entity.prospect.overview.info.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INFORMATION,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectInformation),
           },
         ],
