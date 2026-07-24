@@ -1,13 +1,22 @@
 import { nextTick } from 'vue'
 import { flushPromises } from '@vue/test-utils'
+import type { AxiosError } from 'axios'
 import { withSetup } from '@pulse/toolbox/utils/test'
+import { logger } from '@pulse/toolbox'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
+import { displayNotification } from '@pulse/styleguide'
+import type { ProspectCreationPayload } from '@entities/modules/wallet/types'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { ProspectsManager } from './prospects.manager'
 import { useProspects } from './prospects.composable'
 
 const userStore = getStoreMock(useUserStore)
+
+const displayNotificationMock = vi.mocked(displayNotification)
+
+const prospectPayload = {} as ProspectCreationPayload
 
 const defaultFetchResult = {
   items: [],
@@ -109,5 +118,98 @@ describe('useProspects', () => {
     expect(vi.mocked(ProspectsManager.fetchProspectsData)).toHaveBeenCalledOnce()
 
     app.unmount()
+  })
+
+  describe('openProspectCreationDrawer', () => {
+    it('opens the prospect creation drawer', async () => {
+      const [result, app] = withSetup(() => useProspects())
+      await flushPromises()
+
+      expect(result.isProspectCreationDrawerOpened.value).toBe(false)
+
+      result.openProspectCreationDrawer()
+
+      expect(result.isProspectCreationDrawerOpened.value).toBe(true)
+
+      app.unmount()
+    })
+  })
+
+  describe('onProspectCreationSubmit', () => {
+    it('closes the drawer, notifies success and refetches when creation succeeds', async () => {
+      vi.spyOn(ProspectsService, 'createProspect').mockResolvedValue()
+
+      const [result, app] = withSetup(() => useProspects())
+      await flushPromises()
+      result.openProspectCreationDrawer()
+      vi.mocked(ProspectsManager.fetchProspectsData).mockClear()
+
+      await result.onProspectCreationSubmit(prospectPayload)
+
+      expect(vi.mocked(ProspectsService.createProspect)).toHaveBeenCalledWith(prospectPayload)
+      expect(result.isProspectCreationDrawerOpened.value).toBe(false)
+      expect(result.isProspectSubmitting.value).toBe(false)
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', 'entities.wallet.prospectCreate.success')
+      expect(vi.mocked(ProspectsManager.fetchProspectsData)).toHaveBeenCalledOnce()
+
+      app.unmount()
+    })
+
+    it('displays the server errorMessage in the toaster on a 422 error', async () => {
+      const serverMessage = 'Ce prospect existe déjà'
+      vi.spyOn(ProspectsService, 'createProspect').mockRejectedValue({
+        response: { status: 422, data: { errorMessage: serverMessage } },
+      } as AxiosError)
+
+      const [result, app] = withSetup(() => useProspects())
+      await flushPromises()
+      result.openProspectCreationDrawer()
+
+      await result.onProspectCreationSubmit(prospectPayload)
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', serverMessage, 'bottom-right', 5000)
+      expect(vi.mocked(logger.error)).not.toHaveBeenCalled()
+      // Business error keeps the user on the still-open drawer
+      expect(result.isProspectCreationDrawerOpened.value).toBe(true)
+      expect(result.isProspectSubmitting.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('falls back to the generic error message on a 422 without errorMessage', async () => {
+      vi.spyOn(ProspectsService, 'createProspect').mockRejectedValue({
+        response: { status: 422, data: {} },
+      } as AxiosError)
+
+      const [result, app] = withSetup(() => useProspects())
+      await flushPromises()
+      result.openProspectCreationDrawer()
+
+      await result.onProspectCreationSubmit(prospectPayload)
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', 'entities.wallet.prospectCreate.error')
+      expect(vi.mocked(logger.error)).toHaveBeenCalled()
+      expect(result.isProspectCreationDrawerOpened.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('falls back to the generic error message on a non-422 error', async () => {
+      vi.spyOn(ProspectsService, 'createProspect').mockRejectedValue({
+        response: { status: 500, data: {} },
+      } as AxiosError)
+
+      const [result, app] = withSetup(() => useProspects())
+      await flushPromises()
+      result.openProspectCreationDrawer()
+
+      await result.onProspectCreationSubmit(prospectPayload)
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', 'entities.wallet.prospectCreate.error')
+      expect(vi.mocked(logger.error)).toHaveBeenCalled()
+      expect(result.isProspectCreationDrawerOpened.value).toBe(true)
+
+      app.unmount()
+    })
   })
 })
