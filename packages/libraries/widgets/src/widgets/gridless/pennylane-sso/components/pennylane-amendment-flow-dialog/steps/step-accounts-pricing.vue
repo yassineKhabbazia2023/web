@@ -62,7 +62,16 @@
                 class="margin-right--2"
               />
               <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.step2.table.subscription') }}</span>
+              <span
+                v-if="isFoodServiceCompany === false"
+                class="font-bold"
+              >
+                {{ t('widgets.pennylaneAmendmentFlow.step2.table.doubleStars') }}
+              </span>
             </div>
+          </template>
+          <template #default="{ row }">
+            <span class="accounts-pricing-table__subscription-text">{{ row.subscriptionPrice }}</span>
           </template>
         </PTableColumn>
       </PTable>
@@ -127,6 +136,12 @@
               class="margin-right--2"
             />
             <span>{{ t('widgets.pennylaneAmendmentFlow.step2.table.subscription') }}</span>
+            <span
+              v-if="isFoodServiceCompany === false"
+              class="font-bold"
+            >
+              {{ t('widgets.pennylaneAmendmentFlow.step2.table.doubleStars') }}
+            </span>
           </div>
           <div class="accounts-pricing-card__value font-bold">
             {{ account.subscriptionPrice }}
@@ -135,28 +150,34 @@
       </div>
     </div>
 
-    <div class="margin-y--6">
+    <div
+      class="margin-y--6"
+    >
       <p class="font-base margin--0">
         {{ t('widgets.pennylaneAmendmentFlow.step2.table.complianceNote') }}
       </p>
-      <p
-        v-if="isFreeTrialExpired"
-        class="font-base margin--0"
+      <template
+        v-if="isFoodServiceCompany === false"
       >
-        {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNoteExpired') }}
-      </p>
-      <p
-        v-else
-        class="font-base margin--0"
-      >
-        {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote', {
-          billingMonth: freeTrialInfo?.billingMonth
-        }) }}
-      </p>
+        <p
+          v-if="isFreeTrialExpired"
+          class="font-base margin--0"
+        >
+          {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNoteExpired') }}
+        </p>
+        <p
+          v-else
+          class="font-base margin--0"
+        >
+          {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote', {
+            billingMonth: freeTrialInfo?.billingMonth
+          }) }}
+        </p>
+      </template>
     </div>
 
     <PAlert
-      v-if="isFreeTrialExpired === false"
+      v-if="isFreeTrialExpired === false && isFoodServiceCompany === false"
       pType="success"
       class="font-base"
     >
@@ -190,6 +211,7 @@ import { PAlert, PIcon, PTable, PTableColumn, PTooltip } from '@pulse/styleguide
 import type { StepAccountsPricingProps } from './step-accounts-pricing.types'
 import { DATE_TIME_FORMATS } from '@pulse/common/i18n'
 import { DELAYED_ACTIVATION_DATE } from '../../../pennylane-amendment.consts'
+import { PennylaneDeploymentWave } from '../../../pennylane-sso.enums'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -204,6 +226,9 @@ const props = defineProps<StepAccountsPricingProps>()
 const isDelayedActivation = computed(() => props.freeTrialInfo?.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const isFreeTrialExpired = computed(() => props.freeTrialInfo?.isFreeTrialExpired === true)
+
+const isFoodServiceCompany = computed(() =>
+  props.freeTrialInfo?.wave === PennylaneDeploymentWave.FOOD_SERVICE)
 
 const tableData = computed(() => {
   return props.accounts.map((account) => ({
@@ -221,6 +246,9 @@ function formatCompliancePrice(price: number): string {
 }
 
 function formatSubscriptionPrice(price: number): string {
+  if (isFoodServiceCompany.value === true) {
+    return t('widgets.pennylaneAmendmentFlow.step2.table.includedInMission')
+  }
   if (price === 0) {
     return t('widgets.pennylaneAmendmentFlow.step2.table.free')
   }
@@ -267,6 +295,12 @@ const formatDate = (dateString: string): string => {
     text-overflow: ellipsis;
     width: 160px;
   }
+
+  &__subscription-text {
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+  }
 }
 
 .accounts-pricing-card {
@@ -298,12 +332,12 @@ const formatDate = (dateString: string): string => {
 
   &__label {
     font-size: 14px;
+    flex-shrink: 0;
   }
 
   &__value {
     text-align: right;
-    white-space: nowrap;
-    flex-shrink: 0;
+    word-break: break-word;
   }
 }
 </style>

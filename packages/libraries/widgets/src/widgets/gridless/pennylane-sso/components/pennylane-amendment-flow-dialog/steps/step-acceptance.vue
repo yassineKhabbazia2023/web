@@ -33,7 +33,7 @@
         <li class="margin-bottom--3">
           {{ t('widgets.pennylaneAmendmentFlow.step4.listItem1') }}
         </li>
-        <li>
+        <li v-if="isFoodServiceCompany === false">
           {{ listItem2Text }}<template v-if="isDelayedActivation && isFreeTrialExpired === false">
             {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2Delayed') }}
           </template><template v-else>
@@ -59,6 +59,7 @@ import { PCheckbox, PAlert } from '@pulse/styleguide/components'
 import { openTermsPdfInNewTab } from '../pennylane-terms.helper'
 import { DELAYED_ACTIVATION_DATE } from '../../../pennylane-amendment.consts'
 import type { StepAcceptanceProps } from './step-acceptance.types'
+import { PennylaneDeploymentWave } from '../../../pennylane-sso.enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -72,6 +73,8 @@ const isAccepted = defineModel<boolean>('isAccepted', { required: true })
 const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const isFreeTrialExpired = computed(() => props.isFreeTrialExpired === true)
+
+const isFoodServiceCompany = computed(() => props.deploymentWave === PennylaneDeploymentWave.FOOD_SERVICE)
 
 const listItem2Text = computed(() =>
   isFreeTrialExpired.value

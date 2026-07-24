@@ -114,6 +114,7 @@ export const getMockedPennylaneAccessResponse = (
     freeTrialEndDate: '2026-10-31T00:00:00.00',
     billingMonth: 'novembre 2026',
     isFreeTrialExpired: false,
+    wave: 'Restauration',
   }
 
   return {

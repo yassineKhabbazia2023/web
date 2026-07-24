@@ -39,6 +39,7 @@ describe('usePennylaneAmendment', () => {
       expect(isPennylaneSignatory.value).toBe(true)
       expect(pennylaneAccessDetails.value).toBeDefined()
       expect(pennylaneFreeTrialInfo.value).toBeDefined()
+      expect(pennylaneFreeTrialInfo.value?.wave).toBe('Restauration')
     })
 
     it('should reset state when checkPennylaneAccess fails', async () => {
@@ -58,6 +59,7 @@ describe('usePennylaneAmendment', () => {
       expect(isPennylaneSignatory.value).toBeUndefined()
       expect(pennylaneAccessDetails.value).toBeUndefined()
       expect(pennylaneFreeTrialInfo.value).toBeUndefined()
+      expect(pennylaneFreeTrialInfo.value?.wave).toBeUndefined()
     })
 
     it('should not checkPennylaneAccess when feature flag disabled', async () => {
@@ -166,7 +168,7 @@ describe('usePennylaneAmendment', () => {
       checkPennylaneAccessMock.mockResolvedValue({
         ...response,
         freeTrialEndDate: '',
-        billingMonth: '',
+        wave: '',
       })
 
       const { shouldShowPennylaneAmendmentDialog, checkPennylaneAccess } = usePennylaneAmendment()

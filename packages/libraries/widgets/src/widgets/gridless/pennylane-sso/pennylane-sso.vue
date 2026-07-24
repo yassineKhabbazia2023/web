@@ -104,6 +104,7 @@
       v-model="showPennylaneAmendmentSuccessDialog"
       :free-trial-end-date="acceptedFreeTrialInfo?.freeTrialEndDate"
       :is-free-trial-expired="acceptedFreeTrialInfo?.isFreeTrialExpired"
+      :deployment-wave="acceptedFreeTrialInfo?.wave"
     />
     <PennylaneAmendmentDeclineDialog
       v-model="showPennylaneAmendmentDeclineDialog"

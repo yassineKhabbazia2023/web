@@ -43,6 +43,7 @@
           v-model:is-accepted="isTermsAccepted"
           :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
           :is-free-trial-expired="freeTrialInfo?.isFreeTrialExpired"
+          :deployment-wave="freeTrialInfo?.wave"
         />
 
         <div class="margin-top--auto">

@@ -71,9 +71,11 @@
         "table": {
           "company": "Company",
           "compliance": "EIR Support*",
-          "subscription": "Pennylane subscription**",
+          "subscription": "Pennylane subscription",
+          "doubleStars": "**",
           "perMonth": "month",
           "free": "Free",
+          "includedInMission": "Already included in your engagement letter",
           "complianceNote": "* billing in September 2026",
           "subscriptionNote": "** billing from {billingMonth} onwards",
           "subscriptionNoteExpired": "** billed by RYDGE Conseil from the activation date, for a full month, following the frequency of your current billing."
@@ -154,6 +156,7 @@
         "pennylane": "Pennylane.",
         "descriptionPart2": " To give you time to familiarize yourself with these new features, ",
         "descriptionExpiredSuffix": " For any questions about getting started with your new features, please contact your usual contact person.",
+        "descriptionFoodService": " For any questions, please contact your usual contact person.",
         "boldAccessPart": "you have free access to Pennylane until ",
         "descriptionDelayedPart1": "You will receive an email as soon as your access to ",
         "descriptionDelayedBold1": "Pennylane",

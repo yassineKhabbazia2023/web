@@ -71,9 +71,11 @@
         "table": {
           "company": "Entreprise",
           "compliance": "Accompagnement RFE*",
-          "subscription": "Abonnement Pennylane**",
+          "subscription": "Abonnement Pennylane",
+          "doubleStars": "**",
           "perMonth": "mois",
           "free": "Offert",
+          "includedInMission": "Déjà inclus dans votre lettre de mission",
           "complianceNote": "* facturation en septembre 2026",
           "subscriptionNote": "** facturation à partir de {billingMonth}",
           "subscriptionNoteExpired": "** facturation par RYDGE Conseil à compter de la date d'activation, pour un mois plein, en suivant la fréquence de votre facturation actuelle."
@@ -154,6 +156,7 @@
         "pennylane": "Pennylane.",
         "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, ",
         "descriptionExpiredSuffix": " Pour toute question sur la prise en main de vos nouvelles fonctionnalités, rapprochez-vous de votre interlocuteur habituel.",
+        "descriptionFoodService": " Pour toute question, rapprochez-vous de votre interlocuteur habituel.",
         "boldAccessPart": "vous avez accès à Pennylane gratuitement jusqu'au ",
         "descriptionDelayedPart1": "Vous recevrez un email dès que votre accès à ",
         "descriptionDelayedBold1": "Pennylane",

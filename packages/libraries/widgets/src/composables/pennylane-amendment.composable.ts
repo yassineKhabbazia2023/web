@@ -33,11 +33,8 @@ export function usePennylaneAmendment() {
       return false
     }
 
-    if (isNotNullNorEmpty(pennylaneFreeTrialInfo.value?.freeTrialEndDate) === false) {
-      return false
-    }
-
-    if (isNotNullNorEmpty(pennylaneFreeTrialInfo.value?.billingMonth) === false) {
+    if (isNotNullNorEmpty(pennylaneFreeTrialInfo.value?.freeTrialEndDate) === false
+      && isNotNullNorEmpty(pennylaneFreeTrialInfo.value?.wave) === false) {
       return false
     }
 
@@ -76,6 +73,7 @@ export function usePennylaneAmendment() {
         freeTrialEndDate: response.freeTrialEndDate,
         billingMonth: response.billingMonth,
         isFreeTrialExpired: response.isFreeTrialExpired,
+        wave: response.wave,
       }
     } catch (error) {
       logger.error('Pennylane amendment check failed', error)

@@ -19,7 +19,14 @@
       </h3>
 
       <p class="font-base margin-bottom--8 pennylane-amendment-success-dialog__description text-center">
-        <template v-if="isFreeTrialExpired">
+        <template v-if="isFoodServiceCompany">
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart1') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
+          </span>
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionFoodService') }}
+        </template>
+        <template v-else-if="isFreeTrialExpired">
           {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart1') }}
           <span class="font-bold">
             {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
@@ -66,6 +73,7 @@ import { useResponsive } from '@pulse/styleguide'
 import { PDialog, PButton, PIcon } from '@pulse/styleguide/components'
 import type { PennylaneAmendmentSuccessDialogProps } from './pennylane-amendment-success-dialog.types'
 import { DELAYED_ACTIVATION_DATE } from '../pennylane-amendment.consts'
+import { PennylaneDeploymentWave } from '../pennylane-sso.enums'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -88,6 +96,8 @@ const isVisible = computed({
 const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const isFreeTrialExpired = computed(() => props.isFreeTrialExpired === true)
+
+const isFoodServiceCompany = computed(() => props.deploymentWave === PennylaneDeploymentWave.FOOD_SERVICE)
 
 const formattedFreeTrialEndDate = computed(() => {
   if (!props.freeTrialEndDate) {
