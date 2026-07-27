@@ -13,7 +13,11 @@ const mocks = vi.hoisted(() => {
 // eslint-disable-next-line no-restricted-syntax -- doctrine: shared-hubs (data-file fixture local to this own-spec, not a module hub)
 vi.mock('../../../../../package.json', () => {
   return {
-    default: mocks.packageJson,
+    // Getter, not a plain value: the named binding must stay live so a test can
+    // drop the version after the module has been imported.
+    get version() {
+      return mocks.packageJson.version
+    },
   }
 })
 

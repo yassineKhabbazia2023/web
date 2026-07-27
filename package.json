@@ -118,6 +118,9 @@
   },
   "overrides": {
     "@vitest/expect": "^4.1.9",
-    "@vitest/spy": "^4.1.9"
+    "@vitest/spy": "^4.1.9",
+    "js-beautify": "^2.0.3",
+    "esbuild": "^0.28.1",
+    "minimatch": "^10.0.3"
   }
 }

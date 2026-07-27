@@ -1,9 +1,9 @@
-import packageJson from '../../../../../package.json'
+import { version } from '../../../../../package.json'
 import versionJson from '../../../../../version.json'
 
 export class AppVersionManager {
   static getMonorepoVersion() {
-    return packageJson?.version ?? ''
+    return version ?? ''
   }
 
   static getShortCommitId() {
