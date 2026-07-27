@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDocumentsList, PLoader } from '@pulse/styleguide/components'
 import type { DocumentsListItem } from '@pulse/styleguide/types'
@@ -39,6 +39,8 @@ const selectedDocuments = defineModel<DocumentsListItem[]>('selectedDocuments', 
 
 const { documentsListItems, isLoading, downloadDocument } = useDocumentsList()
 
+const documentsCount = computed(() => documentsListItems.value.length)
+
 const onSelectionChange = (selected: DocumentsListItem[]): void => {
   selectedDocuments.value = selected
 }
@@ -48,4 +50,6 @@ const onSelectionChange = (selected: DocumentsListItem[]): void => {
 watch(documentsListItems, () => {
   selectedDocuments.value = []
 })
+
+defineExpose({ documentsCount })
 </script>

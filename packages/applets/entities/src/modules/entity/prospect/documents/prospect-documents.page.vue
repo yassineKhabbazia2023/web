@@ -42,6 +42,7 @@
         <PButton
           pSize="small"
           :pLoading="isDownloading"
+          :pDisabled="documentsCount === 0"
           data-testid="download-documents-button"
           @click="downloadDocuments"
         >
@@ -50,6 +51,7 @@
         </PButton>
       </div>
       <DocumentsList
+        ref="documentsList"
         v-model:selected-documents="selectedDocuments"
         selectable
       />
@@ -58,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore } from '@pulse/common/stores'
@@ -68,6 +71,9 @@ import { useDocumentsDownload } from './documents-download/documents-download.co
 const { t } = useI18n()
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
+
+const documentsList = useTemplateRef<InstanceType<typeof DocumentsList>>('documentsList')
+const documentsCount = computed(() => documentsList.value?.documentsCount ?? 0)
 
 const { selectedDocuments, isDownloading, downloadDocuments } = useDocumentsDownload()
 </script>
