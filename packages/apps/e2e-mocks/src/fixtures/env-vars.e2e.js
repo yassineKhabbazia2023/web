@@ -23,7 +23,6 @@ const envVars = {
   // Feature flags - enable features under test
   VITE_ACCESS_MANAGEMENT_GLOBAL: 'true',
   VITE_BOOKING_ACTIVATED: 'true',
-  VITE_GED_V2_ENABLED: 'true',
   VITE_COLLAB_OFFERS_CATALOG_ACTIVATED: 'true',
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
   VITE_LEGACY_BI_REPORT_DEPOSIT_ACTIVATED: 'true',

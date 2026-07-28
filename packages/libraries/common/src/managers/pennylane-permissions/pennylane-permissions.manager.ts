@@ -1,21 +1,17 @@
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
+import { SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
-import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 export class PennylanePermissionsManager {
   /**
-   * pour disposer de l'expérience GedV2 il faut
-   * - que le feature flag GED_V2 soit activé
-   * - que l'entité sélectionnée ait souscrit à l'offre Pennylane
+   * To access the GedV2 experience, the selected entity must have the Pennylane offer.
    */
   static isGedUxV2() {
     const currentEntityStore = useCurrentEntityStore()
 
-    return FeatureFlagManager.isFeatureActivated(Feature.GED_V2) === true &&
-      currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true
+    return currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true
   }
 
   /**

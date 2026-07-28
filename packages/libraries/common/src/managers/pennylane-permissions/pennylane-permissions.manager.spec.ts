@@ -1,6 +1,5 @@
-import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
+import { SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
@@ -16,46 +15,30 @@ describe('PennylanePermissionsManager', () => {
 
   describe('isGedUxV2', () => {
     const tests = [{
-      description: 'should return false if the GED_V2 feature is not activated',
-      isGedV2FeatureActivated: false,
-      hasOfferMock: true,
-      expected: false,
-    }, {
       description: 'should return false if the selected entity does not have Pennylane offer',
-      isGedV2FeatureActivated: true,
       hasOfferMock: false,
       expected: false,
     }, {
-      description: 'should return true if all conditions are met',
-      isGedV2FeatureActivated: true,
+      description: 'should return true if the selected entity has Pennylane offer',
       hasOfferMock: true,
       expected: true,
     }]
     it.each(tests)('$description', ({
-      isGedV2FeatureActivated,
       hasOfferMock,
       expected,
     }) => {
-      const isFeatureActivatedSpy = vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(isGedV2FeatureActivated)
       hasOfferSpy.mockReturnValue(hasOfferMock)
 
       const isGedUxV2 = PennylanePermissionsManager.isGedUxV2()
 
       expect(isGedUxV2).toBe(expected)
-
-      expect(isFeatureActivatedSpy).toHaveBeenCalledExactlyOnceWith(Feature.GED_V2)
-
-      if (isGedV2FeatureActivated === true) {
-        expect(hasOfferSpy).toHaveBeenCalledExactlyOnceWith(SubscriptionOfferCode.PENNYLANE)
-      } else {
-        expect(hasOfferSpy).not.toHaveBeenCalled()
-      }
+      expect(hasOfferSpy).toHaveBeenCalledExactlyOnceWith(SubscriptionOfferCode.PENNYLANE)
     })
   })
 
   describe('hasPennylaneAccountingPermission', () => {
     const tests = [{
-      description: 'should return false if the GED_V2 feature is not activated',
+      description: 'should return false if Ged UX V2 is not available',
       isGedUxV2Mock: false,
       hasGedComptaPermission: true,
       isCollab: false,
