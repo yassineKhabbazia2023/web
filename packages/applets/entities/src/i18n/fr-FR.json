@@ -127,14 +127,15 @@
           "exitButton": "Quitter"
         }
       },
-      "prospectSteps": {
-        "leaderInfo": "Informations Dirigeant",
-        "entityInfo": "Informations Entité(s)",
-        "supportingDocuments": "Vos documents justificatifs",
-        "commercialProposal": "Proposition commerciale",
-        "sepaMandate": "Mandat SEPA",
-        "generalAssembly": "Procès verbal d'assemblée générale",
-        "engagementLetter": "Lettre de mission"
+      "prospectProgressStatuses": {
+        "identityDocuments": "Pièce d'identité",
+        "beneficiariesValidation": "Valider bénéficiaires",
+        "noBeneficiary": "Aucun bénéficiaire",
+        "supportingDocuments": "En attente KBIS / DBE",
+        "commercialProposal": "Dépôt Prop comm.",
+        "paymentMethod": "SEPA en attente",
+        "engagementLetter": "Dépôt LDM",
+        "completed": "Dossier complété"
       },
       "foldersPage": {
         "search": "Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant",

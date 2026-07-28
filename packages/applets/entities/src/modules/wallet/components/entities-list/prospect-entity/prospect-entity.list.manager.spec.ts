@@ -1,6 +1,6 @@
 import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import { ProspectAction } from './prospect-entity.list.enums'
-import { ProspectOnboardingStep } from '@entities/modules/wallet/enums'
+import { ProspectProgressStatus } from '@entities/modules/wallet/enums'
 
 describe('ProspectEntityListManager', () => {
   describe('getMenuElements', () => {
@@ -12,23 +12,26 @@ describe('ProspectEntityListManager', () => {
     })
   })
 
-  describe('getStepConfig', () => {
-    it('should return fallback config when stepCode is null', () => {
-      const result = ProspectEntityListManager.getStepConfig(null)
+  describe('getProgressStatusConfig', () => {
+    it('should return fallback config when progressStatus is null', () => {
+      const result = ProspectEntityListManager.getProgressStatusConfig(null)
 
       expect(result).toEqual({ label: '-', color: 'gray' })
     })
 
-    it('should return matching step config for a known step', () => {
-      const result = ProspectEntityListManager.getStepConfig(ProspectOnboardingStep.LEADER_INFO)
+    it.each([
+      [ProspectProgressStatus.IDENTITY_DOCUMENTS, 'entities.wallet.prospectProgressStatuses.identityDocuments', 'light-green'],
+      [ProspectProgressStatus.BENEFICIARIES_VALIDATION, 'entities.wallet.prospectProgressStatuses.beneficiariesValidation', 'purple'],
+      [ProspectProgressStatus.NO_BENEFICIARY, 'entities.wallet.prospectProgressStatuses.noBeneficiary', 'orange'],
+      [ProspectProgressStatus.SUPPORTING_DOCUMENTS, 'entities.wallet.prospectProgressStatuses.supportingDocuments', 'light-green'],
+      [ProspectProgressStatus.COMMERCIAL_PROPOSAL, 'entities.wallet.prospectProgressStatuses.commercialProposal', 'purple'],
+      [ProspectProgressStatus.PAYMENT_METHOD, 'entities.wallet.prospectProgressStatuses.paymentMethod', 'light-green'],
+      [ProspectProgressStatus.ENGAGEMENT_LETTER, 'entities.wallet.prospectProgressStatuses.engagementLetter', 'purple'],
+      [ProspectProgressStatus.COMPLETED, 'entities.wallet.prospectProgressStatuses.completed', 'green'],
+    ])('should return the label and color of %s', (progressStatus, label, color) => {
+      const result = ProspectEntityListManager.getProgressStatusConfig(progressStatus)
 
-      expect(result).toEqual({ label: 'entities.wallet.prospectSteps.leaderInfo', color: 'light-green' })
-    })
-
-    it('should return matching config for each known step', () => {
-      const result = ProspectEntityListManager.getStepConfig(ProspectOnboardingStep.ENTITY_INFO)
-
-      expect(result).toEqual({ label: 'entities.wallet.prospectSteps.entityInfo', color: 'light-green' })
+      expect(result).toEqual({ label, color })
     })
   })
 })

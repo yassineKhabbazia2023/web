@@ -4,7 +4,7 @@ import type {
   ProspectCreationPayload,
   ProspectWalletData,
 } from '@entities/modules/wallet/types'
-import { ProspectOnboardingStep } from '@entities/modules/wallet/enums'
+import { ProspectProgressStatus } from '@entities/modules/wallet/enums'
 
 export function getMockedProspectAccountRow(override: Partial<ProspectAccountRow> = {}): ProspectAccountRow {
   return {
@@ -23,7 +23,7 @@ export function getMockedProspectAccountRow(override: Partial<ProspectAccountRow
       personaName: 'Client',
       creationDate: '2026-03-19T13:36:26.1766667',
     },
-    stepCode: ProspectOnboardingStep.LEADER_INFO,
+    nextActionCode: ProspectProgressStatus.IDENTITY_DOCUMENTS,
     dossierCAC: true,
     ...override,
   }
@@ -71,7 +71,7 @@ export function getMockedProspectWalletData(override: Partial<ProspectWalletData
     accountNumber: 'ACC-100',
     name: 'Test Prospect',
     isFavorite: false,
-    onboardingStep: null,
+    progressStatus: null,
     cacFolder: false,
     ...override,
   }

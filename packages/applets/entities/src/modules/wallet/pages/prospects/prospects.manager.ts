@@ -12,7 +12,7 @@ export class ProspectsManager {
       accountNumber,
       legalName: name,
       signatory,
-      stepCode,
+      nextActionCode,
       dossierCAC,
     } = prospect
 
@@ -33,7 +33,7 @@ export class ProspectsManager {
       accountNumber,
       name,
       isFavorite: false,
-      onboardingStep: stepCode,
+      progressStatus: nextActionCode,
       cacFolder: dossierCAC,
     }
   }

@@ -1,5 +1,5 @@
 import { getMockedProspectAccountRow } from '@entities/__mocks__'
-import { ProspectOnboardingStep } from '@entities/modules/wallet/enums'
+import { ProspectProgressStatus } from '@entities/modules/wallet/enums'
 import { ProspectsManager } from './prospects.manager'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import type { SearchCriteria } from '@entities/modules/wallet/types'
@@ -27,7 +27,7 @@ describe('ProspectsManager', () => {
       expect(result.accountNumber).toBe('P595350001')
       expect(result.name).toBe('Prospect 0001')
       expect(result.isFavorite).toBe(false)
-      expect(result.onboardingStep).toBe(ProspectOnboardingStep.LEADER_INFO)
+      expect(result.progressStatus).toBe(ProspectProgressStatus.IDENTITY_DOCUMENTS)
       expect(result.cacFolder).toBe(true)
     })
 
@@ -41,10 +41,10 @@ describe('ProspectsManager', () => {
       expect(result.owner.initials).toBe('SS')
     })
 
-    it('handles null stepCode', () => {
-      const result = ProspectsManager.getMappedProspectAccount(getMockedProspectAccountRow({ stepCode: null }))
+    it('handles null nextActionCode', () => {
+      const result = ProspectsManager.getMappedProspectAccount(getMockedProspectAccountRow({ nextActionCode: null }))
 
-      expect(result.onboardingStep).toBeNull()
+      expect(result.progressStatus).toBeNull()
     })
   })
 

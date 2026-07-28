@@ -40,9 +40,9 @@ describe('useProspectsEntitiesList', () => {
       const { result: customerResult } = createTestSetup(ProspectListType.PROSPECT_CUSTOMER)
 
       expect(collabResult.isColumnVisible(ProspectColumn.COMPANY_NAME)).toBe(true)
-      expect(collabResult.isColumnVisible(ProspectColumn.ONBOARDING_STEP)).toBe(true)
+      expect(collabResult.isColumnVisible(ProspectColumn.PROGRESS_STATUS)).toBe(true)
       expect(customerResult.isColumnVisible(ProspectColumn.COMPANY_NAME)).toBe(true)
-      expect(customerResult.isColumnVisible(ProspectColumn.ONBOARDING_STEP)).toBe(true)
+      expect(customerResult.isColumnVisible(ProspectColumn.PROGRESS_STATUS)).toBe(true)
     })
 
     it('should return true only for the collaborator-specific action column when flow is PROSPECT_COLLAB', () => {

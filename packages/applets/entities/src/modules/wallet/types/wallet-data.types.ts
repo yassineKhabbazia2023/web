@@ -1,6 +1,6 @@
 import type { IconName } from '@pulse/styleguide/types'
 import type { AccountRow } from '@pulse/common/types'
-import type { ProspectOnboardingStep } from '@entities/modules/wallet/enums'
+import type { ProspectProgressStatus } from '@entities/modules/wallet/enums'
 import { AccountType } from '@pulse/common/enums'
 
 export interface DeploymentStatus {
@@ -37,7 +37,7 @@ export interface RegularWalletData extends WalletDataBase {
 
 export interface ProspectWalletData extends WalletDataBase {
   prospectId: number
-  onboardingStep: ProspectOnboardingStep | null
+  progressStatus: ProspectProgressStatus | null
   cacFolder: boolean
 }
 
@@ -46,6 +46,6 @@ export type WalletData = RegularWalletData | ProspectWalletData
 export type ProspectAccountRow = Pick<AccountRow, 'accountId' | 'accountNumber' | 'legalName' | 'signatory'> & {
   prospectId: number
   accountType: AccountType
-  stepCode: ProspectOnboardingStep | null
+  nextActionCode: ProspectProgressStatus | null
   dossierCAC: boolean
 }

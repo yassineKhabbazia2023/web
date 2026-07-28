@@ -22,7 +22,7 @@ const buildProspect = (overrides: Partial<ProspectWalletData> = {}): ProspectWal
   accountNumber: 'ACC-1',
   name: 'Acme',
   isFavorite: false,
-  onboardingStep: null,
+  progressStatus: null,
   cacFolder: false,
   ...overrides,
 })

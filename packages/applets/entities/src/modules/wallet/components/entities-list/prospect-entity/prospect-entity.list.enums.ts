@@ -3,7 +3,7 @@ export enum ProspectColumn {
   CUSTOMER_CODE = 'customerCode',
   LEADER = 'leader',
   EMAIL = 'email',
-  ONBOARDING_STEP = 'onboardingStep',
+  PROGRESS_STATUS = 'progressStatus',
   CAC_FOLDER = 'cacFolder',
   OPTIONS = 'options',
 }

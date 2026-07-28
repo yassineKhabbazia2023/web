@@ -112,16 +112,14 @@
       </template>
     </PTableColumn>
     <PTableColumn
-      v-if="isColumnVisible(ProspectColumn.ONBOARDING_STEP)"
+      v-if="isColumnVisible(ProspectColumn.PROGRESS_STATUS)"
       :pLabel="t(`${I18N_PROSPECT_KEY}.step`)"
-      pProp="stepCode"
-      pSortable="custom"
-      :pSortOrders="SORT_ORDERS"
+      pProp="nextActionCode"
     >
       <template #default="scope">
         <PTag
-          :pContent="t(ProspectEntityListManager.getStepConfig(scope.row.onboardingStep).label)"
-          :pColor="ProspectEntityListManager.getStepConfig(scope.row.onboardingStep).color"
+          :pContent="t(ProspectEntityListManager.getProgressStatusConfig(scope.row.progressStatus).label)"
+          :pColor="ProspectEntityListManager.getProgressStatusConfig(scope.row.progressStatus).color"
         />
       </template>
     </PTableColumn>
