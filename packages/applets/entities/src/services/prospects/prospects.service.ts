@@ -102,12 +102,18 @@ export class ProspectsService {
     )
   }
 
+  // Single source of truth for the prospect document deletion endpoint, also
+  // consumed as `pRemoteDeleteUrl` by the upload components' native delete.
+  static getProspectDocumentDeleteBaseUrl(accountId: number): string {
+    return `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/documents`
+  }
+
   static deleteProspectDocument(
     accountId: number,
     documentId: number | string,
   ): Promise<void> {
     return api.gateway.delete(
-      `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/documents/${documentId}`,
+      `${ProspectsService.getProspectDocumentDeleteBaseUrl(accountId)}/${documentId}`,
     )
   }
 

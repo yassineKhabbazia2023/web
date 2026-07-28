@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
@@ -8,10 +8,6 @@ import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { OnboardingStep } from '../prospect-conformity.enums'
 import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
-import {
-  COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE,
-  COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES,
-} from './commercial-proposal.consts'
 import type { CommercialProposalEmits } from './commercial-proposal.types'
 
 const I18N_KEY = 'entities.prospect.conformity.proposal'
@@ -31,8 +27,6 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
   const isDownloading = ref(false)
   const isSending = ref(false)
 
-  const hasSelectedFile = computed(() => selectedCommercialProposalFile.value !== null)
-
   const openCommercialProposalDocument = async (): Promise<void> => {
     if (currentEntityId.value === undefined) {
       return
@@ -51,17 +45,6 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
     } finally {
       isDownloading.value = false
     }
-  }
-
-  const onFilesSelected = (selectedFiles: File[]): void => {
-    selectedCommercialProposalFile.value = selectedFiles.find((file) =>
-      file.type === COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE
-      && file.size <= COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES,
-    ) ?? null
-  }
-
-  const onFileDeleted = (): void => {
-    selectedCommercialProposalFile.value = null
   }
 
   const sendCommercialProposalToCustomer = async (): Promise<void> => {
@@ -90,10 +73,8 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
     isRefreshingStatus,
     isDownloading,
     isSending,
-    hasSelectedFile,
+    selectedCommercialProposalFile,
     openCommercialProposalDocument,
-    onFilesSelected,
-    onFileDeleted,
     sendCommercialProposalToCustomer,
   }
 }

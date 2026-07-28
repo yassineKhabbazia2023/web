@@ -42,9 +42,10 @@ const createWrapper = (
     props,
     global: {
       stubs: {
-        PUpload: {
-          name: 'PUpload',
+        PUploadMultiple: {
+          name: 'PUploadMultiple',
           template: '<div><slot /></div>',
+          props: ['modelValue', 'pMultiple', 'pDisabled'],
         },
         PButton: {
           name: 'PButton',
@@ -109,7 +110,7 @@ describe('pActionBar', () => {
         expect(pButton.props('pCircle')).toBeTruthy()
       })
 
-      it('should display pupload when pComponentType is UPLOAD', () => {
+      it('should display the upload picker when pComponentType is UPLOAD', () => {
         const pUploadButton: ComponentDefinitionProps = {
           ...defaultButtons[0],
           pComponentType: 'UPLOAD',
@@ -120,7 +121,7 @@ describe('pActionBar', () => {
           pRightSideButtons: defaultProps.pRightSideButtons,
         })
 
-        const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
+        const pUploadWrapper = wrapper.findComponent({ name: 'PUploadMultiple' })
         expect(pUploadWrapper.exists()).toBeTruthy()
       })
     })
@@ -164,7 +165,7 @@ describe('pActionBar', () => {
         pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
-      const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
+      const pUploadWrapper = wrapper.findComponent({ name: 'PUploadMultiple' })
       const pTooltipWrapper = pUploadWrapper.findComponent({ name: 'PTooltip' })
 
       expect(pTooltipWrapper.props('disabled')).toBe(shouldTooltipBeDisabled)
@@ -277,12 +278,8 @@ describe('events', () => {
     ])
   })
 
-  it('should emit files-selected on PUpload files selected event', () => {
-    const f = {
-      name: 'image.png',
-      size: 1,
-      type: 'image/png',
-    }
+  it('should re-emit the picked files then reset the picker selection', async () => {
+    const pickedFile = new File(['content'], 'image.png', { type: 'image/png' })
 
     const wrapper = createWrapper({
       pLeftSideButtons: [
@@ -303,10 +300,12 @@ describe('events', () => {
       pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
-    const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
-    pUploadWrapper.vm.$emit('files-selected', [f])
+    const pUploadWrapper = wrapper.findComponent({ name: 'PUploadMultiple' })
+    pUploadWrapper.vm.$emit('update:model-value', [pickedFile])
+    await nextTick()
 
-    expect(wrapper.emitted('p-upload-files-selected')).toHaveLength(1)
+    expect(wrapper.emitted('p-upload-files-selected')).toStrictEqual([[[pickedFile]]])
+    expect(pUploadWrapper.props('modelValue')).toStrictEqual([])
   })
 
   it('should emit p-search-input on PSearch files selected event', () => {

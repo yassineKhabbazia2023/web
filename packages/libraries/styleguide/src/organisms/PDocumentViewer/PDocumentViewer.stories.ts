@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import PDocumentViewer from './PDocumentViewer.vue'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
-import PUpload from '../../atoms/PUpload'
+import PUploadMultiple from '../../atoms/PUploadMultiple'
 import PDocumentDisplay from '../../molecules/PDocumentDisplay'
 import { PDocumentViewerProps } from './PDocumentViewerTypes'
 
@@ -129,7 +129,7 @@ type Story = StoryObj<PDocumentViewerProps>
 
 export const Default: Story = {
   render: (args) => ({
-    components: { PDocumentViewer, PButton, PIcon, PUpload, PDocumentDisplay },
+    components: { PDocumentViewer, PButton, PIcon, PUploadMultiple, PDocumentDisplay },
     setup() {
       const isDrawerOpened = ref(false)
       const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
@@ -139,9 +139,15 @@ export const Default: Story = {
         isDrawerOpened.value = true
       }
 
+      const pickedFiles = ref<File[]>([])
+
       const handleFilesSelected = (data: File[]) => {
+        if (data.length === 0) {
+          return
+        }
         url.value = URL.createObjectURL(data[0])
         extension.value = 'pdf'
+        pickedFiles.value = []
       }
 
       return {
@@ -150,6 +156,7 @@ export const Default: Story = {
         url,
         extension,
         openViewer,
+        pickedFiles,
         handleFilesSelected,
       }
     },
@@ -191,17 +198,16 @@ export const Default: Story = {
               You can find here document details such as owner email, creation date, file size, etc.
               Please upload a PDF file to visualize the document properly.
             </div>
-            <PUpload
-              pMultiple
+            <PUploadMultiple
+              v-model="pickedFiles"
               :pDisabled="false"
-              :pDrag="false"
-              @files-selected="handleFilesSelected"
+              @update:model-value="handleFilesSelected"
             >
               <PButton type="primary" size="small">
                 <PIcon class="el-button__icon--left" pName="upload" />
                 Upload PDF Document
               </PButton>
-            </PUpload>
+            </PUploadMultiple>
           </template>
         </PDocumentViewer>
       </div>

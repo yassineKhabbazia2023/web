@@ -2,15 +2,12 @@
   <div class="p-action-bar">
     <div class="p-action-bar__left">
       <template v-for="(item, index) in truncatedLeftSideButtons" :key="index">
-        <PUpload
+        <PUploadMultiple
           v-if="item.pComponentType === 'UPLOAD'"
+          v-model="pickedFiles"
           :pMultiple="item.pMultiple"
-          :pDisable="item.pButton.pDisabled"
-          :pShowFileList="false"
-          :pDrag="false"
-          :pUploadType="PUploadType.SLOT"
-          pShouldClearPreviousFilesListOnUpload
-          @files-selected="handleFilesSelected"
+          :pDisabled="item.pButton.pDisabled"
+          @update:model-value="handleFilesSelected"
         >
           <PTooltip
             :disabled="item.pButton.pDisabled === false"
@@ -36,7 +33,7 @@
               <p>{{ item.pButtonName }}</p>
             </PButton>
           </PTooltip>
-        </PUpload>
+        </PUploadMultiple>
 
         <PButton
           v-else-if="!item.pComponentType"
@@ -103,8 +100,7 @@ import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PExpandableSearch from '../../atoms/PExpandableSearch'
-import PUpload from '../../atoms/PUpload'
-import { PUploadType } from '../../atoms/PUpload/PUpload.enums'
+import PUploadMultiple from '../../atoms/PUploadMultiple'
 import PTooltip from '../../atoms/PTooltip'
 import type { PActionBarProps } from './PActionBarTypes'
 const props = withDefaults(defineProps<PActionBarProps>(), {
@@ -155,8 +151,16 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
 })
 
+// Transient picker selection: re-emitted then immediately cleared so the
+// upload trigger is always ready for a fresh pick.
+const pickedFiles = ref<File[]>([])
+
 const handleFilesSelected = (data: File[]) => {
+  if (data.length === 0) {
+    return
+  }
   emit('p-upload-files-selected', data)
+  pickedFiles.value = []
 }
 
 const pSearchContent = ref('')

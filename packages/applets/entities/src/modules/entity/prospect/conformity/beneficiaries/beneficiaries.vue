@@ -106,9 +106,9 @@
             :beneficiary="beneficiary"
             :formState="formStateByBeneficiaryId[beneficiary.beneficiaryId]"
             :beneficiaryStepStatus="beneficiaryStepStatus"
-            @files-selected="onFilesSelected"
-            @file-deleted="(zoneIndex) => onFileDeleted(zoneIndex)"
-            @document-deletion-requested="(document) => onRequestDocumentDeletion(beneficiary.beneficiaryId, document)"
+            :remoteDeleteUrl="documentsRemoteDeleteUrl"
+            @zone-file-changed="onZoneFileChanged"
+            @document-deleted="onDocumentDeleted"
           />
 
           <!-- Action buttons -->
@@ -132,13 +132,6 @@
       </template>
     </PAlert>
   </div>
-  <DeleteDocumentDialog
-    v-model="isDeleteDialogOpen"
-    :accountId="currentEntityId!"
-    :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
-    :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
-    @deleted="onDocumentDeleted"
-  />
 </template>
 
 <script setup lang="ts">
@@ -169,7 +162,6 @@ import type { UseBeneficiariesEmits } from './beneficiaries.types'
 import { OnboardingStepStatus } from '../prospect-conformity.enums'
 import BeneficiaryActions from './components/beneficiary-actions/beneficiary-actions.vue'
 import BeneficiaryDocumentUpload from './components/beneficiary-document-upload/beneficiary-document-upload.vue'
-import DeleteDocumentDialog from '../../dialog/delete-document-dialog/delete-document-dialog.vue'
 
 const { t } = useI18n()
 
@@ -182,18 +174,14 @@ const {
   isRefreshingStatus,
   isSaving,
   isValidatingAll,
-  currentEntityId,
   beneficiaries,
   activeBeneficiary,
   activeBeneficiaryId,
   formStateByBeneficiaryId,
   hasActiveAttachments,
   canSaveActiveDocuments,
-  isDeleteDialogOpen,
-  documentPendingDeletion,
-  onFilesSelected,
-  onFileDeleted,
-  onRequestDocumentDeletion,
+  documentsRemoteDeleteUrl,
+  onZoneFileChanged,
   onDocumentDeleted,
   onSave,
   onValidateAllBeneficiaries,

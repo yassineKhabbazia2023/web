@@ -19,12 +19,7 @@
     >
       <PRow :pGutter="48">
         <PCol :pSpan="24" :pMd="12">
-          <UploadBIReport
-            ref="uploadBIReport"
-            :isDisabled="!!reportFile"
-            @upload-report="handleReportUpload"
-            @delete-report="handleDeleteReport"
-          />
+          <UploadBIReport v-model="reportFile" />
         </PCol>
         <PCol :pSpan="24" :pMd="12">
           <div
@@ -68,6 +63,7 @@
 
 <script lang="ts" setup>
 import { logger } from '@pulse/toolbox'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'
 import {
@@ -110,8 +106,7 @@ const isLoading = ref(true)
 const isUploaded = ref(false)
 const isUploading = ref(false)
 
-const uploadBIReport = ref()
-const reportFile = ref<File>()
+const reportFile = ref<File | null>(null)
 const reportTypes = ref<ReportType[]>([])
 const reportUploadInfo = ref<ReportInfo>({})
 const isReportSubmissionDisabled = ref(false)
@@ -125,7 +120,10 @@ const reportTypesDropdownValues = computed(() =>
 const isReportFormIncomplete = computed(() => {
   const { accountId, reportTypeId, reportLabel } = reportUploadInfo.value
 
-  return !reportFile.value || !accountId || !reportTypeId || !reportLabel
+  return reportFile.value === null
+    || accountId === undefined
+    || reportTypeId === undefined
+    || isNullOrEmpty(reportLabel)
 })
 
 const getDepositType = (reportTypeId: number): AmplitudePowerBIDepositType => {
@@ -135,19 +133,9 @@ const getDepositType = (reportTypeId: number): AmplitudePowerBIDepositType => {
   return AMPLITUDE_DEPOSIT_TYPE_MAPPING[typeName] ?? AmplitudePowerBIDepositType.PERSONNALISE
 }
 
-// Event listeners
-const handleReportUpload = (report: File) => {
-  reportFile.value = report
-}
-const handleDeleteReport = () => {
-  reportFile.value = undefined
-}
 const handleResetUploadInfo = () => {
-  if (uploadBIReport.value) {
-    uploadBIReport.value.deleteUploadedReport()
-  }
   reportUploadInfo.value = {}
-  reportFile.value = undefined
+  reportFile.value = null
   isUploaded.value = false
 }
 const handleUploadBIReport = async () => {
@@ -155,7 +143,7 @@ const handleUploadBIReport = async () => {
   try {
     const { accountId, reportTypeId, reportLabel, reportId } =
       reportUploadInfo.value
-    if (accountId && reportTypeId && reportFile.value) {
+    if (accountId !== undefined && reportTypeId !== undefined && reportFile.value !== null) {
       await uploadBIreport(
         accountId,
         reportTypeId,

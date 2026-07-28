@@ -23,14 +23,11 @@
       {{ t('entities.prospect.conformity.complementaryDocuments.description') }}
     </p>
 
-    <PUpload
-      v-if="availableSlots > 0"
-      :key="uploadResetKey"
-      pMultiple
-      :limit="availableSlots"
-      pDrag
-      pShowFileList
-      :pUploadType="PUploadType.DRAGGER"
+    <PUploadMultiple
+      v-model="selectedFiles"
+      :pUploadedFiles="documents"
+      :pCanDeleteUploadedFiles="false"
+      :pMaxFiles="maxFiles"
       :pLabel="t('entities.prospect.conformity.complementaryDocuments.uploadLabel')"
       :pAccept="PROSPECT_DOCUMENT_ACCEPTED_FORMATS"
       :pPrefixLabelFileLine="t('entities.prospect.conformity.complementaryDocuments.uploadPrefixLabel')"
@@ -39,26 +36,7 @@
       :pTextLimitSize="t('entities.prospect.conformity.complementaryDocuments.uploadMaxSize')"
       :pDeleteButtonTitle="t('entities.prospect.conformity.complementaryDocuments.uploadDeleteButtonTitle')"
       :pMaxFileSize="PROSPECT_DOCUMENT_MAX_FILE_SIZE_MB"
-      @files-selected="onFilesSelected($event, availableSlots)"
-      @delete-file="onUploadFileDeleted($event)"
     />
-
-    <div
-      class="
-        flex
-        flex--direction-column
-        margin-top--2
-      "
-    >
-      <PUploadFileLine
-        v-for="document in documents"
-        :key="document.id"
-        :pFileName="document.fileName"
-        pStatus="success"
-        :pIconName="getIconName(document.fileName, 'filetypeNone')"
-        :pHasButton="false"
-      />
-    </div>
 
     <div
       class="
@@ -83,19 +61,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getRawFile } from '@pulse/styleguide'
-import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
 import {
   PButton,
-  PUpload,
-  PUploadFileLine,
+  PUploadMultiple,
 } from '@pulse/styleguide/components'
 import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
-import { getIconName } from '@pulse/styleguide/utils/fileExtension'
-import { PUploadType } from '@pulse/styleguide/types'
 import { useComplementaryDocuments } from './complementary-documents.composable'
 import type { ComplementaryDocumentsEmits, ComplementaryDocumentsProps } from './complementary-documents.types'
 import {
@@ -105,27 +77,16 @@ import {
 
 const { t } = useI18n()
 
-const props = defineProps<ComplementaryDocumentsProps>()
+defineProps<ComplementaryDocumentsProps>()
 const emit = defineEmits<ComplementaryDocumentsEmits>()
-
-const availableSlots = computed(() => Math.max(props.maxFiles - props.documents.length, 0))
 
 const {
   isSaving,
-  uploadResetKey,
+  selectedFiles,
   hasPendingUploads,
-  onFilesSelected,
-  onRemoveSelectedFile,
   onSave,
 } = useComplementaryDocuments({
   saveSuccessMessage: t('entities.prospect.conformity.complementaryDocuments.saveSuccess'),
   saveErrorMessage: t('entities.prospect.conformity.complementaryDocuments.saveError'),
 }, emit)
-
-const onUploadFileDeleted = (deletedFile: UploadFile | UploadRawFile): void => {
-  const rawFile = getRawFile(deletedFile)
-  if (rawFile !== undefined) {
-    onRemoveSelectedFile(rawFile)
-  }
-}
 </script>

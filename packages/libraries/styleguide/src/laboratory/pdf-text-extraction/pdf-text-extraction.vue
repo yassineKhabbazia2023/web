@@ -14,21 +14,18 @@
         1. Upload du PDF
       </h3>
       <p class="subsection-description">
-        Sélectionnez un fichier PDF. Note : seuls les PDF avec texte embarqué sont supportés (pas d'OCR sur les images/scans).
+        Sélectionnez un fichier PDF. Note : seuls les PDF avec texte embarqué
+        sont supportés (pas d'OCR sur les images/scans).
       </p>
 
       <PUpload
-        ref="uploadRef"
-        :pUploadType="PUploadType.DRAGGER"
-        pDrag
+        v-model="selectedPdfFile"
         pAccept=".pdf"
         pPrefixLabelFileLine="Glissez-déposez ou "
         pSuffixLabelFileLine="parcourir"
         pAuthorizedFileFormat="PDF"
         pTextLimitSize="10Mo"
-        pShowFileList
-        pShouldClearPreviousFilesListOnUpload
-        @files-selected="handleFileSelected"
+        @update:model-value="handleFileSelected"
       />
     </div>
 
@@ -146,7 +143,8 @@
           3. Texte brut extrait
         </h3>
         <p class="subsection-description">
-          {{ extractionResult.pageCount }} page(s) traitée(s) - {{ extractionResult.items.length }} éléments de texte extraits.
+          {{ extractionResult.pageCount }} page(s) traitée(s) -
+          {{ extractionResult.items.length }} éléments de texte extraits.
         </p>
 
         <div class="extracted-text-container">
@@ -166,7 +164,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import PUpload from '../../atoms/PUpload'
-import { PUploadType } from '../../atoms/PUpload/PUpload.enums'
 import PLoader from '../../atoms/PLoader'
 import PIcon from '../../atoms/PIcon'
 import PInput from '../../atoms/PInput'
@@ -186,7 +183,7 @@ const INITIAL_FORM_DATA = {
   ribKey: '',
 }
 
-const uploadRef = ref<InstanceType<typeof PUpload> | null>(null)
+const selectedPdfFile = ref<File | null>(null)
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 const extractionResult = ref<ExtractedTextResult | null>(null)
@@ -194,12 +191,10 @@ const noRibDataFound = ref(false)
 
 const formData = reactive({ ...INITIAL_FORM_DATA })
 
-const handleFileSelected = async (files: File[]) => {
-  if (files.length === 0) {
+const handleFileSelected = async (file: File | null) => {
+  if (file === null) {
     return
   }
-
-  const file = files[0]
 
   if (!file.type.includes('pdf')) {
     error.value = 'Veuillez sélectionner un fichier PDF valide.'

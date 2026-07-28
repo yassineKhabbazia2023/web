@@ -39,14 +39,12 @@
     />
     <CommercialProposalCollab
       v-else-if="isCollab"
+      v-model="selectedCommercialProposalFile"
       :isCompleted="isCompleted"
       :isDownloading="isDownloading"
       :isSending="isSending"
-      :hasSelectedFile="hasSelectedFile"
       @open="openCommercialProposalDocument"
       @send="sendCommercialProposalToCustomer"
-      @files-selected="onFilesSelected"
-      @file-deleted="onFileDeleted"
     />
   </div>
 </template>
@@ -77,10 +75,8 @@ const {
   isRefreshingStatus,
   isDownloading,
   isSending,
-  hasSelectedFile,
+  selectedCommercialProposalFile,
   openCommercialProposalDocument,
-  onFilesSelected,
-  onFileDeleted,
   sendCommercialProposalToCustomer,
 } = useCommercialProposal(emit)
 

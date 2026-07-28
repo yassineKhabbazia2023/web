@@ -16,7 +16,6 @@ const optionsMock = {
   saveErrorMessage: 'saveError',
 }
 
-const availableSlots = 10
 const accountIdMock = 602
 const fileMock = new File(['content'], 'facture.pdf', { type: 'application/pdf' })
 
@@ -29,46 +28,34 @@ describe('complementary-documents.composable', () => {
   })
 
   describe('file selection', () => {
-    it('should flag pending uploads when files are selected', () => {
+    it('should flag pending uploads when the selection holds files', () => {
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
 
-      result.onFilesSelected([fileMock], availableSlots)
+      result.selectedFiles.value = [fileMock]
 
       expect(result.hasPendingUploads.value).toBe(true)
     })
 
-    it('should ignore entries that are not File instances', () => {
+    it('should not flag pending uploads when the selection is empty', () => {
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      result.onFilesSelected([undefined as unknown as File], availableSlots)
-
-      expect(result.hasPendingUploads.value).toBe(false)
-    })
-
-    it('should clear pending uploads flag when a file is removed and no files remain', () => {
-      const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
-
-      result.onFilesSelected([fileMock], availableSlots)
-      result.onRemoveSelectedFile(fileMock)
 
       expect(result.hasPendingUploads.value).toBe(false)
     })
   })
 
   describe('onSave', () => {
-    it('should upload every selected file as complementary, notify success, bump the reset key and emit saved', async () => {
+    it('should upload every selected file as complementary, notify success, clear the selection and emit saved', async () => {
       const otherFile = new File(['content'], 'autre.pdf', { type: 'application/pdf' })
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
 
-      result.onFilesSelected([fileMock, otherFile], availableSlots)
-      const initialKey = result.uploadResetKey.value
+      result.selectedFiles.value = [fileMock, otherFile]
 
       await result.onSave()
 
       expect(uploadConformityDocumentMock).toHaveBeenCalledWith(accountIdMock, SupportingDocumentType.COMPLEMENTARY, fileMock)
       expect(uploadConformityDocumentMock).toHaveBeenCalledWith(accountIdMock, SupportingDocumentType.COMPLEMENTARY, otherFile)
       expect(displayNotificationMock).toHaveBeenCalledWith('success', optionsMock.saveSuccessMessage)
-      expect(result.uploadResetKey.value).toBe(initialKey + 1)
+      expect(result.selectedFiles.value).toEqual([])
       expect(result.hasPendingUploads.value).toBe(false)
       expect(emitMock).toHaveBeenCalledWith('saved')
       expect(result.isSaving.value).toBe(false)
@@ -87,7 +74,7 @@ describe('complementary-documents.composable', () => {
       uploadConformityDocumentMock.mockRejectedValue(new Error('Upload Error'))
       const [result] = withSetup(() => useComplementaryDocuments(optionsMock, emitMock))
 
-      result.onFilesSelected([fileMock], availableSlots)
+      result.selectedFiles.value = [fileMock]
 
       await result.onSave()
 

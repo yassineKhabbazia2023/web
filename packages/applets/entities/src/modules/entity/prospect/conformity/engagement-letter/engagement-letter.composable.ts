@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
@@ -6,10 +6,6 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
-import {
-  ENGAGEMENT_LETTER_ACCEPTED_MIME_TYPE,
-  ENGAGEMENT_LETTER_MAX_FILE_SIZE_BYTES,
-} from './engagement-letter.consts'
 import type { EngagementLetterEmits } from './engagement-letter.types'
 
 const I18N_KEY = 'entities.prospect.conformity.engagementLetter'
@@ -21,8 +17,6 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
   const selectedEngagementLetterFile = ref<File | null>(null)
   const isDownloading = ref(false)
   const isSending = ref(false)
-
-  const hasSelectedFile = computed(() => selectedEngagementLetterFile.value !== null)
 
   const openEngagementLetterDocument = async (): Promise<void> => {
     if (currentEntityId.value === undefined) {
@@ -42,17 +36,6 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
     } finally {
       isDownloading.value = false
     }
-  }
-
-  const onFilesSelected = (selectedFiles: File[]): void => {
-    selectedEngagementLetterFile.value = selectedFiles.find((file) =>
-      file.type === ENGAGEMENT_LETTER_ACCEPTED_MIME_TYPE
-      && file.size <= ENGAGEMENT_LETTER_MAX_FILE_SIZE_BYTES,
-    ) ?? null
-  }
-
-  const onFileDeleted = (): void => {
-    selectedEngagementLetterFile.value = null
   }
 
   const sendEngagementLetterToCustomer = async (): Promise<void> => {
@@ -77,10 +60,8 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
   return {
     isDownloading,
     isSending,
-    hasSelectedFile,
+    selectedEngagementLetterFile,
     openEngagementLetterDocument,
-    onFilesSelected,
-    onFileDeleted,
     sendEngagementLetterToCustomer,
   }
 }

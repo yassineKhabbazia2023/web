@@ -12,9 +12,7 @@
   </template>
   <template v-else>
     <PUpload
-      pDrag
-      pShowFileList
-      :pUploadType="PUploadType.FILE_LINE"
+      v-model="selectedEngagementLetterFile"
       :pLabel="t(`${I18N_KEY}.uploadLabel`)"
       :pPrefixLabelFileLine="t(`${I18N_KEY}.uploadPrefixLabel`)"
       :pSuffixLabelFileLine="t(`${I18N_KEY}.uploadSuffixLabel`)"
@@ -23,14 +21,10 @@
       :pMaxFileSize="ENGAGEMENT_LETTER_MAX_FILE_SIZE_MO"
       :pTextLimitSize="t(`${I18N_KEY}.fileSizeLimit`)"
       :pRejectedFileMessage="t(`${I18N_KEY}.rejectedFileMessage`)"
-      pColorFileLine="persian"
-      :limit="1"
-      @files-selected="onFilesSelected"
-      @delete-file="onFileDeleted"
     />
     <PButton
       pType="primary"
-      :pDisabled="hasSelectedFile === false"
+      :pDisabled="selectedEngagementLetterFile === null"
       :pLoading="isSending"
       class="margin-top--4"
       @click="isConfirmationVisible = true"
@@ -66,7 +60,6 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PCheckbox, PConfirmationPopup, PUpload } from '@pulse/styleguide/components'
-import { PUploadType } from '@pulse/styleguide/types'
 import EngagementLetterBanner from '../engagement-letter-banner/engagement-letter-banner.vue'
 import { useEngagementLetter } from '../engagement-letter.composable'
 import {
@@ -95,10 +88,8 @@ const closeConfirmationPopup = (): void => {
 const {
   isDownloading,
   isSending,
-  hasSelectedFile,
+  selectedEngagementLetterFile,
   openEngagementLetterDocument,
-  onFilesSelected,
-  onFileDeleted,
   sendEngagementLetterToCustomer,
 } = useEngagementLetter(emit)
 </script>

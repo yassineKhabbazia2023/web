@@ -1,5 +1,4 @@
-import type { UploadFile, UploadRawFile } from '@pulse/styleguide/types'
-import type { Beneficiary, BeneficiaryDocument } from '@entities/modules/entity/prospect/types'
+import type { Beneficiary } from '@entities/modules/entity/prospect/types'
 import type { BeneficiaryFormState } from '../../beneficiaries.types'
 import { OnboardingStepStatus } from '../../../prospect-conformity.enums'
 
@@ -7,10 +6,10 @@ export interface BeneficiaryDocumentUploadProps {
   beneficiary: Beneficiary
   formState: BeneficiaryFormState
   beneficiaryStepStatus?: OnboardingStepStatus
+  remoteDeleteUrl: string | undefined
 }
 
 export interface BeneficiaryDocumentUploadEmits {
-  'files-selected': [zoneIndex: number, files: File[]]
-  'file-deleted': [zoneIndex: number, file: UploadFile | UploadRawFile]
-  'document-deletion-requested': [document: BeneficiaryDocument]
+  'zone-file-changed': [zoneIndex: number, file: File | null]
+  'document-deleted': []
 }

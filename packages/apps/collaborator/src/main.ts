@@ -5,6 +5,7 @@ import { AppVersionManager } from '@pulse/toolbox'
 import { waitForMsw } from '@pulse/toolbox/utils/e2e'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
+import { api } from '@pulse/common/api'
 import styleguideLibrary from '@pulse/styleguide'
 import sharedLibrary from '@pulse/shared'
 import widgetsLibrary from '@pulse/widgets'
@@ -61,7 +62,7 @@ async function bootstrap() {
     .use(hubspotPlugin, { isActive: isProd })
     // install internal libraries
     .use(commonLibrary, {})
-    .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL })
+    .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL, axiosInstance: api.gateway })
     .use(sharedLibrary, {})
     .use(widgetsLibrary, {})
     // install applets

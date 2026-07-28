@@ -35,39 +35,24 @@ describe('supporting-documents.composable', () => {
   })
 
   describe('file selection', () => {
-    it('should store the selected files capped at the allowed maxFiles', () => {
+    it('should initialize an empty selection for every provided item type', () => {
+      itemsMock = [
+        getSupportingDocumentItemMock({ type: SupportingDocumentType.KBIS, documents: [] }),
+        getSupportingDocumentItemMock({ type: SupportingDocumentType.STATUTS, documents: [] }),
+      ]
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.STATUTS, 1, [fileMock, secondFileMock])
-
-      expect(result.selectedFilesByType.value[SupportingDocumentType.STATUTS]).toEqual([fileMock])
-      expect(result.hasPendingUploads.value).toBe(true)
-    })
-
-    it('should keep every selected file when maxFiles allows it', () => {
-      const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
-
-      result.onFileSelected(SupportingDocumentType.STATUTS, 2, [fileMock, secondFileMock])
-
-      expect(result.selectedFilesByType.value[SupportingDocumentType.STATUTS]).toEqual([fileMock, secondFileMock])
-    })
-
-    it('should ignore entries that are not File instances', () => {
-      const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
-
-      result.onFileSelected(SupportingDocumentType.STATUTS, 1, [undefined as unknown as File])
-
+      expect(result.selectedFilesByType.value[SupportingDocumentType.KBIS]).toEqual([])
       expect(result.selectedFilesByType.value[SupportingDocumentType.STATUTS]).toEqual([])
       expect(result.hasPendingUploads.value).toBe(false)
     })
 
-    it('should remove a specific selected file for the given document type', () => {
+    it('should report pending uploads once a selection holds a file', () => {
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.STATUTS, 2, [fileMock, secondFileMock])
-      result.onRemoveSelectedFile(SupportingDocumentType.STATUTS, fileMock)
+      result.selectedFilesByType.value[SupportingDocumentType.STATUTS] = [fileMock, secondFileMock]
 
-      expect(result.selectedFilesByType.value[SupportingDocumentType.STATUTS]).toEqual([secondFileMock])
+      expect(result.hasPendingUploads.value).toBe(true)
     })
   })
 
@@ -81,7 +66,7 @@ describe('supporting-documents.composable', () => {
       itemsMock = requiredItems
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.KBIS, 1, [fileMock])
+      result.selectedFilesByType.value[SupportingDocumentType.KBIS] = [fileMock]
 
       expect(result.canSave.value).toBe(false)
     })
@@ -90,8 +75,8 @@ describe('supporting-documents.composable', () => {
       itemsMock = requiredItems
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.KBIS, 1, [fileMock])
-      result.onFileSelected(SupportingDocumentType.BENEFICIAL_OWNER_DECLARATION, 1, [secondFileMock])
+      result.selectedFilesByType.value[SupportingDocumentType.KBIS] = [fileMock]
+      result.selectedFilesByType.value[SupportingDocumentType.BENEFICIAL_OWNER_DECLARATION] = [secondFileMock]
 
       expect(result.canSave.value).toBe(true)
     })
@@ -106,7 +91,7 @@ describe('supporting-documents.composable', () => {
       ]
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.BENEFICIAL_OWNER_DECLARATION, 1, [fileMock])
+      result.selectedFilesByType.value[SupportingDocumentType.BENEFICIAL_OWNER_DECLARATION] = [fileMock]
 
       expect(result.canSave.value).toBe(true)
     })
@@ -133,8 +118,8 @@ describe('supporting-documents.composable', () => {
       const otherFile = new File(['content'], 'statuts.pdf', { type: 'application/pdf' })
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.KBIS, 1, [fileMock])
-      result.onFileSelected(SupportingDocumentType.STATUTS, 1, [otherFile])
+      result.selectedFilesByType.value[SupportingDocumentType.KBIS] = [fileMock]
+      result.selectedFilesByType.value[SupportingDocumentType.STATUTS] = [otherFile]
 
       await result.onSave()
 
@@ -159,7 +144,7 @@ describe('supporting-documents.composable', () => {
       uploadConformityDocumentMock.mockRejectedValue(new Error('Upload Error'))
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.KBIS, 1, [fileMock])
+      result.selectedFilesByType.value[SupportingDocumentType.KBIS] = [fileMock]
 
       await result.onSave()
 
@@ -174,8 +159,8 @@ describe('supporting-documents.composable', () => {
       const otherFile = new File(['content'], 'statuts.pdf', { type: 'application/pdf' })
       const [result] = withSetup(() => useSupportingDocuments(optionsMock, emitMock))
 
-      result.onFileSelected(SupportingDocumentType.KBIS, 1, [fileMock])
-      result.onFileSelected(SupportingDocumentType.STATUTS, 1, [otherFile])
+      result.selectedFilesByType.value[SupportingDocumentType.KBIS] = [fileMock]
+      result.selectedFilesByType.value[SupportingDocumentType.STATUTS] = [otherFile]
 
       await result.onSave()
 

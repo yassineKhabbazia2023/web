@@ -46,35 +46,8 @@ export class BeneficiariesManager {
     return BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE[documentType]
   }
 
-  // Place a file in its upload zone, keeping the zone-indexed layout intact:
-  // skipped zones are filled with undefined so positions never shift between zones
-  // (CNI: 0 = recto, 1 = verso; passport: 0 = passport)
-  static setFileAtZone(
-    files: (File | undefined)[],
-    zoneIndex: number,
-    file: File,
-  ): (File | undefined)[] {
-    const nextFiles = [...files]
-    while (nextFiles.length < zoneIndex) {
-      nextFiles.push(undefined)
-    }
-    nextFiles[zoneIndex] = file
-    return nextFiles
-  }
-
-  // Clear a zone slot without shifting the others: splicing would turn the verso
-  // into the recto after deleting the recto, so the slot is only emptied
-  static clearFileAtZone(
-    files: (File | undefined)[],
-    zoneIndex: number,
-  ): (File | undefined)[] {
-    const nextFiles = [...files]
-    nextFiles[zoneIndex] = undefined
-    return nextFiles
-  }
-
-  // `formState.files` is zone-indexed and may contain undefined slots (e.g. a file
-  // rejected by the upload zone is never stored), so `files.length` cannot be trusted
+  // `formState.files` is zone-indexed and may contain empty slots (a zone whose
+  // pending file was removed holds null), so `files.length` cannot be trusted
   static getSelectedFiles(formState: BeneficiaryFormState | undefined): File[] {
     return formState?.files.filter(isNotNullNorEmpty) ?? []
   }

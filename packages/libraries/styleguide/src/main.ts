@@ -12,6 +12,9 @@ import './assets/css/animations.css'
 import './assets/scss/index.scss'
 
 import { setAssetsBaseUrl } from './utils/imageResolverInit'
+import { setAxiosInstance } from './utils/axiosInstanceInit'
+
+export { setAxiosInstance } from './utils/axiosInstanceInit'
 
 export { default as fr } from 'element-plus/es/locale/lang/fr'
 export { PNotification, displayNotification } from './utils/PNotification/PNotification'
@@ -19,7 +22,6 @@ export { AppColors } from './utils/AppColorsEnum'
 export { AvatarRoles } from './utils/avatar.roles'
 export { BREAKPOINT_SIZES } from './constants/breakpoint.const'
 export { getIsMobile } from './utils/responsive.utils'
-export { getRawFile } from './atoms/PUpload/PUploadUtils'
 export {
   useResponsive,
   getEffectiveIsMobile,
@@ -37,8 +39,11 @@ export default {
     // Ensure Monday is first day of week
     dayjs.Ls.en.weekStart = 1
 
-    const { assetsBaseUrl } = options
+    const { assetsBaseUrl, axiosInstance } = options
 
     setAssetsBaseUrl(assetsBaseUrl)
+    if (axiosInstance !== undefined) {
+      setAxiosInstance(axiosInstance)
+    }
   },
 }

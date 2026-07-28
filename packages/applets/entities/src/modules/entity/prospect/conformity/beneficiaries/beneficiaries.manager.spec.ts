@@ -30,7 +30,7 @@ describe('beneficiaries.manager', () => {
   describe('getSelectedFiles', () => {
     it('should return only the files actually present in the zone slots', () => {
       const file = getFileMock('cni-verso.pdf')
-      const formState = getBeneficiaryFormStateMock({ files: [undefined, file] })
+      const formState = getBeneficiaryFormStateMock({ files: [null, file] })
 
       expect(BeneficiariesManager.getSelectedFiles(formState)).toEqual([file])
     })
@@ -50,7 +50,7 @@ describe('beneficiaries.manager', () => {
 
     it('should ignore the empty zone slots left by rejected files', () => {
       const beneficiary = getBeneficiaryMock({ documents: [] })
-      const formState = getBeneficiaryFormStateMock({ files: [undefined, getFileMock('cni-verso.pdf')] })
+      const formState = getBeneficiaryFormStateMock({ files: [null, getFileMock('cni-verso.pdf')] })
 
       expect(BeneficiariesManager.getAttachmentsCount(beneficiary, formState)).toBe(1)
     })
@@ -92,7 +92,7 @@ describe('beneficiaries.manager', () => {
     })
 
     it('should return false when the only change is an emptied zone slot', () => {
-      const formState = { ...getPristineFormState(), files: [undefined] }
+      const formState = { ...getPristineFormState(), files: [null] }
 
       expect(BeneficiariesManager.isFormStateDirty(beneficiary, formState)).toBe(false)
     })
@@ -162,7 +162,7 @@ describe('beneficiaries.manager', () => {
     it('should block saving a CNI when a zone slot is empty because its file was rejected', () => {
       const formState = getBeneficiaryFormStateMock({
         documentType: BeneficiaryDocumentType.CNI,
-        files: [undefined, getFileMock('cni-verso.pdf')],
+        files: [null, getFileMock('cni-verso.pdf')],
       })
 
       expect(BeneficiariesManager.canSaveDocuments(getBeneficiaryMock(), formState)).toBe(false)
@@ -188,54 +188,6 @@ describe('beneficiaries.manager', () => {
       const formState = getBeneficiaryFormStateMock({ files: [getFileMock()] })
 
       expect(BeneficiariesManager.canAddFiles(beneficiary, formState)).toBe(false)
-    })
-  })
-
-  describe('setFileAtZone', () => {
-    it('should place the file at its zone without touching the other slots', () => {
-      const recto = getFileMock('cni-recto.pdf')
-      const verso = getFileMock('cni-verso.pdf')
-
-      expect(BeneficiariesManager.setFileAtZone([recto], 1, verso)).toEqual([recto, verso])
-    })
-
-    it('should fill the skipped zones with undefined so the layout never shifts', () => {
-      const verso = getFileMock('cni-verso.pdf')
-
-      expect(BeneficiariesManager.setFileAtZone([], 1, verso)).toEqual([undefined, verso])
-    })
-
-    it('should replace the file already held by the targeted zone', () => {
-      const oldRecto = getFileMock('old-recto.pdf')
-      const newRecto = getFileMock('new-recto.pdf')
-
-      expect(BeneficiariesManager.setFileAtZone([oldRecto], 0, newRecto)).toEqual([newRecto])
-    })
-
-    it('should not mutate the original array', () => {
-      const files = [getFileMock('cni-recto.pdf')]
-
-      BeneficiariesManager.setFileAtZone(files, 1, getFileMock('cni-verso.pdf'))
-
-      expect(files).toHaveLength(1)
-    })
-  })
-
-  describe('clearFileAtZone', () => {
-    it('should empty the targeted zone without shifting the others', () => {
-      const recto = getFileMock('cni-recto.pdf')
-      const verso = getFileMock('cni-verso.pdf')
-
-      expect(BeneficiariesManager.clearFileAtZone([recto, verso], 0)).toEqual([undefined, verso])
-    })
-
-    it('should not mutate the original array', () => {
-      const recto = getFileMock('cni-recto.pdf')
-      const files = [recto]
-
-      BeneficiariesManager.clearFileAtZone(files, 0)
-
-      expect(files).toEqual([recto])
     })
   })
 

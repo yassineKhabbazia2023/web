@@ -72,6 +72,7 @@
             pIconOnly
             pType="default"
             pSize="small"
+            data-testid="user-action-card-trash-button"
             @click="emit('trash-clicked')"
           >
             <PIcon pName="trash" />

@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { displayNotification } from '@pulse/styleguide'
@@ -20,6 +20,17 @@ export function useSupportingDocuments(options: UseSupportingDocumentsOptions, e
   const isSaving = ref(false)
   const selectedFilesByType = ref<SupportingDocumentSelection>({})
 
+  // The template feeds each upload component from selectedFilesByType[item.type],
+  // so every item type needs its own array as soon as the parent items arrive
+  // (initial load and refetches alike) — hence a watch instead of an event.
+  watch(options.getItems, (items) => {
+    for (const item of items) {
+      if (selectedFilesByType.value[item.type] === undefined) {
+        selectedFilesByType.value[item.type] = []
+      }
+    }
+  }, { immediate: true })
+
   const hasPendingUploads = computed(() =>
     SupportingDocumentsManager.hasPendingUploads(selectedFilesByType.value),
   )
@@ -30,18 +41,6 @@ export function useSupportingDocuments(options: UseSupportingDocumentsOptions, e
     hasPendingUploads.value
     && SupportingDocumentsManager.areAllRequiredDocumentsProvided(options.getItems(), selectedFilesByType.value),
   )
-
-  const onFileSelected = (documentType: SupportingDocumentType, maxFiles: number, selectedFiles: File[]) => {
-    // Mirror the current raw selection, capped at the remaining allowed file count.
-    selectedFilesByType.value[documentType] = selectedFiles
-      .filter((selectedFile) => selectedFile instanceof File)
-      .slice(0, maxFiles)
-  }
-
-  const onRemoveSelectedFile = (documentType: SupportingDocumentType, fileToRemove: File) => {
-    const currentFiles = selectedFilesByType.value[documentType] ?? []
-    selectedFilesByType.value[documentType] = currentFiles.filter((file) => file !== fileToRemove)
-  }
 
   const onSave = async () => {
     const entityId = currentEntityId.value
@@ -68,7 +67,11 @@ export function useSupportingDocuments(options: UseSupportingDocumentsOptions, e
       )
     } finally {
       isSaving.value = false
-      selectedFilesByType.value = {}
+      // Empty each selection without dropping the keys: the upload components
+      // keep their v-model bound while the parent refetches the items.
+      for (const documentType of Object.keys(selectedFilesByType.value) as SupportingDocumentType[]) {
+        selectedFilesByType.value[documentType] = []
+      }
       // Let the parent re-sync the single source of truth so persisted uploads appear.
       emit('saved')
     }
@@ -104,8 +107,6 @@ export function useSupportingDocuments(options: UseSupportingDocumentsOptions, e
     canSave,
     isDeleteDialogOpen,
     documentPendingDeletion,
-    onFileSelected,
-    onRemoveSelectedFile,
     onSave,
     onRequestDocumentDeletion,
     onDocumentDeleted,

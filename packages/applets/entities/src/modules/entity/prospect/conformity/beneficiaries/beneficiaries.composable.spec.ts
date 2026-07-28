@@ -153,48 +153,40 @@ describe('beneficiaries.composable', () => {
   })
 
   describe('document deletion flow', () => {
-    const documentMock = getBeneficiaryDocumentMock({ id: 'doc-to-delete' })
+    it('should expose the delete base url built from the account id', async () => {
+      const getProspectDocumentDeleteBaseUrlSpy = vi.spyOn(ProspectsService, 'getProspectDocumentDeleteBaseUrl')
+        .mockReturnValue('prospect/api/onboarding/1971/documents')
 
-    it('should open the dialog when a deletion is requested', async () => {
       const [result] = withSetup(() => useBeneficiaries(emitMock))
       await flushPromises()
 
-      result.onRequestDocumentDeletion(firstBeneficiaryIdMock, documentMock)
-
-      expect(result.isDeleteDialogOpen.value).toBe(true)
-      expect(result.documentPendingDeletion.value).toEqual({
-        beneficiaryId: firstBeneficiaryIdMock,
-        document: documentMock,
-      })
+      expect(result.documentsRemoteDeleteUrl.value).toBe('prospect/api/onboarding/1971/documents')
+      expect(getProspectDocumentDeleteBaseUrlSpy).toHaveBeenCalledWith(accountIdMock)
     })
 
-    it('should clear the pending deletion when the dialog is closed', async () => {
+    it('should not expose a delete url when there is no account id', async () => {
+      setCurrentEntity(prospectIdMock, null)
+
       const [result] = withSetup(() => useBeneficiaries(emitMock))
       await flushPromises()
 
-      result.onRequestDocumentDeletion(firstBeneficiaryIdMock, documentMock)
-      result.isDeleteDialogOpen.value = false
-
-      expect(result.documentPendingDeletion.value).toBeUndefined()
-      expect(result.isDeleteDialogOpen.value).toBe(false)
+      expect(result.documentsRemoteDeleteUrl.value).toBeUndefined()
     })
 
-    it('should clear the pending deletion and reload the list once the document is deleted', async () => {
+    it('should notify and reload the list and status once a document is deleted', async () => {
       const [result] = withSetup(() => useBeneficiaries(emitMock))
       await flushPromises()
-
-      result.onRequestDocumentDeletion(firstBeneficiaryIdMock, documentMock)
 
       const deletePromise = result.onDocumentDeleted()
       expect(result.isRefreshing.value).toBe(true)
 
       await deletePromise
 
-      expect(result.documentPendingDeletion.value).toBeUndefined()
-      expect(result.isDeleteDialogOpen.value).toBe(false)
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', 'entities.prospect.deleteDocumentDialog.success')
       expect(result.isRefreshing.value).toBe(false)
       expect(fetchBeneficiariesMock).toHaveBeenCalledTimes(2)
       expect(fetchOnboardingStepMock).toHaveBeenCalledTimes(2)
+      expect(emitMock).toHaveBeenCalledWith('refresh-steps')
     })
   })
 
@@ -204,19 +196,11 @@ describe('beneficiaries.composable', () => {
       await flushPromises()
 
       const verso = getFileMock('cni-verso.pdf')
-      result.onFilesSelected(1, [verso])
+      result.onZoneFileChanged(1, verso)
 
       // The recto zone stays empty so the verso keeps its slot
-      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([undefined, verso])
-    })
-
-    it('should ignore an empty selection', async () => {
-      const [result] = withSetup(() => useBeneficiaries(emitMock))
-      await flushPromises()
-
-      result.onFilesSelected(0, [])
-
-      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([])
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files[1]).toBe(verso)
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files[0]).toBeUndefined()
     })
 
     it('should clear a zone slot without shifting the others', async () => {
@@ -227,9 +211,9 @@ describe('beneficiaries.composable', () => {
       const verso = getFileMock('cni-verso.pdf')
       result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [recto, verso]
 
-      result.onFileDeleted(0)
+      result.onZoneFileChanged(0, null)
 
-      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([undefined, verso])
+      expect(result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files).toEqual([null, verso])
     })
   })
 
@@ -306,7 +290,7 @@ describe('beneficiaries.composable', () => {
 
       // The recto was rejected by its upload zone: only the verso slot holds a file
       result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].documentType = BeneficiaryDocumentType.CNI
-      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [undefined, getFileMock('cni-verso.pdf')]
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [null, getFileMock('cni-verso.pdf')]
 
       await result.onSave()
 
@@ -329,7 +313,7 @@ describe('beneficiaries.composable', () => {
 
       // The recto already exists server-side: the verso zone (index 1) holds the only local file
       const missingFile = getFileMock('cni-verso.pdf')
-      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [undefined, missingFile]
+      result.formStateByBeneficiaryId.value[firstBeneficiaryIdMock].files = [null, missingFile]
 
       await result.onSave()
 

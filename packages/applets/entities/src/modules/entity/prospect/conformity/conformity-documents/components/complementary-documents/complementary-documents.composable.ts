@@ -18,19 +18,8 @@ export function useComplementaryDocuments(
 
   const isSaving = ref(false)
   const selectedFiles = ref<File[]>([])
-  // Bumped after each save to remount the PUpload and clear its internal file list.
-  const uploadResetKey = ref(0)
 
   const hasPendingUploads = computed(() => selectedFiles.value.length > 0)
-
-  const onFilesSelected = (files: File[], availableSlots: number) => {
-    // Initial files coming from the API have no raw File attached, filter them out, then cap.
-    selectedFiles.value = files.filter((file) => file instanceof File).slice(0, availableSlots)
-  }
-
-  const onRemoveSelectedFile = (fileToRemove: File) => {
-    selectedFiles.value = selectedFiles.value.filter((file) => file !== fileToRemove)
-  }
 
   const onSave = async () => {
     const entityId = currentEntityId.value
@@ -58,7 +47,6 @@ export function useComplementaryDocuments(
     } finally {
       isSaving.value = false
       selectedFiles.value = []
-      uploadResetKey.value += 1
       // Let the parent re-sync the single source of truth so persisted uploads appear.
       emit('saved')
     }
@@ -66,10 +54,8 @@ export function useComplementaryDocuments(
 
   return {
     isSaving,
-    uploadResetKey,
+    selectedFiles,
     hasPendingUploads,
-    onFilesSelected,
-    onRemoveSelectedFile,
     onSave,
   }
 }

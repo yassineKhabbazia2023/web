@@ -11,31 +11,20 @@
       </span>
     </template>
     <PUpload
-      ref="uploadBIReport"
-      class="p-upload-bi-report"
-      pDrag
-      pShowFileList
-      :pUploadType="PUploadType.DRAGGER"
+      v-model="reportFile"
       :pPrefixLabelFileLine="t('prefixLabelFileLine')"
       :pSuffixLabelFileLine="t('suffixLabelFileLine')"
       :pDeleteButtonTitle="t('deleteButtonTitle')"
       pAuthorizedFileFormat="PBX"
       pTextLimitSize="50 Mo"
-      pColorFileLine="persian"
-      :pDisabled="isDisabled"
-      @files-selected="handleReportUpload"
-      @delete-file="emit('delete-report')"
     />
   </PFormItem>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
 import { PFormItem, PUpload, PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import { PUploadType } from '@pulse/styleguide/types'
-import type { UploadBIReportProps } from './upload-bi-report.types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -56,36 +45,5 @@ const { t } = useI18n({
   },
 })
 
-withDefaults(defineProps<UploadBIReportProps>(), {
-  isDisabled: false,
-})
-
-const emit = defineEmits<{
-  'upload-report': [File]
-  'delete-report': []
-}>()
-
-const uploadBIReport = ref()
-
-const handleReportUpload = (reports: File[]) => {
-  emit('upload-report', reports[0])
-}
-const deleteUploadedReport = () => {
-  uploadBIReport.value.clearFiles()
-}
-
-defineExpose({
-  deleteUploadedReport,
-})
+const reportFile = defineModel<File | null>({ default: null })
 </script>
-
-<style lang="scss">
-.p-upload-bi-report {
-  &.p-upload--type-dragger {
-    .el-upload-dragger {
-      padding: 100px;
-    }
-  }
-}
-</style>
-

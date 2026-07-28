@@ -1,27 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import type { UploadFile } from 'element-plus'
 import { ref } from 'vue'
 import PUpload from './PUpload.vue'
-import { PUploadType } from './PUpload.enums'
-import PButton from '../PButton/PButton.vue'
-import PIcon from '../PIcon/PIcon.vue'
-
-const buildUploadFile = (name: string, uid: number, size: number): UploadFile => ({
-  name,
-  uid,
-  size,
-  status: 'success',
-  percentage: 100,
-})
+import { setAxiosInstance } from '../../utils/axiosInstanceInit'
+import type { PUploadedFile } from './PUploadTypes'
 
 const meta: Meta<typeof PUpload> = {
   title: 'Atoms/PUpload',
-  component: PUpload as unknown as any,
+  component: PUpload,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Zone de dépôt de fichiers, avec variantes (ligne et dragger).',
+        component: 'Zone de dépôt mono-fichier. Le v-model porte le fichier en attente (File | null) ; un document déjà persisté est fourni via pUploadedFile et remplace la zone de dépôt.',
       },
     },
   },
@@ -33,234 +23,196 @@ const meta: Meta<typeof PUpload> = {
 export default meta
 export type Story = StoryObj<typeof meta>
 
-export const ButtonUpload: Story = {
-  render: () => ({
-    components: { PUpload, PButton, PIcon },
-    template: `
-      <div style="display: flex; justify-content: center;">
-        <PUpload pMultiple :pDisabled="false" :pDrag="false">
-          <PButton type="primary" size="small">
-            <PIcon class="el-button__icon--left" pName="upload" />
-            Déposer un document
-          </PButton>
-        </PUpload>
-      </div>
-    `,
-  }),
-}
-
-export const FileLine: Story = {
+export const EmptyDropZone: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const uploadDisabled = ref(false)
-      return { uploadDisabled, PUploadType }
+      const selectedFile = ref<File | null>(null)
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.FILE_LINE"
-        pTextLimitSize="5MB"
+        v-model="selectedFile"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pColorFileLine="persian"
-        :pDisabled="uploadDisabled"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
       />
     `,
   }),
 }
 
-export const FileLineSingleFileUploaded: Story = {
+export const WithLabel: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const initialFiles: UploadFile[] = [
-        buildUploadFile('carte-identite.pdf', 1, 256_000),
-      ]
-      return { initialFiles, PUploadType }
+      const selectedFile = ref<File | null>(null)
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.FILE_LINE"
-        pTextLimitSize="5MB"
+        v-model="selectedFile"
+        pLabel="Pièce d'identité"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pColorFileLine="persian"
-        :pInitialFiles="initialFiles"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
       />
     `,
   }),
 }
 
-export const FileLineSingleFileWithAcceptedExtensions: Story = {
+export const WithAcceptedExtensions: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      return { PUploadType }
+      const selectedFile = ref<File | null>(null)
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.FILE_LINE"
-        pTextLimitSize="5MB"
+        v-model="selectedFile"
         pAccept=".jpg"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
         pAuthorizedFileFormat="JPG"
-        pColorFileLine="persian"
       />
     `,
   }),
 }
 
-export const FileLineWithLabel: Story = {
+export const WithMaxFileSize: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const uploadDisabled = ref(false)
-      return { uploadDisabled, PUploadType }
+      const selectedFile = ref<File | null>(null)
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.FILE_LINE"
-        pLabel="Pièce d'identité"
-        pTextLimitSize="5MB"
-        pPrefixLabelFileLine="Déposer le fichier ou"
-        pSuffixLabelFileLine="parcourir l'ordinateur"
-        pColorFileLine="persian"
-        :pDisabled="uploadDisabled"
-      />
-    `,
-  }),
-}
-
-export const DraggerWithMaxFileSize: Story = {
-  render: () => ({
-    components: { PUpload },
-    setup() {
-      return { PUploadType }
-    },
-    template: `
-      <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.DRAGGER"
-        pTextLimitSize="0,5 Mo"
+        v-model="selectedFile"
         :pMaxFileSize="0.5"
+        pTextLimitSize="0,5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
         pAuthorizedFileFormat="Tous formats"
-        pColorFileLine="persian"
       />
     `,
   }),
 }
 
-export const Dragger: Story = {
+export const PendingFileSelected: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const uploadDisabled = ref(false)
-      return { uploadDisabled, PUploadType }
+      const selectedFile = ref<File | null>(new File(['content'], 'carte-identite.pdf', { type: 'application/pdf' }))
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.DRAGGER"
-        pTextLimitSize="1GB"
+        v-model="selectedFile"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
-        pColorFileLine="persian"
-        :pDisabled="uploadDisabled"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
       />
     `,
   }),
 }
 
-export const DraggerWithAcceptedExtensions: Story = {
+export const UploadedFile: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      return { PUploadType }
+      const selectedFile = ref<File | null>(null)
+      const uploadedFile: PUploadedFile = { id: '1', fileName: 'carte-identite.pdf' }
+      return { selectedFile, uploadedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.DRAGGER"
-        pTextLimitSize="1GB"
-        pAccept=".jpeg, .jpg, .png, .pdf, .xls"
+        v-model="selectedFile"
+        :pUploadedFile="uploadedFile"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
-        pColorFileLine="persian"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
       />
     `,
   }),
 }
 
-export const DraggerWithSingleFile: Story = {
+export const UploadedFileNotDeletable: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const initialFiles: UploadFile[] = [
-        buildUploadFile('carte-identite.pdf', 1, 256_000),
-      ]
-      return { initialFiles, PUploadType }
+      const selectedFile = ref<File | null>(null)
+      const uploadedFile: PUploadedFile = { id: '1', fileName: 'carte-identite.pdf' }
+      return { selectedFile, uploadedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.DRAGGER"
-        pTextLimitSize="1GB"
+        v-model="selectedFile"
+        :pUploadedFile="uploadedFile"
+        :pCanDeleteUploadedFile="false"
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
-        pColorFileLine="persian"
-        :pInitialFiles="initialFiles"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
       />
     `,
   }),
 }
 
-export const DraggerWithMultipleFiles: Story = {
+export const Disabled: Story = {
   render: () => ({
     components: { PUpload },
     setup() {
-      const initialFiles: UploadFile[] = [
-        buildUploadFile('carte-identite.pdf', 1, 256_000),
-        buildUploadFile('justificatif-domicile.png', 2, 512_000),
-        buildUploadFile('rib.pdf', 3, 128_000),
-      ]
-      return { initialFiles, PUploadType }
+      const selectedFile = ref<File | null>(null)
+      return { selectedFile }
     },
     template: `
       <PUpload
-        pMultiple
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.DRAGGER"
-        pTextLimitSize="1GB"
+        v-model="selectedFile"
+        pDisabled
+        pTextLimitSize="5 Mo"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
-        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
-        pColorFileLine="persian"
-        :pInitialFiles="initialFiles"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
+      />
+    `,
+  }),
+}
+
+export const RemoteDelete: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      // Fake app-provided axios instance: resolves after a delay so the
+      // deleting spinner is visible on the persisted line.
+      setAxiosInstance({
+        delete: () => new Promise((resolve) => {
+          setTimeout(resolve, 1500)
+        }),
+      })
+      const selectedFile = ref<File | null>(null)
+      const uploadedFile = ref<PUploadedFile | undefined>({ id: '1', fileName: 'carte-identite.pdf' })
+      const onUploadedFileDeleted = () => {
+        uploadedFile.value = undefined
+      }
+      return { selectedFile, uploadedFile, onUploadedFileDeleted }
+    },
+    template: `
+      <PUpload
+        v-model="selectedFile"
+        :pUploadedFile="uploadedFile"
+        pCanRemoteDelete
+        pRemoteDeleteUrl="/documents"
+        pTextLimitSize="5 Mo"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPEG, PNG ou PDF"
+        @uploaded-file-deleted="onUploadedFileDeleted"
       />
     `,
   }),

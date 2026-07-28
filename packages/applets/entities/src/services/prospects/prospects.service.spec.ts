@@ -271,6 +271,14 @@ describe('ProspectsService', () => {
     })
   })
 
+  describe('getProspectDocumentDeleteBaseUrl', () => {
+    it('should build the document deletion base url of the account', () => {
+      expect(ProspectsService.getProspectDocumentDeleteBaseUrl(accountId)).toBe(
+        `${API_PREFIXES.PROSPECT}/onboarding/${accountId}/documents`,
+      )
+    })
+  })
+
   describe('fetchOnboardingSteps', () => {
     it('should GET the onboarding steps of the account and return the data', async () => {
       const responseData: OnboardingStepResponse[] = [

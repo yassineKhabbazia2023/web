@@ -3,24 +3,22 @@
     {{ pLabel }}
   </div>
   <ElUpload
-    v-if="isSingleFileUploaded === false"
+    v-if="isFull === false"
     ref="uploadElement"
-    v-model:file-list="files"
-    class="p-upload"
-    :class="pClassMapper"
+    v-model:file-list="uploadFiles"
+    class="p-upload p-upload--type-dragger"
+    :class="{ 'p-upload--disabled': pDisabled }"
     :data-testid="pTestId"
     v-bind="$attrs"
-    :httpRequest="emitFilesEvent"
-    :multiple="pMultiple"
-    :showFileList="displayedFileList"
-    :drag="pDrag"
+    drag
+    :multiple="false"
+    :limit="1"
+    :autoUpload="false"
+    :showFileList="false"
     :disabled="pDisabled"
-    :action="pAction"
-    :onChange="handleFileChange"
+    :onExceed="notifyMaxFilesExceeded"
   >
-    <slot v-if="pUploadType === PUploadType.SLOT" />
     <div
-      v-else
       class="
         p-upload__input
         flex flex--align-items-center flex--justify-content-center
@@ -43,150 +41,181 @@
         </span>
       </span>
     </div>
-    <!-- File-list variant: one line per file, shown below the drop zone (which stays visible). -->
-    <template v-if="displayedFileList" #file="{ file }">
-      <PUploadFileLine
-        :pFileName="file.name"
-        :pStatus="getDisplayedStatus(file)"
-        :pMessage="getRejectionMessage(file)"
-        :pIconName="getIconName(file.name, 'filetypeNone')"
-        :pHasButton="pShowDeleteButton"
-        pButtonIconName="trash"
-        :pTitleButton="pDeleteButtonTitle"
-        :pColor="pColorFileLine"
-        @on-click-file-action="removeFile(file)"
-      />
-    </template>
   </ElUpload>
-  <!-- Single-file variant: replaces the drop zone entirely (FILE_LINE mono mode, see isSingleFileUploaded). -->
+  <!-- Full state: the drop zone is replaced by a single boxed file line. -->
   <PUploadFileLine
-    v-else
+    v-else-if="rejectedEntry !== undefined"
     pIsMultiLine
-    :pStatus="singleFileDisplayedStatus"
-    :pMessage="getRejectionMessage(files[0])"
-    :pFileName="files[0].name"
-    :pIconName="getIconName(files[0].name, 'filetypeNone')"
-    :pHasButton="pShowDeleteButton"
+    :pStatus="UploadFileStatus.FAIL"
+    :pMessage="rejectedEntry.message"
+    :pFileName="rejectedEntry.fileName"
+    :pIconName="getIconName(rejectedEntry.fileName, 'filetypeNone')"
+    pHasButton
     pButtonIconName="trash"
     :pTitleButton="pDeleteButtonTitle"
-    :data-testid="pTestId ?? 'upload-single-file'"
+    data-testid="upload-rejected-file"
     v-bind="$attrs"
-    @on-click-file-action="removeFile(files[0])"
+    @on-click-file-action="dismissRejectedEntry(rejectedEntry.uid)"
   />
+  <PUploadFileLine
+    v-else-if="pUploadedFile !== undefined"
+    pIsMultiLine
+    :pStatus="isUploadedFileDeleting ? UploadFileStatus.UPLOADING : UploadFileStatus.SUCCESS"
+    :pFileName="pUploadedFile.fileName"
+    :pIconName="getIconName(pUploadedFile.fileName, 'filetypeNone')"
+    :pHasButton="pCanDeleteUploadedFile"
+    pButtonIconName="trash"
+    :pTitleButton="pDeleteButtonTitle"
+    data-testid="upload-uploaded-file"
+    v-bind="$attrs"
+    @on-click-file-action="onUploadedFileDeleteRequested"
+  />
+  <PUploadFileLine
+    v-else-if="model !== null"
+    pIsMultiLine
+    :pStatus="UploadFileStatus.READY"
+    :pFileName="model.name"
+    :pIconName="getIconName(model.name, 'filetypeNone')"
+    pHasButton
+    pButtonIconName="trash"
+    :pTitleButton="pDeleteButtonTitle"
+    data-testid="upload-pending-file"
+    v-bind="$attrs"
+    @on-click-file-action="model = null"
+  />
+  <PConfirmationPopup
+    v-model:pIsVisible="isDeleteConfirmationVisible"
+    :pTitle="pDeleteConfirmationTitle"
+    :pConfirmButtonContent="pDeleteConfirmationConfirmLabel"
+    :pCancelButtonContent="pDeleteConfirmationCancelLabel"
+    @on-confirm-button-click="onDeleteConfirmed"
+    @on-cancel-button-click="isDeleteConfirmationVisible = false"
+  >
+    {{ pDeleteConfirmationMessage }}
+  </PConfirmationPopup>
 </template>
 
 <script setup lang="ts">
-import { ElUpload, type UploadFile, type UploadRawFile } from 'element-plus'
-import { ref, computed, watch } from 'vue'
-import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
+import { ElUpload } from 'element-plus'
+import type { UploadFile, UploadInstance } from 'element-plus'
+import { ref, computed, watch, useTemplateRef } from 'vue'
 import { getIconName } from '../../utils/fileExtension'
-import { getFileRejectionMessage } from './PUploadUtils'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
+import PConfirmationPopup from '../../organisms/PConfirmationPopup'
 import { UploadFileStatus } from '../../constants/uploadStatus.const'
-import type { UploadProps } from './PUploadTypes'
-import { PUploadType } from './PUpload.enums'
+import { useUploadCore } from './PUploadCore.composable'
+import {
+  DELETE_CONFIRMATION_CANCEL_LABEL,
+  DELETE_CONFIRMATION_CONFIRM_LABEL,
+  DELETE_CONFIRMATION_MESSAGE,
+  DELETE_CONFIRMATION_TITLE,
+  MAX_FILES_EXCEEDED_MESSAGE,
+  REMOTE_DELETE_ERROR_MESSAGE,
+} from './PUpload.constants'
+import type { PUploadProps } from './PUploadTypes'
 
 defineOptions({ inheritAttrs: false })
 
-const uploadElement = ref<InstanceType<typeof ElUpload> | null>(null)
-
-function removeFile(file: UploadFile | UploadRawFile) {
-  uploadElement.value?.handleRemove(file)
-  files.value = files.value.filter((current) => current.uid !== file.uid)
-  emit('delete-file', file)
-}
-
-const props = withDefaults(defineProps<UploadProps>(), {
-  pUploadType: PUploadType.SLOT,
-  pShowFileList: false,
-  pAction: '#',
-  pShouldClearPreviousFilesListOnUpload: false,
+const props = withDefaults(defineProps<PUploadProps>(), {
+  pRejectedFileMessage: 'Extension non supportée, le fichier ne sera pas enregistré',
+  pMaxFilesExceededMessage: MAX_FILES_EXCEEDED_MESSAGE,
   pDeleteButtonTitle: 'Supprimer le document',
-  pRejectedFileMessage: 'Extension non supportée',
-  pShowDeleteButton: true,
+  pCanDeleteUploadedFile: true,
+  pCanRemoteDelete: false,
+  pRemoteDeleteErrorMessage: REMOTE_DELETE_ERROR_MESSAGE,
+  pDeleteConfirmationTitle: DELETE_CONFIRMATION_TITLE,
+  pDeleteConfirmationMessage: DELETE_CONFIRMATION_MESSAGE,
+  pDeleteConfirmationConfirmLabel: DELETE_CONFIRMATION_CONFIRM_LABEL,
+  pDeleteConfirmationCancelLabel: DELETE_CONFIRMATION_CANCEL_LABEL,
 })
 
 const emit = defineEmits<{
-  'files-selected': [File[]]
-  'delete-file': [UploadFile | UploadRawFile]
+  'delete-uploaded-file': [id: string | number]
+  'uploaded-file-deleted': [id: string | number]
 }>()
 
-const files = ref<UploadFile[]>(props.pInitialFiles ?? [])
+// The pending selection. Persisted documents live in `pUploadedFile` and never
+// enter the model.
+const model = defineModel<File | null>({ default: null })
 
-const isSingleFileUploaded = computed(() =>
-  props.pUploadType === PUploadType.FILE_LINE
-  && props.pMultiple !== true
-  && files.value.length > 0,
-)
+const uploadElement = useTemplateRef<UploadInstance>('uploadElement')
 
-const displayedFileList = computed(() =>
-  props.pShowFileList === true && isSingleFileUploaded.value === false,
-)
-
-// Pending files stay neutral (`ready`); only rejected ones look like errors.
-const getDisplayedStatus = (file: UploadFile) =>
-  file?.status === UploadFileStatus.FAIL
-    ? UploadFileStatus.FAIL
-    : UploadFileStatus.READY
-
-const singleFileDisplayedStatus = computed(() => getDisplayedStatus(files.value[0]))
-
-const pClassMapper = computed(() => ({
-  [`p-upload--type-${props.pUploadType}`]: true,
-  'p-upload--disabled': props.pDisabled,
-}))
-
-function clearFiles() {
-  uploadElement.value?.clearFiles()
-}
-
-defineExpose({
-  clearFiles,
+const {
+  rejectedEntries,
+  tryAcceptFile,
+  dismissRejectedEntry,
+  notifyMaxFilesExceeded,
+  isRemoteDeleteEnabled,
+  deletingUploadedFileIds,
+  deleteUploadedFileRemotely,
+} = useUploadCore({
+  uploadElement,
+  accept: computed(() => props.pAccept),
+  maxFileSizeInMo: computed(() => props.pMaxFileSize),
+  rejectedFileMessage: computed(() => props.pRejectedFileMessage),
+  maxFilesExceededMessage: computed(() => props.pMaxFilesExceededMessage),
+  canRemoteDelete: computed(() => props.pCanRemoteDelete),
+  remoteDeleteUrl: computed(() => props.pRemoteDeleteUrl),
+  remoteDeleteErrorMessage: computed(() => props.pRemoteDeleteErrorMessage),
+  uploadedFileIds: computed(() => props.pUploadedFile === undefined ? [] : [props.pUploadedFile.id]),
 })
 
-// `pAccept` is set on the native input (file picker pre-filtering) rather than
-// passed to ElUpload's `accept` prop, which would also make the dragger silently
-// drop non-matching files — we want them to reach handleFileChange and show an error.
-watch([uploadElement, () => props.pAccept], () => {
-  const acceptValue = props.pAccept
-  if (uploadElement.value === null || isNullOrEmpty(acceptValue)) {
+const isUploadedFileDeleting = computed(() =>
+  props.pUploadedFile !== undefined
+  && deletingUploadedFileIds.value.has(props.pUploadedFile.id),
+)
+
+const isDeleteConfirmationVisible = ref(false)
+
+const onUploadedFileDeleteRequested = () => {
+  const uploadedFile = props.pUploadedFile
+  if (uploadedFile === undefined) {
     return
   }
-  const nativeInputElement = (uploadElement.value.$el as HTMLElement).querySelector('input.el-upload__input')
-  nativeInputElement?.setAttribute('accept', acceptValue)
-})
+  if (isRemoteDeleteEnabled.value === false) {
+    emit('delete-uploaded-file', uploadedFile.id)
+    return
+  }
+  isDeleteConfirmationVisible.value = true
+}
 
-const buildRejectionOptions = () => ({
-  accept: props.pAccept,
-  maxFileSizeInMo: props.pMaxFileSize,
-  rejectedFileMessage: props.pRejectedFileMessage,
-})
-
-// Runs on every change: the fake httpRequest flips rejected files to `success`,
-// so re-marking them as failed on each onChange is required.
-const handleFileChange = (uploadFile: UploadFile) => {
-  if (getFileRejectionMessage(uploadFile, buildRejectionOptions()) !== undefined) {
-    uploadFile.status = UploadFileStatus.FAIL
+// The popup closes as soon as the deletion is confirmed: the ongoing call is
+// materialized by the file line spinner, and a failure by the error toast.
+const onDeleteConfirmed = async () => {
+  isDeleteConfirmationVisible.value = false
+  const uploadedFile = props.pUploadedFile
+  if (uploadedFile === undefined) {
+    return
+  }
+  const outcome = await deleteUploadedFileRemotely(uploadedFile.id)
+  if (outcome === 'deleted') {
+    emit('uploaded-file-deleted', uploadedFile.id)
+  } else if (outcome === 'unavailable') {
+    emit('delete-uploaded-file', uploadedFile.id)
   }
 }
 
-// Error-line message for a failed file (extension or size reason).
-const getRejectionMessage = (file: UploadFile) =>
-  file.status === UploadFileStatus.FAIL
-    ? getFileRejectionMessage(file, buildRejectionOptions())
-    : undefined
+const rejectedEntry = computed(() => rejectedEntries.value[0])
 
-const emitFilesEvent = () => {
-  const filesToUpload = files.value
-    .filter((file) => file.status !== UploadFileStatus.FAIL)
-    .map((file) => file.raw as File)
-  return new Promise((resolve) => {
-    resolve(emit('files-selected', filesToUpload))
-    if (props.pShouldClearPreviousFilesListOnUpload) {
-      // Keep failed files: they were not emitted, so their error lines must stay.
-      files.value = files.value.filter((file) => file.status === UploadFileStatus.FAIL)
-    }
-  })
-}
+const isFull = computed(() =>
+  rejectedEntry.value !== undefined
+  || props.pUploadedFile !== undefined
+  || model.value !== null,
+)
+
+// element-plus plumbing only: the selected file is moved to the model (or to a
+// rejected entry) as soon as the selection settles, and the list is emptied so
+// the remounted drop zone starts from a clean single-file slot.
+const uploadFiles = ref<UploadFile[]>([])
+
+watch(uploadFiles, (currentFiles) => {
+  if (currentFiles.length === 0) {
+    return
+  }
+  const selectedFile = currentFiles[0]
+  if (tryAcceptFile(selectedFile) === true && selectedFile.raw instanceof File) {
+    model.value = selectedFile.raw
+  }
+  uploadFiles.value = []
+})
 </script>
-

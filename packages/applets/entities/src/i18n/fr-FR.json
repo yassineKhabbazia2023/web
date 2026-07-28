@@ -601,7 +601,7 @@
           "uploadPrefixLabel": "Déposer le fichier ou",
           "uploadSuffixLabel": "parcourir l'ordinateur",
           "fileSizeLimit": "5 Mo",
-          "rejectedFileMessage": "Seul le format PDF est accepté (max. 5 Mo)",
+          "rejectedFileMessage": "Seul le format PDF est accepté (max. 5 Mo), le fichier ne sera pas enregistré",
           "sendToCustomer": "Envoyer au client",
           "consult": "Consulter",
           "sendSuccess": "La lettre de mission a bien été envoyée au client",

@@ -1,3 +1,4 @@
 export const COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE = 'application/pdf'
 
-export const COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
+// Megabytes, enforced client-side by PUpload's pMaxFileSize.
+export const COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_MO = 5

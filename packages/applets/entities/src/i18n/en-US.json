@@ -601,7 +601,7 @@
           "uploadPrefixLabel": "Drop the file or",
           "uploadSuffixLabel": "browse your computer",
           "fileSizeLimit": "5 MB",
-          "rejectedFileMessage": "Only PDF format is accepted (max. 5 MB)",
+          "rejectedFileMessage": "Only PDF format is accepted (max. 5 MB), the file will not be saved",
           "sendToCustomer": "Send to client",
           "consult": "View",
           "sendSuccess": "The engagement letter has been sent to the client",

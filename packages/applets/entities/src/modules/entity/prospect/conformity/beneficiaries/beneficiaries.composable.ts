@@ -9,9 +9,8 @@ import { OnboardingStep } from '../prospect-conformity.enums'
 import { useOnboardingStepStatus } from '../onboarding-step-status.composable'
 import { BeneficiariesManager } from './beneficiaries.manager'
 import { BENEFICIARIES_I18N_KEYS } from './beneficiaries.constants'
-import type { Beneficiary, BeneficiaryDocument } from '@entities/modules/entity/prospect/types'
+import type { Beneficiary } from '@entities/modules/entity/prospect/types'
 import type {
-  BeneficiaryDocumentDeletionTarget,
   BeneficiaryFormState,
   UseBeneficiariesEmits,
 } from './beneficiaries.types'
@@ -98,43 +97,28 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     }
   }
 
-  const documentPendingDeletion = ref<BeneficiaryDocumentDeletionTarget>()
+  // Base URL consumed by the upload components' native delete: they call
+  // DELETE `${documentsRemoteDeleteUrl}/${documentId}` themselves.
+  const documentsRemoteDeleteUrl = computed<string | undefined>(() =>
+    currentEntityId.value === undefined || currentEntityId.value === null
+      ? undefined
+      : ProspectsService.getProspectDocumentDeleteBaseUrl(currentEntityId.value),
+  )
 
-  const isDeleteDialogOpen = computed({
-    get: () => documentPendingDeletion.value !== undefined,
-    set: (isOpen: boolean) => {
-      if (isOpen === false) {
-        documentPendingDeletion.value = undefined
-      }
-    },
-  })
-
-  // Zone-aware file selection: each upload zone accepts a single file and keeps
-  // its own slot (CNI recto/verso), so the layout is rebuilt through the manager
-  const onFilesSelected = (zoneIndex: number, selectedFiles: File[]) => {
-    const formState = activeFormState.value
-    if (formState === undefined || selectedFiles.length === 0) {
-      return
-    }
-    formState.files = BeneficiariesManager.setFileAtZone(formState.files, zoneIndex, selectedFiles[0])
-  }
-
-  const onFileDeleted = (zoneIndex: number) => {
+  // Zone-aware selection: each upload zone owns a single slot (CNI: 0 = recto,
+  // 1 = verso), so a direct index assignment keeps the other zones untouched.
+  const onZoneFileChanged = (zoneIndex: number, file: File | null) => {
     const formState = activeFormState.value
     if (formState === undefined) {
       return
     }
-    formState.files = BeneficiariesManager.clearFileAtZone(formState.files, zoneIndex)
+    formState.files[zoneIndex] = file
   }
 
-  const onRequestDocumentDeletion = (beneficiaryId: string, document: BeneficiaryDocument) => {
-    documentPendingDeletion.value = { beneficiaryId, document }
-  }
-
-  // Deletion (API call + notifications) is owned by the shared DeleteDocumentDialog;
-  // the composable only clears the pending target and refreshes the list on success.
+  // Deletion (confirmation + API call + error toast) is owned by the upload
+  // component's native delete; the composable only notifies and refreshes.
   const onDocumentDeleted = async () => {
-    documentPendingDeletion.value = undefined
+    displayNotification('success', t('entities.prospect.deleteDocumentDialog.success'))
     await loadBeneficiaries()
     await reloadStatus()
     emit('refresh-steps')
@@ -218,7 +202,6 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     isRefreshingStatus,
     isSaving,
     isValidatingAll,
-    currentEntityId,
     beneficiaries,
     activeBeneficiary,
     activeBeneficiaryId,
@@ -226,11 +209,8 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     formStateByBeneficiaryId,
     hasActiveAttachments,
     canSaveActiveDocuments,
-    isDeleteDialogOpen,
-    documentPendingDeletion,
-    onFilesSelected,
-    onFileDeleted,
-    onRequestDocumentDeletion,
+    documentsRemoteDeleteUrl,
+    onZoneFileChanged,
     onDocumentDeleted,
     onSave,
     onValidateAllBeneficiaries,

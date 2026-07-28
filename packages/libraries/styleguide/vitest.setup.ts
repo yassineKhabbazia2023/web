@@ -24,6 +24,8 @@ vi.mock('element-plus', (importOriginal) => spyWrappedExports('styleguide/elemen
 // spy-wrapped once per worker via the memoized helper (doctrine: shared-hubs).
 vi.mock('./src/utils/iconHelper', (importOriginal) => spyWrappedModule(importOriginal))
 vi.mock('./src/utils/imageResolverInit', (importOriginal) => spyWrappedModule(importOriginal))
+vi.mock('./src/utils/axiosInstanceInit', (importOriginal) => spyWrappedModule(importOriginal))
+vi.mock('./src/utils/PNotification/PNotification', (importOriginal) => spyWrappedModule(importOriginal))
 vi.mock('./src/composables/use-responsive.composable', (importOriginal) => spyWrappedModule(importOriginal))
 vi.mock('./src/atoms/PDatePicker/PDatePickerUtils', (importOriginal) => spyWrappedModule(importOriginal))
 vi.mock('./src/atoms/PUploadFileLine/PUploadFileLineUtils', (importOriginal) => spyWrappedModule(importOriginal))

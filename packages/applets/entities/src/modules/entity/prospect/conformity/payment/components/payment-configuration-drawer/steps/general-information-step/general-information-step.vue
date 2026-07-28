@@ -37,18 +37,14 @@
       </p>
 
       <PUpload
-        pDrag
-        pShowFileList
-        :pUploadType="PUploadType.FILE_LINE"
+        v-model="ribFile"
         pAccept=".pdf"
         :pPrefixLabelFileLine="t(`${I18N}.uploadPrefixLabel`)"
         :pSuffixLabelFileLine="t(`${I18N}.uploadSuffixLabel`)"
         :pAuthorizedFileFormat="t(`${I18N}.uploadAuthorizedFormats`)"
         :pTextLimitSize="t(`${I18N}.uploadMaxSize`)"
         :pMaxFileSize="RIB_MAX_FILE_SIZE_MB"
-        :limit="1"
-        @files-selected="onFilesSelected"
-        @delete-file="onRibRemoved"
+        @update:model-value="onRibFileChanged"
       />
 
       <div
@@ -244,7 +240,6 @@ import { computed, useTemplateRef, watch } from 'vue'
 import type { FormInstance, FormItemRule } from '@pulse/styleguide/types'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFormItem, PInput, PLoader, PTag, PUpload } from '@pulse/styleguide/components'
-import { PUploadType } from '@pulse/styleguide/types'
 import { validationRules } from '@pulse/styleguide/utils/validators'
 import { PAYMENT_I18N_BASE, RIB_MAX_FILE_SIZE_MB } from '@entities/modules/entity/prospect/conformity/payment/payment.consts'
 import type { MandateBankDetails } from '../../payment-configuration-drawer.types'
@@ -300,10 +295,13 @@ const revalidateBankPair = (): void => {
   void bankForm.value?.validateField(['iban', 'bic'], () => {})
 }
 
-const onFilesSelected = (files: File[]): void => {
-  const [file] = files
-  if (file !== undefined) {
+// Fired only for user-driven changes (selection or pending line removal): parent-side
+// writes (e.g. the OCR failure clearing ribFile) must not retrigger the OCR.
+const onRibFileChanged = (file: File | null): void => {
+  if (file !== null) {
     onRibSelected(file)
+  } else {
+    onRibRemoved()
   }
 }
 </script>

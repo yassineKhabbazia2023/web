@@ -21,23 +21,18 @@
   </template>
   <template v-else>
     <PUpload
-      pDrag
-      pShowFileList
-      :pUploadType="PUploadType.FILE_LINE"
+      v-model="selectedFile"
       :pLabel="t(`${I18N_KEY}.uploadLabel`)"
       :pPrefixLabelFileLine="t(`${I18N_KEY}.uploadPrefixLabel`)"
       :pSuffixLabelFileLine="t(`${I18N_KEY}.uploadSuffixLabel`)"
       :pAccept="COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE"
+      :pMaxFileSize="COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_MO"
       pAuthorizedFileFormat="PDF"
       :pTextLimitSize="t(`${I18N_KEY}.fileSizeLimit`)"
-      pColorFileLine="persian"
-      :limit="1"
-      @files-selected="onFilesSelected"
-      @delete-file="onFileDeleted"
     />
     <PButton
       pType="primary"
-      :pDisabled="hasSelectedFile === false"
+      :pDisabled="selectedFile === null"
       :pLoading="isSending"
       class="margin-top--4"
       @click="emit('send')"
@@ -50,9 +45,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton, PUpload } from '@pulse/styleguide/components'
-import { PUploadType } from '@pulse/styleguide/types'
 import CommercialProposalBanner from '../commercial-proposal-banner/commercial-proposal-banner.vue'
-import { COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE } from '../commercial-proposal.consts'
+import {
+  COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE,
+  COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_MO,
+} from '../commercial-proposal.consts'
 import type { CommercialProposalCollabEmits, CommercialProposalCollabProps } from './commercial-proposal-collab.types'
 
 const I18N_KEY = 'entities.prospect.conformity.proposal'
@@ -63,11 +60,5 @@ defineProps<CommercialProposalCollabProps>()
 
 const emit = defineEmits<CommercialProposalCollabEmits>()
 
-const onFilesSelected = (selectedFiles: File[]): void => {
-  emit('files-selected', selectedFiles)
-}
-
-const onFileDeleted = (): void => {
-  emit('file-deleted')
-}
+const selectedFile = defineModel<File | null>({ default: null })
 </script>
