@@ -1,15 +1,115 @@
 <template>
   <div>
+    <PStickyBar
+      v-if="isCollab && isWalletV2Activated"
+      :top="FOLDERS_STICKY_HEADER_TOP"
+      class="padding-y--4 bg--base-white"
+      data-testid="folders-sticky-header"
+    >
+      <PListToolbar
+        :pSelectedCount="selectedFolders.length"
+        :pFilterLabel="t(`${I18N_KEY}.filter`)"
+        :pFilterCount="accountFiltersCount"
+        :pResetLabel="t(`${I18N_KEY}.reset`)"
+        :pDeselectLabel="t(`${I18N_KEY}.deselectSelectedFolders`)"
+        data-testid="selected-folders-sticky-bar"
+        @open-filters="openFiltersDrawer"
+        @clear-filters="clearAllAccountFilters"
+        @clear-selection="clearSelectedFolders"
+      >
+        <template #search>
+          <AccountSearchBar
+            ref="searchBar"
+            :searchValue="searchCriteria.search"
+            :searchPlaceholder="searchPlaceholder"
+            :accountFiltersCount="accountFiltersCount"
+            :hasFilterButton="false"
+            @search-value-submitted="handleSearchValueSubmitted"
+          />
+        </template>
+        <!-- Actions are duplicated with the V1 branch below: they diverge (V1 has its own leading divider,
+             V2 gets one from PListToolbar) and the V1 branch is dropped once the wallet V2 flag ships. -->
+        <template #actions>
+          <ManageWalletButton
+            v-if="isManageWalletMenuActivated"
+            :selectedFoldersCount="selectedFolders.length"
+            :is-selected-folder-customer-relation="selectedFolderCustomerRelationStatus"
+            @action-selected="onWalletAction"
+          />
+          <template v-else>
+            <PButton
+              v-if="hasEntityCreatorPermission"
+              pType="secondary"
+              pSize="small"
+              @click="onEntityCreatorDrawerOpen"
+            >
+              <PIcon class="el-button__icon--left" pName="plusLg" />
+              {{ t(`${I18N_KEY}.createTestAccount`) }}
+            </PButton>
+            <PButton
+              pType="secondary"
+              pSize="small"
+              @click="openSelectedFoldersDelegationDrawer"
+            >
+              {{ t(`${I18N_KEY}.delegation`, selectedFolders.length) }}
+            </PButton>
+          </template>
+          <PButton
+            v-if="hasManageAccess"
+            :pDisabled="isManageAccessButtonDisabled"
+            pType="primary"
+            pSize="small"
+            data-testid="manage-access-button"
+            @click="onManageAccessButtonClick"
+          >
+            <span>
+              {{ t(`${I18N_KEY}.manageAccess`) }}
+            </span>
+            <PPastille
+              v-if="manageAccessCount !== undefined"
+              pType="white"
+              pSize="small"
+              class="margin-left--3 text-color--base-blue-pulse"
+              data-testid="manage-access-count"
+            >
+              {{ manageAccessCount }}
+            </PPastille>
+          </PButton>
+        </template>
+        <template #summary>
+          <p
+            class="font-small"
+            data-testid="selected-folders-total-count"
+          >
+            <span class="font-semibold">{{ searchResult.totalItems }}</span>
+            {{ t(`${I18N_KEY}.totalFoldersCount`, searchResult.totalItems) }}
+          </p>
+        </template>
+        <template #selection>
+          <p
+            class="
+              font-semibold
+              font-small
+              text-color--jungle-700
+            "
+            data-testid="selected-folders-sticky-count"
+          >
+            {{ selectedFolders.length }}
+            {{ t(`${I18N_KEY}.selectedFoldersCount`, selectedFolders.length) }}
+          </p>
+        </template>
+      </PListToolbar>
+    </PStickyBar>
     <div
-      v-if="isCollab"
+      v-else-if="isCollab"
       class="
         flex
         flex--wrap
         flex--align-items-end
         flex--justify-content-space-between
         flex-gap--3
-        margin-bottom--6
         flex-row-gap--3
+        margin-bottom--3
       "
     >
       <Filters
@@ -17,6 +117,20 @@
         data-testid="filters"
         @filter-by-status="handleFilterByDeploymentStatus"
         @remove-filter="handleRemoveFilter"
+      />
+      <AccountSearchBar
+        ref="searchBar"
+        class="
+          flex--grow-1
+          account-search-bar__search--own-row
+          margin-top--3
+        "
+        :searchValue="searchCriteria.search"
+        :searchPlaceholder="searchPlaceholder"
+        :accountFiltersCount="accountFiltersCount"
+        @search-value-submitted="handleSearchValueSubmitted"
+        @open-filters-drawer="openFiltersDrawer"
+        @clear-all-filters="clearAllAccountFilters"
       />
       <div
         class="
@@ -71,6 +185,19 @@
           </PPastille>
         </PButton>
       </div>
+    </div>
+    <AccountSearchBar
+      v-if="isCollab === false"
+      ref="searchBar"
+      class="margin-bottom--3"
+      :searchValue="searchCriteria.search"
+      :searchPlaceholder="searchPlaceholder"
+      :accountFiltersCount="accountFiltersCount"
+      @search-value-submitted="handleSearchValueSubmitted"
+      @open-filters-drawer="openFiltersDrawer"
+      @clear-all-filters="clearAllAccountFilters"
+    />
+    <template v-if="isCollab">
       <EntityCreatorDrawer
         v-if="isEntityCreatorDrawerOpen && user"
         v-model="isEntityCreatorDrawerOpen"
@@ -99,99 +226,7 @@
         @updated="handleBulkCustomerRelationUpdated"
         @update:model-value="handleBulkCustomerRelationDrawerVisibilityUpdate"
       />
-    </div>
-    <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
-      <FormSearch
-        ref="searchBar"
-        :forcedValue="searchCriteria.search"
-        :placeholder="searchPlaceholder"
-        class="width--100 max-width-500"
-        @search-value-submitted="handleSearchValueSubmitted"
-      />
-      <PButton
-        pType="default"
-        pSize="small"
-        data-testid="account-deploy__filter-button"
-        @click="openFiltersDrawer"
-      >
-        <PIcon pName="sliders" />
-        <span class="padding-left--2">{{ t(`${I18N_KEY}.filter`) }}</span>
-        <Transition name="fade">
-          <PPastille
-            v-if="accountFiltersCount > 0"
-            pType="dark-green"
-            pSize="small"
-            class="margin-left--2"
-            data-testid="account-deploy__filter-count"
-          >
-            {{ accountFiltersCount }}
-          </PPastille>
-        </Transition>
-      </PButton>
-      <Transition name="fade">
-        <PButton
-          v-if="accountFiltersCount > 0"
-          pType="default"
-          data-testid="account-deploy__clear-filters-button"
-          @click="clearAllAccountFilters"
-        >
-          <span
-            class="font-medium text-underline"
-            data-testid="account-deploy__clear-filters-text"
-          >
-            {{ t(`${I18N_KEY}.clearAll`) }}
-          </span>
-        </PButton>
-      </Transition>
-    </div>
-    <Transition name="fade">
-      <PStickyBar
-        v-if="isWalletV2Activated && selectedFolders.length > 0"
-        :top="SELECTED_FOLDERS_STICKY_BAR_TOP"
-        class="
-          bg--jungle-75
-          flex
-          flex--align-items-center
-          flex--justify-content-space-between
-          flex-gap--6
-          height--10
-          margin-bottom--3
-          padding-x--6
-          shadow--2
-          text-color--black-rock-900
-        "
-        data-testid="selected-folders-sticky-bar"
-      >
-        <p
-          class="font-semibold"
-          data-testid="selected-folders-total-count"
-        >
-          {{ t(`${I18N_KEY}.totalFoldersCount`, searchResult.totalItems) }}
-        </p>
-        <div class="flex flex--align-items-center flex-gap--6">
-          <p
-            class="font-semibold"
-            data-testid="selected-folders-sticky-count"
-          >
-            {{ t(`${I18N_KEY}.selectedFoldersCount`, selectedFolders.length) }}
-          </p>
-          <PButton
-            class="
-              font-semibold
-              padding--0
-              text-color--jungle-500
-            "
-            pType="default"
-            pSize="small"
-            data-testid="selected-folders-clear-button"
-            @click="clearSelectedFolders"
-          >
-            <span>{{ t(`${I18N_KEY}.deselectSelectedFolders`) }}</span>
-            <span class="font-bold margin-left--3">X</span>
-          </PButton>
-        </div>
-      </PStickyBar>
-    </Transition>
+    </template>
     <div
       v-if="isLoading"
       class="loader flex flex--justify-content-center flex--align-items-center"
@@ -286,12 +321,12 @@ import {
   PIcon,
   PSamePagePagination,
   PStickyBar,
+  PListToolbar,
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import NoResult from '@entities/components/NoResult'
-import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
@@ -307,6 +342,7 @@ import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersCo
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
+import AccountSearchBar from './components/AccountSearchBar/AccountSearchBar.vue'
 import { useFolders } from './folders.composable'
 import { useFoldersAccountFilters } from './folders-account-filters.composable'
 import { useFoldersManageAccess } from './folders-manage-access.composable'
@@ -314,7 +350,7 @@ import { useFoldersOffersDrawer } from './folders-offers-drawer.composable'
 import { useFoldersWalletActions } from './folders-wallet-actions.composable'
 import {
   I18N_KEY,
-  SELECTED_FOLDERS_STICKY_BAR_TOP,
+  FOLDERS_STICKY_HEADER_TOP,
 } from './folders.consts'
 
 // #region Composables
@@ -409,7 +445,7 @@ const {
 // #endregion
 
 // #region State
-const searchBar = useTemplateRef<InstanceType<typeof FormSearch>>('searchBar')
+const searchBar = useTemplateRef<InstanceType<typeof AccountSearchBar>>('searchBar')
 
 const selectedAccount = ref<AccountRow>()
 const isResendActivationEmailDrawerVisible = ref(false)
@@ -449,8 +485,9 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-.account-deploy__filters {
-  // Prevents layout shift when dynamic UI elements like the "Clear" button are shown.
-  min-height: 44px;
+// Without the wallet V2, the search bar keeps its own row below the statistics filters.
+.account-search-bar__search--own-row {
+  order: 1;
+  flex-basis: 100%;
 }
 </style>

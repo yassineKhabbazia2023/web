@@ -38,7 +38,7 @@ import {
   DESKTOP_FOLDERS_PAGE_SIZE,
   I18N_KEY,
   MOBILE_FOLDERS_PAGE_SIZE,
-  SELECTED_FOLDERS_STICKY_BAR_TOP,
+  FOLDERS_STICKY_HEADER_TOP,
 } from './folders.consts'
 
 import Folders from './Folders.vue'
@@ -93,6 +93,7 @@ beforeEach(() => {
   vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isWalletV2Activated').mockImplementation(isWalletV2ActivatedMock)
+  isWalletV2ActivatedMock.mockReturnValue(false)
   armRegistryServiceMocks()
   vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
   fetchFavoriteEntitiesMock.mockResolvedValue([])
@@ -126,6 +127,10 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Folders>> =>
             clearSearch: vi.fn(),
           },
         },
+        // Rendered for real so the search bar internals (FormSearch, filter buttons) stay queryable.
+        AccountSearchBar: false,
+        // Rendered for real so its slots (search, actions, summary, selection) and baked buttons stay queryable.
+        PListToolbar: false,
         AccountFiltersDrawer: {
           name: 'AccountFiltersDrawer',
           template: '<div />',
@@ -215,11 +220,14 @@ describe('deploy', () => {
     expect(manageWalletButton.props('isSelectedFolderCustomerRelation')).toBe(firstFolder.isCustomerRelation)
   })
 
-  it('does not display the selected folders sticky bar without selected folders', async () => {
+  it('displays the sticky bar without the selection counts when no folder is selected', async () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="selected-folders-total-count"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="selected-folders-sticky-count"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="p-list-toolbar__deselect-button"]').exists()).toBe(false)
   })
 
   it('does not display the selected folders sticky bar when the wallet V2 feature flag is disabled', async () => {
@@ -251,18 +259,20 @@ describe('deploy', () => {
 
     const selectedFoldersStickyBar = wrapper.find('[data-testid="selected-folders-sticky-bar"]')
     expect(selectedFoldersStickyBar.exists()).toBe(true)
-    expect(wrapper.findComponent({ name: 'PStickyBar' }).props('top')).toBe(SELECTED_FOLDERS_STICKY_BAR_TOP)
+    expect(wrapper.findComponent({ name: 'PStickyBar' }).props('top')).toBe(FOLDERS_STICKY_HEADER_TOP)
     expect(wrapper.find('[data-testid="selected-folders-total-count"]').exists()).toBe(true)
     expect(wrapper.find('[data-testid="selected-folders-sticky-count"]').exists()).toBe(true)
     expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.totalFoldersCount`, mockedQueryResult.totalItems)
     expect(translateSpy).toHaveBeenCalledWith(`${I18N_KEY}.selectedFoldersCount`, selectedFolderIds.length)
-    expect(wrapper.find('[data-testid="selected-folders-clear-button"]').text()).toContain('X')
+    expect(wrapper.find('[data-testid="p-list-toolbar__deselect-button"]').text()).toContain('X')
 
-    await wrapper.find('[data-testid="selected-folders-clear-button"]').trigger('click')
+    await wrapper.find('[data-testid="p-list-toolbar__deselect-button"]').trigger('click')
     await nextTick()
 
     expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(0)
-    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
+    // The bar stays visible, only the selection counts are cleared.
+    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="selected-folders-sticky-count"]').exists()).toBe(false)
   })
 
   it('forwards the customer relation status for a related single folder', async () => {
@@ -1019,6 +1029,8 @@ describe('deploy', () => {
   })
 
   it('should call api with the right filter when filterByStatus event is triggered', async () => {
+    // The statistics filters only exist without the wallet V2.
+    isWalletV2ActivatedMock.mockReturnValue(false)
     const wrapper = createWrapper()
     await flushPromises()
     const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
@@ -1045,6 +1057,8 @@ describe('deploy', () => {
   })
 
   it('should call api without filter when removeFilter event is triggered', async () => {
+    // The statistics filters only exist without the wallet V2.
+    isWalletV2ActivatedMock.mockReturnValue(false)
     const wrapper = createWrapper()
     await nextTick()
 
@@ -1073,6 +1087,15 @@ describe('deploy', () => {
 
   it('should not displayed the filters component if the user is client', async () => {
     userStoreMock.isCollab = false
+    const wrapper = createWrapper()
+
+    await flushPromises()
+    const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
+    expect(filters.exists()).toBeFalsy()
+  })
+
+  it('should not display the filters component when the wallet V2 feature flag is enabled', async () => {
+    isWalletV2ActivatedMock.mockReturnValue(true)
     const wrapper = createWrapper()
 
     await flushPromises()
@@ -1195,17 +1218,18 @@ describe('deploy', () => {
       const wrapper = createWrapper()
       await flushPromises()
 
-      const buttons = wrapper.findAllComponents({ name: 'PButton' })
-      const manageAccessButton = buttons[0]
+      const manageAccessButton = wrapper
+        .findAllComponents({ name: 'PButton' })
+        .find((button) => button.attributes('data-testid') === 'manage-access-button')
       const manageAccessCount = wrapper.find('[data-testid="manage-access-count"]')
       const expectedAmplitudeEventName = 'Registry Validation Initiated'
       const expectedAmplitudeParams = {
         registry_validation_initialisation_localisation: 'portefeuille',
       }
 
-      manageAccessButton.vm.$emit('click')
+      manageAccessButton?.vm.$emit('click')
 
-      expect(manageAccessButton.props('pDisabled')).toBe(expectedDisabled)
+      expect(manageAccessButton?.props('pDisabled')).toBe(expectedDisabled)
       if (totalItemsMock === undefined) {
         expect(manageAccessCount.exists()).toBe(false)
       } else {
@@ -1238,7 +1262,7 @@ describe('deploy', () => {
       await nextTick()
 
       // Act: Get the filter count pastille element
-      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+      const filterCountPastille = wrapper.find('[data-testid="p-list-toolbar__filter-count"]')
 
       // Assert: Should show pastille with count 1
       expect(filterCountPastille.exists()).toBe(true)
@@ -1268,7 +1292,7 @@ describe('deploy', () => {
           field: '',
         },
       })
-      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+      const filterCountPastille = wrapper.find('[data-testid="p-list-toolbar__filter-count"]')
 
       expect(filterCountPastille.text()).toBe('2')
       expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -1300,7 +1324,7 @@ describe('deploy', () => {
           field: '',
         },
       })
-      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+      const filterCountPastille = wrapper.find('[data-testid="p-list-toolbar__filter-count"]')
 
       expect(filterCountPastille.text()).toBe('1')
       expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -1334,7 +1358,127 @@ describe('deploy', () => {
       await flushPromises()
 
       // Act: Click clear button
-      const clearAllButton = wrapper.find('[data-testid="account-deploy__clear-filters-button"]')
+      const clearAllButton = wrapper.find('[data-testid="p-list-toolbar__reset-button"]')
+
+      // Assert: Button exists and triggers correct fetch
+      expect(clearAllButton.exists()).toBe(true)
+      expect(clearAllButton.text().trim()).toBe(`${I18N_KEY}.reset`)
+
+      // Call count explanation:
+      // 1 - onMounted → fetchAccountList()
+      // 2 - searchCriteria watcher after applyAccountFilters()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        2,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
+    })
+
+    it('opens the filter drawer when the filter button is clicked', async () => {
+      // Arrange: Get button and confirm initial drawer state
+      const filterButton = wrapper.find('[data-testid="p-list-toolbar__filter-button"]')
+      expect(accountFiltersDrawer.props('modelValue')).toBe(false)
+
+      // Act: Trigger click
+      await filterButton.trigger('click')
+
+      // Assert: Drawer should be open now
+      expect(accountFiltersDrawer.props('modelValue')).toBe(true)
+    })
+
+    it('emits "clear-filters" when the "Clear All" button is clicked after applying filters', async () => {
+      // Arrange: Apply filters to activate "Clear All"
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      await nextTick()
+
+      const clearAllButton = wrapper.find('[data-testid="p-list-toolbar__reset-button"]')
+
+      // Act: Click the clear button
+      await clearAllButton.trigger('click')
+
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByDeploymentStatus: undefined,
+        filterByMissionType: undefined,
+        isCustomerRelationFilter: false,
+        isFavoriteFilter: false,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
+        search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
+      })
+
+      // Assert: fetchAccountList() called again after clearing
+      // Call count explanation:
+      // 1 - onMounted → fetchAccountList()
+      // 2 - searchCriteria watcher after applyAccountFilters()
+      // 3 - searchCriteria watcher after clearAllAccountFilters()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        3,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
+    })
+  })
+
+  describe('AccountFiltersDrawer (wallet V2 disabled)', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+    let accountFiltersDrawer: VueWrapper<InstanceType<typeof AccountFiltersDrawer>>
+
+    beforeEach(async () => {
+      isWalletV2ActivatedMock.mockReturnValue(false)
+      wrapper = createWrapper()
+      await flushPromises()
+      accountFiltersDrawer = wrapper.findComponent(AccountFiltersDrawer)
+    })
+
+    it('displays the filter count pastille when filters are applied', async () => {
+      // Arrange: Apply a single filter via drawer emit
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      await nextTick()
+
+      // Act: Get the filter count pastille element
+      const filterCountPastille = wrapper.find('[data-testid="account-search-bar__filter-count"]')
+
+      // Assert: Should show pastille with count 1
+      expect(filterCountPastille.exists()).toBe(true)
+      expect(filterCountPastille.text()).toBe('1')
+    })
+
+    it('displays the "Clear all" action when filters are applied', async () => {
+      // Arrange: Apply filters
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByDeploymentStatus: undefined,
+        filterByMissionType: undefined,
+        isCustomerRelationFilter: true,
+        isFavoriteFilter: false,
+        limit: DESKTOP_FOLDERS_PAGE_SIZE,
+        search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
+      })
+      await nextTick()
+      await flushPromises()
+
+      // Act: Click clear button
+      const clearAllButton = wrapper.find('[data-testid="account-search-bar__clear-filters-button"]')
 
       // Assert: Button exists and triggers correct fetch
       expect(clearAllButton.exists()).toBe(true)
@@ -1353,7 +1497,7 @@ describe('deploy', () => {
 
     it('opens the filter drawer when the filter button is clicked', async () => {
       // Arrange: Get button and confirm initial drawer state
-      const filterButton = wrapper.find('[data-testid="account-deploy__filter-button"]')
+      const filterButton = wrapper.find('[data-testid="account-search-bar__filter-button"]')
       expect(accountFiltersDrawer.props('modelValue')).toBe(false)
 
       // Act: Trigger click
@@ -1371,7 +1515,7 @@ describe('deploy', () => {
       })
       await nextTick()
 
-      const clearAllButton = wrapper.find('[data-testid="account-deploy__clear-filters-button"]')
+      const clearAllButton = wrapper.find('[data-testid="account-search-bar__clear-filters-button"]')
 
       // Act: Click the clear button
       await clearAllButton.trigger('click')

@@ -26,7 +26,6 @@
         "
       >
         <PDivider
-          class="margin-right--2"
           pDirection="vertical"
           pBorderColor="gray-200"
         />

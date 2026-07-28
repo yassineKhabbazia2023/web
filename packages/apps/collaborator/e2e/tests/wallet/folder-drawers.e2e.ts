@@ -20,7 +20,7 @@ test.describe('Folder page - Drawers', () => {
   })
 
   test('should open the Account Filters drawer', async ({ page }) => {
-    await page.getByTestId('account-deploy__filter-button').click()
+    await page.getByTestId('account-search-bar__filter-button').click()
     await expect(page.getByTestId('account-filters-drawer__apply-button')).toBeVisible()
   })
 
