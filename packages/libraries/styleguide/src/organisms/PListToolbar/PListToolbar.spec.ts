@@ -101,4 +101,15 @@ describe('PListToolbar', () => {
     const wrapper = createWrapper({}, { summary: '<div data-testid="slot-summary" />' })
     expect(wrapper.find('[data-testid="slot-summary"]').exists()).toBe(true)
   })
+
+  it('renders the filters slot with a trailing divider only when filters are active', () => {
+    const withoutActiveFilters = createWrapper({ pFilterCount: 0 }, { filters: '<div data-testid="slot-filters" />' })
+    const withActiveFilters = createWrapper({ pFilterCount: 3 }, { filters: '<div data-testid="slot-filters" />' })
+
+    expect(withoutActiveFilters.find('[data-testid="slot-filters"]').exists()).toBe(false)
+    expect(withActiveFilters.find('[data-testid="slot-filters"]').exists()).toBe(true)
+    // Extra divider added alongside the filters slot (summary divider + filters divider).
+    expect(withActiveFilters.findAllComponents({ name: 'PDivider' }).length)
+      .toBeGreaterThan(withoutActiveFilters.findAllComponents({ name: 'PDivider' }).length)
+  })
 })

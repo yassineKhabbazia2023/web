@@ -10,14 +10,14 @@
     @click="handleClick"
   >
     <span
-      v-if="pValue !== undefined"
+      v-if="hasValue"
       class="
         p-filter-option__number
         font-semibold padding-left--1"
     >
       {{ pValue }}
     </span>
-    <span v-if="pValue !== undefined" class="p-filter-option__icon padding-x--2 font-large font-normal"> | </span>
+    <span v-if="hasValue" class="p-filter-option__icon padding-x--2 font-large font-normal"> | </span>
     <PTag
       class="p-filter-option__tag padding-x--0"
       :pContent="pContent"
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { isNotNullNorEmpty } from '@pulse/toolbox'
 import PTag from '../../atoms/PTag'
 import PIcon from '../../atoms/PIcon'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
@@ -47,6 +48,8 @@ const props = withDefaults(defineProps<PFilterOptionProps>(), {
   pSelected: false,
   pColor: 'light-gray',
 })
+
+const hasValue = computed(() => isNotNullNorEmpty(props.pValue))
 
 const isSelected = computed({
   get() {

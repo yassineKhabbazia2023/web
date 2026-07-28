@@ -62,4 +62,20 @@ describe('filterOption', () => {
     expect(wrapper.find('.p-filter-option__number').text())
       .toContain(0)
   })
+
+  it('should not render the number and its separator when pValue is null', () => {
+    const wrapper = createWrapper({
+      ...defaultProps,
+      pValue: null,
+    })
+    expect(wrapper.find('.p-filter-option__number').exists()).toBe(false)
+  })
+
+  it('should not render the number and its separator when pValue is undefined', () => {
+    const wrapper = createWrapper({
+      ...defaultProps,
+      pValue: undefined,
+    })
+    expect(wrapper.find('.p-filter-option__number').exists()).toBe(false)
+  })
 })

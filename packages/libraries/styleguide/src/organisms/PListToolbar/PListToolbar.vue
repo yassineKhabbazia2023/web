@@ -52,6 +52,13 @@
           pDirection="vertical"
           pBorderColor="gray-200"
         />
+        <template v-if="shouldDisplayFilters">
+          <slot name="filters" />
+          <PDivider
+            pDirection="vertical"
+            pBorderColor="gray-200"
+          />
+        </template>
         <PButton
           pType="default"
           pSize="small"
@@ -134,8 +141,10 @@ const emit = defineEmits<PListToolbarEmits>()
 const slots = useSlots()
 
 const hasActions = computed(() => slots.actions !== undefined)
+const hasFilters = computed(() => slots.filters !== undefined)
 const hasSelection = computed(() => props.pSelectedCount > 0)
 const hasFilterCount = computed(() => props.pFilterCount > 0)
+const shouldDisplayFilters = computed(() => hasFilters.value && hasFilterCount.value)
 </script>
 
 <style lang="scss" scoped>

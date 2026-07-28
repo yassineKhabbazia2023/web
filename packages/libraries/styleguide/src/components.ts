@@ -1,6 +1,7 @@
 export { ElRadioGroup as PRadioGroup } from 'element-plus'
 
 export { default as PActionBar } from './molecules/PActionBar'
+export { default as PActiveFiltersBar } from './molecules/PActiveFiltersBar'
 export { default as PAccordion } from './atoms/PAccordion'
 export { default as PAlert } from './atoms/PAlert'
 export { default as PAppointmentCard } from './molecules/PAppointmentCard'

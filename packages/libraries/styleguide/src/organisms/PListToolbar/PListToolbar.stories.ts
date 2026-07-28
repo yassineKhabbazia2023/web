@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PListToolbar from './PListToolbar.vue'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
+import PActiveFiltersBar from '../../molecules/PActiveFiltersBar'
+import type { ActiveFilterItem } from '../../molecules/PActiveFiltersBar/PActiveFiltersBarTypes'
 
 const meta: Meta<typeof PListToolbar> = {
   title: 'Organisms/PListToolbar',
@@ -98,4 +100,29 @@ export const WithoutActions: Story = {
 export const WithoutResultsBar: Story = {
   args: { pHasResultsBar: false },
   render: withAllSlots,
+}
+
+// Applied filters: chips rendered between the summary and the Filter button, with overflow past 4.
+export const WithAppliedFilters: Story = {
+  args: { pFilterCount: 9 },
+  render: (args) => ({
+    components: { PListToolbar, PInput, PActiveFiltersBar },
+    setup: () => {
+      const appliedFilters: ActiveFilterItem[] = Array.from({ length: 9 }, (_, index) => ({
+        pCode: `filter-${index}`,
+        pContent: `Filtre ${index + 1}`,
+        pColor: 'default',
+      }))
+      return { args, appliedFilters }
+    },
+    template: `
+      <PListToolbar v-bind="args" @open-filters="() => {}" @clear-filters="() => {}" @clear-selection="() => {}">
+        ${SEARCH_SLOT}
+        ${SUMMARY_SLOT}
+        <template #filters>
+          <PActiveFiltersBar :pFilters="appliedFilters" />
+        </template>
+      </PListToolbar>
+    `,
+  }),
 }

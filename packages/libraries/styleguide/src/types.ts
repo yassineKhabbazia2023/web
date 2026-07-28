@@ -66,6 +66,7 @@ export * from './atoms/PUserActionCard/p-user-action-card.types'
 export * from './atoms/PUserCard/PUserCardTypes'
 
 export * from './molecules/PActionBar/PActionBarTypes'
+export * from './molecules/PActiveFiltersBar/PActiveFiltersBarTypes'
 export * from './molecules/PAppointmentCard/PAppointmentCardTypes'
 export * from './molecules/PAutocomplete/PAutocompleteTypes'
 export * from './molecules/PBlockHeader/PBlockHeaderTypes'
