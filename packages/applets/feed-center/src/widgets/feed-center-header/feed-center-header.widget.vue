@@ -9,7 +9,7 @@
       />
 
       <NotificationSettings
-        v-if="FeatureFlagManager.isNotificationSettingsDrawerActivated() && isNotificationSettingsDrawerOpened"
+        v-if="isNotificationSettingsDrawerOpened === true"
         v-model="isNotificationSettingsDrawerOpened"
       />
     </Teleport>
@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { PButton, PIcon, PPastille } from '@pulse/styleguide/components'
 import FeedCenterDrawer from '../../components/FeedCenterDrawer'
 import NotificationSettings from '../../components/NotificationSettings/notification-settings.vue'

@@ -1,7 +1,7 @@
 <template>
   <div class="collaborator-home-experience">
     <MobileHomeLayout
-      v-if="shouldShowMobileLayout === true"
+      v-if="isMobile"
       :currentEntity
     >
       <template #header-actions>
@@ -29,7 +29,6 @@ import { storeToRefs } from 'pinia'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
 import { BookingCollabHeaderWidget } from '@pulse/booking/widgets'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore, useBookingCollabStore } from '@pulse/common/stores'
 import { useResponsive } from '@pulse/styleguide'
 
@@ -46,9 +45,6 @@ const bookingStore = useBookingCollabStore()
 
 const { isMobile } = useResponsive()
 
-const shouldShowMobileLayout = computed(() =>
-  FeatureFlagManager.isResponsiveActivated() && isMobile.value === true,
-)
 const shouldShowBooking = computed(() => bookingStore.isBookingEnabled === true)
 
 const { favoriteEntities } = storeToRefs(userStore)

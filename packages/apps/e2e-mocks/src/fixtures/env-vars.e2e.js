@@ -27,7 +27,6 @@ const envVars = {
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
   VITE_LEGACY_BI_REPORT_DEPOSIT_ACTIVATED: 'true',
   VITE_SCHEDULE_ACTIVATED: 'false',
-  VITE_RESPONSIVE_ACTIVATED: 'true',
 
   // Third-party services - disabled for E2E
   VITE_AMPLITUDE_ACTIVATED: 'true',

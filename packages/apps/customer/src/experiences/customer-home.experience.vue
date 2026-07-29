@@ -1,7 +1,7 @@
 <template>
   <div class="customer-home-experience">
     <MobileHomeLayout
-      v-if="shouldShowMobileLayout === true"
+      v-if="isMobile"
       :currentEntity
     >
       <template #header-actions>
@@ -50,7 +50,6 @@ import { storeToRefs } from 'pinia'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
 import { BookingCustomerHeaderWidget } from '@pulse/booking/widgets'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { useBookingCustomerStore } from '@pulse/booking/stores'
 import { useResponsive } from '@pulse/styleguide'
@@ -72,9 +71,6 @@ const bookingStore = useBookingCustomerStore()
 
 const { isMobile } = useResponsive()
 
-const shouldShowMobileLayout = computed(() =>
-  FeatureFlagManager.isResponsiveActivated() && isMobile.value === true,
-)
 const shouldShowBooking = computed(() => bookingStore.getIsBookingEnabled() === true)
 
 const { favoriteEntities } = storeToRefs(userStore)

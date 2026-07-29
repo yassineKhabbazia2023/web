@@ -69,20 +69,12 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.MODSCREEN_V2)
   }
 
-  static isNotificationSettingsDrawerActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.NOTIFICATION_SETTINGS_DRAWER)
-  }
-
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
   }
 
   static isPennylaneSsoRedirectActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_REDIRECT)
-  }
-
-  static isResponsiveActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.RESPONSIVE)
   }
 
   static isSmartSearchOfferCatalogActivated() {

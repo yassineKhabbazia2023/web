@@ -1,5 +1,4 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { fetchNotificationsMock, armNotificationsServiceDefaults } from '../../__mocks__/notification.service.mocks'
 import { trackNotificationMarkAsReadMock } from '../../__mocks__/tracking.service.mocks'
 import { armFeedCenterDrawerManagerDefaults, patchAllNotificationsAsReadMock } from '../../__mocks__/feed-center-drawer.manager.mocks'
@@ -54,7 +53,6 @@ const FeedCenterDrawerBaseProps: FeedCenterDrawerProps = {
 beforeEach(() => {
   armNotificationsServiceDefaults()
   armFeedCenterDrawerManagerDefaults()
-  vi.spyOn(FeatureFlagManager, 'isNotificationSettingsDrawerActivated').mockReturnValue(false)
 })
 
 describe('feed center drawer', () => {
@@ -112,8 +110,6 @@ describe('feed center drawer', () => {
     })
 
     it('should emit open-notification-settings-drawer when settings option is clicked', async () => {
-      vi.spyOn(FeatureFlagManager, 'isNotificationSettingsDrawerActivated').mockReturnValue(true)
-      wrapper = createWrapper()
       const notificationDrawer = findFeedCenterDrawer(wrapper)
 
       await notificationDrawer.vm.$emit('p-toolbox-item-clicked', FeedCenterActions.OPEN_SETTINGS_DRAWER)

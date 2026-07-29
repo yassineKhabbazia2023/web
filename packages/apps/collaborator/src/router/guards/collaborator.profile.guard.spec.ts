@@ -1,29 +1,19 @@
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
 import { RouteName } from '@pulse/common/enums'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { collaboratorProfileGuard } from './collaborator.profile.guard'
 
 const to = { name: RouteName.PROFILE_INFORMATION } as unknown as RouteLocationNormalizedGeneric
 
-const setup = (options: { responsive: boolean, mobile: boolean }) => {
-  vi.spyOn(FeatureFlagManager, 'isResponsiveActivated').mockReturnValue(options.responsive)
-  vi.mocked(getEffectiveIsMobile).mockReturnValue(options.mobile)
-}
-
 describe('collaboratorProfileGuard', () => {
-  it('should not redirect when responsive and mobile are both activated', () => {
-    setup({ responsive: true, mobile: true })
+  it('should not redirect when user is on mobile', () => {
+    vi.mocked(getEffectiveIsMobile).mockReturnValue(true)
 
     expect(collaboratorProfileGuard(to)).toBeUndefined()
   })
 
-  it.each([
-    { responsive: false, mobile: true },
-    { responsive: true, mobile: false },
-    { responsive: false, mobile: false },
-  ])('should redirect to landing when conditions are not all met (%o)', (options) => {
-    setup(options)
+  it('should redirect to landing when user is not on mobile', () => {
+    vi.mocked(getEffectiveIsMobile).mockReturnValue(false)
 
     expect(collaboratorProfileGuard(to)).toEqual({ name: RouteName.LANDING })
   })

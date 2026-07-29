@@ -73,12 +73,11 @@ import {
 } from '@pulse/styleguide/components'
 import { MobileNotAvailableAlert } from '@pulse/shared/components'
 import { useResponsive } from '@pulse/styleguide'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import NotificationsWrapper from './NotificationsWrapper'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
-import type { PDrawerProps, PToolboxItemProps } from '@pulse/styleguide/types'
+import type { PDrawerProps } from '@pulse/styleguide/types'
 import { useUserStore } from '@pulse/common/stores'
 import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
 import {
@@ -140,23 +139,20 @@ const isDrawerOpened = computed({
 })
 
 const toolboxParams = (): PDrawerProps['pHeaderToolbox'] => {
-  const pElements: PToolboxItemProps[] = [
-    {
-      pValue: t('mark-all-as-read'),
-      pIconName: 'checkCircle',
-      pActionName: FeedCenterActions.MARK_ALL_AS_READ,
-    },
-  ]
-
-  if (FeatureFlagManager.isNotificationSettingsDrawerActivated() === true) {
-    pElements.push({
-      pValue: t('notification-settings'),
-      pIconName: 'gear',
-      pActionName: FeedCenterActions.OPEN_SETTINGS_DRAWER,
-    })
+  return {
+    pElements: [
+      {
+        pValue: t('mark-all-as-read'),
+        pIconName: 'checkCircle',
+        pActionName: FeedCenterActions.MARK_ALL_AS_READ,
+      },
+      {
+        pValue: t('notification-settings'),
+        pIconName: 'gear',
+        pActionName: FeedCenterActions.OPEN_SETTINGS_DRAWER,
+      },
+    ],
   }
-
-  return { pElements }
 }
 
 async function handleToolboxItemClick(actionName: string) {
