@@ -168,6 +168,26 @@
         "searchShort": "Rechercher...",
         "on": "sur"
       },
+      "accountFilters": {
+        "filters": "Filtres",
+        "apply": "Appliquer",
+        "reset": "Réinitialiser",
+        "all": "Tout",
+        "favorites": "Favoris",
+        "customerRelationship": "Relation client",
+        "missionType": "Type de mission",
+        "tenue": "Tenue",
+        "revision": "Révision",
+        "notSpecified": "Non renseigné",
+        "status": "Statut",
+        "toDeploy": "À déployer",
+        "inProgress": "En cours",
+        "connected": "Connecté",
+        "lastActivityPeriod": "Dernière activité",
+        "lastTwoWeeks": "2 dernières semaines",
+        "lastThirtyDays": "30 derniers jours",
+        "lastNinetyDays": "90 derniers jours"
+      },
       "subscriptionStatusFilters": {
         "activateOffers": "Activation des offres",
         "toCreate": "À créer",

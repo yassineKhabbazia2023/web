@@ -29,6 +29,7 @@ import { TrackingLocalisation, LastActivityPeriodInDays } from '@entities/enums'
 import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
+import { PActiveFiltersBar } from '@pulse/styleguide/components'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import { MISSION_TYPE } from '@entities/constants'
@@ -1267,6 +1268,67 @@ describe('deploy', () => {
       // Assert: Should show pastille with count 1
       expect(filterCountPastille.exists()).toBe(true)
       expect(filterCountPastille.text()).toBe('1')
+    })
+
+    it('hides the active filters bar while no filter is applied', () => {
+      expect(wrapper.findComponent(PActiveFiltersBar).exists()).toBe(false)
+    })
+
+    it('displays one chip per selected value once filters are applied', async () => {
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: true,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.REVISION],
+      })
+      await nextTick()
+
+      const activeFiltersBar = wrapper.findComponent(PActiveFiltersBar)
+
+      expect(activeFiltersBar.exists()).toBe(true)
+      expect(activeFiltersBar.props('pFilters').map(({ pCode }) => pCode)).toStrictEqual([
+        'isFavoriteFilter',
+        `missionTypeFilter:${MISSION_TYPE.TENUE}`,
+        `missionTypeFilter:${MISSION_TYPE.REVISION}`,
+      ])
+    })
+
+    it('removes only the closed chip and refetches with the remaining filters', async () => {
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: true,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.REVISION],
+      })
+      await nextTick()
+      await flushPromises()
+
+      wrapper.findComponent(PActiveFiltersBar).vm.$emit('remove', `missionTypeFilter:${MISSION_TYPE.TENUE}`)
+      await nextTick()
+      await flushPromises()
+
+      expect(wrapper.findComponent(PActiveFiltersBar).props('pFilters').map(({ pCode }) => pCode)).toStrictEqual([
+        'isFavoriteFilter',
+        `missionTypeFilter:${MISSION_TYPE.REVISION}`,
+      ])
+      // 1 - onMounted, 2 - searchCriteria watcher after the drawer applied the filters,
+      // 3 - searchCriteria watcher after the chip was removed.
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        3,
+        expect.anything(),
+        getMockedSearchCriteria({
+          currentPage: 0,
+          filterByDeploymentStatus: undefined,
+          filterByMissionType: [MISSION_TYPE.REVISION],
+          isCustomerRelationFilter: false,
+          isFavoriteFilter: true,
+          limit: DESKTOP_FOLDERS_PAGE_SIZE,
+          search: '',
+          sorting: {
+            descending: false,
+            field: '',
+          },
+        }),
+      )
     })
 
     it('applies mission type and status filters to the account query', async () => {

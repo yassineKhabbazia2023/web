@@ -70,6 +70,80 @@ describe('FoldersManager', () => {
     })
   })
 
+  describe('toActiveFilterItems', () => {
+    it('returns no item when no filter is active', () => {
+      expect(FoldersManager.toActiveFilterItems(getFilters())).toStrictEqual([])
+    })
+
+    it('returns one item per selected value, ordered as the drawer displays them', () => {
+      const filters = getFilters({
+        isFavoriteFilter: true,
+        isCustomerRelationFilter: true,
+        missionTypeFilter: [MISSION_TYPE.REVISION, MISSION_TYPE.TENUE],
+        deploymentStatusFilter: [EntityStatus.CONNECTED.toString()],
+        lastActivityPeriodFilter: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
+      })
+
+      expect(FoldersManager.toActiveFilterItems(filters).map(({ pCode }) => pCode)).toStrictEqual([
+        'isFavoriteFilter',
+        'isCustomerRelationFilter',
+        `missionTypeFilter:${MISSION_TYPE.TENUE}`,
+        `missionTypeFilter:${MISSION_TYPE.REVISION}`,
+        `deploymentStatusFilter:${EntityStatus.CONNECTED.toString()}`,
+        'lastActivityPeriodFilter',
+      ])
+    })
+
+    it('pins the label key and the color of an item', () => {
+      const filters = getFilters({ isFavoriteFilter: true })
+
+      expect(FoldersManager.toActiveFilterItems(filters)).toStrictEqual([{
+        pCode: 'isFavoriteFilter',
+        pContent: 'entities.wallet.accountFilters.favorites',
+        pColor: 'default',
+      }])
+    })
+
+    it('ignores a selected value that no longer exists in the drawer options', () => {
+      const filters = getFilters({ missionTypeFilter: ['unknown-mission-type'] })
+
+      expect(FoldersManager.toActiveFilterItems(filters)).toStrictEqual([])
+    })
+  })
+
+  describe('removeFilterFromAccountFilters', () => {
+    it('removes a single value without touching the other values of its group', () => {
+      const filters = getFilters({
+        missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.REVISION],
+        deploymentStatusFilter: [EntityStatus.CONNECTED.toString()],
+      })
+
+      const remainingFilters = FoldersManager
+        .removeFilterFromAccountFilters(filters, `missionTypeFilter:${MISSION_TYPE.TENUE}`)
+
+      expect(remainingFilters).toStrictEqual(getFilters({
+        missionTypeFilter: [MISSION_TYPE.REVISION],
+        deploymentStatusFilter: [EntityStatus.CONNECTED.toString()],
+      }))
+    })
+
+    it.each([
+      ['isFavoriteFilter', getFilters({ isFavoriteFilter: true })],
+      ['isCustomerRelationFilter', getFilters({ isCustomerRelationFilter: true })],
+      ['lastActivityPeriodFilter', getFilters({ lastActivityPeriodFilter: LastActivityPeriodInDays.LAST_TWO_WEEKS })],
+    ])('removes the single-valued filter "%s"', (code, filters) => {
+      const remainingFilters = FoldersManager.removeFilterFromAccountFilters(filters, code)
+
+      expect(FoldersManager.countActiveFilters(remainingFilters)).toBe(0)
+    })
+
+    it('returns the filters untouched for an unknown code', () => {
+      const filters = getFilters({ isFavoriteFilter: true })
+
+      expect(FoldersManager.removeFilterFromAccountFilters(filters, 'unknownFilter')).toStrictEqual(filters)
+    })
+  })
+
   describe('applyFiltersToSearchCriteria', () => {
     it('maps the drawer filters onto the criteria without losing the other ones', () => {
       const searchCriteria = getSearchCriteria()
@@ -82,6 +156,7 @@ describe('FoldersManager', () => {
 
       expect(FoldersManager.applyFiltersToSearchCriteria(searchCriteria, filters)).toStrictEqual({
         ...searchCriteria,
+        currentPage: 0,
         isFavoriteFilter: true,
         isCustomerRelationFilter: false,
         filterByMissionType: [MISSION_TYPE.TENUE],
@@ -89,17 +164,23 @@ describe('FoldersManager', () => {
         filterByLastActivityPeriodInDays: LastActivityPeriodInDays.LAST_THIRTY_DAYS,
       })
     })
-  })
 
-  describe('clearFiltersFromSearchCriteria', () => {
-    it('resets every filter and keeps the search, pagination and sorting', () => {
+    it('goes back to the first page, which the filtered result set may not reach', () => {
+      const searchCriteria = getSearchCriteria({ currentPage: 5 })
+
+      expect(FoldersManager.applyFiltersToSearchCriteria(searchCriteria, getFilters()).currentPage).toBe(0)
+    })
+
+    // Clearing every filter goes through this method with the default filters.
+    it('clears every filter and keeps the search, page size and sorting', () => {
       const searchCriteria = getSearchCriteria({
         isFavoriteFilter: true,
         filterByMissionType: [MISSION_TYPE.TENUE],
       })
 
-      expect(FoldersManager.clearFiltersFromSearchCriteria(searchCriteria)).toStrictEqual({
+      expect(FoldersManager.applyFiltersToSearchCriteria(searchCriteria, getFilters())).toStrictEqual({
         ...searchCriteria,
+        currentPage: 0,
         isFavoriteFilter: false,
         isCustomerRelationFilter: false,
         filterByMissionType: undefined,

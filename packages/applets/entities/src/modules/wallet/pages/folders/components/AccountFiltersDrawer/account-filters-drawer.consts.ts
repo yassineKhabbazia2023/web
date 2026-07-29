@@ -3,6 +3,8 @@ import { EntityStatus } from '@entities/modules/wallet/enums'
 import { LastActivityPeriodInDays } from '@entities/enums'
 import type { FilterGroupConfig, LastActivityPeriodOptionConfig } from './account-filters-drawer.types'
 
+export const ACCOUNT_FILTERS_I18N_KEY = 'entities.wallet.accountFilters'
+
 export const MULTI_SELECT_FILTER_GROUPS: FilterGroupConfig[] = [
   {
     labelKey: 'missionType',

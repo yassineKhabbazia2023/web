@@ -76,6 +76,12 @@
             </PPastille>
           </PButton>
         </template>
+        <template #filters>
+          <PActiveFiltersBar
+            :pFilters="activeFilterItems"
+            @remove="removeAccountFilter"
+          />
+        </template>
         <template #summary>
           <p
             class="font-small"
@@ -322,6 +328,7 @@ import {
   PSamePagePagination,
   PStickyBar,
   PListToolbar,
+  PActiveFiltersBar,
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
@@ -404,10 +411,12 @@ const {
   isFiltersDrawerOpen,
   accountFilters,
   accountFiltersCount,
+  activeFilterItems,
   openFiltersDrawer,
   applyAccountFilters,
+  removeAccountFilter,
   clearAllAccountFilters,
-} = useFoldersAccountFilters(searchCriteria)
+} = useFoldersAccountFilters(searchCriteria, clearSelectedFolders)
 
 const {
   isEntityCreatorDrawerOpen,

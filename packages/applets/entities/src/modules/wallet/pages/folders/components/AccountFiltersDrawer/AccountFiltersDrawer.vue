@@ -3,7 +3,7 @@
     v-model="isAccountFilterDrawerVisible"
     class="flex"
     pSize="40%"
-    :pTitle="t('filters')"
+    :pTitle="t(`${ACCOUNT_FILTERS_I18N_KEY}.filters`)"
     destroyOnClose
     data-testid="account-filters-drawer"
     @close="closeAccountFiltersDrawer"
@@ -14,21 +14,21 @@
       :pModel="internalFilters"
       @submit.prevent
     >
-      <PFormItem :pLabel="t('favorites')">
+      <PFormItem :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.favorites`)">
         <PFilterOption
           v-model:p-selected="internalFilters.isFavoriteFilter"
-          :pContent="t('favorites')"
+          :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.favorites`)"
           pColor="default"
           data-testid="filter-Favorites"
         />
       </PFormItem>
       <PFormItem
         v-if="isCollab"
-        :pLabel="t('customerRelationship')"
+        :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.customerRelationship`)"
       >
         <PFilterOption
           v-model:p-selected="internalFilters.isCustomerRelationFilter"
-          :pContent="t('customerRelationship')"
+          :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.customerRelationship`)"
           pColor="default"
           data-testid="filter-CustomerRelationship"
         />
@@ -36,10 +36,10 @@
       <PFormItem
         v-for="group in MULTI_SELECT_FILTER_GROUPS"
         :key="group.field"
-        :pLabel="t(group.labelKey)"
+        :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.${group.labelKey}`)"
       >
         <PFilterOption
-          :pContent="t('all')"
+          :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.all`)"
           pColor="default"
           :pSelected="isAllSelected(group)"
           @update:p-selected="toggleAll(group, $event)"
@@ -59,7 +59,7 @@
           <PFilterOption
             v-for="option in group.options"
             :key="option.value"
-            :pContent="t(option.labelKey)"
+            :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.${option.labelKey}`)"
             pColor="default"
             :pSelected="(internalFilters[group.field] ?? []).includes(option.value)"
             :data-testid="`filter-${option.value}`"
@@ -69,10 +69,10 @@
       </PFormItem>
       <PFormItem
         v-if="isLastActivityFeatureActivated"
-        :pLabel="t('lastActivityPeriod')"
+        :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.lastActivityPeriod`)"
       >
         <PFilterOption
-          :pContent="t('all')"
+          :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.all`)"
           pColor="default"
           :pSelected="internalFilters.lastActivityPeriodFilter === undefined"
           data-testid="filter-last-activity-period-all"
@@ -93,7 +93,7 @@
           <PFilterOption
             v-for="option in LAST_ACTIVITY_PERIOD_OPTIONS"
             :key="option.value"
-            :pContent="t(option.labelKey)"
+            :pContent="t(`${ACCOUNT_FILTERS_I18N_KEY}.${option.labelKey}`)"
             pColor="default"
             :pSelected="internalFilters.lastActivityPeriodFilter === option.value"
             :data-testid="`filter-last-activity-period-${option.value}`"
@@ -123,66 +123,11 @@ import type { AccountFilters } from '@entities/types'
 import { storeToRefs } from 'pinia'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { getDefaultAccountFilters } from './account-filters-drawer.utils'
-import { MULTI_SELECT_FILTER_GROUPS, LAST_ACTIVITY_PERIOD_OPTIONS } from './account-filters-drawer.consts'
+import { ACCOUNT_FILTERS_I18N_KEY, MULTI_SELECT_FILTER_GROUPS, LAST_ACTIVITY_PERIOD_OPTIONS } from './account-filters-drawer.consts'
 import type { LastActivityPeriodInDays } from '@entities/enums'
 import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-  messages: {
-    'en-US': {
-      filters: 'Filters',
-      online: 'Online',
-      apply: 'Apply',
-      offline: 'Offline',
-      reset: 'Reset',
-      initialized: 'Initialized',
-      failed: 'Failure',
-      placeholderTypeReport: 'Select a type',
-      favorites: 'Favorites',
-      customerRelationship: 'Customer Relationship',
-      missionType: 'Mission type',
-      revision: 'Account review',
-      status: 'Status',
-      tenue: 'Bookkeeping',
-      notSpecified: 'Not specified',
-      toDeploy: 'To deploy',
-      inProgress: 'In progress',
-      connected: 'Connected',
-      all: 'All',
-      lastActivityPeriod: 'Last activity',
-      lastTwoWeeks: 'Last 2 weeks',
-      lastThirtyDays: 'Last 30 days',
-      lastNinetyDays: 'Last 90 days',
-    },
-    'fr-FR': {
-      filters: 'Filtres',
-      online: 'En ligne',
-      offline: 'Hors ligne',
-      apply: 'Appliquer',
-      reset: 'Réinitialiser',
-      initialized: 'Initialisé',
-      failed: 'Incident',
-      placeholderTypeReport: 'Sélectionnez un type',
-      favorites: 'Favoris',
-      customerRelationship: 'Relation client',
-      missionType: 'Type de mission',
-      revision: 'Révision',
-      status: 'Statut',
-      tenue: 'Tenue',
-      notSpecified: 'Non renseigné',
-      toDeploy: 'À déployer',
-      inProgress: 'En cours',
-      connected: 'Connecté',
-      all: 'Tout',
-      lastActivityPeriod: 'Dernière activité',
-      lastTwoWeeks: '2 dernières semaines',
-      lastThirtyDays: '30 derniers jours',
-      lastNinetyDays: '90 derniers jours',
-    },
-  },
-})
+const { t } = useI18n()
 
 const props = defineProps<AccountFiltersDrawerProps>()
 const emit = defineEmits<{
@@ -201,12 +146,12 @@ const hasActiveFilters = defineModel<boolean>('hasActiveFilters', {
 })
 
 const backCTA = computed<PDrawerActionButton>(() => ({
-  pLabel: t('reset'),
+  pLabel: t(`${ACCOUNT_FILTERS_I18N_KEY}.reset`),
   pDisabled: hasActiveFilters.value === false,
   pTestId: 'account-filters-drawer__reset-button',
 }))
 const primaryCTA = computed<PDrawerActionButton>(() => ({
-  pLabel: t('apply'),
+  pLabel: t(`${ACCOUNT_FILTERS_I18N_KEY}.apply`),
   pTestId: 'account-filters-drawer__apply-button',
 }))
 

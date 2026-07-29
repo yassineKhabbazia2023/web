@@ -168,6 +168,26 @@
         "searchShort": "Search...",
         "on": "on"
       },
+      "accountFilters": {
+        "filters": "Filters",
+        "apply": "Apply",
+        "reset": "Reset",
+        "all": "All",
+        "favorites": "Favorites",
+        "customerRelationship": "Customer Relationship",
+        "missionType": "Mission type",
+        "tenue": "Bookkeeping",
+        "revision": "Account review",
+        "notSpecified": "Not specified",
+        "status": "Status",
+        "toDeploy": "To deploy",
+        "inProgress": "In progress",
+        "connected": "Connected",
+        "lastActivityPeriod": "Last activity",
+        "lastTwoWeeks": "Last 2 weeks",
+        "lastThirtyDays": "Last 30 days",
+        "lastNinetyDays": "Last 90 days"
+      },
       "subscriptionStatusFilters": {
         "activateOffers": "Offer activation",
         "toCreate": "To create",
