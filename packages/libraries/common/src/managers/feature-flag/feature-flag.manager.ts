@@ -49,10 +49,6 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.LAST_ACTIVITY_FEATURE)
   }
 
-  static isMailToGedActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_GED)
-  }
-
   static isMailToPennylaneActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_PENNYLANE)
   }

@@ -50,9 +50,6 @@ export const walletCollaboratorRoutes = [
         path: COLLABORATOR_ROUTES.wallet.submitBIReport.path,
         name: COLLABORATOR_ROUTES.wallet.submitBIReport.name,
         component: () => import('@pulse/powerbi/wallet-pages').then(pages => pages.SubmitBIReport),
-        meta: {
-          [FEATURE_FLAG_META]: Feature.LEGACY_BI_REPORT_DEPOSIT,
-        },
       },
       // PowerBI reports list
       {

@@ -11,13 +11,13 @@ const toNameMock = RouteName.INFO
 
 describe('feature-flag.guard', () => {
   const tests = [{
-    featureFlag: Feature.MAIL_TO_GED,
+    featureFlag: Feature.MAIL_TO_PENNYLANE,
     featureFlagIsActivatedMock: false,
     expectedRouteName: 'Error404',
-    expectedLoggerMock: `feature flag '${Feature.MAIL_TO_GED}' is not activated for route '${toNameMock}'`,
+    expectedLoggerMock: `feature flag '${Feature.MAIL_TO_PENNYLANE}' is not activated for route '${toNameMock}'`,
     reason: 'redirect to Error404 because the required feature flag is NOT activated',
   }, {
-    featureFlag: Feature.MAIL_TO_GED,
+    featureFlag: Feature.MAIL_TO_PENNYLANE,
     featureFlagIsActivatedMock: true,
     expectedRouteName: undefined,
     expectedLoggerMock: undefined,

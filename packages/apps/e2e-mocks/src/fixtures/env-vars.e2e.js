@@ -24,8 +24,6 @@ const envVars = {
   VITE_ACCESS_MANAGEMENT_GLOBAL: 'true',
   VITE_BOOKING_ACTIVATED: 'true',
   VITE_COLLAB_OFFERS_CATALOG_ACTIVATED: 'true',
-  VITE_MAIL_TO_GED_ACTIVATED: 'true',
-  VITE_LEGACY_BI_REPORT_DEPOSIT_ACTIVATED: 'true',
   VITE_SCHEDULE_ACTIVATED: 'false',
 
   // Third-party services - disabled for E2E

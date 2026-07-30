@@ -107,17 +107,6 @@ describe('registerCollaboratorWalletTabs', () => {
       })
     })
 
-    it('should hide POWER_BI tab when feature flag is disabled', () => {
-      const context = {
-        isCollab: true,
-        hasPermission: () => true,
-        hasFeatureFlag: () => false,
-      }
-
-      const config = WalletManager.getTab(WalletTab.POWER_BI)
-      expect(config?.isDisplayed(context)).toBe(false)
-    })
-
     it('should hide permission-based tabs when collaborator lacks permissions', () => {
       const context = {
         isCollab: true,

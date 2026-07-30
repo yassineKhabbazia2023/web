@@ -4,7 +4,6 @@ import type { Feature } from '../../enums/feature.enums'
 // this also ensures that the tests needing the flagged features are set accordingly
 export const isAmplitudeActivatedMock = vi.fn(() => false)
 export const isLastActivityFeatureActivatedMock = vi.fn(() => false)
-export const isMailToGedActivatedMock = vi.fn(() => false)
 export const isManageWalletMenuActivatedMock = vi.fn(() => false)
 export const isPennylaneAmendmentFlowActivatedMock = vi.fn(() => false)
 export const isPennylaneSsoRedirectActivatedMock = vi.fn(() => false)
@@ -13,7 +12,6 @@ export const isWalletTableLoadMorePaginationActivatedMock = vi.fn(() => false)
 export const featureFlagManagerMock = {
   isAmplitudeActivated: isAmplitudeActivatedMock,
   isLastActivityFeatureActivated: isLastActivityFeatureActivatedMock,
-  isMailToGedActivated: isMailToGedActivatedMock,
   isManageWalletMenuActivated: isManageWalletMenuActivatedMock,
   isPennylaneAmendmentFlowActivated: isPennylaneAmendmentFlowActivatedMock,
   isPennylaneSsoRedirectActivated: isPennylaneSsoRedirectActivatedMock,

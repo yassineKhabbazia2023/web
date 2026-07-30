@@ -41,9 +41,7 @@ export function registerCollaboratorWalletTabs() {
     id: WalletTab.POWER_BI,
     title: 'entities.wallet.uploadPowerBIReport',
     route: RouteName.POWER_BI,
-    isDisplayed: (context) =>
-      context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_UPLOAD) &&
-      context.hasFeatureFlag(Feature.LEGACY_BI_REPORT_DEPOSIT),
+    isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_UPLOAD),
     order: 4,
   })
 

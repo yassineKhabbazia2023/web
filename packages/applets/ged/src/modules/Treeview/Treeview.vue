@@ -114,7 +114,6 @@
         </PScrollbar>
       </div>
       <MailToGedCard
-        v-if="FeatureFlagManager.isMailToGedActivated()"
         :currentEntity="currentEntity"
         :accountId="accountId"
         :entityServices="entityServices"
@@ -148,7 +147,6 @@ import { moveDocuments } from '@ged/services/Documents'
 import { useI18n } from 'vue-i18n'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 import { logger } from '@pulse/toolbox'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import MailToGedCard from './components/mail-to-ged-card'
 import { useRoute } from 'vue-router'
 import { getContentBeforeAndAfterSeparator } from '@ged/modules/common/helpers/string.helper'
@@ -667,4 +665,3 @@ defineExpose({
   }
 }
 </style>
-
