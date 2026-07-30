@@ -1,6 +1,17 @@
 import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import { ProspectAction } from './prospect-entity.list.enums'
-import { ProspectProgressStatus } from '@entities/modules/wallet/enums'
+import { ProspectListType, ProspectProgressStatus } from '@entities/modules/wallet/enums'
+
+const PROGRESS_STATUS_CASES: [ProspectProgressStatus, string, string][] = [
+  [ProspectProgressStatus.IDENTITY_DOCUMENTS, 'identityDocuments', 'light-green'],
+  [ProspectProgressStatus.BENEFICIARIES_VALIDATION, 'beneficiariesValidation', 'purple'],
+  [ProspectProgressStatus.NO_BENEFICIARY, 'noBeneficiary', 'orange'],
+  [ProspectProgressStatus.SUPPORTING_DOCUMENTS, 'supportingDocuments', 'light-green'],
+  [ProspectProgressStatus.COMMERCIAL_PROPOSAL, 'commercialProposal', 'purple'],
+  [ProspectProgressStatus.PAYMENT_METHOD, 'paymentMethod', 'light-green'],
+  [ProspectProgressStatus.ENGAGEMENT_LETTER, 'engagementLetter', 'purple'],
+  [ProspectProgressStatus.COMPLETED, 'completed', 'green'],
+]
 
 describe('ProspectEntityListManager', () => {
   describe('getMenuElements', () => {
@@ -12,26 +23,26 @@ describe('ProspectEntityListManager', () => {
     })
   })
 
-  describe('getProgressStatusConfig', () => {
-    it('should return fallback config when progressStatus is null', () => {
-      const result = ProspectEntityListManager.getProgressStatusConfig(null)
+  describe('getProgressStatusTag', () => {
+    it.each([
+      [ProspectListType.PROSPECT_COLLAB],
+      [ProspectListType.PROSPECT_CUSTOMER],
+    ])('should return fallback tag when progressStatus is null for %s', (prospectListType) => {
+      const result = ProspectEntityListManager.getProgressStatusTag(null, prospectListType)
 
       expect(result).toEqual({ label: '-', color: 'gray' })
     })
 
-    it.each([
-      [ProspectProgressStatus.IDENTITY_DOCUMENTS, 'entities.wallet.prospectProgressStatuses.identityDocuments', 'light-green'],
-      [ProspectProgressStatus.BENEFICIARIES_VALIDATION, 'entities.wallet.prospectProgressStatuses.beneficiariesValidation', 'purple'],
-      [ProspectProgressStatus.NO_BENEFICIARY, 'entities.wallet.prospectProgressStatuses.noBeneficiary', 'orange'],
-      [ProspectProgressStatus.SUPPORTING_DOCUMENTS, 'entities.wallet.prospectProgressStatuses.supportingDocuments', 'light-green'],
-      [ProspectProgressStatus.COMMERCIAL_PROPOSAL, 'entities.wallet.prospectProgressStatuses.commercialProposal', 'purple'],
-      [ProspectProgressStatus.PAYMENT_METHOD, 'entities.wallet.prospectProgressStatuses.paymentMethod', 'light-green'],
-      [ProspectProgressStatus.ENGAGEMENT_LETTER, 'entities.wallet.prospectProgressStatuses.engagementLetter', 'purple'],
-      [ProspectProgressStatus.COMPLETED, 'entities.wallet.prospectProgressStatuses.completed', 'green'],
-    ])('should return the label and color of %s', (progressStatus, label, color) => {
-      const result = ProspectEntityListManager.getProgressStatusConfig(progressStatus)
+    it.each(PROGRESS_STATUS_CASES)('should return the collaborator label and color of %s', (progressStatus, labelKey, color) => {
+      const result = ProspectEntityListManager.getProgressStatusTag(progressStatus, ProspectListType.PROSPECT_COLLAB)
 
-      expect(result).toEqual({ label, color })
+      expect(result).toEqual({ label: `entities.wallet.prospectProgressStatuses.prospectCollab.${labelKey}`, color })
+    })
+
+    it.each(PROGRESS_STATUS_CASES)('should return the customer label and color of %s', (progressStatus, labelKey, color) => {
+      const result = ProspectEntityListManager.getProgressStatusTag(progressStatus, ProspectListType.PROSPECT_CUSTOMER)
+
+      expect(result).toEqual({ label: `entities.wallet.prospectProgressStatuses.prospectCustomer.${labelKey}`, color })
     })
   })
 })

@@ -128,14 +128,26 @@
         }
       },
       "prospectProgressStatuses": {
-        "identityDocuments": "Pièce d'identité",
-        "beneficiariesValidation": "Valider bénéficiaires",
-        "noBeneficiary": "Aucun bénéficiaire",
-        "supportingDocuments": "En attente KBIS / DBE",
-        "commercialProposal": "Dépôt Prop comm.",
-        "paymentMethod": "SEPA en attente",
-        "engagementLetter": "Dépôt LDM",
-        "completed": "Dossier complété"
+        "prospectCollab": {
+          "identityDocuments": "Pièce d'identité",
+          "beneficiariesValidation": "Valider bénéficiaires",
+          "noBeneficiary": "Aucun bénéficiaire",
+          "supportingDocuments": "En attente KBIS / DBE",
+          "commercialProposal": "Dépôt Prop comm.",
+          "paymentMethod": "SEPA en attente",
+          "engagementLetter": "Dépôt LDM",
+          "completed": "Dossier complété"
+        },
+        "prospectCustomer": {
+          "identityDocuments": "Pièce d'identité",
+          "beneficiariesValidation": "Attente validation Rydge",
+          "noBeneficiary": "Aucun bénéficiaire",
+          "supportingDocuments": "Documents justificatifs",
+          "commercialProposal": "Attente Prop. commerciale",
+          "paymentMethod": "Mode de paiement",
+          "engagementLetter": "Attente Lettre de mission",
+          "completed": "Dossier complété"
+        }
       },
       "foldersPage": {
         "search": "Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant",

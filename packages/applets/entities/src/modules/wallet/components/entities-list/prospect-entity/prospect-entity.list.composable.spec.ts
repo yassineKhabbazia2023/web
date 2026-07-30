@@ -3,7 +3,7 @@ import { getMockedProspectWalletData } from '@entities/__mocks__'
 import { useProspectsEntitiesList } from './prospect-entity.list.composable'
 import { ProspectAction, ProspectColumn } from './prospect-entity.list.enums'
 import { ProspectEntityListManager } from './prospect-entity.list.manager'
-import { ProspectListType } from '@entities/modules/wallet/enums'
+import { ProspectListType, ProspectProgressStatus } from '@entities/modules/wallet/enums'
 import { SortDirection } from '@pulse/common/enums'
 import type { SortChangeEventData } from '@pulse/common/types'
 import { isMobileMockRef } from '@pulse/common/mocks/vitest'
@@ -66,6 +66,32 @@ describe('useProspectsEntitiesList', () => {
 
       expect(result.menuElements.value).toEqual(mockMenuElements)
       expect(ProspectEntityListManager.getMenuElements).toHaveBeenCalled()
+    })
+  })
+
+  describe('getProgressStatusTag', () => {
+    it('should resolve the tag under the collaborator namespace when flow is PROSPECT_COLLAB', () => {
+      const { result } = createTestSetup(ProspectListType.PROSPECT_COLLAB)
+
+      expect(result.getProgressStatusTag(ProspectProgressStatus.COMMERCIAL_PROPOSAL)).toEqual({
+        label: 'entities.wallet.prospectProgressStatuses.prospectCollab.commercialProposal',
+        color: 'purple',
+      })
+    })
+
+    it('should resolve the tag under the customer namespace when flow is PROSPECT_CUSTOMER', () => {
+      const { result } = createTestSetup(ProspectListType.PROSPECT_CUSTOMER)
+
+      expect(result.getProgressStatusTag(ProspectProgressStatus.COMMERCIAL_PROPOSAL)).toEqual({
+        label: 'entities.wallet.prospectProgressStatuses.prospectCustomer.commercialProposal',
+        color: 'purple',
+      })
+    })
+
+    it('should return the fallback tag when progressStatus is null', () => {
+      const { result } = createTestSetup(ProspectListType.PROSPECT_CUSTOMER)
+
+      expect(result.getProgressStatusTag(null)).toEqual({ label: '-', color: 'gray' })
     })
   })
 

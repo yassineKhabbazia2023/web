@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import type { SortChangeEventData } from '@pulse/common/types'
 import type { ProspectWalletData } from '@entities/modules/wallet/types/wallet-data.types'
+import type { ProspectProgressStatus } from '@entities/modules/wallet/enums'
 import { SortDirection } from '@pulse/common/enums'
 import { useResponsive } from '@pulse/styleguide'
 import { PROSPECT_COLUMNS_BY_FLOW } from './prospect-entity.list.consts'
@@ -16,6 +17,9 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
   const isColumnVisible = (column: ProspectColumn): boolean => visibleColumns.value.includes(column)
 
   const menuElements = computed(() => ProspectEntityListManager.getMenuElements())
+
+  const getProgressStatusTag = (progressStatus: ProspectProgressStatus | null) =>
+    ProspectEntityListManager.getProgressStatusTag(progressStatus, props.prospectListType)
 
   const isArchiveDialogVisible = ref(false)
   const selectedProspect = ref<ProspectWalletData | null>(null)
@@ -54,6 +58,7 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
   return {
     isColumnVisible,
     menuElements,
+    getProgressStatusTag,
     isArchiveDialogVisible,
     selectedProspect,
     handleSort,

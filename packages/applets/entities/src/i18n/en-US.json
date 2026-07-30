@@ -128,14 +128,26 @@
         }
       },
       "prospectProgressStatuses": {
-        "identityDocuments": "Identity document",
-        "beneficiariesValidation": "Validate beneficiaries",
-        "noBeneficiary": "No beneficiary",
-        "supportingDocuments": "Awaiting KBIS / DBE",
-        "commercialProposal": "Commercial proposal upload",
-        "paymentMethod": "SEPA pending",
-        "engagementLetter": "Engagement letter upload",
-        "completed": "Completed folder"
+        "prospectCollab": {
+          "identityDocuments": "Identity document",
+          "beneficiariesValidation": "Validate beneficiaries",
+          "noBeneficiary": "No beneficiary",
+          "supportingDocuments": "Awaiting KBIS / DBE",
+          "commercialProposal": "Commercial proposal upload",
+          "paymentMethod": "SEPA pending",
+          "engagementLetter": "Engagement letter upload",
+          "completed": "Completed folder"
+        },
+        "prospectCustomer": {
+          "identityDocuments": "Identity document",
+          "beneficiariesValidation": "Awaiting Rydge validation",
+          "noBeneficiary": "No beneficiary",
+          "supportingDocuments": "Supporting documents",
+          "commercialProposal": "Awaiting commercial proposal",
+          "paymentMethod": "Payment method",
+          "engagementLetter": "Awaiting engagement letter",
+          "completed": "Completed folder"
+        }
       },
       "foldersPage": {
         "search": "Search by company name, folder ID, first name, last name, and email of the executive",

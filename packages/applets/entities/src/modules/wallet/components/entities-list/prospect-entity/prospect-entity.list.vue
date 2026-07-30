@@ -118,8 +118,8 @@
     >
       <template #default="scope">
         <PTag
-          :pContent="t(ProspectEntityListManager.getProgressStatusConfig(scope.row.progressStatus).label)"
-          :pColor="ProspectEntityListManager.getProgressStatusConfig(scope.row.progressStatus).color"
+          :pContent="t(getProgressStatusTag(scope.row.progressStatus).label)"
+          :pColor="getProgressStatusTag(scope.row.progressStatus).color"
         />
       </template>
     </PTableColumn>
@@ -223,7 +223,6 @@ import { useI18n } from 'vue-i18n'
 import type { EntitiesListProspectsProps, EntitiesListProspectsEmit } from './prospect-entity.list.types'
 import { SORT_ORDERS } from '@pulse/common/constants'
 import { useProspectsEntitiesList } from './prospect-entity.list.composable'
-import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import { ProspectAction, ProspectColumn } from './prospect-entity.list.enums'
 import ProspectArchiveDialog from '../../prospect-archive/prospect-archive.dialog.vue'
 
@@ -240,6 +239,7 @@ const emit = defineEmits<EntitiesListProspectsEmit>()
 const {
   isColumnVisible,
   menuElements,
+  getProgressStatusTag,
   isArchiveDialogVisible,
   selectedProspect,
   handleSort,

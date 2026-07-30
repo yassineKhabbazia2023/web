@@ -3,7 +3,7 @@ import type { ProspectListType } from '@entities/modules/wallet/enums'
 import type { ProspectWalletData } from '@entities/modules/wallet/types/wallet-data.types'
 import type { SortingCriteria } from '@pulse/common/types'
 
-export interface ProspectProgressStatusConfig {
+export interface ProspectProgressStatusTag {
   label: string
   color: PTagProps['pColor']
 }
