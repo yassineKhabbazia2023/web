@@ -169,3 +169,12 @@ playwright/.cache/
 .github/copilot-instructions.md
 .claude/
 tmpclaude-*
+
+## Skills: only the shared ones are versioned, personal/test skills stay local
+## To version a new skill, add its own `!` line below
+.agents/skills/*
+!.agents/skills/file-conventions/
+!.agents/skills/npm-install/
+!.agents/skills/review-pr/
+!.agents/skills/run-app/
+!.agents/skills/testing/
