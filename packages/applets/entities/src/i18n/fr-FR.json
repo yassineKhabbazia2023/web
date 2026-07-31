@@ -32,6 +32,7 @@
         "customerCode": "Code client",
         "leader": "Dirigeant",
         "email": "E-mail",
+        "sortByFavorite": "Trier par favoris",
         "yes": "Oui",
         "no": "Non"
       },

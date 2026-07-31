@@ -29,9 +29,10 @@ import { TrackingLocalisation, LastActivityPeriodInDays } from '@entities/enums'
 import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import { PActiveFiltersBar } from '@pulse/styleguide/components'
+import { PActiveFiltersBar, PSkeleton } from '@pulse/styleguide/components'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
+import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import { MISSION_TYPE } from '@entities/constants'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 import BulkCustomerRelationDrawer from './components/BulkCustomerRelationDrawer'
@@ -87,6 +88,7 @@ const isManageWalletMenuActivatedMock = vi.fn()
 const isWalletTableLoadMorePaginationActivatedMock = vi.fn()
 const isLastActivityFeatureActivatedMock = vi.fn()
 const isWalletV2ActivatedMock = vi.fn()
+const isFavoriteSortActivatedMock = vi.fn()
 
 beforeEach(() => {
   hasPermissionMock = armCurrentUserPermissions(false)
@@ -94,7 +96,9 @@ beforeEach(() => {
   vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedMock)
   vi.spyOn(FeatureFlagManager, 'isWalletV2Activated').mockImplementation(isWalletV2ActivatedMock)
+  vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockImplementation(isFavoriteSortActivatedMock)
   isWalletV2ActivatedMock.mockReturnValue(false)
+  isFavoriteSortActivatedMock.mockReturnValue(false)
   armRegistryServiceMocks()
   vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
   fetchFavoriteEntitiesMock.mockResolvedValue([])
@@ -204,6 +208,17 @@ describe('deploy', () => {
     expect(userStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, expectedArguements)
   })
 
+  it('forwards the current sorting criteria to the folders table', async () => {
+    isFavoriteSortActivatedMock.mockReturnValue(true)
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    expect(wrapper.findComponent(RegularEntityList).props('sorting')).toStrictEqual({
+      field: 'isFavorite',
+      descending: true,
+    })
+  })
+
   it('forwards the number of selected folders to the manage wallet button', async () => {
     const wrapper = createWrapper()
     await flushPromises()
@@ -219,6 +234,25 @@ describe('deploy', () => {
 
     expect(manageWalletButton.props('selectedFoldersCount')).toBe(1)
     expect(manageWalletButton.props('isSelectedFolderCustomerRelation')).toBe(firstFolder.isCustomerRelation)
+  })
+
+  it('displays a skeleton instead of the folders count while the accounts are loading', async () => {
+    mockFetchWalletData.mockReturnValueOnce(new Promise(() => undefined))
+
+    const wrapper = createWrapper()
+    await nextTick()
+
+    expect(wrapper.find('[data-testid="selected-folders-total-count"]').exists()).toBe(false)
+    expect(wrapper.findComponent(PSkeleton).exists()).toBe(true)
+  })
+
+  it('displays the folders count once the accounts are loaded', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    expect(wrapper.findComponent(PSkeleton).exists()).toBe(false)
+    expect(wrapper.find('[data-testid="selected-folders-total-count"]').text())
+      .toContain(mockedQueryResult.totalItems.toString())
   })
 
   it('displays the sticky bar without the selection counts when no folder is selected', async () => {

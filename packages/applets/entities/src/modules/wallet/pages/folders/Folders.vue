@@ -83,7 +83,16 @@
           />
         </template>
         <template #summary>
+          <PSkeleton v-if="isLoading">
+            <template #template>
+              <PSkeletonItem
+                pVariant="text"
+                pWidth="90px"
+              />
+            </template>
+          </PSkeleton>
           <p
+            v-else
             class="font-small"
             data-testid="selected-folders-total-count"
           >
@@ -247,6 +256,7 @@
         data-testid="folders-table"
         :data="searchResult.items"
         :searchValue="searchCriteria.search"
+        :sorting="searchCriteria.sorting"
         @add-favorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
@@ -326,6 +336,8 @@ import {
   PPagination,
   PIcon,
   PSamePagePagination,
+  PSkeleton,
+  PSkeletonItem,
   PStickyBar,
   PListToolbar,
   PActiveFiltersBar,

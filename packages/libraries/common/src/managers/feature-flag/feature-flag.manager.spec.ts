@@ -61,6 +61,23 @@ describe('FeatureFlagManager', () => {
       })
     })
 
+  describe('isFavoriteSortActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isFavoriteSortActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.FAVORITE_SORT, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isFavoriteSortActivated()).toBe(false)
+    })
+  })
+
   describe('isManageWalletMenuActivated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

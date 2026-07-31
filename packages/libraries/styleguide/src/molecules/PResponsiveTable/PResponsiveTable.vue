@@ -7,6 +7,7 @@
       :pFit="pFit"
       :pHeaderCellStyle="pHeaderCellStyle"
       :pCellStyle="pCellStyle"
+      :pDefaultSort="pDefaultSort"
       :class="{ 'p-responsive-table--hidden': shouldDisplayResponsiveCard === true }"
       v-bind="$attrs"
       @row-click="$emit('row-click', $event)"

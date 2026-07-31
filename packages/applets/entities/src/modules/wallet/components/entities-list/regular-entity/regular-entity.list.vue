@@ -9,6 +9,7 @@
     tableLayout="fixed"
     class="wallet-table"
     pCardClickable
+    :pDefaultSort="favoriteDefaultSort"
     @sort-change="handleSort"
     @row-click="onRowClick"
   >
@@ -16,8 +17,24 @@
       pProp="isFavorite"
       :pWidth="54"
       :pShowOverflowTooltip="false"
+      :pSortable="favoriteSortable"
+      :pSortOrders="FAVORITE_SORT_ORDERS"
+      pHeaderAlign="center"
+      pLabelClassName="wallet-table__favorite-header"
       data
     >
+      <template #header>
+        <PButton
+          v-if="isFavoriteSortActivated === true"
+          pSize="small"
+          pIconOnly
+          class="margin-left--2"
+          :title="t(`${LIST_KEY}.sortByFavorite`)"
+          pTestId="wallet-sort-favorite-button"
+        >
+          <PIcon :pName="isSortedByFavorite ? 'starFill' : 'star'" />
+        </PButton>
+      </template>
       <template #default="scope">
         <PButton
           pSize="small"
@@ -294,13 +311,11 @@ import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regula
 import { useRegularEntitiesList } from './regular-entity.list.composable'
 import { RegularEntitiesListManager } from './regular-entity.list.manager'
 import { RegularEntityAction } from './regular-entity.list.enums'
-import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
+import { FAVORITE_SORT_ORDERS } from './regular-entity.list.consts'
 
 const { t } = useI18n()
 const LIST_KEY = 'entities.wallet.entitiesList'
 const REGULAR_KEY = 'entities.wallet.entitiesListRegular'
-
-const { isLastActivityFeatureActivated } = useWalletFeatureFlags()
 
 const props = withDefaults(defineProps<EntitiesListRegularProps>(), {
   data: () => [],
@@ -313,6 +328,11 @@ const selectedFolderIds = defineModel<number[]>('selectedFolderIds', {
 
 const {
   isCollab,
+  isLastActivityFeatureActivated,
+  isFavoriteSortActivated,
+  isSortedByFavorite,
+  favoriteSortable,
+  favoriteDefaultSort,
   callHandleAddFavorite,
   menuElementsCollaborator,
   handleSort,
@@ -331,6 +351,11 @@ const {
 .wallet-table {
   .current-row > td:first-child {
     border-color: var(--p-jungle-400) !important;
+  }
+
+  // The star icon already conveys the sort state, the sort carets are redundant
+  .wallet-table__favorite-header .caret-wrapper {
+    display: none;
   }
 }
 </style>

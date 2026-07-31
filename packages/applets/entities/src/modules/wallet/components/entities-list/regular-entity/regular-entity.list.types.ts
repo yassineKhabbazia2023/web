@@ -4,6 +4,7 @@ import type { SortingCriteria } from '@pulse/common/types'
 export interface EntitiesListRegularProps {
   data: RegularWalletData[]
   searchValue?: string
+  sorting?: SortingCriteria
 }
 
 export type EntitiesListRegularEmit = {

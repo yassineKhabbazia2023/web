@@ -32,6 +32,7 @@
         "customerCode": "Customer code",
         "leader": "Leader",
         "email": "Email",
+        "sortByFavorite": "Sort by favorites",
         "yes": "Yes",
         "no": "No"
       },

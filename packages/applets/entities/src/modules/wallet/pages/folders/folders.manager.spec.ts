@@ -1,4 +1,5 @@
 import type { Entity } from '@pulse/common/types'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { ENTITY_STATUS_COLOR, MISSION_TYPE } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import type { AccountFilters } from '@entities/types'
@@ -25,6 +26,10 @@ const getFilters = (overrides: Partial<AccountFilters> = {}): AccountFilters => 
 })
 
 describe('FoldersManager', () => {
+  beforeEach(() => {
+    vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockReturnValue(false)
+  })
+
   describe('getDeploymentStatuses', () => {
     it('returns the three statuses ordered by their deployment status index', () => {
       const statuses = FoldersManager.getDeploymentStatuses()
@@ -190,6 +195,24 @@ describe('FoldersManager', () => {
     })
   })
 
+  describe('getDefaultSorting', () => {
+    it('sorts favorites first when the favorite sort feature is activated', () => {
+      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(true)
+
+      expect(FoldersManager.getDefaultSorting()).toStrictEqual({
+        field: 'isFavorite',
+        descending: true,
+      })
+    })
+
+    it('applies no sorting when the favorite sort feature is disabled', () => {
+      expect(FoldersManager.getDefaultSorting()).toStrictEqual({
+        field: '',
+        descending: false,
+      })
+    })
+  })
+
   describe('getDeploymentStatusSearchCriteria', () => {
     it('resets every criterion when no status is given', () => {
       expect(FoldersManager.getDeploymentStatusSearchCriteria(90)).toStrictEqual({
@@ -200,6 +223,15 @@ describe('FoldersManager', () => {
           field: '',
           descending: false,
         },
+      })
+    })
+
+    it('keeps the favorite sorting when the favorite sort feature is activated', () => {
+      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(true)
+
+      expect(FoldersManager.getDeploymentStatusSearchCriteria(90).sorting).toStrictEqual({
+        field: 'isFavorite',
+        descending: true,
       })
     })
 

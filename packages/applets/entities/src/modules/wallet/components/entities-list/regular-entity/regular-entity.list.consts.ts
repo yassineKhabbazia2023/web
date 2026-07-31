@@ -1,6 +1,15 @@
+import { SortDirection } from '@pulse/common/enums'
+import { FAVORITE_SORT_FIELD } from '@entities/constants'
 import { WalletSortColumn, WalletMenuActionValue } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 
+/**
+ * The favorite column only toggles between "favorites first" and "not sorted",
+ * so the star header can reflect the sort state as filled or empty.
+ */
+export const FAVORITE_SORT_ORDERS: (SortDirection | null)[] = [SortDirection.DESCENDING, null]
+
 export const SORT_COLUMN_TRACKING_MAP: Record<string, WalletSortColumn> = {
+  [FAVORITE_SORT_FIELD]: WalletSortColumn.FAVORITE,
   companyName: WalletSortColumn.COMPANY_NAME,
   customerCode: WalletSortColumn.CUSTOMER_CODE,
   leader: WalletSortColumn.LEADER,

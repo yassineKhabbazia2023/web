@@ -2,6 +2,10 @@ import { computed } from 'vue'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
 export function useWalletFeatureFlags() {
+  const isFavoriteSortActivated = computed(() =>
+    FeatureFlagManager.isFavoriteSortActivated(),
+  )
+
   const isLastActivityFeatureActivated = computed(() =>
     FeatureFlagManager.isLastActivityFeatureActivated(),
   )
@@ -19,6 +23,7 @@ export function useWalletFeatureFlags() {
   )
 
   return {
+    isFavoriteSortActivated,
     isLastActivityFeatureActivated,
     isLoadMorePaginationActivated,
     isManageWalletMenuActivated,

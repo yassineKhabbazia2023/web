@@ -13,3 +13,5 @@ export const ENTITY_STATUS_ICON_NAME: Record<EntityStatus, IconName> = {
   [EntityStatus.CONNECTED]: 'checkCircle',
 }
 
+export const FAVORITE_SORT_FIELD = 'isFavorite'
+

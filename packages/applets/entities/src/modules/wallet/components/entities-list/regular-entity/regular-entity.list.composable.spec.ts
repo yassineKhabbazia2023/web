@@ -3,9 +3,14 @@ import { getStoreMock, isMobileMockRef } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { ref } from 'vue'
 import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
-import { WalletMenuActionValue, WalletSortColumn } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
+import {
+  WalletMenuActionValue,
+  WalletMenuActionType,
+  WalletSortColumn,
+} from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 import { useRegularEntitiesList } from './regular-entity.list.composable'
 import type { RegularWalletData } from '@entities/modules/wallet/types'
 import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regular-entity.list.types'
@@ -21,6 +26,7 @@ afterEach(() => {
 
 beforeEach(() => {
   isMobileMock.value = false
+  vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockReturnValue(true)
   vi.spyOn(WalletTrackingManager, 'trackFavoriteRequest').mockImplementation(() => undefined)
   vi.spyOn(WalletTrackingManager, 'trackColumnSortRequested').mockImplementation(() => undefined)
   vi.spyOn(WalletTrackingManager, 'trackFolderMenuAction').mockImplementation(() => undefined)
@@ -134,6 +140,137 @@ describe('useRegularEntitiesList', () => {
 
       app.unmount()
     })
+
+    it('emits sort-account and tracks column sort for the isFavorite column', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.handleSort({ prop: 'isFavorite', order: SortDirection.DESCENDING, column: {} as any })
+
+      expect(vi.mocked(WalletTrackingManager.trackColumnSortRequested)).toHaveBeenCalledWith(WalletSortColumn.FAVORITE)
+      expect(emit).toHaveBeenCalledWith('sort-account', {
+        field: 'isFavorite',
+        descending: true,
+      })
+
+      app.unmount()
+    })
+
+    it('emits an empty field and does not track when the sort is cleared', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.handleSort({ prop: 'isFavorite', order: null, column: {} as any })
+
+      expect(vi.mocked(WalletTrackingManager.trackColumnSortRequested)).not.toHaveBeenCalled()
+      expect(emit).toHaveBeenCalledWith('sort-account', {
+        field: '',
+        descending: false,
+      })
+
+      app.unmount()
+    })
+
+    it('emits an empty field and does not track when the sort is cleared on any other column', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.handleSort({ prop: 'companyName', order: null, column: {} as any })
+
+      expect(vi.mocked(WalletTrackingManager.trackColumnSortRequested)).not.toHaveBeenCalled()
+      expect(emit).toHaveBeenCalledWith('sort-account', {
+        field: '',
+        descending: false,
+      })
+
+      app.unmount()
+    })
+  })
+
+  describe('isSortedByFavorite', () => {
+    it('is true when the current sorting field is isFavorite', () => {
+      const { result, app } = setupComposable({ sorting: { field: 'isFavorite', descending: true } })
+
+      expect(result.isSortedByFavorite.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('is false when another column is sorted', () => {
+      const { result, app } = setupComposable({ sorting: { field: 'companyName', descending: false } })
+
+      expect(result.isSortedByFavorite.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('is false when no sorting is applied', () => {
+      const { result, app } = setupComposable()
+
+      expect(result.isSortedByFavorite.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('is false when the favorite sort feature is disabled', () => {
+      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(false)
+
+      const { result, app } = setupComposable({ sorting: { field: 'isFavorite', descending: true } })
+
+      expect(result.isSortedByFavorite.value).toBe(false)
+
+      app.unmount()
+    })
+  })
+
+  describe('isLastActivityFeatureActivated', () => {
+    it('exposes the last activity feature flag to the list', () => {
+      vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockReturnValue(true)
+
+      const { result, app } = setupComposable()
+
+      expect(result.isLastActivityFeatureActivated.value).toBe(true)
+
+      app.unmount()
+    })
+  })
+
+  describe('favoriteSortable', () => {
+    it('makes the favorite column sortable when the feature is activated', () => {
+      const { result, app } = setupComposable()
+
+      expect(result.favoriteSortable.value).toBe('custom')
+
+      app.unmount()
+    })
+
+    it('keeps the favorite column not sortable when the feature is disabled', () => {
+      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(false)
+
+      const { result, app } = setupComposable()
+
+      expect(result.favoriteSortable.value).toBe(false)
+
+      app.unmount()
+    })
+  })
+
+  describe('favoriteDefaultSort', () => {
+    it('returns the favorite default sort when the list is already sorted by favorite', () => {
+      const { result, app } = setupComposable({ sorting: { field: 'isFavorite', descending: true } })
+
+      expect(result.favoriteDefaultSort.value).toEqual({
+        prop: 'isFavorite',
+        order: SortDirection.DESCENDING,
+      })
+
+      app.unmount()
+    })
+
+    it('returns undefined when the list is not sorted by favorite', () => {
+      const { result, app } = setupComposable({ sorting: { field: 'companyName', descending: false } })
+
+      expect(result.favoriteDefaultSort.value).toBeUndefined()
+
+      app.unmount()
+    })
   })
 
   describe('onDirectFolderAccess', () => {
@@ -155,7 +292,8 @@ describe('useRegularEntitiesList', () => {
 
       result.onToolboxVisibleChange(true)
 
-      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.MENU_OPENED)
+      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction))
+        .toHaveBeenCalledWith(WalletMenuActionValue.MENU_OPENED, WalletMenuActionType.UNITARY)
 
       app.unmount()
     })
@@ -194,7 +332,8 @@ describe('useRegularEntitiesList', () => {
 
       result.onToolboxItemClicked(RegularEntityAction.ACCESS, row)
 
-      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.ACCESS_FOLDER)
+      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction))
+        .toHaveBeenCalledWith(WalletMenuActionValue.ACCESS_FOLDER, WalletMenuActionType.UNITARY)
       expect(emit).toHaveBeenCalledWith('access', 200)
 
       app.unmount()
@@ -235,7 +374,8 @@ describe('useRegularEntitiesList', () => {
 
       result.onToolboxItemClicked(RegularEntityAction.DECLARE_CUSTOMER_RELATION, row)
 
-      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.DECLARE_CUSTOMER_RELATION)
+      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction))
+        .toHaveBeenCalledWith(WalletMenuActionValue.DECLARE_CUSTOMER_RELATION, WalletMenuActionType.UNITARY)
       expect(emit).toHaveBeenCalledWith('displayCustomerRelationDrawer', row, true)
 
       app.unmount()
@@ -247,7 +387,8 @@ describe('useRegularEntitiesList', () => {
 
       result.onToolboxItemClicked(RegularEntityAction.REMOVE_CUSTOMER_RELATION, customerRelationRow)
 
-      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledWith(WalletMenuActionValue.REMOVE_CUSTOMER_RELATION)
+      expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction))
+        .toHaveBeenCalledWith(WalletMenuActionValue.REMOVE_CUSTOMER_RELATION, WalletMenuActionType.UNITARY)
       expect(emit).toHaveBeenCalledWith(
         'displayCustomerRelationDrawer',
         customerRelationRow,

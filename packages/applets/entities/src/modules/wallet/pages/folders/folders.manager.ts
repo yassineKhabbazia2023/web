@@ -1,7 +1,8 @@
 import { i18n } from '@pulse/common/i18n'
-import type { Entity } from '@pulse/common/types'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import type { Entity, SortingCriteria } from '@pulse/common/types'
 import type { ActiveFilterItem } from '@pulse/styleguide/types'
-import { ENTITY_STATUS_COLOR } from '@entities/constants'
+import { ENTITY_STATUS_COLOR, FAVORITE_SORT_FIELD } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import type { AccountFilters } from '@entities/types'
 import type { DeploymentStatus, SearchCriteria } from '@entities/modules/wallet/types'
@@ -165,6 +166,23 @@ export class FoldersManager {
   }
 
   /**
+   * Favorites come first by default, unless the favorite sort feature is disabled.
+   */
+  static getDefaultSorting(): SortingCriteria {
+    if (FeatureFlagManager.isFavoriteSortActivated() === false) {
+      return {
+        field: '',
+        descending: false,
+      }
+    }
+
+    return {
+      field: FAVORITE_SORT_FIELD,
+      descending: true,
+    }
+  }
+
+  /**
    * Deployment status shortcuts reset every other criterion, unlike the filters drawer.
    */
   static getDeploymentStatusSearchCriteria(limit: number, status?: EntityStatus): SearchCriteria {
@@ -172,10 +190,7 @@ export class FoldersManager {
       currentPage: 0,
       limit,
       filterByDeploymentStatus: status === undefined ? undefined : [status.toString()],
-      sorting: {
-        field: '',
-        descending: false,
-      },
+      sorting: FoldersManager.getDefaultSorting(),
     }
   }
 

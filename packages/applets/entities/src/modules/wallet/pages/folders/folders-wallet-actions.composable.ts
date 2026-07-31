@@ -3,9 +3,11 @@ import type { Ref } from 'vue'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { useFoldersCustomerRelation } from './folders-customer-relation.composable'
 import { useFoldersDelegation } from './folders-delegation.composable'
 import { useFoldersRemoveFromFolders } from './folders-remove-from-folders.composable'
+import { WALLET_ACTION_TRACKING_MAP } from './folders-wallet-actions.consts'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 
 export function useFoldersWalletActions(
@@ -48,6 +50,9 @@ export function useFoldersWalletActions(
   }
 
   function onWalletAction(action: ManageWalletAction) {
+    const tracking = WALLET_ACTION_TRACKING_MAP[action]
+    WalletTrackingManager.trackFolderMenuAction(tracking.value, tracking.type)
+
     return walletActionHandlers[action]()
   }
 

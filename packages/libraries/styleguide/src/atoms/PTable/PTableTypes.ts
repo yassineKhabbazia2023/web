@@ -1,4 +1,4 @@
-import type { CellStyle } from 'element-plus'
+import type { CellStyle, Sort } from 'element-plus'
 import type { IconName } from '../../types/IconName.types'
 
 export interface PTableProps {
@@ -8,6 +8,7 @@ export interface PTableProps {
   pHeaderCellStyle?: CellStyle<Record<string, any>>
   pCellStyle?: CellStyle<Record<string, any>>
   pRowKey?: string | ((row: any) => string)
+  pDefaultSort?: Sort
   pEmptyText?: string
   pEmptyIconName?: IconName
   pEmptyActionLabel?: string

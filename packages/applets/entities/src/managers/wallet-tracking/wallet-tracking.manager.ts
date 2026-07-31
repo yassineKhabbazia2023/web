@@ -1,13 +1,35 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { AmplitudeEvent } from '@pulse/common/enums'
-import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } from './wallet-tracking.enum'
+import {
+  WalletFilterType,
+  WalletActivityFilterValue,
+  WalletMenuActionValue,
+  WalletMenuActionType,
+  WalletFavoriteActivation,
+  WalletMissionTypeFilterValue,
+  WalletDeploymentStatusFilterValue,
+} from './wallet-tracking.enum'
 import type { WalletCustomFilterParams } from './wallet-tracking.types'
 import { LastActivityPeriodInDays } from '@entities/enums'
+import { MISSION_TYPE } from '@entities/constants'
+import { EntityStatus } from '@entities/modules/wallet/enums'
 
-const LAST_ACTIVITY_PERIOD_FILTER_VALUE: Record<LastActivityPeriodInDays, WalletFilterValue> = {
-  [LastActivityPeriodInDays.LAST_TWO_WEEKS]: WalletFilterValue.LAST_ACTIVITY_TWO_WEEKS,
-  [LastActivityPeriodInDays.LAST_THIRTY_DAYS]: WalletFilterValue.LAST_ACTIVITY_THIRTY_DAYS,
-  [LastActivityPeriodInDays.LAST_NINETY_DAYS]: WalletFilterValue.LAST_ACTIVITY_NINETY_DAYS,
+const LAST_ACTIVITY_PERIOD_FILTER_VALUE: Record<LastActivityPeriodInDays, WalletActivityFilterValue> = {
+  [LastActivityPeriodInDays.LAST_TWO_WEEKS]: WalletActivityFilterValue.TWO_WEEKS,
+  [LastActivityPeriodInDays.LAST_THIRTY_DAYS]: WalletActivityFilterValue.THIRTY_DAYS,
+  [LastActivityPeriodInDays.LAST_NINETY_DAYS]: WalletActivityFilterValue.NINETY_DAYS,
+}
+
+const MISSION_TYPE_FILTER_VALUE: Record<string, WalletMissionTypeFilterValue> = {
+  [MISSION_TYPE.TENUE]: WalletMissionTypeFilterValue.TENUE,
+  [MISSION_TYPE.REVISION]: WalletMissionTypeFilterValue.REVISION,
+  [MISSION_TYPE.NOT_SPECIFIED]: WalletMissionTypeFilterValue.NOT_SPECIFIED,
+}
+
+const DEPLOYMENT_STATUS_FILTER_VALUE: Record<string, WalletDeploymentStatusFilterValue> = {
+  [EntityStatus.TO_DEPLOY]: WalletDeploymentStatusFilterValue.TO_DEPLOY,
+  [EntityStatus.IN_PROGRESS]: WalletDeploymentStatusFilterValue.IN_PROGRESS,
+  [EntityStatus.CONNECTED]: WalletDeploymentStatusFilterValue.CONNECTED,
 }
 
 export class WalletTrackingManager {
@@ -19,14 +41,13 @@ export class WalletTrackingManager {
   }
 
   static trackCustomFilterValidated(filters: WalletCustomFilterParams) {
-    const activeFilters = this.getActiveFilters(filters)
+    const filterTypes = WalletTrackingManager.getActiveFilterTypes(filters)
 
-    const filterValues: string[] = activeFilters.length === 0
-      ? [WalletFilterValue.NONE]
-      : activeFilters
-
+    // Only mission type, deployment status and last activity carry a value: the value dimension
+    // stays empty for the boolean filters and when no filter is active at all.
     AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_CUSTOM_FILTER_VALIDATED, {
-      wallet_action_filter_value: filterValues,
+      wallet_action_filter_type: filterTypes.length > 0 ? filterTypes : [WalletFilterType.NONE],
+      wallet_action_filter_value: WalletTrackingManager.getFilterValues(filters),
     })
   }
 
@@ -36,8 +57,9 @@ export class WalletTrackingManager {
     })
   }
 
-  static trackFolderMenuAction(actionValue: WalletMenuActionValue) {
+  static trackFolderMenuAction(actionValue: WalletMenuActionValue, menuType: WalletMenuActionType) {
     AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_FOLDER_MENU_REQUESTED, {
+      wallet_action_menu_type: menuType,
       wallet_action_menu_value: actionValue,
     })
   }
@@ -68,29 +90,51 @@ export class WalletTrackingManager {
     })
   }
 
-  private static getActiveFilters(filters: WalletCustomFilterParams): string[] {
-    const activeFilters: string[] = []
-
-    if (filters.isFavoriteFilter) {
-      activeFilters.push(WalletFilterValue.FAVORITES)
-    }
-
-    if (filters.isCustomerRelationFilter) {
-      activeFilters.push(WalletFilterValue.CUSTOMER_RELATION)
-    }
+  private static getFilterValues(filters: WalletCustomFilterParams): string[] {
+    const values: string[] = []
 
     if (filters.missionTypeFilter !== undefined && filters.missionTypeFilter.length > 0) {
-      activeFilters.push(WalletFilterValue.MISSION_TYPE)
+      values.push(...filters.missionTypeFilter.map(
+        (missionType) => MISSION_TYPE_FILTER_VALUE[missionType] ?? missionType,
+      ))
     }
 
     if (filters.deploymentStatusFilter !== undefined && filters.deploymentStatusFilter.length > 0) {
-      activeFilters.push(WalletFilterValue.STATUS)
+      values.push(...filters.deploymentStatusFilter.map(
+        (deploymentStatus) => DEPLOYMENT_STATUS_FILTER_VALUE[deploymentStatus] ?? deploymentStatus,
+      ))
     }
 
     if (filters.lastActivityPeriodFilter !== undefined) {
-      activeFilters.push(LAST_ACTIVITY_PERIOD_FILTER_VALUE[filters.lastActivityPeriodFilter])
+      values.push(LAST_ACTIVITY_PERIOD_FILTER_VALUE[filters.lastActivityPeriodFilter])
     }
 
-    return activeFilters
+    return values
+  }
+
+  private static getActiveFilterTypes(filters: WalletCustomFilterParams): string[] {
+    const filterTypes: string[] = []
+
+    if (filters.isFavoriteFilter) {
+      filterTypes.push(WalletFilterType.FAVORITES)
+    }
+
+    if (filters.isCustomerRelationFilter) {
+      filterTypes.push(WalletFilterType.CUSTOMER_RELATION)
+    }
+
+    if (filters.missionTypeFilter !== undefined && filters.missionTypeFilter.length > 0) {
+      filterTypes.push(WalletFilterType.MISSION_TYPE)
+    }
+
+    if (filters.deploymentStatusFilter !== undefined && filters.deploymentStatusFilter.length > 0) {
+      filterTypes.push(WalletFilterType.STATUS)
+    }
+
+    if (filters.lastActivityPeriodFilter !== undefined) {
+      filterTypes.push(WalletFilterType.LAST_ACTIVITY)
+    }
+
+    return filterTypes
   }
 }

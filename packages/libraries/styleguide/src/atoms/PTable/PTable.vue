@@ -8,6 +8,7 @@
     :header-cell-style="pHeaderCellStyle"
     :cell-style="pCellStyle"
     :row-key="pRowKey"
+    :default-sort="pDefaultSort"
     :data-testid="pTestId"
   >
     <slot />

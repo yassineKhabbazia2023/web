@@ -8,9 +8,10 @@ import { useResponsive } from '@pulse/styleguide'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { containsIgnoreCase } from '@pulse/toolbox/utils/string'
 import { RegularEntitiesListManager } from './regular-entity.list.manager'
+import { FAVORITE_SORT_FIELD } from '@entities/constants'
 import { SORT_COLUMN_TRACKING_MAP, MENU_ACTION_TRACKING_MAP } from './regular-entity.list.consts'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
-import { WalletMenuActionValue } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
+import { WalletMenuActionValue, WalletMenuActionType } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { useI18n } from 'vue-i18n'
 import type {
@@ -19,6 +20,7 @@ import type {
   MenuTranslations,
 } from './regular-entity.list.types'
 import { RegularEntityAction } from './regular-entity.list.enums'
+import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 
 const I18N_REGULAR_KEY = 'entities.wallet.entitiesListRegular'
 
@@ -58,14 +60,29 @@ export function useRegularEntitiesList(
     )
   }
 
+  const { isFavoriteSortActivated, isLastActivityFeatureActivated } = useWalletFeatureFlags()
+
+  const isSortedByFavorite = computed(() =>
+    isFavoriteSortActivated.value === true && props.sorting?.field === FAVORITE_SORT_FIELD,
+  )
+
+  const favoriteSortable = computed(() => (isFavoriteSortActivated.value === true ? 'custom' : false))
+
+  const favoriteDefaultSort = computed(() => (isSortedByFavorite.value
+    ? { prop: FAVORITE_SORT_FIELD, order: SortDirection.DESCENDING }
+    : undefined))
+
   const handleSort = (data: SortChangeEventData) => {
+    // A null order means the column went back to its unsorted state.
+    const isSortCleared = data.order === null
+
     const trackingColumn = SORT_COLUMN_TRACKING_MAP[data.prop]
-    if (trackingColumn !== undefined) {
+    if (trackingColumn !== undefined && isSortCleared === false) {
       WalletTrackingManager.trackColumnSortRequested(trackingColumn)
     }
 
     emit('sort-account', {
-      field: data.prop,
+      field: isSortCleared ? '' : data.prop,
       descending: data.order === SortDirection.DESCENDING,
     })
   }
@@ -77,14 +94,14 @@ export function useRegularEntitiesList(
 
   const onToolboxVisibleChange = (isVisible: boolean) => {
     if (isVisible) {
-      WalletTrackingManager.trackFolderMenuAction(WalletMenuActionValue.MENU_OPENED)
+      WalletTrackingManager.trackFolderMenuAction(WalletMenuActionValue.MENU_OPENED, WalletMenuActionType.UNITARY)
     }
   }
 
   const onToolboxItemClicked = (action: RegularEntityAction, row: RegularWalletData) => {
     const trackingAction = MENU_ACTION_TRACKING_MAP[action]
     if (trackingAction !== undefined) {
-      WalletTrackingManager.trackFolderMenuAction(trackingAction)
+      WalletTrackingManager.trackFolderMenuAction(trackingAction, WalletMenuActionType.UNITARY)
     }
 
     if (action === RegularEntityAction.DEPLOY) {
@@ -161,6 +178,11 @@ export function useRegularEntitiesList(
 
   return {
     isCollab,
+    isLastActivityFeatureActivated,
+    isFavoriteSortActivated,
+    isSortedByFavorite,
+    favoriteSortable,
+    favoriteDefaultSort,
     callHandleAddFavorite,
     menuElementsCollaborator,
     handleSort,

@@ -8,9 +8,11 @@ import { getStoreMock, isMobileMockRef } from '@pulse/common/mocks/vitest'
 import { getMockedEntities } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { getMockedMappedAccount, getMockedWalletQueryResult } from '@entities/__mocks__/deploy-utils.mocks'
 import { EntityStatus } from '@entities/modules/wallet/enums'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { fetchWalletData } from './FoldersUtils'
 import { useFolders } from './folders.composable'
 import { DESKTOP_FOLDERS_PAGE_SIZE, MOBILE_FOLDERS_PAGE_SIZE } from './folders.consts'
@@ -31,6 +33,7 @@ const mountFolders = () => withSetup(() => useFolders())
 
 describe('useFolders', () => {
   beforeEach(() => {
+    vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockReturnValue(false)
     routeMock.name = RouteName.FOLDERS
     routeMock.query = {}
     isMobileMockRef.value = false
@@ -56,6 +59,21 @@ describe('useFolders', () => {
     expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledExactlyOnceWith(
       mockedEntities.map((entity) => ({ ...entity, color: 'persian' })),
     )
+
+    app.unmount()
+  })
+
+  it('sorts favorites first on mount when the favorite sort feature is activated', async () => {
+    vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockReturnValue(true)
+
+    const [{ searchCriteria }, app] = mountFolders()
+    await flushPromises()
+
+    expect(searchCriteria.value.sorting).toStrictEqual({
+      field: 'isFavorite',
+      descending: true,
+    })
+    expect(fetchWalletDataMock).toHaveBeenCalledOnce()
 
     app.unmount()
   })
@@ -182,6 +200,19 @@ describe('useFolders', () => {
     expect(fetchWalletDataMock).toHaveBeenNthCalledWith(3, expect.anything(), expect.objectContaining({
       currentPage: 4,
     }))
+
+    app.unmount()
+  })
+
+  it('tracks the clicked page on the classic pagination', async () => {
+    vi.spyOn(WalletTrackingManager, 'trackPaginationPageClicked').mockImplementation(() => undefined)
+
+    const [{ onUpdateCurrentPage }, app] = mountFolders()
+    await flushPromises()
+
+    onUpdateCurrentPage(4)
+
+    expect(vi.mocked(WalletTrackingManager.trackPaginationPageClicked)).toHaveBeenCalledExactlyOnceWith(4)
 
     app.unmount()
   })

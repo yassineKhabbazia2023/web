@@ -7,6 +7,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 // This list is internal to the manager and is meant to disappear once all flags are migrated.
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.DELEGATION_REQUEST_TABS,
+  Feature.FAVORITE_SORT,
   Feature.LAST_ACTIVITY_FEATURE,
   Feature.MANAGE_WALLET_MENU,
   Feature.PROSPECT_EXPERIENCE,
@@ -29,6 +30,10 @@ export class FeatureFlagManager {
 
   static isDelegationRequestTabsActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.DELEGATION_REQUEST_TABS)
+  }
+
+  static isFavoriteSortActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.FAVORITE_SORT)
   }
 
   static isFeatureActivated(feature: Feature) {

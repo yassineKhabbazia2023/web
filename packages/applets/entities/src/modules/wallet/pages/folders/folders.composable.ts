@@ -53,10 +53,7 @@ export function useFolders() {
     currentPage: 0,
     limit: currentFoldersPageSize.value,
     search: '',
-    sorting: {
-      field: '',
-      descending: false,
-    },
+    sorting: FoldersManager.getDefaultSorting(),
     filterByDeploymentStatus: undefined,
     filterByMissionType: undefined,
     filterByLastActivityPeriodInDays: undefined,
