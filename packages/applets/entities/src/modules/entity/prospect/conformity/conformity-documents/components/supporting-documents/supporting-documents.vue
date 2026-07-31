@@ -28,19 +28,25 @@
       :key="item.type"
       class="margin-bottom--4"
     >
+      <!-- Single-slot types use the mono-file upload: its file line replaces the drop zone at the same size. -->
+      <PUpload
+        v-if="item.maxFiles === 1"
+        v-bind="commonUploadProps"
+        :modelValue="selectedFilesByType[item.type]?.[0] ?? null"
+        :pLabel="getDocumentTypeLabel(item.type)"
+        :pUploadedFile="item.documents[0]"
+        :pCanDeleteUploadedFile="canDeleteDocuments"
+        @update:model-value="(file) => onSingleFileSelected(item.type, file)"
+        @delete-uploaded-file="(documentId) => onUploadedDocumentDeletionRequested(item, documentId)"
+      />
       <PUploadMultiple
+        v-else
+        v-bind="commonUploadProps"
         :modelValue="selectedFilesByType[item.type] ?? []"
-        :pLabel="t(`entities.prospect.conformity.conformityDocuments.documentTypeLabels.${item.type}`)"
+        :pLabel="getDocumentTypeLabel(item.type)"
         :pUploadedFiles="item.documents"
-        :pCanDeleteUploadedFiles="isCollab === true && isCompleted === false"
+        :pCanDeleteUploadedFiles="canDeleteDocuments"
         :pMaxFiles="item.maxFiles"
-        :pAccept="PROSPECT_DOCUMENT_ACCEPTED_FORMATS"
-        :pPrefixLabelFileLine="t('entities.prospect.conformity.conformityDocuments.uploadPrefixLabel')"
-        :pSuffixLabelFileLine="t('entities.prospect.conformity.conformityDocuments.uploadSuffixLabel')"
-        :pAuthorizedFileFormat="t('entities.prospect.conformity.conformityDocuments.uploadAuthorizedFormats')"
-        :pTextLimitSize="t('entities.prospect.conformity.conformityDocuments.uploadMaxSize')"
-        :pDeleteButtonTitle="t('entities.prospect.conformity.conformityDocuments.uploadDeleteButtonTitle')"
-        :pMaxFileSize="PROSPECT_DOCUMENT_MAX_FILE_SIZE_MB"
         @update:model-value="(files) => selectedFilesByType[item.type] = files"
         @delete-uploaded-file="(documentId) => onUploadedDocumentDeletionRequested(item, documentId)"
       />
@@ -83,11 +89,13 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
 import {
   PButton,
+  PUpload,
   PUploadMultiple,
 } from '@pulse/styleguide/components'
 import ConformitySectionSkeleton from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section.skeleton.vue'
 import { ConformitySkeletonVariant } from '@entities/modules/entity/prospect/conformity/components/conformity-section-skeleton/conformity-section-skeleton.enums'
 import DeleteDocumentDialog from '@entities/modules/entity/prospect/dialog/delete-document-dialog/delete-document-dialog.vue'
+import type { SupportingDocumentType } from '@entities/enums'
 import type { SupportingDocumentItem } from '@entities/services/conformity-documents'
 import { useSupportingDocuments } from './supporting-documents.composable'
 import type { SupportingDocumentsEmits, SupportingDocumentsProps } from './supporting-documents.types'
@@ -125,6 +133,28 @@ const {
   saveErrorMessage: t('entities.prospect.conformity.conformityDocuments.saveError'),
   getItems: () => props.items,
 }, emit)
+
+const canDeleteDocuments = computed(() => isCollab.value === true && props.isCompleted === false)
+
+const getDocumentTypeLabel = (documentType: SupportingDocumentType): string =>
+  t(`entities.prospect.conformity.conformityDocuments.documentTypeLabels.${documentType}`)
+
+// Props shared by both upload variants: all declared in PUploadCommonProps, so
+// none of them leaks into $attrs (which both components forward to their file lines).
+const commonUploadProps = computed(() => ({
+  pAccept: PROSPECT_DOCUMENT_ACCEPTED_FORMATS,
+  pMaxFileSize: PROSPECT_DOCUMENT_MAX_FILE_SIZE_MB,
+  pPrefixLabelFileLine: t('entities.prospect.conformity.conformityDocuments.uploadPrefixLabel'),
+  pSuffixLabelFileLine: t('entities.prospect.conformity.conformityDocuments.uploadSuffixLabel'),
+  pAuthorizedFileFormat: t('entities.prospect.conformity.conformityDocuments.uploadAuthorizedFormats'),
+  pTextLimitSize: t('entities.prospect.conformity.conformityDocuments.uploadMaxSize'),
+  pDeleteButtonTitle: t('entities.prospect.conformity.conformityDocuments.uploadDeleteButtonTitle'),
+}))
+
+// PUpload carries a single pending file while the shared selection state stays a list per type.
+const onSingleFileSelected = (documentType: SupportingDocumentType, file: File | null): void => {
+  selectedFilesByType.value[documentType] = file === null ? [] : [file]
+}
 
 // PUploadMultiple emits the persisted document id; the confirmation dialog needs the document itself.
 const onUploadedDocumentDeletionRequested = (item: SupportingDocumentItem, documentId: string | number): void => {
