@@ -47,7 +47,6 @@ window.EnvVars = envVars
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
 | VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
-| VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
 | VITE_MODSCREEN_V2_ACTIVATED | Affichage de la nouvelle version de la page de demandes MOD |
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
 | VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED | Feature-flag du flow de validation d'accès Pennylane (avenant) |

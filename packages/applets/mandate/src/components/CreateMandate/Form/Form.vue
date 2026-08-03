@@ -247,14 +247,10 @@
             disabled
           />
         </PFormItem>
-        <p
-          v-if="isMandateRedirectionToolFeatureEnabled === true"
-          class="font-large margin-bottom--4"
-        >
+        <p class="font-large margin-bottom--4">
           {{ t('flowRedirection') }}
         </p>
         <PFormItem
-          v-if="isMandateRedirectionToolFeatureEnabled === true"
           pProp="redirectionTools"
           inline
           :pLabel="t('flowDestination')"
@@ -291,8 +287,6 @@
 <script setup lang='ts'>
 import { logger } from '@pulse/toolbox'
 import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
-import { FeatureFlagManager } from '@pulse/common/managers'
-import { Feature } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import {
@@ -318,7 +312,6 @@ interface FormProps {
   creationMandateError?: string
 }
 const props = defineProps<FormProps>()
-const isMandateRedirectionToolFeatureEnabled = FeatureFlagManager.isFeatureActivated(Feature.MANDATE_REDIRECTION_TOOL)
 
 // i18n
 const { t } = useI18n({
@@ -458,10 +451,7 @@ const isBankCodeValid = ref(false)
 const isRibValid = ref(false)
 const isValidateEnabled = computed(() => {
   const ribValid = isBankCodeValid.value && isRibValid.value
-  if (isMandateRedirectionToolFeatureEnabled === true) {
-    return ribValid && createMandateForm.redirectionTools !== ''
-  }
-  return ribValid
+  return ribValid && createMandateForm.redirectionTools !== ''
 })
 
 const areFieldsFilled = (fieldsToCheck: string[]) =>
@@ -573,13 +563,10 @@ const getMandateModel = () => {
       email: createMandateForm.email,
     },
   }
-  if (isMandateRedirectionToolFeatureEnabled === true) {
-    return {
-      ...data,
-      destinationTool: createMandateForm.redirectionTools,
-    }
+  return {
+    ...data,
+    destinationTool: createMandateForm.redirectionTools,
   }
-  return data
 }
 
 const areFieldsFilledStepBased = (step: number) => {
@@ -595,11 +582,14 @@ const areFieldsFilledStepBased = (step: number) => {
       'city',
       'country',
     ],
-    3: ['institutionCode', 'branchCode', 'accountNumber',
-      'key', 'bank'],
-  }
-  if (isMandateRedirectionToolFeatureEnabled === true) {
-    fieldsToCheckMap[3].unshift('redirectionTools')
+    3: [
+      'redirectionTools',
+      'institutionCode',
+      'branchCode',
+      'accountNumber',
+      'key',
+      'bank',
+    ],
   }
   const fieldStepFilledDone = areFieldsFilled(fieldsToCheckMap[step])
   if (fieldStepFilledDone) {
@@ -671,10 +661,8 @@ const isBbanComplete = async () => {
     'branchCode',
     'accountNumber',
     'key',
+    'redirectionTools',
   ]
-  if (isMandateRedirectionToolFeatureEnabled === true) {
-    fieldsToValidate.push('redirectionTools')
-  }
   return fieldsToValidate.every(field => createMandateForm[field] !== '') &&
     await asyncEvery(fieldsToValidate, async (inputValue: string) => {
       try {
