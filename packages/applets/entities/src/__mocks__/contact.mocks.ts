@@ -1,5 +1,5 @@
 import { ContactType } from '@pulse/common/enums'
-import type { Contact, contactsRequest } from '@entities/types'
+import type { Contact, User, contactsRequest } from '@entities/types'
 
 export const mockedContactId = 25
 export const mockedContactType = ContactType.COLLABORATOR
@@ -29,6 +29,17 @@ export const getMockedCustomersCollab = () => {
   ]
 }
 
+
+export const getMockedCollabUser = (override: Partial<User> = {}): User => ({
+  contactId: 188,
+  initials: 'TT',
+  firstName: 'Test 1',
+  lastName: 'Test 1 last',
+  fullName: 'Test 1 Test 1 last',
+  email: 'test1@test.fr',
+  isOwner: false,
+  ...override,
+})
 
 export const generateContactsMock = (
   request: contactsRequest,

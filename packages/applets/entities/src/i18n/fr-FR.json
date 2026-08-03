@@ -8,6 +8,10 @@
         "removed": "L'utilisateur {userFullName} n'est plus signataire du dossier.",
         "deleteTooltip": "Un dossier doit avoir au moins un signataire",
         "technicalError": "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
+      },
+      "inviteUser": {
+        "success": "Le mail d'invitation utilisateur a été envoyé.",
+        "error": "Il y a eu un problème pour inviter l'utilisateur."
       }
     },
     "addCustomerDrawer": {

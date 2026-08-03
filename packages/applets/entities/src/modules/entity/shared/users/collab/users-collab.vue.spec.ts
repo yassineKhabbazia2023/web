@@ -4,6 +4,7 @@ import { armRegistryServiceMocks, fetchOperationsForAccountMock } from '@entitie
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
+import { inviteCustomers } from '@entities/services/contact'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick } from 'vue'
 import { UserActions, TrackingLocalisation } from '@entities/enums'
@@ -143,6 +144,20 @@ const removeUserToolboxItem: PToolboxItemProps = {
   pIconName: 'personRemove',
   pValue: 'removeUser',
   pActionName: 'removeUser',
+  pState: 'default',
+}
+
+const inviteProspectToolboxItem: PToolboxItemProps = {
+  pIconName: 'send',
+  pValue: 'entities.wallet.entitiesListProspects.inviteProspectToTheirSpace',
+  pActionName: 'inviteUser',
+  pState: 'default',
+}
+
+const resendActivationEmailToolboxItem: PToolboxItemProps = {
+  pIconName: 'send',
+  pValue: 'entities.wallet.entitiesListRegular.resendActivationEmail',
+  pActionName: 'inviteUser',
   pState: 'default',
 }
 
@@ -303,6 +318,7 @@ describe('usersCollab', () => {
         signatoryToolboxItem,
         modifyToolboxItem,
         removeUserToolboxItem,
+        resendActivationEmailToolboxItem,
       ])
     })
 
@@ -316,10 +332,13 @@ describe('usersCollab', () => {
       wrapper.vm.handleToolboxClick(mockedCustomersCollab[1])
       await nextTick()
 
-      expect(wrapper.vm.toolboxItems).toStrictEqual([modifyToolboxItem, removeUserToolboxItem])
+      expect(wrapper.vm.toolboxItems).toStrictEqual([
+        removeUserToolboxItem,
+        inviteProspectToolboxItem,
+      ])
     })
 
-    it('should show both "modify rights" and "remove user" actions for a prospect entity user', async () => {
+    it('should NOT offer the "modify rights" action for a prospect entity user', async () => {
       currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
       hasPermissionMock.mockReturnValue(true)
       wrapper = createWrapper()
@@ -328,16 +347,70 @@ describe('usersCollab', () => {
       wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
       await nextTick()
 
-      expect(wrapper.vm.toolboxItems).toStrictEqual([modifyToolboxItem, removeUserToolboxItem])
+      expect(wrapper.vm.toolboxItems).toStrictEqual([
+        removeUserToolboxItem,
+        inviteProspectToolboxItem,
+      ])
     })
 
-    it('should hide the actions menu entirely for a prospect user without the remove permission', async () => {
+    it('should only offer the "invite prospect" action for a prospect user without the remove permission', async () => {
       currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
       hasPermissionMock.mockReturnValue(false)
       wrapper = createWrapper()
       await flushPromises()
 
-      expect(wrapper.findComponent({ name: 'PToolbox' }).exists()).toBe(false)
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
+      await nextTick()
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([inviteProspectToolboxItem])
+    })
+
+    it('should offer the "resend activation email" action for a regular entity user', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
+      await nextTick()
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([
+        modifyToolboxItem,
+        removeUserToolboxItem,
+        resendActivationEmailToolboxItem,
+      ])
+    })
+
+    it('should still offer the "resend activation email" action for a regular entity user without the remove permission', async () => {
+      hasPermissionMock.mockReturnValue(false)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
+      await nextTick()
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([
+        modifyToolboxItem,
+        resendActivationEmailToolboxItem,
+      ])
+    })
+
+    it('should invite the selected user and refresh the list when the "invite user" action is clicked', async () => {
+      currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+      vi.mocked(inviteCustomers).mockResolvedValue([MOCKED_USER.contactId])
+      wrapper = createWrapper()
+      await flushPromises()
+      const fetchCallsBeforeInvitation = vi.mocked(fetchAccountCustomers).mock.calls.length
+
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+      pToolbox.vm.$emit('p-toolbox-item-clicked', UserActions.INVITE_USER)
+      await flushPromises()
+
+      expect(inviteCustomers).toHaveBeenCalledWith(
+        [MOCKED_USER.contactId],
+        entitySummaryMock.accountId,
+        AccountType.PROSPECT,
+      )
+      expect(fetchAccountCustomers).toHaveBeenCalledTimes(fetchCallsBeforeInvitation + 1)
     })
 
     it('when click on REMOVE_USER action', async () => {

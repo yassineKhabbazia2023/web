@@ -8,6 +8,10 @@
         "removed": "The user {userFullName} is no longer a signatory on the account.",
         "deleteTooltip": "A folder should have at least one signatory",
         "technicalError": "The operation failed due to a technical error. Please try again later."
+      },
+      "inviteUser": {
+        "success": "The user invitation email has been sent.",
+        "error": "There was an issue inviting the user."
       }
     },
     "addCustomerDrawer": {

@@ -163,7 +163,6 @@
           >
             <template #default="scope">
               <PToolbox
-                v-if="hasToolboxActions"
                 trigger="click"
                 popperClass="toolbox-container"
                 :pElements="toolboxItems"
@@ -258,6 +257,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import AddCustomerDrawer from '../components/add-customer-drawer'
 import { useSort } from '@pulse/common/composables/sort'
 import { useAccountSignatories } from './account-signatories.composable'
+import { useInviteUser } from './invite-user.composable'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -383,18 +383,16 @@ const state: StateUser = reactive({
 
 const toolboxItems = ref<PToolboxItemProps[]>([])
 
-// Hide the actions menu entirely when no action is available (e.g. a prospect user without the remove permission)
-const hasToolboxActions = computed(() =>
-  isProspectEntity.value === false ||
-  CurrentUserManager.hasPermission(ACTION_PERMISSIONS.COLLAB_REMOVE_USER) ||
-  canAssignSignatory.value,
-)
-
 const {
   loadAccountSignatories,
   getSignatoryToolboxItems,
   handleSignatoryAction,
 } = useAccountSignatories({ refreshUsers: formatAndFillUsersCollabTable })
+
+const {
+  inviteUserToolboxItems,
+  handleInviteUserAction,
+} = useInviteUser({ refreshUsers: formatAndFillUsersCollabTable })
 
 const canAssignSignatory = computed(() =>
   CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ASSIGN_SIGNATORY)
@@ -406,12 +404,14 @@ function handleToolboxClick(userRow: User) {
   toolboxItems.value.length = 0
   const items: PToolboxItemProps[] = []
 
-  items.push({
-    pIconName: 'pencilSquare',
-    pValue: t('modifyRights'),
-    pActionName: UserActions.MODIFY_RIGHTS,
-    pState: 'default',
-  })
+  if (isProspectEntity.value === false) {
+    items.push({
+      pIconName: 'pencilSquare',
+      pValue: t('modifyRights'),
+      pActionName: UserActions.MODIFY_RIGHTS,
+      pState: 'default',
+    })
+  }
 
   if (canAssignSignatory.value) {
     items.unshift(...getSignatoryToolboxItems(userRow))
@@ -425,6 +425,8 @@ function handleToolboxClick(userRow: User) {
       pState: 'default',
     })
   }
+
+  items.push(...inviteUserToolboxItems.value)
 
   toolboxItems.value.push(...items)
 }
@@ -527,6 +529,8 @@ const handleUserAction = (action: string, row: User) => {
   if (action === UserActions.REMOVE_USER) {
     handleRemoveUser(row)
   }
+
+  handleInviteUserAction(action, row)
 }
 
 const isRemoveUserDialogOpened = ref(false)

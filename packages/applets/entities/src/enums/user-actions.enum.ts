@@ -5,4 +5,5 @@ export enum UserActions {
   ASSIGN_SIGNATORY = 'assignSignatory',
   USER_INFORMATION = 'userInformation',
   UNASSIGN_SIGNATORY = 'unassignSignatory',
+  INVITE_USER = 'inviteUser',
 }
