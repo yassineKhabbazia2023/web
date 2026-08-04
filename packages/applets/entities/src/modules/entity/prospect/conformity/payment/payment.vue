@@ -83,10 +83,10 @@
 
       <PAlert
         v-else-if="bodyKind === PaymentBodyKind.Alert"
-        pType="information"
+        :pType="alertType"
       >
         <template v-if="bodyLead.length > 0">
-          <span class="font-bold">{{ bodyLead }}</span>{{ ' ' }}
+          <span class="font-bold">{{ bodyLead }}</span><br>
         </template>{{ bodyText }}
       </PAlert>
 
@@ -179,6 +179,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { PAlert, PButton, PIcon, PLoader, PTag } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
+import type { PAlertProps } from '@pulse/styleguide/types'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityPaymentType } from '@entities/enums'
 import { OnboardingStep, OnboardingStepStatus } from '../prospect-conformity.enums'
@@ -248,10 +249,17 @@ const isSignatory = computed(() => currentEntity.value?.isSignatory === true)
 // Only a client who is the prospect's signatory may choose or configure the payment method.
 // Non-signatory clients (like collaborators) get a read-only "pending" alert instead of the action buttons.
 const canManagePayment = computed(() => isClient.value && isSignatory.value)
+// No signatory exists on the account, so nobody can configure the mandate: the card is reduced
+// to a single alert. This state wins over the payment preference and over the non-signatory case,
+// which assumes a signatory exists somewhere on the account.
+const isSignatoryRequired = computed(() => status.value === OnboardingStepStatus.SignatoryRequired)
 
 // Completed shows the mandate summary; otherwise a managing user gets the benefits/actions
 // layout and everyone else a pending alert.
 const skeletonVariant = computed(() => {
+  if (isSignatoryRequired.value) {
+    return ConformitySkeletonVariant.InfoAlert
+  }
   if (status.value === OnboardingStepStatus.Completed) {
     return ConformitySkeletonVariant.PaymentCompleted
   }
@@ -261,7 +269,7 @@ const skeletonVariant = computed(() => {
 })
 
 const title = computed(() => {
-  if (isNotSelected.value) {
+  if (isSignatoryRequired.value || isNotSelected.value) {
     return t(`${PAYMENT_I18N_BASE}.title`)
   }
   if (isSepaMandate.value) {
@@ -271,6 +279,9 @@ const title = computed(() => {
 })
 
 const bodyKind = computed<PaymentBodyKind>(() => {
+  if (isSignatoryRequired.value) {
+    return PaymentBodyKind.Alert
+  }
   if (isNotSelected.value) {
     return canManagePayment.value === true ? PaymentBodyKind.Benefits : PaymentBodyKind.Alert
   }
@@ -281,8 +292,19 @@ const bodyKind = computed<PaymentBodyKind>(() => {
   return PaymentBodyKind.Alert
 })
 
+// The missing-signatory alert warns the collaborator, who is the one expected to act in Akuitéo.
+// The client can only be informed, so every other alert stays informational.
+const alertType = computed<PAlertProps['pType']>(() =>
+  isSignatoryRequired.value && isClient.value === false ? 'warning' : 'information',
+)
+
 // Primary body text, interpreted per kind (alert message or bullets intro).
 const bodyText = computed(() => {
+  if (isSignatoryRequired.value) {
+    return isClient.value
+      ? t(`${PAYMENT_I18N_BASE}.signatoryRequiredClientAlert`)
+      : t(`${PAYMENT_I18N_BASE}.signatoryRequiredCollaboratorAlert`)
+  }
   if (isNotSelected.value) {
     if (canManagePayment.value === true) {
       return ''
@@ -304,8 +326,14 @@ const bodyText = computed(() => {
     : t(`${PAYMENT_I18N_BASE}.otherCollaboratorAlert`)
 })
 
-// Bold lead rendered before the alert text — shown on the "pending" alert (collaborator and non-signatory client).
+// Bold lead rendered before the alert text — shown on the "pending" alert (collaborator and
+// non-signatory client) and on the missing-signatory alert.
 const bodyLead = computed(() => {
+  if (isSignatoryRequired.value) {
+    return isClient.value
+      ? t(`${PAYMENT_I18N_BASE}.signatoryRequiredClientLabel`)
+      : t(`${PAYMENT_I18N_BASE}.signatoryRequiredCollaboratorLabel`)
+  }
   if (isNotSelected.value && canManagePayment.value === false) {
     return t(`${PAYMENT_I18N_BASE}.collaboratorPendingLabel`)
   }
@@ -313,9 +341,13 @@ const bodyLead = computed(() => {
 })
 
 // Only the submitted SEPA mandate still shows the success box.
-const hasDoneBox = computed(() => isSepaMandate.value)
+const hasDoneBox = computed(() => isSignatoryRequired.value === false && isSepaMandate.value)
 
 const footerButtons = computed<PaymentFooterButton[]>(() => {
+  // Without a signatory the mandate cannot be configured, downloaded or swapped by anyone.
+  if (isSignatoryRequired.value) {
+    return []
+  }
   if (isNotSelected.value) {
     return canManagePayment.value === true
       ? [

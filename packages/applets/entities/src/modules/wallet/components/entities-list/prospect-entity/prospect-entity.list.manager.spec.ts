@@ -6,6 +6,7 @@ const PROGRESS_STATUS_CASES: [ProspectProgressStatus, string, string][] = [
   [ProspectProgressStatus.IDENTITY_DOCUMENTS, 'identityDocuments', 'light-green'],
   [ProspectProgressStatus.BENEFICIARIES_VALIDATION, 'beneficiariesValidation', 'purple'],
   [ProspectProgressStatus.NO_BENEFICIARY, 'noBeneficiary', 'orange'],
+  [ProspectProgressStatus.NO_SIGNATORY, 'noSignatory', 'red'],
   [ProspectProgressStatus.SUPPORTING_DOCUMENTS, 'supportingDocuments', 'light-green'],
   [ProspectProgressStatus.COMMERCIAL_PROPOSAL, 'commercialProposal', 'purple'],
   [ProspectProgressStatus.PAYMENT_METHOD, 'paymentMethod', 'light-green'],

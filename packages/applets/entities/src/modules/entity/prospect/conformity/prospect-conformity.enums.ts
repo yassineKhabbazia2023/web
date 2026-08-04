@@ -17,4 +17,6 @@ export enum OnboardingStepStatus {
   InProgress = 'InProgress',
   InReview = 'InReview',
   Completed = 'Completed',
+  // No signatory has been defined in Akuitéo for the account, so the step cannot be carried out by anyone.
+  SignatoryRequired = 'SignatoryRequired',
 }

@@ -9,21 +9,28 @@ import Payment from './payment.vue'
 
 // Seeds the current entity (used as accountId) and stubs the API so the story renders
 // the chosen state offline, without a backend.
-function mockPaymentPreference(paymentType: ConformityPaymentType | null): void {
+function mockPaymentPreference(
+  paymentType: ConformityPaymentType | null,
+  status?: OnboardingStepStatus,
+): void {
   useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ accountId: 1 }))
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   ConformityPaymentService.setOtherPaymentPreference = () => Promise.resolve()
   ConformityPaymentService.resetPaymentPreference = () => Promise.resolve()
   ProspectsService.fetchOnboardingStep = () => Promise.resolve({
     id: OnboardingStep.PaymentMethod,
-    status: paymentType === null ? OnboardingStepStatus.ToDo : OnboardingStepStatus.Completed,
+    status: status ?? (paymentType === null ? OnboardingStepStatus.ToDo : OnboardingStepStatus.Completed),
   })
 }
 
-const renderWithState = (paymentType: ConformityPaymentType | null): Story['render'] => (args) => ({
+// `status` overrides the status derived from the payment type, for states the preference cannot express.
+const renderWithState = (
+  paymentType: ConformityPaymentType | null,
+  status?: OnboardingStepStatus,
+): Story['render'] => (args) => ({
   components: { Payment },
   setup() {
-    mockPaymentPreference(paymentType)
+    mockPaymentPreference(paymentType, status)
     return { args }
   },
   template: `
@@ -65,4 +72,10 @@ export const MandateSepa: Story = {
 
 export const Other: Story = {
   render: renderWithState(ConformityPaymentType.Other),
+}
+
+// No signatory exists on the account: the card is reduced to a warning alert asking the
+// collaborator to define one in Akuitéo.
+export const SignatoryRequired: Story = {
+  render: renderWithState(null, OnboardingStepStatus.SignatoryRequired),
 }

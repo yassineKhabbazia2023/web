@@ -9,27 +9,34 @@ import Payment from './payment.vue'
 
 // Seeds the current entity (used as accountId and signatory flag) and stubs the API so the
 // story renders the chosen state offline, without a backend.
-function mockPaymentPreference(paymentType: ConformityPaymentType | null, isSignatory = true): void {
+function mockPaymentPreference(
+  paymentType: ConformityPaymentType | null,
+  isSignatory = true,
+  status?: OnboardingStepStatus,
+): void {
   useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ accountId: 1, isSignatory }))
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   ConformityPaymentService.setOtherPaymentPreference = () => Promise.resolve()
   ConformityPaymentService.resetPaymentPreference = () => Promise.resolve()
   ProspectsService.fetchOnboardingStep = () => Promise.resolve({
     id: OnboardingStep.PaymentMethod,
-    status: paymentType === null ? OnboardingStepStatus.ToDo : OnboardingStepStatus.Completed,
+    status: status ?? (paymentType === null ? OnboardingStepStatus.ToDo : OnboardingStepStatus.Completed),
   })
 }
 
 const renderWithState = ({
   paymentType,
   isSignatory = true,
+  status,
 }: {
   paymentType: ConformityPaymentType | null
   isSignatory?: boolean
+  // Overrides the status derived from the payment type, for states the preference cannot express.
+  status?: OnboardingStepStatus
 }): Story['render'] => (args) => ({
   components: { Payment },
   setup() {
-    mockPaymentPreference(paymentType, isSignatory)
+    mockPaymentPreference(paymentType, isSignatory, status)
     return { args }
   },
   template: `
@@ -83,4 +90,14 @@ export const Other: Story = {
 // the "back to SEPA mandate" button is hidden.
 export const OtherNonSignatory: Story = {
   render: renderWithState({ paymentType: ConformityPaymentType.Other, isSignatory: false }),
+}
+
+// No signatory exists on the account: the card is reduced to an informational alert telling the
+// client to contact their advisor.
+export const SignatoryRequired: Story = {
+  render: renderWithState({
+    paymentType: null,
+    isSignatory: false,
+    status: OnboardingStepStatus.SignatoryRequired,
+  }),
 }
