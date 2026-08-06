@@ -19,6 +19,7 @@ import type {
   UpdateCustomerRelationRequest,
   UpdateCustomerRelationResponse,
 } from './account.type'
+import type { CreateCustomerRequest } from './create-customer.types'
 import { ContactType } from '@pulse/common/enums'
 import type { AccountType } from '@pulse/common/enums'
 
@@ -203,15 +204,8 @@ export async function deleteContactFromAccount(
   })
 }
 
-export type createCustomerBody = {
-  firstName: Contact['firstName']
-  lastName: Contact['lastName']
-  email: Contact['email']
-  mobilePhone: Contact['mobilePhone']
-}
-
 export async function createCustomer(
-  customerInformation: createCustomerBody,
+  customerInformation: CreateCustomerRequest,
   accountNumber: string,
   accountType: AccountType,
 ) {

@@ -2,6 +2,7 @@ import { flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
+import { CreationReferentialService } from '@entities/services/creation-referential'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { useProspectCreationDrawer } from './prospect-creation-drawer.composable'
 import {
@@ -18,7 +19,7 @@ const steps = [
 
 describe('useProspectCreationDrawer', () => {
   beforeEach(() => {
-    vi.spyOn(ProspectsService, 'fetchProspectCreationDropdownContent').mockResolvedValue(getDropdownsContentMock())
+    vi.spyOn(CreationReferentialService, 'fetchCreationDropdownContent').mockResolvedValue(getDropdownsContentMock())
     vi.spyOn(ProspectsService, 'fetchCollaboratorTargetRoles').mockResolvedValue(getCollaboratorTargetRolesMock())
   })
 
@@ -99,7 +100,7 @@ describe('useProspectCreationDrawer', () => {
     const [{ dropdownsContent }] = withSetup(() => useProspectCreationDrawer(steps))
 
     expect(dropdownsContent.value).toEqual(getEmptyDropdownsContentMock())
-    expect(vi.mocked(ProspectsService.fetchProspectCreationDropdownContent)).toHaveBeenCalled()
+    expect(vi.mocked(CreationReferentialService.fetchCreationDropdownContent)).toHaveBeenCalled()
 
     await flushPromises()
 
@@ -108,7 +109,7 @@ describe('useProspectCreationDrawer', () => {
 
   it('should keep dropdown content empty and log error when fetch fails', async () => {
     const fetchError = new Error('Network error')
-    vi.mocked(ProspectsService.fetchProspectCreationDropdownContent).mockRejectedValueOnce(fetchError)
+    vi.mocked(CreationReferentialService.fetchCreationDropdownContent).mockRejectedValueOnce(fetchError)
 
     const { logger } = await import('@pulse/toolbox')
 

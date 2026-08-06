@@ -18,7 +18,6 @@ import {
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import {
   getCollaboratorTargetRolesMock,
-  getDropdownsContentMock,
   getProspectEntitySearchResultMock,
 } from '@entities/modules/wallet/pages/prospects/components/prospect-creation-drawer/__mocks__/prospect-creation-drawer.mocks'
 import { ProspectEligibilityStatus } from '@entities/modules/wallet/enums'
@@ -72,18 +71,6 @@ describe('ProspectsService', () => {
       expect(mocks.delete).toHaveBeenCalledWith(
         `${API_PREFIXES.WALLET}/prospects/${prospectId}/currentuser`,
       )
-    })
-  })
-
-  describe('fetchProspectCreationDropdownContent', () => {
-    it('should GET the referential infos and return the data', async () => {
-      const responseData = getDropdownsContentMock()
-      mocks.get.mockResolvedValueOnce({ data: responseData })
-
-      const result = await ProspectsService.fetchProspectCreationDropdownContent()
-
-      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/referential-infos`)
-      expect(result).toEqual(responseData)
     })
   })
 

@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import type { FormInstance } from '@pulse/styleguide/types'
+import type { CreationDropdownContent } from '@entities/services/creation-referential'
 import type {
   CollaboratorTargetRole,
-  ProspectCreationDropdownContent,
   ProspectEntitySearchResult,
   ProspectFormData,
 } from '@entities/modules/wallet/types'
@@ -61,8 +61,8 @@ export function getProspectEntitySearchResultMock(
 }
 
 export function getDropdownsContentMock(
-  overrides: Partial<ProspectCreationDropdownContent> = {},
-): ProspectCreationDropdownContent {
+  overrides: Partial<CreationDropdownContent> = {},
+): CreationDropdownContent {
   return {
     contactTitle: { M: 'Monsieur' },
     contactService: { DG: 'Direction générale' },
@@ -86,7 +86,7 @@ export function getCollaboratorTargetRolesMock(
     : defaults.map((role, index) => ({ ...role, ...overrides[index] }))
 }
 
-export function getEmptyDropdownsContentMock(): ProspectCreationDropdownContent {
+export function getEmptyDropdownsContentMock(): CreationDropdownContent {
   return {
     contactTitle: {},
     contactService: {},

@@ -1,4 +1,5 @@
 import type { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
+import type { PDropdownOption } from '@pulse/styleguide/types'
 import type { Contact } from '../../add-customer-drawer.types'
 
 export interface AddCustomerContentProps {
@@ -11,6 +12,7 @@ export interface AddCustomerContentProps {
   emailErrorMessage: string
   firstNameErrorMessage: string
   lastNameErrorMessage: string
+  customerTitleOptions: PDropdownOption[]
   shouldEnableNames: boolean
   addCustomerDrawerStepIndex: number
   addCustomerDrawerStep: AddCustomerDrawerStep

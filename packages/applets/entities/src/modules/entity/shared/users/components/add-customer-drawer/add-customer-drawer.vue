@@ -17,6 +17,7 @@
       </p>
     </template>
     <AddCustomerContent
+      ref="contentRef"
       v-model:authorizationsState="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       v-model:additionalOptionByActionCodeOrigin="additionalOptionByActionCodeOrigin"
@@ -30,6 +31,7 @@
       :emailErrorMessage="emailErrorMessage"
       :firstNameErrorMessage="firstNameErrorMessage"
       :lastNameErrorMessage="lastNameErrorMessage"
+      :customerTitleOptions="customerTitleOptions"
       :shouldEnableNames="shouldEnableNames"
       :addCustomerDrawerStepIndex="addCustomerDrawerStepIndex"
       :addCustomerDrawerStep="addCustomerDrawerStep"
@@ -61,7 +63,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, onMounted, useTemplateRef } from 'vue'
 import {
   PDrawer,
   PDrawerActions,
@@ -89,6 +91,7 @@ const { t } = useI18n({
       grantSelectedRights: 'Grant selected rights',
       requiredInput: 'This field is required',
       addCustomerFailed: 'Failed to add the user',
+      customerTitleOptionsLoadingFailed: 'Unable to load the information required to add a user. Please try again later.',
     },
     'fr-FR': {
       close: 'Fermer',
@@ -101,6 +104,7 @@ const { t } = useI18n({
       grantSelectedRights: 'Donner les droits sélectionnés',
       requiredInput: 'Ce champ est obligatoire',
       addCustomerFailed: 'L\'ajout de l\'utilisateur a échoué',
+      customerTitleOptionsLoadingFailed: 'Impossible de charger les informations nécessaires à l\'ajout d\'un utilisateur. Veuillez réessayer plus tard.',
     },
   },
 })
@@ -110,6 +114,7 @@ const emit = defineEmits<{
   'update:modelValue': [boolean]
   'refresh-customers-list': [void]
 }>()
+const contentRef = useTemplateRef<InstanceType<typeof AddCustomerContent>>('contentRef')
 
 const isProspect = computed(() => props.targetEntityAccountType === AccountType.PROSPECT)
 
@@ -135,9 +140,11 @@ const {
   additionalOptionByActionCode,
   additionalOptionByActionCodeOrigin,
   pennylaneAvailableRoles,
+  customerTitleOptions,
   debouncedCheckEmail,
   debouncedCheckFirstName,
   debouncedCheckLastName,
+  fetchCustomerTitleOptions,
   submitForm,
   goNextStep,
 } = useAddCustomerDrawer({
@@ -145,12 +152,16 @@ const {
   requiredInputMessage: t('requiredInput'),
   alreadyAddedToAccountMessage: t('alreadyAddedToAccount'),
   addCustomerFailedMessage: t('addCustomerFailed'),
+  customerTitleOptionsLoadingFailedMessage: t('customerTitleOptionsLoadingFailed'),
   addCustomerDrawerSteps: ADD_CUSTOMER_USER_DRAWER_STEPS,
+  validateFirstStep,
 })
+
+onMounted(fetchCustomerTitleOptions)
 
 const nextLabelKey = computed(() => {
   switch (addCustomerDrawerStep.value) {
-    case AddCustomerDrawerStep.ADD_EMAIL:
+    case AddCustomerDrawerStep.CUSTOMER_INFORMATION:
       return 'addUser'
     case AddCustomerDrawerStep.MANAGE_RIGHTS:
       return 'grantSelectedRights'
@@ -192,7 +203,7 @@ const isDrawerOpened = computed({
 })
 
 async function onClickNext() {
-  const isFirstStep = addCustomerDrawerStep.value === AddCustomerDrawerStep.ADD_EMAIL
+  const isFirstStep = addCustomerDrawerStep.value === AddCustomerDrawerStep.CUSTOMER_INFORMATION
   const isSuccess = await submitForm(
     props.targetEntityId,
     props.targetEntityNumber,
@@ -201,6 +212,10 @@ async function onClickNext() {
   if (isSuccess === true && isFirstStep === true) {
     emit('refresh-customers-list')
   }
+}
+
+async function validateFirstStep(): Promise<boolean> {
+  return await contentRef.value?.validate() ?? true
 }
 
 function onClickPrevious() {
@@ -227,4 +242,3 @@ function onUpdateLastName(lastName: string) {
   debouncedCheckLastName()
 }
 </script>
-

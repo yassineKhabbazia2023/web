@@ -1,10 +1,11 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { logger } from '@pulse/toolbox'
 import type { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
+import { CreationReferentialService } from '@entities/services/creation-referential'
+import type { CreationDropdownContent } from '@entities/services/creation-referential'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import type {
   CollaboratorTargetRole,
-  ProspectCreationDropdownContent,
   ProspectFormData,
 } from '@entities/modules/wallet/types'
 import { SIGNATORY_CONTACT_TYPE } from './prospect-creation-drawer.const'
@@ -42,7 +43,7 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
     },
   })
 
-  const dropdownsContent = ref<ProspectCreationDropdownContent>({
+  const dropdownsContent = ref<CreationDropdownContent>({
     contactTitle: {},
     contactService: {},
     contactHierarchicalLevel: {},
@@ -79,7 +80,7 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
 
   onMounted(async () => {
     try {
-      dropdownsContent.value = await ProspectsService.fetchProspectCreationDropdownContent()
+      dropdownsContent.value = await CreationReferentialService.fetchCreationDropdownContent()
     } catch (error) {
       logger.error('Failed to fetch prospect creation dropdown content', error)
     }

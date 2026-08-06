@@ -4,6 +4,8 @@ import { AccountManager } from '@entities/managers/account/account.manager'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
 import { saveUserPermissions } from '@entities/components/ManageRightsDrawer/utils'
 import { displayNotification } from '@pulse/styleguide'
+import { CreationReferentialService } from '@entities/services/creation-referential'
+import { logger } from '@pulse/toolbox'
 
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { CollaboratorPermission, AccountType } from '@pulse/common/enums'
@@ -13,12 +15,14 @@ const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccoun
 const saveUserPermissionsMock = vi.mocked(saveUserPermissions)
 const createOrAddCustomerToAccountMock = vi.fn()
 const displayNotificationMock = vi.mocked(displayNotification)
+const validateFirstStepMock = vi.fn<() => Promise<boolean>>()
 
 beforeEach(() => {
   vi.spyOn(AccountManager, 'createOrAddCustomerToAccount').mockImplementation(createOrAddCustomerToAccountMock)
   hasContactRoleOnCommonAccountMock.mockResolvedValue(undefined as unknown as boolean)
   saveUserPermissionsMock.mockResolvedValue(undefined as unknown as boolean)
   displayNotificationMock.mockReturnValue(undefined)
+  validateFirstStepMock.mockResolvedValue(true)
 })
 
 const initializationParamaters = {
@@ -27,6 +31,8 @@ const initializationParamaters = {
   addCustomerDrawerSteps: ADD_CUSTOMER_USER_DRAWER_STEPS,
   requiredInputMessage: 'requiredInput',
   addCustomerFailedMessage: 'addCustomerFailed',
+  customerTitleOptionsLoadingFailedMessage: 'customerTitleOptionsLoadingFailed',
+  validateFirstStep: validateFirstStepMock,
 }
 const contactIdMock = 233
 const targetEntityIdMock = 2342
@@ -34,13 +40,34 @@ const targetEntityNumberMock = '2342'
 const targetEntityAccountTypeMock = AccountType.REGULAR
 const wrongEmailMock = 'wrong email'
 const correctEmailMock = 'correct@email.test'
+const customerTitlesMock = {
+  M: 'Monsieur',
+  Mme: 'Madame',
+}
+const customerTitleOptionsMock = [
+  { pValue: 'M', pLabel: 'Monsieur' },
+  { pValue: 'Mme', pLabel: 'Madame' },
+]
 
 describe('add-customer-drawer.composable', () => {
+  beforeEach(() => {
+    vi.spyOn(CreationReferentialService, 'fetchCreationDropdownContent').mockResolvedValue(
+      {
+        contactTitle: customerTitlesMock,
+        contactService: {},
+        contactHierarchicalLevel: {},
+        contactType: {},
+        legalForm: {},
+        legalStructure: {},
+      },
+    )
+  })
+
   describe('initial state', () => {
     it('should set initial state properly', () => {
       const expectedInitialState = {
         addCustomerDrawerStepIndex: 0,
-        addCustomerDrawerStep: AddCustomerDrawerStep.ADD_EMAIL,
+        addCustomerDrawerStep: AddCustomerDrawerStep.CUSTOMER_INFORMATION,
         isLastStep: false,
         hasFormSubmissionFailed: false,
         isNextButtonLoading: false,
@@ -49,6 +76,8 @@ describe('add-customer-drawer.composable', () => {
           'email': '',
           'firstname': '',
           'lastname': '',
+          'mobilePhone': '',
+          'title': '',
         },
         contactId: undefined,
         isAddContactSucceeded: false,
@@ -149,6 +178,71 @@ describe('add-customer-drawer.composable', () => {
         expect(isNextButtonLoading.value).toBe(false)
         expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledExactlyOnceWith(email, targetEntityIdMock)
       })
+    })
+  })
+
+  describe('fetchCustomerTitleOptions', () => {
+    it('should expose the same values and labels as the prospect referential without selecting a default', async () => {
+      const { newContact, customerTitleOptions, fetchCustomerTitleOptions } = useAddCustomerDrawer(
+        initializationParamaters,
+      )
+
+      await fetchCustomerTitleOptions()
+
+      expect(customerTitleOptions.value).toEqual(customerTitleOptionsMock)
+      expect(newContact.value.title).toBe('')
+    })
+
+    it('should keep options empty, log and notify when the referential cannot be loaded', async () => {
+      const fetchError = new Error('Network error')
+      vi.mocked(CreationReferentialService.fetchCreationDropdownContent).mockRejectedValueOnce(fetchError)
+      const { customerTitleOptions, fetchCustomerTitleOptions } = useAddCustomerDrawer(initializationParamaters)
+
+      await fetchCustomerTitleOptions()
+
+      expect(customerTitleOptions.value).toEqual([])
+      expect(vi.mocked(logger.error)).toHaveBeenCalledWith(
+        'Failed to fetch customer title dropdown content',
+        fetchError,
+      )
+      expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith(
+        'error',
+        initializationParamaters.customerTitleOptionsLoadingFailedMessage,
+      )
+    })
+
+  })
+
+  describe('first-step gating', () => {
+    it('should leave title and mobile phone validation to the first-step form', () => {
+      const { newContact, isNextButtonDisabled } = useAddCustomerDrawer(initializationParamaters)
+      newContact.value.email = correctEmailMock
+      newContact.value.firstname = 'Jane'
+      newContact.value.lastname = 'Doe'
+      newContact.value.title = ''
+      newContact.value.mobilePhone = ''
+
+      expect(isNextButtonDisabled.value).toBe(false)
+    })
+
+    it('should not submit when first-step validation fails', async () => {
+      validateFirstStepMock.mockResolvedValueOnce(false)
+      const { newContact, customerTitleOptions, submitForm } = useAddCustomerDrawer(initializationParamaters)
+      newContact.value = {
+        email: correctEmailMock,
+        firstname: 'Jane',
+        lastname: 'Doe',
+        title: 'M',
+        mobilePhone: '+331',
+      }
+      customerTitleOptions.value = customerTitleOptionsMock
+
+      await expect(
+        submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock),
+      ).resolves.toBe(false)
+      expect(validateFirstStepMock).toHaveBeenCalledOnce()
+      expect(hasContactRoleOnCommonAccountMock).not.toHaveBeenCalled()
+      expect(createOrAddCustomerToAccountMock).not.toHaveBeenCalled()
     })
   })
 
@@ -286,6 +380,7 @@ describe('add-customer-drawer.composable', () => {
 
         const {
           newContact,
+          customerTitleOptions,
           addCustomerDrawerStepIndex,
           submitForm,
         } = useAddCustomerDrawer(initializationParamaters)
@@ -293,6 +388,9 @@ describe('add-customer-drawer.composable', () => {
         newContact.value.email = email
         newContact.value.firstname = firstname
         newContact.value.lastname = lastname
+        newContact.value.title = 'M'
+        newContact.value.mobilePhone = '+33612345678'
+        customerTitleOptions.value = customerTitleOptionsMock
 
         const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
         expect(isSuccess).toBe(expectedIsSuccess)
@@ -303,6 +401,38 @@ describe('add-customer-drawer.composable', () => {
           expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith(...expectedDisplayNotificationCalledWith)
         }
       })
+
+      it.each(['M', 'Mme'] as const)(
+        'should send the %s title and E.164 mobile phone to the account API',
+        async (title) => {
+          createOrAddCustomerToAccountMock.mockResolvedValue(contactIdMock)
+          const { newContact, customerTitleOptions, submitForm } = useAddCustomerDrawer(initializationParamaters)
+          newContact.value = {
+            email: correctEmailMock,
+            firstname: 'Jane',
+            lastname: 'Doe',
+            title,
+            mobilePhone: '+33612345678',
+          }
+          customerTitleOptions.value = customerTitleOptionsMock
+
+          await submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
+
+          expect(createOrAddCustomerToAccountMock).toHaveBeenCalledExactlyOnceWith(
+            {
+              email: correctEmailMock,
+              firstName: 'Jane',
+              lastName: 'Doe',
+              title,
+              mobilePhone: '+33612345678',
+              accountNumber: targetEntityNumberMock,
+            },
+            targetEntityIdMock,
+            targetEntityNumberMock,
+            targetEntityAccountTypeMock,
+          )
+        },
+      )
     })
 
     describe('first step - unprocessable entity (422)', () => {
@@ -319,6 +449,9 @@ describe('add-customer-drawer.composable', () => {
         api.newContact.value.email = correctEmailMock
         api.newContact.value.firstname = 'toto'
         api.newContact.value.lastname = 'toto'
+        api.newContact.value.title = 'M'
+        api.newContact.value.mobilePhone = '+33612345678'
+        api.customerTitleOptions.value = customerTitleOptionsMock
       }
 
       it('should display the server message under the email field and stay on the step', async () => {

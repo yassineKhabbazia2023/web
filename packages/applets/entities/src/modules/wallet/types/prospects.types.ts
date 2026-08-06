@@ -42,16 +42,6 @@ export interface ProspectCreationPayload {
   signatory: ProspectSignatory
 }
 
-export type ProspectCreationDropdownContent = Record<
-  'contactTitle' |
-  'contactService' |
-  'contactHierarchicalLevel' |
-  'contactType' |
-  'legalForm' |
-  'legalStructure',
-  Record<string, string>
->
-
 export interface ProspectEntityBeneficiary {
   firstName: string
   lastName: string

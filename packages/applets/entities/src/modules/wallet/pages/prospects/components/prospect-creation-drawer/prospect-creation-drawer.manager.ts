@@ -1,10 +1,11 @@
 import type { PDropdownOption } from '@pulse/styleguide/types'
+import type { CreationDropdownContent } from '@entities/services/creation-referential'
 import type {
   CollaboratorTargetRole,
-  ProspectCreationDropdownContent,
   ProspectCreationPayload,
   ProspectFormData,
 } from '@entities/modules/wallet/types'
+import { convertRecordToDropdownOptions } from '@entities/utils/helpers/forms'
 import { SIGNATORY_CONTACT_TYPE } from './prospect-creation-drawer.const'
 
 const CASE_MANAGER_ROLE_LABEL_KEY = 'MASTER_OF_FILE'
@@ -20,23 +21,12 @@ const CONTACT_TYPE_MAPPING: Record<string, string> = {
 
 export class ProspectCreationDrawerManager {
   /**
-   * Converts a key-value Record (from API response) to PDropdownOption array.
-   * The API returns dropdown values as { code: label } objects, but PDropdown
-   * expects an array of { pValue, pLabel } objects.
-   */
-  static convertRecordToDropdownOptions(options: Record<string, string>): PDropdownOption[] {
-    return Object
-      .entries(options)
-      .map(([value, label]) => ({ pValue: value, pLabel: label }))
-  }
-
-  /**
    * Builds the "Type de contact" dropdown options. The mandatory signatory option
    * is locked (pDisabled) so it stays selected and cannot be removed by the user;
    * only the other contact types remain toggleable.
    */
   static toContactTypeOptions(contactType: Record<string, string>): PDropdownOption[] {
-    return ProspectCreationDrawerManager.convertRecordToDropdownOptions(contactType)
+    return convertRecordToDropdownOptions(contactType)
       .map((option) => option.pValue === SIGNATORY_CONTACT_TYPE
         ? { ...option, pDisabled: true }
         : option)
@@ -53,7 +43,7 @@ export class ProspectCreationDrawerManager {
   static toCreationPayload(
     formData: ProspectFormData,
     collaboratorTargetRoles: CollaboratorTargetRole[],
-    dropdownsContent: ProspectCreationDropdownContent,
+    dropdownsContent: CreationDropdownContent,
   ): ProspectCreationPayload {
     const caseManagerRoleId = collaboratorTargetRoles
       .find((role) => role.labelKey === CASE_MANAGER_ROLE_LABEL_KEY)?.id

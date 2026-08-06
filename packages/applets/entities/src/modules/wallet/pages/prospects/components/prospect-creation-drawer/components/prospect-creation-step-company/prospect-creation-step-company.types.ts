@@ -1,9 +1,9 @@
 import type { Ref } from 'vue'
 import type { FormInstance } from '@pulse/styleguide/types'
-import type { ProspectCreationDropdownContent } from '@entities/modules/wallet/types'
+import type { CreationDropdownContent } from '@entities/services/creation-referential'
 
 export interface ProspectCreationStepCompanyProps {
-  dropdownsContent: ProspectCreationDropdownContent
+  dropdownsContent: CreationDropdownContent
 }
 
 export interface ProspectCreationStepCompanyValidationParams {

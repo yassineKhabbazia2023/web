@@ -15,6 +15,9 @@ import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/
 import type { PennylaneAvailableRole } from '@pulse/common/types'
 import { AccountType } from '@pulse/common/enums'
 import { i18n } from '@pulse/common/i18n'
+import { CreationReferentialService } from '@entities/services/creation-referential'
+import { convertRecordToDropdownOptions } from '@entities/utils/helpers/forms'
+import type { PDropdownOption } from '@pulse/styleguide/types'
 
 function amplitudeTrack(result: 'failed' | 'succeeded') {
   AmplitudeService.track('Onboarding Started', {
@@ -28,6 +31,8 @@ export function useAddCustomerDrawer({
   addCustomerDrawerSteps,
   requiredInputMessage,
   addCustomerFailedMessage,
+  customerTitleOptionsLoadingFailedMessage,
+  validateFirstStep,
 }: UseAddCustomerDrawerOptions) {
   const addCustomerDrawerStepIndex = ref(0)
   const isNextButtonLoading = ref(false)
@@ -41,11 +46,14 @@ export function useAddCustomerDrawer({
   const authorizationsState = ref<Record<string, AuthorizationState>>({})
   const shouldEnableNames = ref(false)
   const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
+  const customerTitleOptions = ref<PDropdownOption[]>([])
 
   const newContact = ref<Contact>({
     firstname: '',
     lastname: '',
     email: '',
+    title: '',
+    mobilePhone: '',
   })
 
   const isLastStep = computed(() => {
@@ -63,8 +71,8 @@ export function useAddCustomerDrawer({
       return hasSelection === false // At least one group must be active
     }
 
-    return newContact.value.email === '' || newContact.value.firstname === ''|| newContact.value.lastname === '' ||
-     emailErrorMessage.value !== '' || firstNameErrorMessage.value !== '' || lastNameErrorMessage.value !== ''
+    return newContact.value.email === '' || newContact.value.firstname === '' || newContact.value.lastname === '' ||
+      emailErrorMessage.value !== '' || firstNameErrorMessage.value !== '' || lastNameErrorMessage.value !== ''
   })
 
   const addCustomerDrawerStep = computed(() => toValue(addCustomerDrawerSteps)[addCustomerDrawerStepIndex.value])
@@ -109,6 +117,16 @@ export function useAddCustomerDrawer({
     }
   }
 
+  async function fetchCustomerTitleOptions() {
+    try {
+      const dropdownsContent = await CreationReferentialService.fetchCreationDropdownContent()
+      customerTitleOptions.value = convertRecordToDropdownOptions(dropdownsContent.contactTitle)
+    } catch (error) {
+      logger.error('Failed to fetch customer title dropdown content', error)
+      displayNotification('error', customerTitleOptionsLoadingFailedMessage)
+    }
+  }
+
   function clearEmailErrorMessage() {
     emailErrorMessage.value = ''
   }
@@ -125,8 +143,12 @@ export function useAddCustomerDrawer({
     targetEntityAccountType: AccountType,
   ) {
     try {
-      if (addCustomerDrawerStep.value === AddCustomerDrawerStep.ADD_EMAIL) {
-        const isSuccess = await submitFormEmail(targetEntityId, targetEntityNumber, targetEntityAccountType)
+      if (addCustomerDrawerStep.value === AddCustomerDrawerStep.CUSTOMER_INFORMATION) {
+        const isSuccess = await submitCustomerInformationStep(
+          targetEntityId,
+          targetEntityNumber,
+          targetEntityAccountType,
+        )
         if (isSuccess) {
           goNextStep()
         }
@@ -180,11 +202,16 @@ export function useAddCustomerDrawer({
     return getPennylaneRoleLabelByCode(roleCode, pennylaneAvailableRoles.value)
   }
 
-  async function submitFormEmail(
+  async function submitCustomerInformationStep(
     targetEntityId: number,
     targetEntityNumber: string,
     targetEntityAccountType: AccountType,
   ) {
+    const isFirstStepValid = await validateFirstStep()
+    if (isFirstStepValid === false) {
+      return false
+    }
+
     await checkEmail(targetEntityId)
 
     if (isNextButtonDisabled.value === true) {
@@ -210,7 +237,8 @@ export function useAddCustomerDrawer({
       const customer = {
         firstName: newContact.value.firstname,
         lastName: newContact.value.lastname,
-        mobilePhone: '',
+        title: newContact.value.title,
+        mobilePhone: newContact.value.mobilePhone,
         email: newContact.value.email,
         accountNumber: targetEntityNumber,
       }
@@ -281,7 +309,9 @@ export function useAddCustomerDrawer({
     additionalOptionByActionCodeOrigin,
     shouldEnableNames,
     pennylaneAvailableRoles,
+    customerTitleOptions,
     checkEmail,
+    fetchCustomerTitleOptions,
     debouncedCheckEmail,
     debouncedCheckFirstName,
     debouncedCheckLastName,

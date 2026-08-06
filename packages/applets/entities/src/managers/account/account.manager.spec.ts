@@ -4,6 +4,7 @@ import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { AccountType } from '@pulse/common/enums'
 import type { UserInfoApi } from '@pulse/common/types'
 import type { AxiosResponse } from 'axios'
+import type { CreateCustomerRequest } from '../../services/account/create-customer.types'
 
 import { AccountManager } from './account.manager'
 
@@ -23,11 +24,12 @@ describe('AccountManager', () => {
     const accountNumberMock = '432101'
     const accountTypeMock = AccountType.REGULAR
     const newCustomerMock = getMockedUserApi()
-    const customer = {
+    const customer: CreateCustomerRequest = {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
       mobilePhone: '065432101',
+      title: 'M',
     }
 
     it('should return newCustomerId when is does not exist', async () => {

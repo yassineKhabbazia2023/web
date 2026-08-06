@@ -247,7 +247,7 @@ import {
   PInput,
 } from '@pulse/styleguide/components'
 import type { ProspectFormData } from '@entities/modules/wallet/types'
-import { ProspectCreationDrawerManager } from '../../prospect-creation-drawer.manager'
+import { convertRecordToDropdownOptions } from '@entities/utils/helpers/forms'
 import type { ProspectCreationStepCompanyProps } from './prospect-creation-step-company.types'
 import { useProspectCreationStepCompanyValidation } from './prospect-creation-step-company.form.validation'
 import { useScrollToAlert } from '../../use-scroll-to-alert.composable'
@@ -261,10 +261,10 @@ const formRef = useTemplateRef<FormInstance>('formRef')
 const alertRef = useTemplateRef<HTMLElement>('alertRef')
 
 const legalFormOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.legalForm),
+  convertRecordToDropdownOptions(props.dropdownsContent.legalForm),
 )
 const legalStructureOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.legalStructure),
+  convertRecordToDropdownOptions(props.dropdownsContent.legalStructure),
 )
 
 const { rules, validationErrorMessageKey, validate: baseValidate } = useProspectCreationStepCompanyValidation({

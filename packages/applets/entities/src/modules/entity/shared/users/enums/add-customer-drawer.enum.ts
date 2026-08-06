@@ -1,5 +1,5 @@
 export enum AddCustomerDrawerStep {
-  ADD_EMAIL = 'add-email',
+  CUSTOMER_INFORMATION = 'customer-information',
   MANAGE_RIGHTS = 'manage-rights',
   FORM_SENT = 'form-sent',
 }

@@ -17,11 +17,11 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
-      'add-email': 'User information',
+      'customer-information': 'User information',
       'manage-rights': 'User rights',
     },
     'fr-FR': {
-      'add-email': 'Informations de l’utilisateur',
+      'customer-information': 'Informations de l’utilisateur',
       'manage-rights': 'Droits de l’utilisateur',
     },
   },
@@ -36,4 +36,3 @@ const stepItems = computed<PStepsItem[]>(() => {
   }))
 })
 </script>
-

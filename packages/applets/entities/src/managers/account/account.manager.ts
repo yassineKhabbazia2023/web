@@ -1,12 +1,12 @@
 import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from '../../services/account/account.service'
-import type { createCustomerBody } from '../../services/account/account.service'
+import type { CreateCustomerRequest } from '../../services/account/create-customer.types'
 import { logger } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 import type { AccountType } from '@pulse/common/enums'
 
 export class AccountManager {
   static async createOrAddCustomerToAccount(
-    customer: createCustomerBody,
+    customer: CreateCustomerRequest,
     accountId: number,
     accountNumber: string,
     accountType: AccountType,

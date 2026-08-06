@@ -4,7 +4,6 @@ import type { PaginationResponse } from '@pulse/common/types'
 import type {
   CollaboratorTargetRole,
   ProspectAccountRow,
-  ProspectCreationDropdownContent,
   ProspectCreationPayload,
   ProspectEntitySearchResult,
 } from '@entities/modules/wallet/types'
@@ -24,13 +23,6 @@ export class ProspectsService {
 
   static archiveProspect(prospectId: number): Promise<void> {
     return api.gateway.delete(`${API_PREFIXES.WALLET}/prospects/${prospectId}/currentuser`)
-  }
-
-  static async fetchProspectCreationDropdownContent(): Promise<ProspectCreationDropdownContent> {
-    const response = await api.gateway.get<ProspectCreationDropdownContent>(
-      `${API_PREFIXES.PROSPECT}/referential-infos`,
-    )
-    return response.data
   }
 
   static async searchEntities(query: string): Promise<ProspectEntitySearchResult[]> {

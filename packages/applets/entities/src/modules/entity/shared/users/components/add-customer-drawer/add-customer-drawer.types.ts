@@ -14,6 +14,8 @@ export interface Contact {
   email: string
   firstname: string
   lastname: string
+  title: string
+  mobilePhone: string
 }
 
 // Body returned by the createCustomer endpoint on a 422 business validation error
@@ -27,4 +29,6 @@ export interface UseAddCustomerDrawerOptions {
   addCustomerDrawerSteps: MaybeRefOrGetter<AddCustomerDrawerStep[]>
   requiredInputMessage: string
   addCustomerFailedMessage: string
+  customerTitleOptionsLoadingFailedMessage: string
+  validateFirstStep: () => Promise<boolean>
 }

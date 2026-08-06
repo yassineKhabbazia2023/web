@@ -251,6 +251,7 @@ import {
 import { AvatarRoles, useResponsive } from '@pulse/styleguide'
 import type { ProspectEntitySearchResult, ProspectFormData } from '@entities/modules/wallet/types'
 import { ProspectCreationDrawerManager } from '../../prospect-creation-drawer.manager'
+import { convertRecordToDropdownOptions } from '@entities/utils/helpers/forms'
 import type { ProspectCreationStepInformationProps } from './prospect-creation-step-information.types'
 import { useProspectCreationStepInformationValidation } from './prospect-creation-step-information.form.validation'
 import { useProspectEntitySearch } from './prospect-creation-step-information.composable'
@@ -280,13 +281,13 @@ const {
 } = useProspectEntitySearch(prospectFormData)
 
 const titleOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactTitle),
+  convertRecordToDropdownOptions(props.dropdownsContent.contactTitle),
 )
 const departmentOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactService),
+  convertRecordToDropdownOptions(props.dropdownsContent.contactService),
 )
 const companyRoleOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactHierarchicalLevel),
+  convertRecordToDropdownOptions(props.dropdownsContent.contactHierarchicalLevel),
 )
 const contactTypeOptions = computed(() =>
   ProspectCreationDrawerManager.toContactTypeOptions(props.dropdownsContent.contactType),

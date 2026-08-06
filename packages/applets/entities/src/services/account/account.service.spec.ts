@@ -25,6 +25,7 @@ import {
   removeCurrentUserFromAccounts,
 } from '.'
 import type { Hub } from './account.type'
+import type { CreateCustomerRequest } from './create-customer.types'
 import {
   getMockedAccount,
   getMockedAccountRow,
@@ -350,11 +351,12 @@ describe('test accountServices', () => {
     it('should add customer to entity', async () => {
       const newId = 123
       postSpy.mockResolvedValue({ data: newId })
-      const postRequestBody = {
+      const postRequestBody: CreateCustomerRequest = {
         firstName: mockedCollaborators[0].firstName,
         lastName: mockedCollaborators[0].lastName,
         email: mockedCollaborators[0].email,
         mobilePhone: mockedCollaborators[0].mobilePhone,
+        title: 'M',
       }
       const id = await createCustomer(postRequestBody, mockedAccount.accountNumber, AccountType.REGULAR)
       expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`,

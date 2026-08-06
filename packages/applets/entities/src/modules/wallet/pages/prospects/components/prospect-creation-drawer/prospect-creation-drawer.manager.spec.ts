@@ -16,24 +16,6 @@ const dropdownsContent = getDropdownsContentMock({
 })
 
 describe('ProspectCreationDrawerManager', () => {
-  describe('convertRecordToDropdownOptions', () => {
-    it('returns an empty array when options is an empty object', () => {
-      expect(ProspectCreationDrawerManager.convertRecordToDropdownOptions({})).toEqual([])
-    })
-
-    it('maps record entries to dropdown options', () => {
-      const options = {
-        SAS: 'Société par actions simplifiée',
-        SARL: 'Société à responsabilité limitée',
-      }
-
-      expect(ProspectCreationDrawerManager.convertRecordToDropdownOptions(options)).toEqual([
-        { pValue: 'SAS', pLabel: 'Société par actions simplifiée' },
-        { pValue: 'SARL', pLabel: 'Société à responsabilité limitée' },
-      ])
-    })
-  })
-
   describe('toContactTypeOptions', () => {
     it('returns an empty array when the record is empty', () => {
       expect(ProspectCreationDrawerManager.toContactTypeOptions({})).toEqual([])
