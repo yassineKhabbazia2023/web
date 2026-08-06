@@ -1,13 +1,8 @@
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { SessionStorageService, SsoProvider, CookieService } from '@pulse/common/services/storage'
 import { RouteName } from '@pulse/common/enums'
 import { SSO_ORIGIN_COOKIE, SSO_ORIGIN_RYDGE } from '@pulse/common/constants'
 
 export function pennylaneSsoGuard() {
-  if (FeatureFlagManager.isPennylaneSsoRedirectActivated() === false) {
-    return
-  }
-
   // Check SSO connection origin
   const ssoOrigin = CookieService.get(SSO_ORIGIN_COOKIE)
   const isFromRydge = ssoOrigin === SSO_ORIGIN_RYDGE

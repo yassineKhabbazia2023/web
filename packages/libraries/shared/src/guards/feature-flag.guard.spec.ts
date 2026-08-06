@@ -16,13 +16,13 @@ describe('feature-flag.guard', () => {
   })
 
   const tests = [{
-    featureFlag: Feature.MAIL_TO_PENNYLANE,
+    featureFlag: Feature.MAINTENANCE_MODE,
     featureFlagIsActivatedMock: false,
     expectedRouteName: 'Error404',
-    expectedLoggerMock: `feature flag '${Feature.MAIL_TO_PENNYLANE}' is not activated for route '${toNameMock}'`,
+    expectedLoggerMock: `feature flag '${Feature.MAINTENANCE_MODE}' is not activated for route '${toNameMock}'`,
     reason: 'redirect to Error404 because the required feature flag is NOT activated',
   }, {
-    featureFlag: Feature.MAIL_TO_PENNYLANE,
+    featureFlag: Feature.MAINTENANCE_MODE,
     featureFlagIsActivatedMock: true,
     expectedRouteName: undefined,
     expectedLoggerMock: undefined,

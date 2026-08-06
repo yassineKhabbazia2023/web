@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 import { envVarsMock } from '@pulse/common/mocks'
-import { CurrentUserManagerMock, isPennylaneAmendmentFlowActivatedMock, isPennylaneSsoRedirectActivatedMock } from '@pulse/common/mocks/vitest'
+import { CurrentUserManagerMock, isPennylaneAmendmentFlowActivatedMock } from '@pulse/common/mocks/vitest'
 
 // Module-shaped mock for '@pulse/common/managers', registered by
 // vitest.setup.ts: uniform for the whole worker (the managers own specs live
@@ -13,8 +13,7 @@ export const CurrentUserManager = CurrentUserManagerMock
 // Creation-time implementations are the perpetual defaults: the global
 // mockReset restores them before every test (doctrine: guardrails), specs override
 // per test via vi.mocked(...).
-export const FeatureFlagManager: { isPennylaneSsoRedirectActivated: Mock, isPennylaneAmendmentFlowActivated: Mock } = {
-  isPennylaneSsoRedirectActivated: isPennylaneSsoRedirectActivatedMock,
+export const FeatureFlagManager: { isPennylaneAmendmentFlowActivated: Mock } = {
   isPennylaneAmendmentFlowActivated: isPennylaneAmendmentFlowActivatedMock,
 }
 

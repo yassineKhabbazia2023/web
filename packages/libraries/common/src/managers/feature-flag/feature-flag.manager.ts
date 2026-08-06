@@ -54,10 +54,6 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.LAST_ACTIVITY_FEATURE)
   }
 
-  static isMailToPennylaneActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_PENNYLANE)
-  }
-
   static isMaintenanceModeActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MAINTENANCE_MODE)
   }
@@ -72,10 +68,6 @@ export class FeatureFlagManager {
 
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
-  }
-
-  static isPennylaneSsoRedirectActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_REDIRECT)
   }
 
   static isSmartSearchOfferCatalogActivated() {

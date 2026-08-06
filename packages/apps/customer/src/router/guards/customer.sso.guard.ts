@@ -1,5 +1,4 @@
 import type { RouteLocationNormalized } from 'vue-router'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { SessionStorageService, SsoProvider, SsoQueryParam } from '@pulse/common/services/storage'
 
 export function customerSsoGuard(to: RouteLocationNormalized) {
@@ -13,7 +12,7 @@ export function customerSsoGuard(to: RouteLocationNormalized) {
 
   // Pennylane SSO: store context for manual redirect via homepage button
   if (spName === SsoProvider.PENNYLANE) {
-    if (FeatureFlagManager.isPennylaneSsoRedirectActivated() && samlContext && mode) {
+    if (samlContext && mode) {
       SessionStorageService.setSamlSsoContext({ spName, samlContext, mode })
     }
   }
