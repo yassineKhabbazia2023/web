@@ -5,6 +5,11 @@ import { DataGovernance } from '@configcat/sdk'
 import { logger } from '@pulse/toolbox'
 import type { OpenFeatureInitOptions } from './open-feature.types'
 
+// Identity used while no user is authenticated. ConfigCat always receives a User
+// object from the provider, so leaving the targeting key empty makes it warn on
+// every flag evaluated before login (missing User.Identifier attribute).
+const ANONYMOUS_TARGETING_KEY = 'anonymous'
+
 /**
  * Wrapper around the OpenFeature Web SDK backed by ConfigCat (EU-only).
  *
@@ -27,10 +32,18 @@ export class OpenFeatureService {
         flagOverrides: options?.flagOverrides,
       })
       await OpenFeature.setProviderAndWait(provider)
+      // the provider is usable from here: a failing context must not disable the service
       OpenFeatureService.initialized = true
       logger.info('OpenFeature initialized with ConfigCat provider')
     } catch (error) {
       logger.error('Failed to initialize OpenFeature', error)
+      return
+    }
+
+    try {
+      await OpenFeature.setContext({ targetingKey: ANONYMOUS_TARGETING_KEY })
+    } catch (error) {
+      logger.error('Failed to set the anonymous evaluation context', error)
     }
   }
 
@@ -83,13 +96,13 @@ export class OpenFeatureService {
     await OpenFeature.setContext({ targetingKey: email, email })
   }
 
-  /** Clears the user evaluation context (e.g. on logout). */
-  static async clearUserContext(): Promise<void> {
+  /** Resets the evaluation context back to the anonymous identity (e.g. on logout). */
+  static async resetToAnonymousContext(): Promise<void> {
     if (OpenFeatureService.initialized === false) {
       return
     }
 
-    await OpenFeature.clearContext()
+    await OpenFeature.setContext({ targetingKey: ANONYMOUS_TARGETING_KEY })
   }
 
   /** @internal Resets state for testing purposes only. */

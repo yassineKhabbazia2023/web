@@ -12,7 +12,9 @@ export interface WalletTabConfig {
   isDisplayed: (context: WalletContext) => boolean
   getCount?: () => number | string | undefined
   order: number
-  showInMobile?: boolean // Whether to show in mobile view
+  // Whether to show in mobile view, resolved at display time so it can depend on
+  // the context (permissions, feature flags). Omitted means hidden on mobile.
+  showInMobile?: (context: WalletContext) => boolean
 }
 
 /**

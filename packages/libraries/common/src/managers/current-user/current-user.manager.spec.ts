@@ -1,4 +1,5 @@
-import { getMockedUserInfo, getMockedCurrentEntity, getPermissionsMock } from '../../__mocks__'
+import { loggerMock } from '@pulse/toolbox/mocks'
+import { getMockedUserInfo, getMockedUserContext, getMockedCurrentEntity, getPermissionsMock } from '../../__mocks__'
 import { getStoreMock } from '../../__mocks__/vitest'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
@@ -12,7 +13,9 @@ import type { Mock } from 'vitest'
 import { logoutUser } from '../../services/authentication.service'
 import { LogoutService } from '../../services/logout/logout.service'
 import { CurrentUserService } from '../../services/current-user/current-user.service'
+import { OpenFeatureService } from '../../services/open-feature'
 
+const userContextMock = getMockedUserContext()
 const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
@@ -33,6 +36,8 @@ describe('test current-user.manager', () => {
     logoutUserMock.mockResolvedValue(undefined)
     logoutStrategyMock = vi.mocked(vi.spyOn(LogoutService, 'logout').mockResolvedValue(undefined))
     getCurrentUserMock = vi.mocked(vi.spyOn(CurrentUserService, 'getCurrentUser'))
+    // static class state: it survives mockReset and is shared worker-wide
+    CurrentUserManager.resetUserContext()
   })
 
   describe('initializeCurrentUser', () => {
@@ -69,6 +74,38 @@ describe('test current-user.manager', () => {
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
       expect(logoutStrategyMock).toHaveBeenCalledOnce()
+    })
+
+    it('should reset the user context so the next session reloads and re-identifies the user', async () => {
+      vi.spyOn(CurrentUserService, 'getCurrentUserContext').mockResolvedValue(userContextMock as any)
+      vi.spyOn(CurrentUserService, 'getUserWalletInformation').mockResolvedValue(undefined as any)
+      vi.spyOn(OpenFeatureService, 'setUserContext').mockResolvedValue(undefined)
+      userStoreMock.getUser.mockReturnValue(userContextMock.contact)
+      await CurrentUserManager.ensureUserContext()
+
+      await CurrentUserManager.logout()
+      await CurrentUserManager.ensureUserContext()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledTimes(2)
+    })
+
+    it('should drop the feature flag identity so flags stop evaluating as the logged out user', async () => {
+      vi.spyOn(OpenFeatureService, 'resetToAnonymousContext').mockResolvedValue(undefined)
+
+      await CurrentUserManager.logout()
+
+      expect(OpenFeatureService.resetToAnonymousContext).toHaveBeenCalledOnce()
+    })
+
+    it('should still clean storage when resetting the feature flag identity throws', async () => {
+      vi.spyOn(OpenFeatureService, 'resetToAnonymousContext')
+        .mockRejectedValue(new Error('configcat error'))
+
+      await expect(CurrentUserManager.logout()).rejects.toThrow('configcat error')
+
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledTimes(2)
     })
 
     it('should still clean storage when the logout strategy throws', async () => {
@@ -368,6 +405,128 @@ describe('test current-user.manager', () => {
 
       expect(getTokenSpy).toHaveBeenCalledOnce()
       expect(result).toBe(false)
+    })
+  })
+
+  describe('ensureUserContext', () => {
+    beforeEach(() => {
+      vi.spyOn(CurrentUserService, 'getCurrentUserContext').mockResolvedValue(userContextMock as any)
+      vi.spyOn(CurrentUserService, 'getUserWalletInformation').mockResolvedValue(undefined as any)
+      vi.spyOn(OpenFeatureService, 'setUserContext').mockResolvedValue(undefined)
+      userStoreMock.getUser.mockReturnValue(userContextMock.contact)
+    })
+
+    it('should load the user and identify them to the feature flag provider', async () => {
+      await CurrentUserManager.ensureUserContext()
+
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledWith(userContextMock.contact.email)
+    })
+
+    it('should resolve the user context only once', async () => {
+      await CurrentUserManager.ensureUserContext()
+      await CurrentUserManager.ensureUserContext()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(1)
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledTimes(1)
+    })
+
+    it('should share the same load between concurrent callers', async () => {
+      await Promise.all([
+        CurrentUserManager.ensureUserContext(),
+        CurrentUserManager.ensureUserContext(),
+      ])
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(1)
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not identify the user when they could not be loaded', async () => {
+      userStoreMock.getUser.mockReturnValue(undefined)
+
+      await CurrentUserManager.ensureUserContext()
+
+      expect(OpenFeatureService.setUserContext).not.toHaveBeenCalled()
+    })
+
+    it('should retry on the next call when the user could not be loaded', async () => {
+      userStoreMock.getUser.mockReturnValue(undefined)
+      await CurrentUserManager.ensureUserContext()
+
+      userStoreMock.getUser.mockReturnValue(userContextMock.contact)
+      await CurrentUserManager.ensureUserContext()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+      expect(OpenFeatureService.setUserContext).toHaveBeenCalledWith(userContextMock.contact.email)
+    })
+
+    it('should not reject when the identification fails', async () => {
+      vi.mocked(OpenFeatureService.setUserContext).mockRejectedValueOnce(new Error('configcat error'))
+
+      await expect(CurrentUserManager.ensureUserContext()).resolves.toBeUndefined()
+
+      expect(loggerMock.error).toHaveBeenCalled()
+    })
+
+    it('should load the user again after resetUserContext', async () => {
+      await CurrentUserManager.ensureUserContext()
+      CurrentUserManager.resetUserContext()
+      await CurrentUserManager.ensureUserContext()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+    })
+
+    it('should load the user, their permissions and their wallet information', async () => {
+      const walletInformationMock = { foldersCount: 3 }
+      vi.mocked(CurrentUserService.getUserWalletInformation).mockResolvedValue(walletInformationMock as any)
+
+      await CurrentUserManager.ensureUserContext()
+
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userContextMock.contact)
+      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userContextMock.favoriteEntities)
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userContextMock.permissions)
+      expect(userStoreMock.setWalletInformation).toHaveBeenCalledWith(walletInformationMock)
+    })
+
+    it('should not throw nor touch the stores when the context cannot be fetched', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockRejectedValue(new Error('user fetch error'))
+
+      await expect(CurrentUserManager.ensureUserContext()).resolves.toBeUndefined()
+
+      expect(userStoreMock.setUser).not.toHaveBeenCalled()
+      expect(permissionsStoreMock.setUserPermissions).not.toHaveBeenCalled()
+    })
+
+    it('should log an error when the context is undefined', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(undefined)
+
+      await CurrentUserManager.ensureUserContext()
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'unable to fetch user information nor its permissions',
+        expect.any(Error),
+      )
+      expect(userStoreMock.setUser).not.toHaveBeenCalled()
+    })
+
+    it('should keep the loaded user when only the wallet information fails', async () => {
+      const error = new Error('wallet fetch error')
+      vi.mocked(CurrentUserService.getUserWalletInformation).mockRejectedValue(error)
+
+      await expect(CurrentUserManager.ensureUserContext()).resolves.toBeUndefined()
+
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userContextMock.contact)
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userContextMock.permissions)
+      expect(userStoreMock.setWalletInformation).not.toHaveBeenCalled()
+      expect(loggerMock.error).toHaveBeenCalledWith('unable to fetch user wallet information', error)
+    })
+
+    it('should not fetch the wallet information when the user could not be loaded', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockRejectedValue(new Error('user fetch error'))
+      userStoreMock.getUser.mockReturnValue(undefined)
+
+      await CurrentUserManager.ensureUserContext()
+
+      expect(CurrentUserService.getUserWalletInformation).not.toHaveBeenCalled()
     })
   })
 })

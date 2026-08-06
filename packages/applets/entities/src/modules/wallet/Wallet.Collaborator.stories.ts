@@ -48,6 +48,7 @@ function registerCollaboratorTabs() {
     route: 'folders' as RouteName,
     isDisplayed: (context) => context.isCollab,
     getCount: () => WalletCountManager.getCount(WalletTab.FOLDERS),
+    showInMobile: () => true,
     order: 1,
   })
 
@@ -58,6 +59,7 @@ function registerCollaboratorTabs() {
     isDisplayed: (context) =>
       context.isCollab && context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
     getCount: () => WalletCountManager.getCount(WalletTab.PROSPECTS),
+    showInMobile: () => true,
     order: 2,
   })
 

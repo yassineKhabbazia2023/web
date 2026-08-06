@@ -39,9 +39,8 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Feature, RouteName } from '@pulse/common/enums'
+import { RouteName } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { NavigationManager } from '@pulse/shared/managers'
@@ -52,21 +51,14 @@ import type { NavigationItem } from '@pulse/shared/types'
 import type { MobileBottomNavProps } from './mobile-bottom-nav.type'
 import { MOBILE_BOTTOM_NAV_HEIGHT } from '../../mobile-home.const'
 
-// Collaborators only ever see a single wallet entry in the mobile bottom nav:
-// prospects when the prospect experience is enabled, otherwise the regular folders.
-const COLLAB_PROSPECTS_MENU_ITEM: NavigationItem = {
-  routeName: RouteName.PROSPECTS,
-  title: 'shared.sidebar.prospects',
-  icon: 'building',
-  activeRoutes: [RouteName.PROSPECTS],
-  showInMobile: true,
-}
-
+// Collaborators only ever see a single wallet entry in the mobile bottom nav.
+// Prospects is a sibling route of folders, not a descendant, so it has to be
+// listed explicitly to keep the entry active on that tab.
 const COLLAB_FOLDERS_MENU_ITEM: NavigationItem = {
   routeName: RouteName.FOLDERS,
   title: 'shared.sidebar.folders',
   icon: 'building',
-  activeRoutes: [RouteName.FOLDERS],
+  activeRoutes: [RouteName.FOLDERS, RouteName.PROSPECTS],
   showInMobile: true,
 }
 
@@ -86,9 +78,7 @@ const { trackNavigationFeature } = useNavigationTracking()
 
 const mobileMenuItems = computed<NavigationItem[]>(() => {
   if (isCollab.value === true) {
-    return FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE) === true
-      ? [COLLAB_PROSPECTS_MENU_ITEM]
-      : [COLLAB_FOLDERS_MENU_ITEM]
+    return [COLLAB_FOLDERS_MENU_ITEM]
   }
 
   return NavigationManager

@@ -16,7 +16,6 @@ export function registerCustomerWalletTabs() {
     route: RouteName.CUSTOMER_ENTITIES,
     isDisplayed: () => userStore.getRegularEntitiesCount() > 0,
     getCount: () => WalletCountManager.getCount(WalletTab.CUSTOMER_ENTITIES),
-    showInMobile: false,
     order: 10,
   })
 
@@ -28,7 +27,6 @@ export function registerCustomerWalletTabs() {
       context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE) &&
       userStore.getProspectEntitiesCount() > 0,
     getCount: () => WalletCountManager.getCount(WalletTab.PROSPECTS),
-    showInMobile: false,
     order: 20,
   })
 }

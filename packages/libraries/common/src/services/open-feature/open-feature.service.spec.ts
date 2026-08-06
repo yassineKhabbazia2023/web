@@ -9,6 +9,7 @@ import {
   getNumberDetailsMock,
   getObjectDetailsMock,
   configCatCreateMock,
+  setContextMock,
 } from '../../__mocks__/vitest'
 
 describe('OpenFeatureService', () => {
@@ -46,6 +47,13 @@ describe('OpenFeatureService', () => {
       expect(result).toEqual({ key: 'value' })
       expect(getObjectDetailsMock).not.toHaveBeenCalled()
     })
+
+    it('should not set any context when not initialized', async () => {
+      await OpenFeatureService.setUserContext('user@pulse.fr')
+      await OpenFeatureService.resetToAnonymousContext()
+
+      expect(setContextMock).not.toHaveBeenCalled()
+    })
   })
 
   describe('init', () => {
@@ -62,6 +70,14 @@ describe('OpenFeatureService', () => {
       expect(loggerMock.info).toHaveBeenCalledWith('OpenFeature initialized with ConfigCat provider')
     })
 
+    it('should set an anonymous targeting key so ConfigCat always gets an identifier', async () => {
+      setProviderAndWaitMock.mockResolvedValue(undefined)
+
+      await OpenFeatureService.init('test-sdk-key')
+
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous' })
+    })
+
     it('should pass flagOverrides to ConfigCat provider when provided', async () => {
       setProviderAndWaitMock.mockResolvedValue(undefined)
       const fakeFlagOverrides = { dataSource: {}, behaviour: 1 } as never
@@ -72,6 +88,17 @@ describe('OpenFeatureService', () => {
         dataGovernance: DataGovernance.EuOnly,
         flagOverrides: fakeFlagOverrides,
       })
+    })
+
+    it('should log a dedicated error and stay usable when the anonymous context cannot be set', async () => {
+      setProviderAndWaitMock.mockResolvedValue(undefined)
+      const error = new Error('context failed')
+      setContextMock.mockRejectedValue(error)
+
+      await OpenFeatureService.init('test-sdk-key')
+
+      expect(loggerMock.error).toHaveBeenCalledWith('Failed to set the anonymous evaluation context', error)
+      expect(loggerMock.info).toHaveBeenCalledWith('OpenFeature initialized with ConfigCat provider')
     })
 
     it('should log error when initialization fails', async () => {
@@ -152,6 +179,18 @@ describe('OpenFeatureService', () => {
       OpenFeatureService.getBooleanValue('myFlag', false)
 
       expect(loggerMock.trace).not.toHaveBeenCalled()
+    })
+
+    it('should set the user email as targeting key', async () => {
+      await OpenFeatureService.setUserContext('user@pulse.fr')
+
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'user@pulse.fr', email: 'user@pulse.fr' })
+    })
+
+    it('should fall back to the anonymous targeting key when the user context is reset', async () => {
+      await OpenFeatureService.resetToAnonymousContext()
+
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous' })
     })
   })
 })

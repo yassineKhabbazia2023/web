@@ -1,6 +1,6 @@
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { Feature, RouteName } from '@pulse/common/enums'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
 
@@ -10,6 +10,11 @@ import { featureFlagGuard } from './feature-flag.guard'
 const toNameMock = RouteName.INFO
 
 describe('feature-flag.guard', () => {
+  beforeEach(() => {
+    vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(false)
+    vi.spyOn(CurrentUserManager, 'ensureUserContext').mockResolvedValue(undefined)
+  })
+
   const tests = [{
     featureFlag: Feature.MAIL_TO_PENNYLANE,
     featureFlagIsActivatedMock: false,
@@ -41,7 +46,7 @@ describe('feature-flag.guard', () => {
     expectedLoggerMock: undefined,
     reason: 'keep the route when feature flag is activated',
   }]
-  it.each(tests)('$reason', ({
+  it.each(tests)('$reason', async ({
     featureFlag,
     featureFlagIsActivatedMock,
     expectedRouteName,
@@ -55,7 +60,7 @@ describe('feature-flag.guard', () => {
       },
     } as unknown as RouteLocationNormalizedGeneric
 
-    const result = featureFlagGuard(toRouteMock)
+    const result = await featureFlagGuard(toRouteMock)
 
     if (featureFlag !== undefined) {
       expect(FeatureFlagManager.isFeatureActivated).toHaveBeenCalledWith(featureFlag)
@@ -72,5 +77,43 @@ describe('feature-flag.guard', () => {
     } else {
       expect(result).toEqual({ name: expectedRouteName })
     }
+  })
+
+  describe('user identification', () => {
+    const flaggedRouteMock = {
+      name: toNameMock,
+      meta: { [FEATURE_FLAG_META]: Feature.PROSPECT_EXPERIENCE },
+    } as unknown as RouteLocationNormalizedGeneric
+
+    // Flags can target a specific user: evaluating before the provider knows the
+    // identity denies the route to the very users it targets
+    it('should identify the authenticated user before evaluating the flag', async () => {
+      vi.mocked(CurrentUserManager.isAuthenticated).mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockImplementation(() => {
+        expect(CurrentUserManager.ensureUserContext).toHaveBeenCalled()
+        return true
+      })
+
+      await featureFlagGuard(flaggedRouteMock)
+
+      expect(CurrentUserManager.ensureUserContext).toHaveBeenCalled()
+    })
+
+    it('should not identify an anonymous user', async () => {
+      vi.mocked(CurrentUserManager.isAuthenticated).mockReturnValue(false)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      await featureFlagGuard(flaggedRouteMock)
+
+      expect(CurrentUserManager.ensureUserContext).not.toHaveBeenCalled()
+    })
+
+    it('should not identify anyone on a route without a feature flag', async () => {
+      vi.mocked(CurrentUserManager.isAuthenticated).mockReturnValue(true)
+
+      await featureFlagGuard({ name: toNameMock, meta: {} } as unknown as RouteLocationNormalizedGeneric)
+
+      expect(CurrentUserManager.ensureUserContext).not.toHaveBeenCalled()
+    })
   })
 })

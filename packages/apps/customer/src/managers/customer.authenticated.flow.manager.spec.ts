@@ -3,7 +3,6 @@ import {
   getMockedUserContext,
   getMockedEntity,
   getMockedCurrentEntity,
-  getPermissionsMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
 import { getStoreMock, stubCurrentEntityManager } from '@pulse/common/mocks/vitest'
@@ -38,11 +37,10 @@ beforeEach(async () => {
   vi.spyOn(ProspectsService, 'fetchProspectsAccounts')
     .mockResolvedValue(undefined as unknown as Awaited<ReturnType<typeof ProspectsService.fetchProspectsAccounts>>)
   vi.spyOn(OpenFeatureService, 'setUserContext').mockResolvedValue(undefined)
-  vi.spyOn(OpenFeatureService, 'clearUserContext').mockResolvedValue(undefined)
+  vi.spyOn(OpenFeatureService, 'resetToAnonymousContext').mockResolvedValue(undefined)
 })
 
 const userMock = getMockedUserContext()
-const permissionsMock = getPermissionsMock()
 const entityMock = getMockedEntity()
 const entitiesMock = {
   items: [entityMock],
@@ -111,6 +109,9 @@ describe('CustomerAuthenticatedFlowManager', () => {
 
     it('should allow retry after a failure', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      // the store mock does not reflect setUser, so getUser has to be armed for the
+      // user context to count as successfully resolved
+      userStoreMock.getUser.mockReturnValue(userMock.contact)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(BookingManager.setupBookingForCustomer)
         .mockRejectedValueOnce(new Error('booking error'))
@@ -119,45 +120,9 @@ describe('CustomerAuthenticatedFlowManager', () => {
       await expect(CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()).rejects.toThrow('booking error')
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
-      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
-    })
-  })
-
-  describe('initCurrentUser', () => {
-    it('should initialize the current user and fetch their permissions', async () => {
-      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
-      vi.mocked(fetchUserPermissions).mockResolvedValue(permissionsMock)
-
-      await CustomerAuthenticatedFlowManager.initCurrentUser()
-
-      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock.contact)
-      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
-      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
-    })
-
-    it('should handle errors gracefully when fetching user information', async () => {
-      vi.mocked(CurrentUserService.getCurrentUserContext).mockRejectedValue(new Error('User fetch error'))
-
-      await CustomerAuthenticatedFlowManager.initCurrentUser()
-
-      // Should not throw and should not call store methods
-      expect(userStoreMock.setUser).not.toHaveBeenCalled()
-      expect(permissionsStoreMock.setUserPermissions).not.toHaveBeenCalled()
-    })
-
-    it('should log error when currentUserContext is undefined', async () => {
-      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(undefined as any)
-
-      await CustomerAuthenticatedFlowManager.initCurrentUser()
-
-      // Should log error and not throw (graceful degradation)
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        'unable to fetch user information nor its permissions',
-        expect.any(Error),
-      )
-      // Should not call store methods when context is undefined
-      expect(userStoreMock.setUser).not.toHaveBeenCalled()
-      expect(permissionsStoreMock.setUserPermissions).not.toHaveBeenCalled()
+      expect(BookingManager.setupBookingForCustomer).toHaveBeenCalledTimes(2)
+      // the user context is resolved once per authenticated session, it is not replayed
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -352,12 +317,6 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(AmplitudeService.identifyCustomer).toHaveBeenCalled()
     })
 
-    it('should set the OpenFeature user context with the user email', async () => {
-      await CustomerAuthenticatedFlowManager.initAuthenticatedThirdParties()
-
-      expect(OpenFeatureService.setUserContext).toHaveBeenCalledWith(userMock.contact.email)
-    })
-
     it('should return early when user is not defined', async () => {
       userStoreMock.getUser.mockReturnValue(undefined)
 
@@ -390,9 +349,9 @@ describe('CustomerAuthenticatedFlowManager', () => {
       await CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
       expect(stopProductFruits).toHaveBeenCalled()
     })
-    it('should clear the OpenFeature user context', async () => {
+    it('should reset the OpenFeature context to the anonymous identity', async () => {
       await CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
-      expect(OpenFeatureService.clearUserContext).toHaveBeenCalled()
+      expect(OpenFeatureService.resetToAnonymousContext).toHaveBeenCalled()
     })
     it('should NOT throw (and lock the UX) if third parties are broken', async () => {
       vi.mocked(stopProductFruits).mockImplementation(() => {

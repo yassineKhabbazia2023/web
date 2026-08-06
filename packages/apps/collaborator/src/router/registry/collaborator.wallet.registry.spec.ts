@@ -1,7 +1,7 @@
 import { WalletManager } from '@pulse/entities/wallet-managers'
 import { WalletTab } from '@pulse/entities/enums'
 import { RouteName } from '@pulse/common/enums'
-import { FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { registerCollaboratorWalletTabs } from './collaborator.wallet.registry'
 
 // Collaborator tabs that don't require permissions
@@ -28,8 +28,6 @@ const PERMISSION_BASED_COLLAB_TABS = [
 
 describe('registerCollaboratorWalletTabs', () => {
   beforeEach(() => {
-    // Default to prospect experience enabled (folders hidden on mobile)
-    vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
     // @ts-expect-error - Accessing private static field for test cleanup
     WalletManager.tabs.clear()
     registerCollaboratorWalletTabs()
@@ -57,26 +55,30 @@ describe('registerCollaboratorWalletTabs', () => {
   })
 
   describe('showInMobile behavior', () => {
-    it('should show only the PROSPECTS tab on mobile when the prospect experience is enabled', () => {
-      expect(WalletManager.getTab(WalletTab.PROSPECTS)?.showInMobile).toBe(true)
-      expect(WalletManager.getTab(WalletTab.FOLDERS)?.showInMobile).toBe(false)
+    // The prospect experience flag is user-targeted, so tabs resolve it from the
+    // context at display time instead of at registration time
+    function getMobileTabs(isProspectExperienceActivated: boolean) {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(isProspectExperienceActivated)
+
+      return WalletManager.getTabsForUser(true, true).map(tab => tab.name)
+    }
+
+    it('should show the FOLDERS and PROSPECTS tabs on mobile when the prospect experience is enabled', () => {
+      expect(getMobileTabs(true)).toEqual([WalletTab.FOLDERS, WalletTab.PROSPECTS])
     })
 
     it('should show only the FOLDERS tab on mobile when the prospect experience is disabled', () => {
-      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
-      // @ts-expect-error - Accessing private static field for test cleanup
-      WalletManager.tabs.clear()
-      registerCollaboratorWalletTabs()
-
-      expect(WalletManager.getTab(WalletTab.PROSPECTS)?.showInMobile).toBe(false)
-      expect(WalletManager.getTab(WalletTab.FOLDERS)?.showInMobile).toBe(true)
+      expect(getMobileTabs(false)).toEqual([WalletTab.FOLDERS])
     })
 
-    it('should not flag permission-based or offers tabs as showInMobile', () => {
+    it('should not show permission-based nor offers tabs on mobile', () => {
+      const mobileTabs = getMobileTabs(true)
+
       PERMISSION_BASED_COLLAB_TABS.forEach(tab => {
-        expect(WalletManager.getTab(tab)?.showInMobile).toBeUndefined()
+        expect(mobileTabs).not.toContain(tab)
       })
-      expect(WalletManager.getTab(WalletTab.OFFERS_CATALOG)?.showInMobile).toBeUndefined()
+      expect(mobileTabs).not.toContain(WalletTab.OFFERS_CATALOG)
     })
   })
 

@@ -1,5 +1,6 @@
 import {
   setProviderAndWaitMock,
+  setContextMock,
   getBooleanDetailsMock,
   getStringDetailsMock,
   getNumberDetailsMock,
@@ -10,6 +11,7 @@ import {
 // no unit test of this package needs the real SDK.
 export const OpenFeature = {
   setProviderAndWait: (provider: unknown) => setProviderAndWaitMock(provider),
+  setContext: (context: unknown) => setContextMock(context),
   getClient: () => ({
     getBooleanDetails: (flagKey: string, defaultValue: boolean) => getBooleanDetailsMock(flagKey, defaultValue),
     getStringDetails: (flagKey: string, defaultValue: string) => getStringDetailsMock(flagKey, defaultValue),

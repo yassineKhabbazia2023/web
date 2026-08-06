@@ -42,7 +42,6 @@ function registerCustomerTabs(scenario: WalletScenario) {
     route: 'customer-entities' as RouteName,
     isDisplayed: () => scenario.regularEntitiesCount > 0,
     getCount: () => WalletCountManager.getCount(WalletTab.CUSTOMER_ENTITIES),
-    showInMobile: false,
     order: 10,
   })
 
@@ -54,7 +53,6 @@ function registerCustomerTabs(scenario: WalletScenario) {
       context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE) &&
       scenario.prospectEntitiesCount > 0,
     getCount: () => WalletCountManager.getCount(WalletTab.PROSPECTS),
-    showInMobile: false,
     order: 20,
   })
 }

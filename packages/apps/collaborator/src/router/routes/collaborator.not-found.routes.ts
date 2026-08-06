@@ -18,7 +18,7 @@ export const notFoundCollaboratorRoutes: RouteRecordRaw[] = [
       if (CurrentUserManager.isAuthenticated()) {
         const userStore = useUserStore()
         if (userStore.isCollab === undefined) {
-          await CollaboratorAuthenticatedFlowManager.initCurrentUser()
+          await CurrentUserManager.ensureUserContext()
         }
         if (CollaboratorAuthenticatedFlowManager.shouldRedirectWrongUserType()) {
           CollaboratorAuthenticatedFlowManager.redirectWrongUser()

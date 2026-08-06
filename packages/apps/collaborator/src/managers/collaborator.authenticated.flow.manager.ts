@@ -1,11 +1,9 @@
 import {
-  usePermissionsStore,
   useUserStore,
   useCurrentEntityStore,
 } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
-import { CurrentUserService } from '@pulse/common/services/current-user'
 import { OpenFeatureService } from '@pulse/common/services/open-feature'
 import {
   initProductFruitsAuthenticatedCollab,
@@ -37,7 +35,9 @@ export class CollaboratorAuthenticatedFlowManager {
   }
 
   private static async executeAuthenticatedFlow() {
-    await this.initCurrentUser()
+    // resolved once per session: the feature flag guard only does it on the few
+    // routes carrying FEATURE_FLAG_META, this is what covers every other route
+    await CurrentUserManager.ensureUserContext()
 
     if (this.shouldRedirectWrongUserType()) {
       this.redirectWrongUser()
@@ -54,31 +54,6 @@ export class CollaboratorAuthenticatedFlowManager {
   }
 
   // #region setup
-  static async initCurrentUser() {
-    try {
-      const currentUserContext = await CurrentUserService.getCurrentUserContext()
-
-      if (currentUserContext === undefined) {
-        throw new Error('unable to fetch users\'s context')
-      }
-
-      const userStore = useUserStore()
-      userStore.setUser(currentUserContext.contact)
-      userStore.setFavoriteEntities(currentUserContext.favoriteEntities ?? [])
-
-      const permissionsStore = usePermissionsStore()
-      permissionsStore.setUserPermissions(currentUserContext.permissions ?? [])
-
-      // Set count for wallet tabs
-      // Putting this after permissions so if fails we still have all the wallet context
-      const currentUserWalletInformation = await CurrentUserService.getUserWalletInformation()
-      userStore.setWalletInformation(currentUserWalletInformation)
-
-    } catch (error) {
-      logger.error('unable to fetch user information nor its permissions', error)
-    }
-  }
-
   /**
    * Builds the target path for redirecting a customer to the customer app.
    * Simply removes /collaborateur from the pathname.
@@ -153,7 +128,6 @@ export class CollaboratorAuthenticatedFlowManager {
       initProductFruitsAuthenticatedCollab(productFruitsUser)
       AmplitudeService.identifyCollaborator()
       AmplitudeService.setUserId(userId.toString())
-      await OpenFeatureService.setUserContext(user.email)
     } catch (error) {
       logger.error('Anonymous - initAuthenticatedThirdParties - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail
@@ -162,12 +136,13 @@ export class CollaboratorAuthenticatedFlowManager {
 
   static async exitAuthenticatedFlow() {
     this.hasFlowExecuted = false
+    CurrentUserManager.resetUserContext()
 
     try {
       // we stop the ProductFruits plugin but we will start it again
       // within the anonymous workspace
       stopProductFruits()
-      await OpenFeatureService.clearUserContext()
+      await OpenFeatureService.resetToAnonymousContext()
     } catch (error) {
       logger.error('Authenticated - exitAuthenticatedFlow - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail

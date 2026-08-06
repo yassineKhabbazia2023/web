@@ -1,7 +1,7 @@
 import { WalletManager } from './wallet.manager'
 import { createMockWalletContext, createMockWalletTabConfig } from '@entities/__mocks__/wallet.manager.mocks'
 import { WalletTab } from '../enums'
-import { RouteName } from '@pulse/common/enums'
+import { Feature, RouteName } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 
@@ -485,14 +485,14 @@ describe('WalletManager', () => {
       const mobileTab = createMockWalletTabConfig({
         id: WalletTab.FOLDERS,
         isDisplayed: () => true,
-        showInMobile: true,
+        showInMobile: () => true,
         order: 1,
       })
 
       const desktopOnlyTab = createMockWalletTabConfig({
         id: WalletTab.COLLABORATORS,
         isDisplayed: () => true,
-        showInMobile: false,
+        showInMobile: () => false,
         order: 2,
       })
 
@@ -512,14 +512,14 @@ describe('WalletManager', () => {
       const mobileTab = createMockWalletTabConfig({
         id: WalletTab.FOLDERS,
         isDisplayed: () => true,
-        showInMobile: true,
+        showInMobile: () => true,
         order: 1,
       })
 
       const desktopOnlyTab = createMockWalletTabConfig({
         id: WalletTab.COLLABORATORS,
         isDisplayed: () => true,
-        showInMobile: false,
+        showInMobile: () => false,
         order: 2,
       })
 
@@ -538,14 +538,14 @@ describe('WalletManager', () => {
       const mobileTab = createMockWalletTabConfig({
         id: WalletTab.FOLDERS,
         isDisplayed: () => true,
-        showInMobile: true,
+        showInMobile: () => true,
         order: 1,
       })
 
       const desktopOnlyTab = createMockWalletTabConfig({
         id: WalletTab.COLLABORATORS,
         isDisplayed: () => true,
-        showInMobile: false,
+        showInMobile: () => false,
         order: 2,
       })
 
@@ -565,14 +565,14 @@ describe('WalletManager', () => {
       const mobileTab = createMockWalletTabConfig({
         id: WalletTab.FOLDERS,
         isDisplayed: () => true,
-        showInMobile: true,
+        showInMobile: () => true,
         order: 1,
       })
 
       const desktopOnlyTab = createMockWalletTabConfig({
         id: WalletTab.COLLABORATORS,
         isDisplayed: () => true,
-        showInMobile: false,
+        showInMobile: () => false,
         order: 2,
       })
 
@@ -582,6 +582,51 @@ describe('WalletManager', () => {
       const tabs = WalletManager.getTabsForUser(true, false)
 
       expect(tabs).toHaveLength(2)
+    })
+
+    it('should resolve showInMobile from the context when given as a function', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const flaggedTab = createMockWalletTabConfig({
+        id: WalletTab.PROSPECTS,
+        isDisplayed: () => true,
+        showInMobile: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
+        order: 1,
+      })
+
+      const fallbackTab = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        isDisplayed: () => true,
+        showInMobile: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE) === false,
+        order: 2,
+      })
+
+      WalletManager.register(flaggedTab)
+      WalletManager.register(fallbackTab)
+
+      const tabs = WalletManager.getTabsForUser(true, true)
+
+      expect(tabs).toHaveLength(1)
+      expect(tabs[0].name).toBe(WalletTab.PROSPECTS)
+    })
+
+    it('should re-evaluate showInMobile on each call so a late feature flag is taken into account', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      const isFeatureActivatedSpy = vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
+
+      WalletManager.register(createMockWalletTabConfig({
+        id: WalletTab.PROSPECTS,
+        isDisplayed: () => true,
+        showInMobile: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
+        order: 1,
+      }))
+
+      expect(WalletManager.getTabsForUser(true, true)).toHaveLength(0)
+
+      isFeatureActivatedSpy.mockReturnValue(true)
+
+      expect(WalletManager.getTabsForUser(true, true)).toHaveLength(1)
     })
   })
 })
