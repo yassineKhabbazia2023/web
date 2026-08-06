@@ -161,6 +161,8 @@ const handleRetryMassActivationEmail = async () => {
       props.accountType,
     )
     if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
+      await fetchAccountUsers()
+
       displayNotification('success', t('invitationEmailsSent', invitedCustomerIDs.length))
       AmplitudeService.track('Onboarding Relaunched', {
         onboarding_relaunch_result: 'succeeded',
@@ -200,7 +202,8 @@ const getStatus = (status: string): UserStatus => {
   }
 }
 
-onMounted(async () => {
+const fetchAccountUsers = async () => {
+  isLoading.value = true
   try {
     const searchParams = new URLSearchParams({
       pageSize: '100',
@@ -214,6 +217,8 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
-})
+}
+
+onMounted(fetchAccountUsers)
 </script>
 
