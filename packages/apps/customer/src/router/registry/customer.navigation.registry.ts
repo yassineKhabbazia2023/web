@@ -9,6 +9,7 @@ const MOBILE_ROUTE_NAMES = new Set([
   RouteName.GED,
   RouteName.PENNYLANE_GED_V2,
   RouteName.PENNYLANE_GED_LEGACY,
+  RouteName.SERES_INVOICES,
 ])
 
 const regularEntityNavigationItems: NavigationItemConfig[] = [
@@ -23,7 +24,7 @@ const regularEntityNavigationItems: NavigationItemConfig[] = [
     routeName: RouteName.LAUNCHER,
     shouldDisplay: (ctx) => ctx.hasPermission(ACCOUNT_PERMISSIONS.APPS),
     showInMobile: false,
-    order: 8,
+    order: 9,
     accountType: AccountType.REGULAR,
   },
 ]

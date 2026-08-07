@@ -16,6 +16,24 @@ describe('regular-entity navigation items', () => {
   it('should have featureName "homepage" on home item', () => {
     expect(homeItem?.featureName).toBe('homepage')
   })
+
+  describe('seres invoices item shouldDisplay', () => {
+    const seresInvoicesItem = REGULAR_ENTITY_NAVIGATION_ITEMS.find(
+      (item) => item.id === 'regular-entity-seres-invoices',
+    )
+
+    it('should display seres invoices when the context allows it', () => {
+      const context = createNavigationContext({ shouldShowSeresInvoices: true })
+
+      expect(seresInvoicesItem?.shouldDisplay(context)).toBe(true)
+    })
+
+    it('should hide seres invoices when the context does not allow it', () => {
+      const context = createNavigationContext({ shouldShowSeresInvoices: false })
+
+      expect(seresInvoicesItem?.shouldDisplay(context)).toBe(false)
+    })
+  })
 })
 
 describe('prospect-entity navigation items', () => {

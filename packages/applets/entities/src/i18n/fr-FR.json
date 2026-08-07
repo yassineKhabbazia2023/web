@@ -390,6 +390,24 @@
       "emailInvalid": "Veuillez entrer une adresse email valide",
       "acceptTermsRequired": "Votre consentement est requis pour continuer"
     },
+    "seresInvoices": {
+      "searchPlaceholder": "Chercher une facture",
+      "searchInvalidMessage": "3 caractères minimum requis",
+      "on": "sur",
+      "columns": {
+        "name": "Nom de la facture",
+        "depositDate": "Déposée le",
+        "year": "Année",
+        "actions": "Actions"
+      },
+      "noInvoice": "Ce dossier ne contient aucune facture.",
+      "noSearchResult": "Aucune facture ne correspond à votre recherche.",
+      "viewLabel": "Consulter la facture",
+      "downloadLabel": "Télécharger la facture",
+      "viewError": "L'ouverture de la facture a échoué. Veuillez réessayer plus tard.",
+      "downloadError": "Le téléchargement de la facture a échoué. Veuillez réessayer plus tard.",
+      "popupBlockedError": "L'ouverture de la facture a été bloquée par votre navigateur. Autorisez les pop-ups puis réessayez."
+    },
     "history": {
       "searchPlaceholder": "Rechercher dans libellé et détail de l'activité",
       "searchInvalidMessage": "3 caractères minimum requis",

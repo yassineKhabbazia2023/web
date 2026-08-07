@@ -107,4 +107,15 @@ export const REGULAR_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     order: 7,
     activeRoutes: [RouteName.PENNYLANE_SOCIAL_MANAGEMENT],
   },
+  {
+    id: 'regular-entity-seres-invoices',
+    title: () => 'shared.sidebar.seresInvoices',
+    icon: 'filetypeNone',
+    routeName: RouteName.SERES_INVOICES,
+    shouldDisplay: (ctx) => ctx.shouldShowSeresInvoices,
+    accountType: AccountType.REGULAR,
+    featureName: 'factures rydge',
+    order: 8,
+    activeRoutes: [RouteName.SERES_INVOICES],
+  },
 ]

@@ -10,6 +10,7 @@ import {
   ReportingManager,
 } from '@pulse/common/managers'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 // vue-router is spy-wrapped project-wide (doctrine: shared-hubs): arm the shared
 // spy per test instead of registering a local factory.
@@ -123,6 +124,33 @@ describe('useNavigationContext', () => {
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.shouldShowRydgeInvoicesTab).toBe(false)
+    })
+  })
+
+  describe('shouldShowSeresInvoices', () => {
+    it('should be true when the feature flag is active and the permission is granted', () => {
+      vi.spyOn(FeatureFlagManager, 'isSeresInvoicesActivated').mockReturnValue(true)
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowSeresInvoices).toBe(true)
+      expect(CurrentUserManager.hasPermission).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.INVOICES)
+    })
+
+    it('should be false when the feature flag is inactive', () => {
+      vi.spyOn(FeatureFlagManager, 'isSeresInvoicesActivated').mockReturnValue(false)
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowSeresInvoices).toBe(false)
+    })
+
+    it('should be false when the permission is missing', () => {
+      vi.spyOn(FeatureFlagManager, 'isSeresInvoicesActivated').mockReturnValue(true)
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowSeresInvoices).toBe(false)
     })
   })
 

@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import { useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager, FeatureFlagManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import type { NavigationContext } from '@shared/types/navigation.types'
 import type { Permission } from '@pulse/common/types'
 
@@ -49,6 +50,9 @@ export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefin
       shouldShowRydgeInvoicesTab:
         invoicesAccessStore.isTabVisible &&
         FeatureFlagManager.isFeatureActivated(Feature.RYDGE_INVOICES),
+      shouldShowSeresInvoices:
+        FeatureFlagManager.isSeresInvoicesActivated() &&
+        hasPermission(ACCOUNT_PERMISSIONS.INVOICES),
     }
   })
 

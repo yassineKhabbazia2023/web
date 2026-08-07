@@ -24,6 +24,7 @@ export function createMockNavigationContext(overrides?: Partial<NavigationContex
     hasPennylanePermission: () => false,
     shouldShowBIReports: false,
     shouldShowRydgeInvoicesTab: false,
+    shouldShowSeresInvoices: false,
   }
 
   return {
@@ -53,6 +54,7 @@ export function createNavigationContext(options: {
   hasInformation?: boolean
   hasProspectDocuments?: boolean
   shouldShowRydgeInvoicesTab?: boolean
+  shouldShowSeresInvoices?: boolean
 }): NavigationContext {
   return {
     entityId: 601,
@@ -70,6 +72,7 @@ export function createNavigationContext(options: {
     } as RouteLocationNormalizedLoaded,
     shouldShowBIReports: options.shouldShowBIReports ?? false,
     shouldShowRydgeInvoicesTab: options.shouldShowRydgeInvoicesTab ?? false,
+    shouldShowSeresInvoices: options.shouldShowSeresInvoices ?? false,
     hasPermission: (permission) => {
       if (permission === ACCOUNT_PERMISSIONS.GED) {
         return options.hasGed ?? false

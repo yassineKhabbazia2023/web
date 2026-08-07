@@ -39,6 +39,7 @@ export const CUSTOMER_ROUTES = {
         gedLegacy: { path: 'archive', name: RouteName.PENNYLANE_GED_LEGACY },
       },
       pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
+      seresInvoices: { path: 'factures-rydge', name: RouteName.SERES_INVOICES },
       launcher: { path: 'launcher', name: RouteName.LAUNCHER },
     },
     prospect: {

@@ -7,6 +7,7 @@ export { default as RegularRoot } from './modules/entity/regular/regular.root.vu
 export { default as EntityOverview } from './modules/entity/regular/overview/entity-overview.page.vue'
 export { default as Offers } from './modules/entity/regular/offers/Offers.vue'
 export { default as Invoices } from './modules/entity/regular/invoices/invoices.vue'
+export { default as SeresInvoices } from './modules/entity/regular/seres-invoices/seres-invoices.page.vue'
 export { default as Information } from './modules/entity/regular/information/Information.vue'
 // Entity - Prospects
 export { default as ProspectRoot } from './modules/entity/prospect/prospect.root.vue'

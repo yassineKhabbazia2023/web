@@ -390,6 +390,24 @@
       "emailInvalid": "Please enter a valid email address",
       "acceptTermsRequired": "You must accept the terms to continue"
     },
+    "seresInvoices": {
+      "searchPlaceholder": "Search for an invoice",
+      "searchInvalidMessage": "Minimum 3 characters required",
+      "on": "of",
+      "columns": {
+        "name": "Invoice name",
+        "depositDate": "Uploaded on",
+        "year": "Year",
+        "actions": "Actions"
+      },
+      "noInvoice": "This folder does not contain any invoice.",
+      "noSearchResult": "No invoice matches your search.",
+      "viewLabel": "View the invoice",
+      "downloadLabel": "Download the invoice",
+      "viewError": "The invoice could not be opened. Please try again later.",
+      "downloadError": "The invoice could not be downloaded. Please try again later.",
+      "popupBlockedError": "Your browser blocked the invoice from opening. Allow pop-ups and try again."
+    },
     "history": {
       "searchPlaceholder": "Search in label and activity details",
       "searchInvalidMessage": "Minimum 3 characters required",

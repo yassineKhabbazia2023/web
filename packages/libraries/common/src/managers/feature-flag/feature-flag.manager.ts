@@ -8,6 +8,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.DELEGATION_REQUEST_TABS,
   Feature.FAVORITE_SORT,
+  Feature.INVOICES_EXPERIENCE,
   Feature.LAST_ACTIVITY_FEATURE,
   Feature.MANAGE_WALLET_MENU,
   Feature.PROSPECT_EXPERIENCE,
@@ -68,6 +69,10 @@ export class FeatureFlagManager {
 
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
+  }
+
+  static isSeresInvoicesActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.INVOICES_EXPERIENCE)
   }
 
   static isSmartSearchOfferCatalogActivated() {

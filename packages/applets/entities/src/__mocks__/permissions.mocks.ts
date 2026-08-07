@@ -70,9 +70,9 @@ export const getMockedAuthorizationsConfig = (): AuthorizationConfig[] => {
         },
         {
           actionId: 16,
-          code: CollaboratorPermission.ACCEDER_FACTURES_PULSE,
-          name: 'Delete collab',
-          label: 'Supprimer un collaborateur',
+          code: CollaboratorPermission.ACCEDER_FACTURES_RYDGE,
+          name: 'View RYDGE invoices',
+          label: 'Accéder aux factures RYDGE Conseil',
           enabled: false,
         },
         {

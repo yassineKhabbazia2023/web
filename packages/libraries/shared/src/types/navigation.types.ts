@@ -36,6 +36,8 @@ export interface NavigationContext {
   shouldShowBIReports: boolean
   /** Whether to show the Rydge invoices tab for the current entity */
   shouldShowRydgeInvoicesTab: boolean
+  /** Whether the Seres invoices feature is enabled and granted for the current entity */
+  shouldShowSeresInvoices: boolean
 }
 
 /**

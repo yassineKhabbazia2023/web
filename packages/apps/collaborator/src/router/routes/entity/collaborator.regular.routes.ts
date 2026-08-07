@@ -127,6 +127,16 @@ export const regularCollaboratorRoutes = [
           },
         ],
       },
+      // SERES INVOICES
+      {
+        path: COLLABORATOR_ROUTES.entity.regular.seresInvoices.path,
+        name: COLLABORATOR_ROUTES.entity.regular.seresInvoices.name,
+        meta: {
+          [FEATURE_FLAG_META]: Feature.INVOICES_EXPERIENCE,
+          [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INVOICES,
+        },
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.SeresInvoices),
+      },
     ],
   },
 ] as RouteRecordRaw[]

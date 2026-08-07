@@ -57,6 +57,7 @@ export enum RouteName {
   RESET_PASSWORD_SUCCESS = 'resetPasswordSuccess',
   ROOT = 'root',
   RYDGE_INVOICES = 'invoices',
+  SERES_INVOICES = 'seresInvoices',
   SUBSCRIPTIONS = 'subscriptions',
   USERS = 'users',
   VALIDATION_CGU = 'validationCGU',

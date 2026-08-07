@@ -76,7 +76,8 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
     CollaboratorPermission.ACCEDER_ONGLET_INFORMATIONS,
   ],
   INVOICES: [
-    CollaboratorPermission.ACCEDER_FACTURES_PULSE,
+    CustomerPermission.ACCEDER_FACTURES_RYDGE,
+    CollaboratorPermission.ACCEDER_FACTURES_RYDGE,
   ],
   OFFER: [
     CustomerPermission.ACCEDER_OFFRES_SOUSCRITES,

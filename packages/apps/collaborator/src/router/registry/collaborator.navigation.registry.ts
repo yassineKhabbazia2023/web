@@ -8,6 +8,7 @@ const MOBILE_ROUTE_NAMES = new Set([
   RouteName.GED,
   RouteName.PENNYLANE_GED_V2,
   RouteName.PENNYLANE_GED_LEGACY,
+  RouteName.SERES_INVOICES,
 ])
 
 const regularEntityNavigationItems: NavigationItemConfig[] = REGULAR_ENTITY_NAVIGATION_ITEMS.map(config => ({
