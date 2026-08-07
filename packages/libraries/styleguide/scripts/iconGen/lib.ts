@@ -117,7 +117,7 @@ export function getComponentInfo(iconPath: string, svgCode: string, optimizedSvg
 <template>
   ${content}
 </template>
-<!-- eslint-disable vue/max-attributes-per-line max-len -->
+<!-- eslint-enable vue/max-attributes-per-line max-len -->
 <script lang="ts">
 import type { DefineComponent } from 'vue'
 export default ({
