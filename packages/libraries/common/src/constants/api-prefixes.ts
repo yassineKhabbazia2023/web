@@ -15,6 +15,7 @@ export const API_PREFIXES = {
   PASSWORD: 'password-experience/api',
   PENNYLANE: 'pennylane/api/pennylane',
   PROSPECT: 'prospect/api',
+  REFERENTIAL: 'referential/api',
   REGISTRY: 'registry/api',
   REPORTING: 'reporting/api',
   WALLET: 'wallet/api',

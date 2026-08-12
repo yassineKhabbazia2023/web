@@ -51,7 +51,7 @@ const customerTitleOptionsMock = [
 
 describe('add-customer-drawer.composable', () => {
   beforeEach(() => {
-    vi.spyOn(CreationReferentialService, 'fetchCreationDropdownContent').mockResolvedValue(
+    vi.spyOn(CreationReferentialService, 'fetchUserCreationDropdownContent').mockResolvedValue(
       {
         contactTitle: customerTitlesMock,
         contactService: {},
@@ -195,7 +195,7 @@ describe('add-customer-drawer.composable', () => {
 
     it('should keep options empty, log and notify when the referential cannot be loaded', async () => {
       const fetchError = new Error('Network error')
-      vi.mocked(CreationReferentialService.fetchCreationDropdownContent).mockRejectedValueOnce(fetchError)
+      vi.mocked(CreationReferentialService.fetchUserCreationDropdownContent).mockRejectedValueOnce(fetchError)
       const { customerTitleOptions, fetchCustomerTitleOptions } = useAddCustomerDrawer(initializationParamaters)
 
       await fetchCustomerTitleOptions()

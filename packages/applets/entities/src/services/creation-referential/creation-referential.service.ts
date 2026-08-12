@@ -9,4 +9,11 @@ export class CreationReferentialService {
     )
     return response.data
   }
+
+  static async fetchUserCreationDropdownContent(): Promise<CreationDropdownContent> {
+    const response = await api.gateway.get<CreationDropdownContent>(
+      `${API_PREFIXES.REFERENTIAL}/infos`,
+    )
+    return response.data
+  }
 }

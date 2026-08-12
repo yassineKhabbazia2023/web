@@ -119,7 +119,7 @@ export function useAddCustomerDrawer({
 
   async function fetchCustomerTitleOptions() {
     try {
-      const dropdownsContent = await CreationReferentialService.fetchCreationDropdownContent()
+      const dropdownsContent = await CreationReferentialService.fetchUserCreationDropdownContent()
       customerTitleOptions.value = convertRecordToDropdownOptions(dropdownsContent.contactTitle)
     } catch (error) {
       logger.error('Failed to fetch customer title dropdown content', error)
