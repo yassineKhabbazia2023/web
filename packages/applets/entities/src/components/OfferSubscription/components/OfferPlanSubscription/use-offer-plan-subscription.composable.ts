@@ -1,5 +1,4 @@
 import { computed, watch, onMounted } from 'vue'
-import { PlanCode } from '@entities/enums'
 import type { UseOfferPlanSubscriptionParams } from './OfferPlanSubscription.type'
 
 export function useOfferPlanSubscription({
@@ -29,10 +28,6 @@ export function useOfferPlanSubscription({
     }
     return 'grid-cols--3'
   })
-
-  const isPremiumInternalise = computed(() =>
-    selectedPlan.value?.planCode === PlanCode.PREMIUM_INTERNAL,
-  )
 
   function initializeRecapMode() {
     if (isRecap.value !== true || selectedPlan.value === undefined) {
@@ -79,7 +74,6 @@ export function useOfferPlanSubscription({
     selectedPlan,
     selectedPlanPricings,
     pricingGridClass,
-    isPremiumInternalise,
     initializeRecapMode,
     handlePlanChange,
   }

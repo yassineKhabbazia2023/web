@@ -99,23 +99,6 @@ describe('useOfferPlanSubscription', () => {
     })
   })
 
-  describe('isPremiumInternalise', () => {
-    it.each([
-      { planId: 3, expected: true, description: 'planCode is PREMIUM_INTERNAL' },
-      { planId: 2, expected: false, description: 'planCode is not PREMIUM_INTERNAL' },
-      { planId: undefined, expected: false, description: 'no plan is selected' },
-    ])('should return $expected when $description', ({ planId, expected }) => {
-      const [{ isPremiumInternalise }] = withSetup(() => useOfferPlanSubscription({
-        plans: ref(DEFAULT_PLANS),
-        isRecap: ref(false),
-        selectedPlanId: ref(planId),
-        selectedPricingId: ref(undefined),
-      }))
-
-      expect(isPremiumInternalise.value).toBe(expected)
-    })
-  })
-
   describe('initializeRecapMode', () => {
     it('should set selectedPlanId and selectedPricingId from API data', () => {
       const plansWithSelection = [

@@ -97,18 +97,6 @@
           </template>
         </PRadioCard>
       </PRadioGroup>
-
-      <PAlert
-        v-if="isPremiumInternalise && isRecap === false"
-        pType="info"
-        pShowIcon
-        :pClosable="false"
-        class="margin-y--6"
-        data-testid="offer-plan-subscription-premium-internalise-alert"
-      >
-        {{ t('premiumInternaliseInfoStart') }}
-        <span class="font-semibold">{{ t('premiumInternaliseInfoBold') }}</span>
-      </PAlert>
     </div>
 
     <PDialog
@@ -135,7 +123,7 @@
 import { computed, ref, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
-import { PAlert, PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleguide/components'
+import { PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleguide/components'
 import { VITE_PENNYLANE_PRICING_TABLE_URL } from 'env-vars'
 import type { OfferPlanSubscriptionProps } from './OfferPlanSubscription.type'
 import { useOfferPlanSubscription } from './use-offer-plan-subscription.composable'
@@ -151,8 +139,6 @@ const { t } = useI18n({
       pricingSelectionNote: '2. Choose the associated plan',
       pricingSelectionRecap: '2. Associated plan',
       free: 'Free',
-      premiumInternaliseInfoStart: 'By default, the subscription will be activated as Premium,',
-      premiumInternaliseInfoBold: 'please contact your Super User to switch the subscription to Premium Internalized.',
     },
     'fr-FR': {
       planSelectionNote: '1. Sélectionnez l\'abonnement à activer pour ce client',
@@ -161,8 +147,6 @@ const { t } = useI18n({
       pricingSelectionNote: '2. Choisissez le forfait associé',
       pricingSelectionRecap: '2. Forfait associé',
       free: 'Gratuit',
-      premiumInternaliseInfoStart: 'Par défaut l\'abonnement sera activé en Premium,',
-      premiumInternaliseInfoBold: 'veuillez contacter votre Super User pour passer l\'abonnement en Premium Internalisé.',
     },
   },
 })
@@ -184,7 +168,6 @@ const sanitizedPricingTableUrl = computed(() => sanitizeUrl(VITE_PENNYLANE_PRICI
 const {
   selectedPlanPricings,
   pricingGridClass,
-  isPremiumInternalise,
 } = useOfferPlanSubscription({
   plans: toRef(props, 'plans'),
   isRecap: toRef(props, 'isRecap'),
