@@ -36,11 +36,17 @@ export const regularCustomerRoutes = [
           {
             path: CUSTOMER_ROUTES.entity.regular.overview.users.path,
             name: CUSTOMER_ROUTES.entity.regular.overview.users.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.USERS,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Users),
           },
           {
             path: CUSTOMER_ROUTES.entity.regular.overview.offers.path,
             name: CUSTOMER_ROUTES.entity.regular.overview.offers.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.OFFER,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Offers),
           },
           {
@@ -48,12 +54,16 @@ export const regularCustomerRoutes = [
             name: CUSTOMER_ROUTES.entity.regular.overview.invoices.name,
             meta: {
               [FEATURE_FLAG_META]: Feature.RYDGE_INVOICES,
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INVOICES,
             },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Invoices),
           },
           {
             path: CUSTOMER_ROUTES.entity.regular.overview.info.path,
             name: CUSTOMER_ROUTES.entity.regular.overview.info.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INFORMATION,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Information),
           },
         ],
