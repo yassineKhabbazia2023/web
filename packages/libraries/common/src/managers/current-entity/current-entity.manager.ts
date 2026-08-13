@@ -8,9 +8,17 @@ import { fetchUserAccountPermissions } from '../../services/permissions/permissi
 import { InvoicesAccessService } from '../../services/invoices-access/invoices-access.service'
 import { LocalStorageService } from '../../services/storage'
 
+interface InitializeCurrentEntityOptions {
+  shouldFetchInvoicesAccess?: boolean
+}
+
 export class CurrentEntityManager {
-  static async initializeCurrentEntity(entity: EntitySummary) {
+  static async initializeCurrentEntity(
+    entity: EntitySummary,
+    options: InitializeCurrentEntityOptions = {},
+  ) {
     const { accountId } = entity
+    const shouldFetchInvoicesAccess = options.shouldFetchInvoicesAccess ?? false
 
     const permissionsStore = usePermissionsStore()
     const userAccountPermissions = await fetchUserAccountPermissions(accountId)
@@ -19,6 +27,10 @@ export class CurrentEntityManager {
     const currentEntityStore = useCurrentEntityStore()
     currentEntityStore.setCurrentEntity(entity)
     CurrentEntityManager.setLocalStorageEntityId(accountId)
+
+    if (shouldFetchInvoicesAccess === false) {
+      return
+    }
 
     await CurrentEntityManager.fetchInvoicesAccess(entity)
   }

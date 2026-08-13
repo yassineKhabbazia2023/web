@@ -52,6 +52,12 @@ const fetchEntityByIdMock = vi.mocked(fetchEntityById)
 beforeEach(() => {
   fetchEntityByIdMock.mockResolvedValue(entitiesServiceMocks.fetchEntityById)
   vi.spyOn(CurrentEntityManager, 'initializeCurrentEntity').mockResolvedValue(undefined)
+  vi.spyOn(CurrentEntityManager, 'fetchInvoicesAccess').mockResolvedValue(undefined)
+
+  const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+  currentEntityStoreMock.currentEntity = undefined
+  currentEntityStoreMock.currentEntityId = undefined
+  currentEntityStoreMock.currentAccountType = AccountType.REGULAR
 })
 
 describe('verify entity change', () => {
@@ -85,7 +91,25 @@ describe('verify entity change', () => {
     await currentEntityGuard(to, from)
 
     expect(fetchEntityByIdMock).toHaveBeenCalled()
-    expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalled()
+    expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledExactlyOnceWith(
+      entitiesServiceMocks.fetchEntityById,
+      { shouldFetchInvoicesAccess: false },
+    )
+  })
+
+  it('fetches invoices access while initializing a regular entity route', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledExactlyOnceWith(
+      entitiesServiceMocks.fetchEntityById,
+      { shouldFetchInvoicesAccess: true },
+    )
+    expect(CurrentEntityManager.fetchInvoicesAccess).not.toHaveBeenCalled()
   })
 
   it('calls startContentLoading and stopContentLoading when fetching entity', async () => {
@@ -121,6 +145,32 @@ describe('verify entity change', () => {
     await currentEntityGuard(to, from)
 
     expect(loadingStoreMock.startContentLoading).not.toHaveBeenCalled()
+  })
+
+  it('fetches invoices access when entering an already selected regular entity', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntity = entitiesServiceMocks.fetchEntityById
+    currentEntityStoreMock.currentEntityId = entitiesServiceMocks.fetchEntityById.accountId
+    currentEntityStoreMock.currentAccountType = AccountType.REGULAR
+
+    const from = createMockedRoute()
+    const to = createMockedRoute(entitiesServiceMocks.fetchEntityById.accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentEntityManager.fetchInvoicesAccess).toHaveBeenCalledExactlyOnceWith(entitiesServiceMocks.fetchEntityById)
+  })
+
+  it('does not fetch invoices access when navigating inside the same regular entity', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntity = entitiesServiceMocks.fetchEntityById
+    currentEntityStoreMock.currentEntityId = entitiesServiceMocks.fetchEntityById.accountId
+    currentEntityStoreMock.currentAccountType = AccountType.REGULAR
+
+    const from = createMockedRoute(entitiesServiceMocks.fetchEntityById.accountId.toString(), RouteName.ENTITY)
+    const to = createMockedRoute(entitiesServiceMocks.fetchEntityById.accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentEntityManager.fetchInvoicesAccess).not.toHaveBeenCalled()
   })
 
   it('calls stopContentLoading when entity fetch fails', async () => {

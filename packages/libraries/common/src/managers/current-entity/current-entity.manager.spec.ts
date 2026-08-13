@@ -17,15 +17,13 @@ const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
 
 describe('test current-entity.manager', () => {
   describe('CurrentEntityManager', () => {
-    it('should set currentEntity properly', async () => {
+    it('should set currentEntity properly without fetching invoices access by default', async () => {
       const permissionsMock = getPermissionsMock()
-      const accessMock = getInvoicesAccessResponseMock()
-
       const entityMock = getMockedEntitySummary()
       const { accountId: expectedAccountId } = entityMock
+      const fetchInvoicesAccessSpy = vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess')
 
       vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
-      vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess').mockResolvedValueOnce(accessMock)
 
       await CurrentEntityManager.initializeCurrentEntity(entityMock)
 
@@ -36,6 +34,20 @@ describe('test current-entity.manager', () => {
       expect(fetchUserAccountPermissions).toHaveBeenCalledExactlyOnceWith(expectedAccountId)
 
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith(permissionsMock)
+
+      expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
+      expect(invoicesAccessStoreMock.setAccessData).not.toHaveBeenCalled()
+    })
+
+    it('should fetch invoices access when the option is enabled', async () => {
+      const permissionsMock = getPermissionsMock()
+      const accessMock = getInvoicesAccessResponseMock()
+      const entityMock = getMockedEntitySummary()
+
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
+      vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess').mockResolvedValueOnce(accessMock)
+
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
 
       expect(InvoicesAccessService.fetchInvoicesAccess).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
       expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(accessMock)
@@ -48,10 +60,24 @@ describe('test current-entity.manager', () => {
 
       vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
 
-      await CurrentEntityManager.initializeCurrentEntity(entityMock)
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
 
       expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
       expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
+    })
+
+    it('should not fetch invoices access when the option is disabled', async () => {
+      const permissionsMock = getPermissionsMock()
+      const entityMock = getMockedEntitySummary()
+      const fetchInvoicesAccessSpy = vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess')
+
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
+
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: false })
+
+      expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledExactlyOnceWith(entityMock)
+      expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
+      expect(invoicesAccessStoreMock.reset).not.toHaveBeenCalled()
     })
 
     it('should set access data to null when fetchInvoicesAccess fails', async () => {
@@ -61,7 +87,7 @@ describe('test current-entity.manager', () => {
       vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
       vi.spyOn(InvoicesAccessService, 'fetchInvoicesAccess').mockRejectedValueOnce(new Error('API error'))
 
-      await CurrentEntityManager.initializeCurrentEntity(entityMock)
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
 
       expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(null)
     })

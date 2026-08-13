@@ -7,7 +7,7 @@ import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { AccountType, RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 
-export async function currentEntityGuard(to: RouteLocationNormalized, _from: RouteLocationNormalized) {
+export async function currentEntityGuard(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   if (to.params[RouteParam.ENTITY_ID] === undefined) {
     // the route does not require an entity id, exit the guard
     return
@@ -20,7 +20,10 @@ export async function currentEntityGuard(to: RouteLocationNormalized, _from: Rou
     return { name: RouteName.ERROR403 }
   }
 
-  if (isEntityAlreadySelected(toEntityId) === false) {
+  const isTargetEntityAlreadySelected = isEntityAlreadySelected(toEntityId)
+  const expectedAccountType = getExpectedAccountType(to)
+
+  if (isTargetEntityAlreadySelected === false) {
     const loadingStore = useLoadingStore()
     loadingStore.startContentLoading()
 
@@ -32,7 +35,9 @@ export async function currentEntityGuard(to: RouteLocationNormalized, _from: Rou
         return { name: RouteName.ERROR403 }
       }
 
-      await CurrentEntityManager.initializeCurrentEntity(entity)
+      await CurrentEntityManager.initializeCurrentEntity(entity, {
+        shouldFetchInvoicesAccess: expectedAccountType === AccountType.REGULAR,
+      })
 
     } catch (error) {
       logger.error(`Entity Router Guard - Error while trying to fetch user entity (${toEntityId})`, error)
@@ -43,19 +48,40 @@ export async function currentEntityGuard(to: RouteLocationNormalized, _from: Rou
   }
 
   // Prevents accessing /dossier/:id with a prospect id (and vice-versa) by URL tampering.
-  let expectedAccountType: AccountType | undefined
-  if (RouterHelpers.hasProvidedAncestor({ route: to, ancestorName: RouteName.ENTITY })) {
-    expectedAccountType = AccountType.REGULAR
-  } else if (RouterHelpers.hasProvidedAncestor({ route: to, ancestorName: RouteName.PROSPECT })) {
-    expectedAccountType = AccountType.PROSPECT
-  }
-
   const currentAccountType = useCurrentEntityStore().currentAccountType
   if (expectedAccountType !== undefined && currentAccountType !== expectedAccountType) {
     logger.warn(
       `Entity Router Guard - User tried to access wrong entity type (expected ${expectedAccountType}, got ${currentAccountType}) for entity ${toEntityId}`,
     )
     return navigateToCurrentEntityHomepage()
+  }
+
+  if (
+    isTargetEntityAlreadySelected === true &&
+    expectedAccountType === AccountType.REGULAR &&
+    isEnteringRegularEntityContext(to, from)
+  ) {
+    const currentEntity = useCurrentEntityStore().currentEntity
+    if (currentEntity !== undefined) {
+      await CurrentEntityManager.fetchInvoicesAccess(currentEntity)
+    }
+  }
+}
+
+function isEnteringRegularEntityContext(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+  const isTargetRegularEntityRoute = RouterHelpers.hasProvidedAncestor({ route: to, ancestorName: RouteName.ENTITY })
+  const isSourceRegularEntityRoute = RouterHelpers.hasProvidedAncestor({ route: from, ancestorName: RouteName.ENTITY })
+
+  return isTargetRegularEntityRoute === true && isSourceRegularEntityRoute === false
+}
+
+function getExpectedAccountType(route: RouteLocationNormalized): AccountType | undefined {
+  if (RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.ENTITY })) {
+    return AccountType.REGULAR
+  }
+
+  if (RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.PROSPECT })) {
+    return AccountType.PROSPECT
   }
 }
 
