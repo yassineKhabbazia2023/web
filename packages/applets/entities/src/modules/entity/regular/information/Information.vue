@@ -35,7 +35,7 @@
             v-if="section.sectionKey === 'companyAddress'"
             data-testid="folder-information-form-address-section"
           >
-            {{ addressSectionTitle }}
+            {{ t('companyContactDetails') }}
           </span>
           <span v-else>
             {{ section.title }}
@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/toolbox'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -91,18 +91,14 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
-      billing: 'Company billing address',
-      delivery: 'Company delivery address',
-      addressFallback: 'Company address',
+      companyContactDetails: 'Company contact details',
       save: 'Save modifications',
       'save-succeeded': 'Save succeeded',
       'save-failed': 'Save failed',
       alertInstruction: 'If any information is incorrect, please update it in the CRM',
     },
     'fr-FR': {
-      billing: 'Adresse de facturation de l\'entreprise',
-      delivery: 'Adresse de livraison de l\'entreprise',
-      addressFallback: 'Adresse de l\'entreprise',
+      companyContactDetails: 'Coordonnées de l\'entreprise',
       save: 'Enregistrer les modifications',
       'save-succeeded': 'Enregistrement des modifications avec succès',
       'save-failed': 'L\'enregistrement des modifications a échoué',
@@ -125,18 +121,6 @@ const isLoading = ref<boolean>(true)
 const currentAccount = ref<Account | undefined>(undefined)
 const originalAccount = ref<Account | undefined>(undefined)
 const informationFormStructure = ref<FormSection[]>()
-
-const addressSectionTitle = computed(() => {
-  const currentAccountAddress = currentAccount.value?.address
-  const hasAddress = currentAccountAddress && currentAccountAddress.length > 0
-
-  if (!hasAddress) {
-    return t('addressFallback')
-  }
-  return currentAccountAddress[0].addressType === 'billing'
-    ? t('billing')
-    : t('delivery')
-})
 
 const canEdit = ref(false)
 const isSaving = ref(false)

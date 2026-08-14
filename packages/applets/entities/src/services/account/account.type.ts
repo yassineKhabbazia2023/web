@@ -63,6 +63,10 @@ export interface Signatory {
 export interface Account {
   accountId: number
   accountNumber: string
+  accountRoutingCode?: string
+  accountRoutingLabel?: string
+  accountLegalFormLabel?: string
+  accountElectronicAddressId ?: number
   iconName?: string
   isActive?: boolean
   accountNumberSource?: string

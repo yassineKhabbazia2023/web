@@ -25,28 +25,6 @@
     "fields": [
       {
         "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pDisabled": true,
-        "pFieldKey": "phone[0].phoneNumber",
-        "pFieldType": "input",
-        "pLabel": "Numéro de téléphone ",
-      },
-      {
-        "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pDisabled": true,
-        "pFieldKey": "email",
-        "pFieldType": "input",
-        "pLabel": "E-mail de dématérialisation",
-      },
-    ],
-    "sectionKey": undefined,
-    "title": "Coordonnées de l'entreprise",
-  },
-  {
-    "fields": [
-      {
-        "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
         "pDisabled": true,
         "pFieldKey": "address[0].addressLine1",
@@ -85,9 +63,39 @@
         "pFieldType": "input",
         "pLabel": "Pays",
       },
+      {
+        "modelValue": "",
+        "pCssClass": "min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "phone[0].phoneNumber",
+        "pFieldType": "input",
+        "pLabel": "Numéro de téléphone ",
+      },
     ],
     "sectionKey": "companyAddress",
-    "title": "Adresse",
+    "title": "Coordonnées de l'entreprise",
+  },
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "email",
+        "pFieldType": "input",
+        "pLabel": "E-mail de dématérialisation",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "accountRoutingLabel",
+        "pFieldType": "input",
+        "pLabel": "Code de routage",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Facture électronique",
   },
   {
     "fields": [
@@ -111,7 +119,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-50",
         "pDisabled": true,
-        "pFieldKey": "legal.legalForm",
+        "pFieldKey": "accountLegalFormLabel",
         "pFieldType": "input",
         "pLabel": "Forme juridique",
       },
