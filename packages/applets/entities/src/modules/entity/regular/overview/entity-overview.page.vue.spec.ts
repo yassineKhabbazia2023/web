@@ -2,10 +2,9 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { MockInstance } from 'vitest'
 import { RouteName } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
-import { FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { useRoute, useRouter } from 'vue-router'
@@ -22,10 +21,10 @@ const entitySummaryMock = getMockedEntitySummary(getMockedEntity())
 const mockRouterPush = vi.fn()
 const mockRouterReplace = vi.fn()
 
-let hasPermissionMock: MockInstance
+let hasCurrentEntityPermissionMock: MockInstance
 
 beforeEach(() => {
-  hasPermissionMock = armCurrentUserPermissions(false)
+  hasCurrentEntityPermissionMock = vi.spyOn(CurrentUserManager, 'hasCurrentEntityPermission').mockReturnValue(false)
   // Keeps the invoices tab out of the authorized tabs whatever the store state.
   vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
   userStoreMock.isCollab = true
@@ -56,7 +55,7 @@ describe('entity', () => {
       // Client user granted only the information permission: the collaborator-only
       // tabs and the permission-gated tabs must all be filtered out.
       userStoreMock.isCollab = false
-      hasPermissionMock.mockImplementation(
+      hasCurrentEntityPermissionMock.mockImplementation(
         (permissions: Permission[]) => permissions === ACCOUNT_PERMISSIONS.INFORMATION,
       )
 
@@ -69,7 +68,7 @@ describe('entity', () => {
     })
 
     it('should display every authorized tab for a fully-permitted collaborator', async () => {
-      hasPermissionMock.mockReturnValue(true)
+      hasCurrentEntityPermissionMock.mockReturnValue(true)
 
       const wrapper = createWrapper()
       await flushPromises()

@@ -17,10 +17,10 @@ export function getTabAuthorizations(isCollab: boolean, isInvoicesTabVisible: bo
   const hasInvoicesAccess = canAccessInvoices(isInvoicesTabVisible)
 
   return {
-    [RouteName.OFFERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),
-    [RouteName.INFO]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
-    [RouteName.USERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
-    [RouteName.COLLAB]: isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
+    [RouteName.OFFERS]: CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.OFFER),
+    [RouteName.INFO]: CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.INFORMATION),
+    [RouteName.USERS]: CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.USERS),
+    [RouteName.COLLAB]: isCollab && CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
     [RouteName.FOLDER_HISTORY]: isCollab,
     [RouteName.RYDGE_INVOICES]: hasInvoicesAccess,
   }

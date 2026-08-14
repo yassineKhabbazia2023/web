@@ -59,6 +59,9 @@ export const regularCollaboratorRoutes = [
           {
             path: COLLABORATOR_ROUTES.entity.regular.overview.info.path,
             name: COLLABORATOR_ROUTES.entity.regular.overview.info.name,
+            meta: {
+              [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INFORMATION,
+            },
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Information),
           },
           {
