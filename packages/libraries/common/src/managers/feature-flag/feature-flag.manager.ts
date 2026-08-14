@@ -8,6 +8,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.DELEGATION_REQUEST_TABS,
   Feature.FAVORITE_SORT,
+  Feature.HUBSPOT_PRODUCT_FRUITS,
   Feature.INVOICES_EXPERIENCE,
   Feature.LAST_ACTIVITY_FEATURE,
   Feature.MANAGE_WALLET_MENU,
@@ -49,6 +50,10 @@ export class FeatureFlagManager {
 
   static isGigyaSsoActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.GIGYA_SSO)
+  }
+
+  static isHubspotProductFruitsActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.HUBSPOT_PRODUCT_FRUITS)
   }
 
   static isLastActivityFeatureActivated() {

@@ -1,6 +1,13 @@
-import { openHubspot, closeHubspot, initHubspot } from './hubspot.plugin'
+import { openHubspot, closeHubspot, initHubspot, loadHubspotScript } from './hubspot.plugin'
 import { hubSpotStatus } from './hubspot.plugin.state'
 import { logger } from '@pulse/toolbox'
+
+type HubspotTestWindow = Window & typeof globalThis & {
+  disabledHsPopups?: string[]
+  hsConversationsSettings?: {
+    loadImmediately: boolean
+  }
+}
 
 describe('Hubspot Plugin', () => {
   const mockHubSpotConversations = {
@@ -15,8 +22,32 @@ describe('Hubspot Plugin', () => {
   beforeEach(() => {
     hubSpotStatus.isActive = false
     hubSpotStatus.isInitialized = false
+    document.getElementById('hs-script-loader')?.remove()
     vi.stubGlobal('HubSpotConversations', mockHubSpotConversations)
     vi.clearAllMocks()
+  })
+
+  describe('loadHubspotScript()', () => {
+    it('should add Hubspot script and settings', () => {
+      loadHubspotScript()
+
+      const script = document.getElementById('hs-script-loader') as HTMLScriptElement | null
+      const hubspotWindow = window as HubspotTestWindow
+
+      expect(hubspotWindow.disabledHsPopups).toEqual(['ADS'])
+      expect(hubspotWindow.hsConversationsSettings).toEqual({
+        loadImmediately: false,
+      })
+      expect(script?.src).toContain('//js-eu1.hs-scripts.com/143978459.js')
+      expect(script?.defer).toBe(true)
+    })
+
+    it('should not add Hubspot script twice', () => {
+      loadHubspotScript()
+      loadHubspotScript()
+
+      expect(document.querySelectorAll('#hs-script-loader')).toHaveLength(1)
+    })
   })
 
   describe('openHubspot()', () => {

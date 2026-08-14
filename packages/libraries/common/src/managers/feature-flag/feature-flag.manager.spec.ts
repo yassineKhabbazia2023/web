@@ -83,6 +83,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isHubspotProductFruitsActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isHubspotProductFruitsActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.HUBSPOT_PRODUCT_FRUITS, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isHubspotProductFruitsActivated()).toBe(false)
+    })
+  })
+
   describe('isWalletV2Activated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

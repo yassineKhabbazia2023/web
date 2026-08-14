@@ -4,6 +4,7 @@ export enum Feature {
   DELEGATION_REQUEST_TABS = 'isDelegationRequestTabsEnabled',
   FAVORITE_SORT = 'isFavoriteSortEnabled',
   GIGYA_SSO = 'VITE_GIGYA_SSO_ACTIVATED',
+  HUBSPOT_PRODUCT_FRUITS = 'isHubspotProductFruitsEnabled',
   INVOICES_EXPERIENCE = 'isInvoicesExperienceEnabled',
   LAST_ACTIVITY_FEATURE = 'isLastActivityFeatureEnabled',
   MAINTENANCE_MODE = 'VITE_MAINTENANCE_MODE_ACTIVATED',

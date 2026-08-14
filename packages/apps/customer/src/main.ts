@@ -5,6 +5,7 @@ import { waitForMsw } from '@pulse/toolbox/utils/e2e'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
 import { api } from '@pulse/common/api'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import styleguideLibrary from '@pulse/styleguide'
 import sharedLibrary from '@pulse/shared'
 import widgetsLibrary from '@pulse/widgets'
@@ -49,13 +50,14 @@ async function bootstrap() {
   await initOpenFeature(VITE_CONFIGCAT_SDK_KEY)
 
   const isProd = import.meta.env.PROD
+  const isHubspotProductFruitsActivated = isProd && FeatureFlagManager.isHubspotProductFruitsActivated()
 
   const app = createApp(App)
     // install plugins
     .use(gigyaPlugin)
     .use(axeptioPlugin, { isActive: isProd })
-    .use(productFruitsPlugin, { isActive: isProd })
-    .use(hubspotPlugin, { isActive: isProd })
+    .use(productFruitsPlugin, { isActive: isHubspotProductFruitsActivated })
+    .use(hubspotPlugin, { isActive: isHubspotProductFruitsActivated })
     // install internal libraries
     .use(commonLibrary, {})
     .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL, axiosInstance: api.gateway })
