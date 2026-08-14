@@ -322,36 +322,6 @@
       "failure": "The client relationship update could not be completed. Please try again in a few moments."
     },
     "invoices": {
-      "title": "Dematerialization of RYDGE Conseil invoices",
-      "description": "With RYDGE Conseil, benefit {noExtraCost} from the issuance of Firm invoices in {electronicFormat} and access to {digitalVault} containing all dematerialized invoices and credit notes, hosted with a trusted third party.",
-      "descriptionBold": {
-        "noExtraCost": "at no extra cost",
-        "electronicFormat": "electronic format",
-        "digitalVault": "a digital vault"
-      },
-      "benefitsTitle": "The benefits:",
-      "benefit1": "The digital vault is a key step towards {mandatoryInvoice} and facilitates {digitalTransition} and compliance with upcoming legal obligations.",
-      "benefit1Bold": {
-        "mandatoryInvoice": "mandatory electronic invoicing",
-        "digitalTransition": "digital transition"
-      },
-      "benefit2": "Documents are stored in a {secure} environment that guarantees {durability}, {integrity} and {traceability} of invoices.",
-      "benefit2Bold": {
-        "secure": "secure",
-        "durability": "durability",
-        "integrity": "integrity",
-        "traceability": "traceability"
-      },
-      "benefit3": "Reduction of printing and contribution to our {csrPolicy}.",
-      "benefit3Bold": {
-        "csrPolicy": "CSR policy"
-      },
-      "helpCenterLink": "Help center: everything you need to know about your Rydge invoice Read the FAQ article",
-      "alertText1": "Receiving invoices {dematerializedFormat} and accessing the {digitalVault} are essential elements for adopting good digital practices and ensuring an efficient and secure centralization of all the firm's documents.",
-      "alertBold": {
-        "dematerializedFormat": "in dematerialized format",
-        "digitalVault": "digital vault"
-      },
       "step1": {
         "title": "Subscribe to dematerialized {highlight}",
         "titleHighlight": "invoices"

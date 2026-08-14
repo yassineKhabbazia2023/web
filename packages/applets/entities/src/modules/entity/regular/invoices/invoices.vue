@@ -1,7 +1,6 @@
 <template>
   <div class="margin-top--2">
     <div class="invoices-container">
-      <InvoicesInfo />
       <InvoicesForm />
     </div>
   </div>
@@ -11,7 +10,7 @@
 import { onMounted } from 'vue'
 import { useInvoicesAccessStore } from '@pulse/common/stores'
 import { InvoicesTracking } from './services/invoices.tracking.service'
-import { InvoicesInfo, InvoicesForm } from './components'
+import { InvoicesForm } from './components'
 
 const invoicesAccessStore = useInvoicesAccessStore()
 
@@ -23,6 +22,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .invoices-container {
   display: flex;
+  justify-content: center;
   min-height: 500px;
   width: 100%;
 }

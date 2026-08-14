@@ -322,36 +322,6 @@
       "failure": "La mise à jour de la relation client n’a pas pu aboutir. Réessayez dans quelques instants."
     },
     "invoices": {
-      "title": "Dématérialisation des factures RYDGE Conseil",
-      "description": "Avec RYDGE Conseil, bénéficiez {noExtraCost} de l'émission des factures Cabinet au {electronicFormat} et de l'accès à {digitalVault} contenant l'ensemble des factures et avoirs dématérialisés, hébergé auprès d'un tiers de confiance.",
-      "descriptionBold": {
-        "noExtraCost": "sans frais supplémentaires",
-        "electronicFormat": "format électronique",
-        "digitalVault": "un coffre-fort numérique"
-      },
-      "benefitsTitle": "Les avantages :",
-      "benefit1": "Le coffre-fort constitue une étape clé vers la {mandatoryInvoice} et facilite la {digitalTransition} et la conformité aux prochaines obligations légales.",
-      "benefit1Bold": {
-        "mandatoryInvoice": "facture électronique obligatoire",
-        "digitalTransition": "transition numérique"
-      },
-      "benefit2": "Les documents sont stockés dans un environnement {secure} qui garantit la {durability}, l'{integrity} et la {traceability} des factures.",
-      "benefit2Bold": {
-        "secure": "sécurisé",
-        "durability": "pérennité",
-        "integrity": "intégrité",
-        "traceability": "traçabilité"
-      },
-      "benefit3": "Réduction des impressions et contribution à notre {csrPolicy}.",
-      "benefit3Bold": {
-        "csrPolicy": "politique RSE"
-      },
-      "helpCenterLink": "Centre d'aide : tout savoir sur votre facture Rydge Lire l'article FAQ",
-      "alertText1": "La réception {dematerializedFormat} des factures et l'accès au {digitalVault} constituent des éléments essentiels pour adopter les bons réflexes digitaux et assurer une centralisation efficace et sécurisée de l'ensemble des documents du cabinet.",
-      "alertBold": {
-        "dematerializedFormat": "sous format dématérialisé",
-        "digitalVault": "coffre-fort"
-      },
       "step1": {
         "title": "Souscrire aux factures {highlight}",
         "titleHighlight": "dématérialisées"

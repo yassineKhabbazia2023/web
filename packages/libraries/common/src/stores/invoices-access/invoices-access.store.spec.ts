@@ -84,7 +84,7 @@ describe('useInvoicesAccessStore', () => {
       expect(store.externalDematMail).toBeNull()
     })
 
-    it('should set isTabVisible to true when user is collab even if contactWithAccess does not match and tabState is not connection ready', () => {
+    it('should set isTabVisible to false when user is collab but tabState is not connection ready', () => {
       const store = useInvoicesAccessStore()
       setUpCollabUser()
       setUpNonSignatoryEntity()
@@ -96,10 +96,25 @@ describe('useInvoicesAccessStore', () => {
 
       store.setAccessData(response)
 
+      expect(store.isTabVisible).toBe(false)
+    })
+
+    it('should set isTabVisible to true when user is collab and tabState is connection ready even if contactWithAccess does not match', () => {
+      const store = useInvoicesAccessStore()
+      setUpCollabUser()
+      setUpNonSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: null,
+        externalDematMail: null,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
+      })
+
+      store.setAccessData(response)
+
       expect(store.isTabVisible).toBe(true)
     })
 
-    it('should set isTabVisible to true when user is signatory even if contactWithAccess does not match and tabState is not connection ready', () => {
+    it('should set isTabVisible to false when user is signatory but tabState is not connection ready', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
       setUpSignatoryEntity()
@@ -107,6 +122,21 @@ describe('useInvoicesAccessStore', () => {
         contactWithAccess: null,
         externalDematMail: null,
         tabState: InvoicesTabState.FORM_START,
+      })
+
+      store.setAccessData(response)
+
+      expect(store.isTabVisible).toBe(false)
+    })
+
+    it('should set isTabVisible to true when user is signatory and tabState is connection ready even if contactWithAccess does not match', () => {
+      const store = useInvoicesAccessStore()
+      setUpCustomerUser()
+      setUpSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: null,
+        externalDematMail: null,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
       store.setAccessData(response)
@@ -213,7 +243,7 @@ describe('useInvoicesAccessStore', () => {
       const store = useInvoicesAccessStore()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
-        tabState: InvoicesTabState.FORM_START,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
       // Access data is set before user data is available (simulating F5 refresh)
@@ -234,7 +264,7 @@ describe('useInvoicesAccessStore', () => {
       setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
-        tabState: InvoicesTabState.FORM_START,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
       store.setAccessData(response)
@@ -249,7 +279,7 @@ describe('useInvoicesAccessStore', () => {
       setUpSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
-        tabState: InvoicesTabState.FORM_START,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
       store.setAccessData(response)

@@ -28,5 +28,4 @@ export const PENNYLANE_GETTING_STARTED_URL = 'https://help.pennylane.com/fr/coll
 export const AKUITEO_URL = 'https://akuiteo.rydge.fr/akuiteo/login.html'
 export const COLLABORATOR_BASE_PATH = '/collaborateur'
 export const PODCAST_URL = 'https://www.rydge.fr/podcast'
-export const INVOICES_HELP_CENTER_URL = 'https://help.clients.app.rydge.fr/fr/article/mes-factures-rydge-conseil'
 

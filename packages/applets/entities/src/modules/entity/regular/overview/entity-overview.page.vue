@@ -118,12 +118,12 @@ const handleTabClick = (tab: TabsPaneContext) => {
   }
 }
 
+// Runs on every route name change under this page (including direct URL access to a tab),
+// not just when landing on ENTITY_OVERVIEW, so an unauthorized tab is never reachable directly.
 watch(
   () => route.name,
-  (routeName) => {
-    if (routeName === RouteName.ENTITY_OVERVIEW) {
-      navigateToDefaultTab()
-    }
+  () => {
+    navigateToDefaultTab()
   },
   { immediate: true },
 )

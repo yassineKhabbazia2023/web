@@ -22,6 +22,10 @@ export const useInvoicesAccessStore = defineStore('invoices-access', () => {
       return false
     }
 
+    if (CONNECTION_READY_STATES.has(tabState.value) === false) {
+      return false
+    }
+
     if (isMobile.value === true) {
       return false
     }
@@ -32,9 +36,7 @@ export const useInvoicesAccessStore = defineStore('invoices-access', () => {
     const isCollab = userStore.isCollab === true
     const isSignatory = currentEntityStore.currentEntity?.isSignatory === true
     const userEmail = userStore.getUserEmail() ?? ''
-    const isClientWithAccess =
-      contactWithAccess.value === userEmail &&
-      CONNECTION_READY_STATES.has(tabState.value)
+    const isClientWithAccess = contactWithAccess.value === userEmail
 
     return isCollab || isSignatory || isClientWithAccess
   })
