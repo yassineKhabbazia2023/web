@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserStore } from '../user/user.store'
-import { useCurrentEntityStore } from '../current-entity/current-entity.store'
 import { InvoicesTabState } from '../../services/invoices-access/invoices-access.service.types'
 import type { InvoicesAccessResponse } from '../../services/invoices-access/invoices-access.service.types'
 import { useResponsive } from '@pulse/styleguide'
@@ -31,14 +30,12 @@ export const useInvoicesAccessStore = defineStore('invoices-access', () => {
     }
 
     const userStore = useUserStore()
-    const currentEntityStore = useCurrentEntityStore()
 
     const isCollab = userStore.isCollab === true
-    const isSignatory = currentEntityStore.currentEntity?.isSignatory === true
     const userEmail = userStore.getUserEmail() ?? ''
     const isClientWithAccess = contactWithAccess.value === userEmail
 
-    return isCollab || isSignatory || isClientWithAccess
+    return isCollab || isClientWithAccess
   })
 
   function setAccessData(response: InvoicesAccessResponse | null) {

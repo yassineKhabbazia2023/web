@@ -24,11 +24,6 @@ function setUpSignatoryEntity() {
   currentEntityStore.setCurrentEntity(getMockedEntitySummary({ isSignatory: true }))
 }
 
-function setUpNonSignatoryEntity() {
-  const currentEntityStore = useCurrentEntityStore()
-  currentEntityStore.setCurrentEntity(getMockedEntitySummary({ isSignatory: false }))
-}
-
 describe('useInvoicesAccessStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -50,7 +45,6 @@ describe('useInvoicesAccessStore', () => {
     it('should set all state from response', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
@@ -67,7 +61,6 @@ describe('useInvoicesAccessStore', () => {
     it('should reset state when response is null', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
@@ -87,7 +80,6 @@ describe('useInvoicesAccessStore', () => {
     it('should set isTabVisible to false when user is collab but tabState is not connection ready', () => {
       const store = useInvoicesAccessStore()
       setUpCollabUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
         externalDematMail: null,
@@ -102,7 +94,6 @@ describe('useInvoicesAccessStore', () => {
     it('should set isTabVisible to true when user is collab and tabState is connection ready even if contactWithAccess does not match', () => {
       const store = useInvoicesAccessStore()
       setUpCollabUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
         externalDematMail: null,
@@ -114,14 +105,14 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(true)
     })
 
-    it('should set isTabVisible to false when user is signatory but tabState is not connection ready', () => {
+    it('should set isTabVisible to false when user is signatory but is not the contact with access', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
       setUpSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
-        contactWithAccess: null,
+        contactWithAccess: 'other@example.com',
         externalDematMail: null,
-        tabState: InvoicesTabState.FORM_START,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
       store.setAccessData(response)
@@ -129,25 +120,10 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(false)
     })
 
-    it('should set isTabVisible to true when user is signatory and tabState is connection ready even if contactWithAccess does not match', () => {
+    it('should set isTabVisible to true when user is signatory and is the contact with access', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
       setUpSignatoryEntity()
-      const response = getInvoicesAccessResponseMock({
-        contactWithAccess: null,
-        externalDematMail: null,
-        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
-      })
-
-      store.setAccessData(response)
-
-      expect(store.isTabVisible).toBe(true)
-    })
-
-    it('should set isTabVisible to true when non-signatory client and contactWithAccess matches userEmail and tabState is CONNECTION_READY_LOCKED', () => {
-      const store = useInvoicesAccessStore()
-      setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         externalDematMail: null,
@@ -159,10 +135,23 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(true)
     })
 
-    it('should set isTabVisible to true when non-signatory client and contactWithAccess matches userEmail and tabState is CONNECTION_READY_UNLOCKED', () => {
+    it('should set isTabVisible to true when client and contactWithAccess matches userEmail and tabState is CONNECTION_READY_LOCKED', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: USER_EMAIL,
+        externalDematMail: null,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
+      })
+
+      store.setAccessData(response)
+
+      expect(store.isTabVisible).toBe(true)
+    })
+
+    it('should set isTabVisible to true when client and contactWithAccess matches userEmail and tabState is CONNECTION_READY_UNLOCKED', () => {
+      const store = useInvoicesAccessStore()
+      setUpCustomerUser()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         externalDematMail: null,
@@ -174,10 +163,9 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(true)
     })
 
-    it('should set isTabVisible to false when non-signatory client and contactWithAccess matches userEmail but tabState is FORM_START', () => {
+    it('should set isTabVisible to false when client and contactWithAccess matches userEmail but tabState is FORM_START', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         externalDematMail: null,
@@ -189,10 +177,9 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(false)
     })
 
-    it('should set isTabVisible to false when non-signatory client and contactWithAccess matches userEmail but tabState is FORM_SUBMITTED', () => {
+    it('should set isTabVisible to false when client and contactWithAccess matches userEmail but tabState is FORM_SUBMITTED', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         externalDematMail: null,
@@ -204,10 +191,9 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(false)
     })
 
-    it('should set isTabVisible to false when non-signatory client and contactWithAccess does not match userEmail', () => {
+    it('should set isTabVisible to false when client and contactWithAccess does not match userEmail', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: 'other@example.com', externalDematMail: null })
 
       store.setAccessData(response)
@@ -215,10 +201,9 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(false)
     })
 
-    it('should set isTabVisible to false when non-signatory client and contactWithAccess is null', () => {
+    it('should set isTabVisible to false when client and contactWithAccess is null', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: null, externalDematMail: null })
 
       store.setAccessData(response)
@@ -226,10 +211,9 @@ describe('useInvoicesAccessStore', () => {
       expect(store.isTabVisible).toBe(false)
     })
 
-    it('should set isTabVisible to false when non-signatory client and externalDematMail is set but contactWithAccess does not match', () => {
+    it('should set isTabVisible to false when client and externalDematMail is set but contactWithAccess does not match', () => {
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: null, externalDematMail: 'dmat@example.com' })
 
       store.setAccessData(response)
@@ -261,22 +245,6 @@ describe('useInvoicesAccessStore', () => {
       isMobileMockRef.value = true
       const store = useInvoicesAccessStore()
       setUpCollabUser()
-      setUpNonSignatoryEntity()
-      const response = getInvoicesAccessResponseMock({
-        contactWithAccess: null,
-        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
-      })
-
-      store.setAccessData(response)
-
-      expect(store.isTabVisible).toBe(false)
-    })
-
-    it('should set isTabVisible to false when isMobile is true even for signatory user', () => {
-      isMobileMockRef.value = true
-      const store = useInvoicesAccessStore()
-      setUpCustomerUser()
-      setUpSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: null,
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
@@ -291,7 +259,6 @@ describe('useInvoicesAccessStore', () => {
       isMobileMockRef.value = true
       const store = useInvoicesAccessStore()
       setUpCustomerUser()
-      setUpNonSignatoryEntity()
       const response = getInvoicesAccessResponseMock({
         contactWithAccess: USER_EMAIL,
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
