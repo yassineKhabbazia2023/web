@@ -2,6 +2,7 @@
   <PSteps
     :pActive="addCustomerDrawerStepIndex"
     :pSteps="stepItems"
+    pTestId="add-customer-steps"
   />
 </template>
 

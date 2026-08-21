@@ -40,14 +40,14 @@
       <PFormLine>
         <PFormItem
           class="margin-bottom--6 flex--grow-1"
-          :pLabel="t('entities.wallet.prospect.form.company.callingName')"
+          :pLabel="t('entities.wallet.prospect.form.company.callName')"
         >
           <PInput
             v-model="model.legalName"
             pPlaceholder="-"
             pReadonly
             pDisabled
-            data-testid="prospect-calling-name-input"
+            data-testid="prospect-call-name-input"
           />
         </PFormItem>
       </PFormLine>

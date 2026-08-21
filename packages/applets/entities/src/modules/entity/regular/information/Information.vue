@@ -21,33 +21,52 @@
       aria-describedby="entity-information-alert"
       data-testid="folder-information-form"
     >
-      <section
+      <template
         v-for="(section, index) in informationFormStructure"
         :key="`section-${index}`"
-        class="entity-information__form-section
-        padding-x--5
-        padding-bottom--1 margin-bottom--6"
       >
-        <p
-          class="entity-information__form-section-title font-bold padding-top--5 margin-bottom--3"
+        <section
+          class="entity-information__form-section
+          padding-x--5
+          padding-bottom--1 margin-bottom--6"
         >
-          <span
-            v-if="section.sectionKey === 'companyAddress'"
-            data-testid="folder-information-form-address-section"
+          <p
+            class="entity-information__form-section-title font-bold padding-top--5 margin-bottom--3"
           >
-            {{ t('companyContactDetails') }}
-          </span>
-          <span v-else>
-            {{ section.title }}
-          </span>
-        </p>
-        <PDynamicFields
-          :pModel="currentAccount"
-          :pFields="section.fields"
-          class="entity-information__form-section-fields"
-          @update:p-model="onInputAccount"
-        />
-      </section>
+            <span
+              v-if="section.sectionKey === 'companyAddress'"
+              data-testid="folder-information-form-address-section"
+            >
+              {{ t('companyContactDetails') }}
+            </span>
+            <span v-else>
+              {{ section.title }}
+            </span>
+          </p>
+          <PDynamicFields
+            :pModel="currentAccount"
+            :pFields="section.fields"
+            class="entity-information__form-section-fields"
+            @update:p-model="onInputAccount"
+          />
+        </section>
+        <section
+          v-if="section.sectionKey === 'electronicInvoicing'"
+          class="entity-information__form-section
+          padding-x--5
+          padding-bottom--5 margin-bottom--6"
+          data-testid="folder-information-form-addressing-identification-section"
+        >
+          <p
+            class="entity-information__form-section-title font-bold padding-top--5 margin-bottom--3"
+          >
+            {{ t('addressingIdentification') }}
+          </p>
+          <AddressingIdentificationTable
+            :addressingIdentifications="currentAccount?.addressingIdentifications"
+          />
+        </section>
+      </template>
       <div
         v-if="canEdit"
         class="flex flex--justify-content-flex-end"
@@ -80,6 +99,7 @@ import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/types'
 import { getFormStructure, cleanRecordStructure } from '@entities/utils/referential'
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
+import AddressingIdentificationTable from './addressing-identification-table.vue'
 import { cloneDeep, get, setWith } from 'lodash-es'
 import { addPathValue } from '@entities/services/patch-record/patch-record.service'
 import { type PatchValue } from '@entities/services/patch-record'
@@ -92,6 +112,7 @@ const { t } = useI18n({
   messages: {
     'en-US': {
       companyContactDetails: 'Company contact details',
+      addressingIdentification: 'Addressing identification',
       save: 'Save modifications',
       'save-succeeded': 'Save succeeded',
       'save-failed': 'Save failed',
@@ -99,6 +120,7 @@ const { t } = useI18n({
     },
     'fr-FR': {
       companyContactDetails: 'Coordonnées de l\'entreprise',
+      addressingIdentification: 'Identification d\'adressage',
       save: 'Enregistrer les modifications',
       'save-succeeded': 'Enregistrement des modifications avec succès',
       'save-failed': 'L\'enregistrement des modifications a échoué',

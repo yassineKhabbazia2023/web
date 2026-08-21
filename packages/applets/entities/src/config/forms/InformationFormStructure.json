@@ -76,6 +76,7 @@
   },
   {
     "title": "Facture électronique",
+    "sectionKey": "electronicInvoicing",
     "fields": [
       {
         "modelValue": "",

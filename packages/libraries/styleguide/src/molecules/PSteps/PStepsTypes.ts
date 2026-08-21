@@ -22,4 +22,5 @@ export interface PStepsProps {
   pAlignCenter?: boolean
   pSimple?: boolean
   pSteps?: PStepsItem[]
+  pTestId?: string
 }

@@ -7,6 +7,7 @@
     :finishStatus="pFinishStatus"
     :simple="pSimple"
     :alignCenter="pAlignCenter"
+    :data-testid="pTestId"
   >
     <ElStep
       v-for="(stepItem, stepIndex) in resolvedStepItems"

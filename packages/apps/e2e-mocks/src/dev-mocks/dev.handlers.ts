@@ -1,5 +1,10 @@
 import type { RequestHandler } from 'msw'
 import { delay, http, HttpResponse } from 'msw'
+import {
+  accountReferentialInformationMock,
+  referentialHubsMock,
+  referentialOfficesMock,
+} from '@pulse/entities/mocks'
 
 // Dev mock handlers — add your selective API mocks here.
 // These handlers only activate when VITE_DEV_MOCKS=true.
@@ -220,6 +225,129 @@ const getPaymentPreferenceResponse = () => {
   }
 }
 
+// #region demat mail collect (back not ready yet)
+
+// Switch this flag to test the demat mail solicitation (banner + dialog):
+// - 'eligibleB2c': B2C customer with no demat mail — banner and dialog are shown
+// - 'eligibleB2bInternational': same, with the B2B International routing code
+// - 'alreadyFilled': the demat mail is set — no solicitation at all
+// - 'outOfScope': routing code out of the B2C / B2B International scope — no solicitation
+type DematMailScenario = 'eligibleB2c' | 'eligibleB2bInternational' | 'alreadyFilled' | 'outOfScope'
+const DEMAT_MAIL_SCENARIO = 'eligibleB2c' as DematMailScenario
+
+interface DematMailScenarioData {
+  email: string
+  accountRoutingCode: string
+  accountRoutingLabel: string
+}
+
+const DEMAT_MAIL_SCENARIOS: Record<DematMailScenario, DematMailScenarioData> = {
+  eligibleB2c: { email: '', accountRoutingCode: '0-B2C', accountRoutingLabel: 'B2C' },
+  eligibleB2bInternational: { email: '', accountRoutingCode: '0-B2BINT', accountRoutingLabel: 'B2B International' },
+  alreadyFilled: { email: 'facture@winston-tapia.fr', accountRoutingCode: '0-B2C', accountRoutingLabel: 'B2C' },
+  outOfScope: { email: '', accountRoutingCode: '0-B2B', accountRoutingLabel: 'B2B' },
+}
+
+// Full account payload, mirroring the real ITG response. Served by BOTH
+// demat/api (the solicitation) and account/api (the Informations page) so the two
+// always agree on the same account. Only `email` and `accountRoutingCode` drive
+// the solicitation; every other field is here to fill the Informations form.
+const getAccountResponse = (accountId: number) => ({
+  accountId,
+  accountGlobalUniqueId: '92add0c1-5805-4696-b5a7-eb5895c0c419',
+  accountNumber: '2024664516',
+  iconName: 'penny-icon',
+  isActive: true,
+  employeeCount: 268,
+  commercialName: 'Winston Tapia',
+  accounting: {
+    fiscalExerciseStartDate: '2024-01-01T00:00:00',
+    fiscalExerciseDuration: 12,
+    accountingType: 'Engagement',
+    fiscalSystem: 'BIC',
+    taxationSystem: 'IR',
+    activityType: 'PS',
+    activityDescription: 'Prestation de services',
+  },
+  legal: {
+    legalName: 'Winston Tapia',
+    siren: '124902506',
+    siret: '12490250636163',
+    legalForm: 'Société par actions simplifiée à associé unique',
+    legalFormCode: 'SASU',
+    staffSizeRange: '<300',
+    naf: [{ nafId: 1, nafCode: '01.11Z', nafLabel: 'Culture de céréales' }],
+    creationDate: '2024-04-29T09:32:54.7566667',
+  },
+  vat: { system: 'CA3M', intra: 'FR90729184822', type: 'Encaissement' },
+  address: [
+    {
+      addressId: 26,
+      addressLine1: '27 Rue de la Convention',
+      addressLine2: 'Bâtiment C, 3e étage',
+      addressLine3: '',
+      state: 'Île-de-France',
+      zipCode: '75015',
+      country: 'France',
+      city: 'Paris',
+      addressType: 'Delivery',
+    },
+    {
+      addressId: 626,
+      addressLine1: '27 Rue des Croisiers',
+      state: 'Normandie',
+      zipCode: '14000',
+      country: 'France',
+      city: 'Caen',
+      addressType: 'Billing',
+    },
+  ],
+  phone: [
+    { phoneId: 26, phoneNumber: '6126757907', type: 'delivery' },
+    { phoneId: 626, phoneNumber: '2329019582', type: 'billing' },
+  ],
+  hub: { hubId: 1, hubName: 'Aquitaine Nord' },
+  deployment: {
+    deploymentId: 26,
+    deploymentDate: '2024-04-29T10:00:07.096666',
+    status: 3,
+  },
+  createdBy: 'KPMGADMIN',
+  accountType: 'client',
+  turnover: 241996782.00,
+  missionType: 'Tenue',
+  officeId: 74,
+  office: {
+    officeId: 74,
+    name: 'Albi',
+    phoneNumber: '05 63 48 75 10',
+    addressId: 2936,
+    address: {
+      addressId: 2936,
+      addressLine1: "ZAC Les Portes d'Albi",
+      zipCode: '81000',
+      country: 'France',
+      city: 'Albi',
+      addressType: 'Office',
+      latitude: 43.920250,
+      longitude: 2.113660,
+    },
+  },
+  accountLegalFormLabel: 'Site de E-Commerce',
+  accountElectronicAddressId: 'Liste à définir',
+  // Feeds the "Identification d'adressage" table of the Informations page
+  // (addressing-identification-table.vue). Set to [] to check the empty state.
+  addressingIdentifications: [
+    { callName: 'Winston Tapia', addressingIdentifier: '12490250636163' },
+    { callName: 'Winston Tapia — Siège', addressingIdentifier: '12490250600011' },
+    { callName: 'Winston Tapia — Agence Caen', addressingIdentifier: '12490250600029' },
+    { callName: 'Winston Tapia — Agence Albi', addressingIdentifier: '12490250600037' },
+  ],
+  ...DEMAT_MAIL_SCENARIOS[DEMAT_MAIL_SCENARIO],
+})
+
+// #endregion
+
 export const devMockHandlers: RequestHandler[] = [
   // Add your handlers here
   http.get('*/connect/api/accounts/602/summary', () => {
@@ -314,4 +442,54 @@ export const devMockHandlers: RequestHandler[] = [
       headers: { 'Content-Type': 'application/octet-stream' },
     })
   }),
+
+  // #region demat mail collect
+
+  http.get('*/demat/api/accounts/:accountId/currentuser', async ({ params }) => {
+    await delay(400)
+    return HttpResponse.json(getAccountResponse(Number(params.accountId)))
+  }),
+
+  // The back forwards the request to HubSpot; the address only comes back through
+  // Akuiteo later on, so this mock deliberately does NOT flip the scenario to
+  // 'alreadyFilled' — the front relies on its persisted `submitted` flag meanwhile.
+  // Return `HttpResponse.json({}, { status: 500 })` to exercise the error path.
+  http.post('*/demat/api/accounts/:accountId/hubspot/submissions/currentuser', async () => {
+    await delay(800)
+    return HttpResponse.json({}, { status: 204 })
+  }),
+
+  // #endregion
+
+  // #region folder Informations page
+
+  // Same payload as the demat endpoint: the page must show the very mail the
+  // solicitation considers missing.
+  http.get('*/account/api/accounts/:accountId/currentuser', async ({ params }) => {
+    await delay(400)
+    return HttpResponse.json(getAccountResponse(Number(params.accountId)))
+  }),
+
+  // Referentials feeding the dropdowns of the form (hub, office, mission type,
+  // accounting and VAT blocks). Without them the fields render empty.
+  http.get('*/offer/api/referentials/AccountReferentialInformation', () => {
+    return HttpResponse.json(accountReferentialInformationMock)
+  }),
+
+  http.get('*/offer/api/referentials/hubs', () => {
+    return HttpResponse.json(referentialHubsMock)
+  }),
+
+  http.get('*/offer/api/referentials/offices', () => {
+    return HttpResponse.json(referentialOfficesMock)
+  }),
+
+  // "Enregistrer les modifications" — the mock accepts everything without
+  // persisting: a reload brings the scenario payload back.
+  http.patch('*/account/api/accounts/:accountId/currentuser', async () => {
+    await delay(600)
+    return HttpResponse.json({}, { status: 204 })
+  }),
+
+  // #endregion
 ]

@@ -60,6 +60,11 @@ export interface Signatory {
   creationDate: string
 }
 
+export interface AddressingIdentification {
+  callName: string
+  addressingIdentifier: string
+}
+
 export interface Account {
   accountId: number
   accountNumber: string
@@ -81,6 +86,7 @@ export interface Account {
   email?: string
   hub?: Hub
   deploymentPlanning?: Deployment[]
+  addressingIdentifications?: AddressingIdentification[]
 }
 export interface AccountRow {
   accountId: number

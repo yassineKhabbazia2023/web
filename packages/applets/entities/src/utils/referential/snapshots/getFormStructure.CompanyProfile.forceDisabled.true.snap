@@ -94,7 +94,7 @@
         "pLabel": "Code de routage",
       },
     ],
-    "sectionKey": undefined,
+    "sectionKey": "electronicInvoicing",
     "title": "Facture électronique",
   },
   {
