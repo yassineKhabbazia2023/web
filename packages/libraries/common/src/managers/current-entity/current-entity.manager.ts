@@ -46,10 +46,10 @@ export class CurrentEntityManager {
 
     try {
       const accessData = await InvoicesAccessService.fetchInvoicesAccess(entity.accountId)
-      invoicesAccessStore.setAccessData(accessData)
+      invoicesAccessStore.setAccessData(entity.accountId, accessData)
     } catch (error) {
       logger.error('Failed to fetch invoices access data', error)
-      invoicesAccessStore.setAccessData(null)
+      invoicesAccessStore.setAccessData(entity.accountId, null)
     }
   }
 

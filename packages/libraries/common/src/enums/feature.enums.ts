@@ -2,6 +2,7 @@ export enum Feature {
   AMPLITUDE = 'VITE_AMPLITUDE_ACTIVATED',
   CLARITY_OFFER = 'VITE_CLARITY_OFFER_ACTIVATED',
   DELEGATION_REQUEST_TABS = 'isDelegationRequestTabsEnabled',
+  DEMAT_MAIL_COLLECT = 'isDematMailCollectEnabled',
   FAVORITE_SORT = 'isFavoriteSortEnabled',
   GIGYA_SSO = 'VITE_GIGYA_SSO_ACTIVATED',
   HUBSPOT_PRODUCT_FRUITS = 'isHubspotProductFruitsEnabled',

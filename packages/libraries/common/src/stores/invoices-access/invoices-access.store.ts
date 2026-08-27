@@ -12,6 +12,7 @@ const CONNECTION_READY_STATES = new Set<InvoicesTabState>([
 
 export const useInvoicesAccessStore = defineStore('invoices-access', () => {
   const { isMobile } = useResponsive()
+  const accountId = ref<number | null>(null)
   const tabState = ref<InvoicesTabState | null>(null)
   const contactWithAccess = ref<string | null>(null)
   const externalDematMail = ref<string | null>(null)
@@ -38,24 +39,29 @@ export const useInvoicesAccessStore = defineStore('invoices-access', () => {
     return isCollab || isClientWithAccess
   })
 
-  function setAccessData(response: InvoicesAccessResponse | null) {
+  // accountId is tracked alongside the fetched data so consumers (e.g. the demat mail store)
+  // can tell fresh data from a previous account's data still held during a folder switch.
+  function setAccessData(fetchedAccountId: number, response: InvoicesAccessResponse | null) {
     if (response === null) {
       reset()
       return
     }
 
+    accountId.value = fetchedAccountId
     tabState.value = response.tabState
     contactWithAccess.value = response.contactWithAccess
     externalDematMail.value = response.externalDematMail
   }
 
   function reset() {
+    accountId.value = null
     tabState.value = null
     contactWithAccess.value = null
     externalDematMail.value = null
   }
 
   return {
+    accountId,
     isTabVisible,
     tabState,
     contactWithAccess,

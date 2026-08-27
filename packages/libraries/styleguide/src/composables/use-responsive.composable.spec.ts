@@ -6,6 +6,7 @@ import {
   getEffectiveIsMobile,
   getForceDesktopMode,
   useResponsive,
+  useOverlaySize,
 } from './use-responsive.composable'
 import { BREAKPOINT_SIZES } from '../constants/breakpoint.const'
 
@@ -205,5 +206,33 @@ describe('getEffectiveIsMobile', () => {
     enableForceDesktopMode()
 
     expect(getEffectiveIsMobile()).toBe(false)
+  })
+})
+
+describe('useOverlaySize', () => {
+  beforeEach(() => {
+    disableForceDesktopMode()
+  })
+
+  it.each([
+    ['xl', BREAKPOINT_SIZES.xl, '25%'],
+    ['lg', BREAKPOINT_SIZES.lg, '50%'],
+    ['md', BREAKPOINT_SIZES.md, '70%'],
+    ['sm', BREAKPOINT_SIZES.sm, '70%'],
+    ['xs', BREAKPOINT_SIZES.sm - 1, '95%'],
+  ])('returns the %s size', (_breakpoint, width, expected) => {
+    mockWindowWidth(width as number)
+
+    expect(useOverlaySize().value).toBe(expected)
+  })
+
+  it('narrows the overlay as the viewport grows', () => {
+    mockWindowWidth(BREAKPOINT_SIZES.lg - 1)
+
+    expect(useOverlaySize().value).toBe('70%')
+
+    mockWindowWidth(BREAKPOINT_SIZES.xl - 1)
+
+    expect(useOverlaySize().value).toBe('50%')
   })
 })

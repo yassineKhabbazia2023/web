@@ -671,6 +671,27 @@
         "success": "Le document a bien été supprimé",
         "error": "Le document n'a pas pu être supprimé suite à une erreur technique"
       }
+    },
+    "dematMail": {
+      "banner": {
+        "title": "Mail de dématérialisation manquant :",
+        "description": "Renseignez l'adresse de réception de vos factures",
+        "button": "Compléter"
+      },
+      "dialog": {
+        "title": "Informations manquantes à renseigner",
+        "firstParagraph": "Pour vous transmettre vos prochaines factures dans les meilleurs délais, nous avons besoin de votre adresse mail de dématérialisation.",
+        "secondParagraph": "C'est à cette adresse que vos factures vous seront envoyées au format électronique.",
+        "emailLabel": "Adresse e-mail de dématérialisation",
+        "emailPlaceholder": "Saisissez une adresse e-mail",
+        "emailRequired": "Veuillez saisir une adresse e-mail",
+        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+        "submitError": "L'enregistrement a échoué. Veuillez réessayer ou nous contacter via « Besoin d'assistance ? ».",
+        "submitSuccess": "Votre adresse e-mail de dématérialisation a bien été transmise.",
+        "assistanceButton": "Besoin d'assistance ?",
+        "laterButton": "Plus tard",
+        "confirmButton": "Confirmer"
+      }
     }
   }
 }

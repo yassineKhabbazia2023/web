@@ -1,6 +1,8 @@
 import { computed } from 'vue'
+import type { ComputedRef } from 'vue'
 import { useStorage, useWindowSize } from '@vueuse/core'
 import { getCurrentBreakpoint, getIsMobile, resolveIsMobile } from '../utils/responsive.utils'
+import { OVERLAY_SIZES } from '../constants/breakpoint.const'
 import type { UseResponsiveReturn } from './use-responsive.types'
 
 const FORCE_DESKTOP_MODE_STORAGE_KEY = 'pulse-force-desktop-mode'
@@ -50,4 +52,14 @@ export function useResponsive(): UseResponsiveReturn {
     forceDesktopMode,
     currentBreakpoint,
   }
+}
+
+/**
+ * Viewport-relative size for an overlay (PDialog pWidth, PDrawer pSize).
+ * Reactive: it follows window resizes like the rest of `useResponsive`.
+ */
+export function useOverlaySize(): ComputedRef<string> {
+  const { currentBreakpoint } = useResponsive()
+
+  return computed(() => OVERLAY_SIZES[currentBreakpoint.value])
 }

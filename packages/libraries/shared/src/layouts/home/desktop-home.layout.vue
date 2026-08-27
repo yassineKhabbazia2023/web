@@ -40,6 +40,10 @@
             'bg--gray-50': shouldUseGrayBackground,
           }"
         >
+          <slot
+            name="banner"
+            :banner-class="shouldRemovePadding ? 'margin--4 width--auto' : undefined"
+          />
           <ContentLoader v-show="isContentLoading === true" />
           <router-view v-show="isContentLoading === false" />
         </PContainer>

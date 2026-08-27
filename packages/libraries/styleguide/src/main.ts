@@ -24,6 +24,7 @@ export { BREAKPOINT_SIZES } from './constants/breakpoint.const'
 export { getIsMobile } from './utils/responsive.utils'
 export {
   useResponsive,
+  useOverlaySize,
   getEffectiveIsMobile,
   getForceDesktopMode,
   enableForceDesktopMode,

@@ -8,6 +8,7 @@ import { useInvoicesAccessStore } from './invoices-access.store'
 
 
 const USER_EMAIL = 'contact@example.com'
+const ACCOUNT_ID = 26
 
 function setUpCollabUser() {
   const userStore = useUserStore()
@@ -50,7 +51,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
       expect(store.tabState).toBe(response.tabState)
@@ -66,10 +67,10 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
       expect(store.isTabVisible).toBe(true)
 
-      store.setAccessData(null)
+      store.setAccessData(ACCOUNT_ID, null)
 
       expect(store.isTabVisible).toBe(false)
       expect(store.tabState).toBeNull()
@@ -86,7 +87,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.FORM_START,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -100,7 +101,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
     })
@@ -115,7 +116,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -130,7 +131,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
     })
@@ -144,7 +145,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
     })
@@ -158,7 +159,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_UNLOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
     })
@@ -172,7 +173,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.FORM_START,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -186,7 +187,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.FORM_SUBMITTED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -196,7 +197,7 @@ describe('useInvoicesAccessStore', () => {
       setUpCustomerUser()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: 'other@example.com', externalDematMail: null })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -206,7 +207,7 @@ describe('useInvoicesAccessStore', () => {
       setUpCustomerUser()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: null, externalDematMail: null })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -216,7 +217,7 @@ describe('useInvoicesAccessStore', () => {
       setUpCustomerUser()
       const response = getInvoicesAccessResponseMock({ contactWithAccess: null, externalDematMail: 'dmat@example.com' })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -231,7 +232,7 @@ describe('useInvoicesAccessStore', () => {
       })
 
       // Access data is set before user data is available (simulating F5 refresh)
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
       expect(store.isTabVisible).toBe(false)
 
       // User data arrives later (simulating initCurrentUser completing)
@@ -250,7 +251,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -264,7 +265,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(false)
     })
@@ -279,7 +280,7 @@ describe('useInvoicesAccessStore', () => {
         tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
       })
 
-      store.setAccessData(response)
+      store.setAccessData(ACCOUNT_ID, response)
 
       expect(store.isTabVisible).toBe(true)
       expect(store.tabState).toBe(response.tabState)
@@ -287,9 +288,26 @@ describe('useInvoicesAccessStore', () => {
       store.reset()
 
       expect(store.isTabVisible).toBe(false)
+      expect(store.accountId).toBeNull()
       expect(store.tabState).toBeNull()
       expect(store.contactWithAccess).toBeNull()
       expect(store.externalDematMail).toBeNull()
+    })
+  })
+
+  describe('accountId', () => {
+    it('should track the account the currently held data belongs to', () => {
+      const store = useInvoicesAccessStore()
+
+      store.setAccessData(ACCOUNT_ID, getInvoicesAccessResponseMock())
+
+      expect(store.accountId).toBe(ACCOUNT_ID)
+    })
+
+    it('should be null when no data has been set', () => {
+      const store = useInvoicesAccessStore()
+
+      expect(store.accountId).toBeNull()
     })
   })
 })

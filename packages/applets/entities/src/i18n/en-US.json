@@ -671,6 +671,27 @@
         "success": "The document has been deleted",
         "error": "The document could not be deleted due to a technical error"
       }
+    },
+    "dematMail": {
+      "banner": {
+        "title": "Missing digitization email:",
+        "description": "Provide the address your invoices should be sent to",
+        "button": "Complete"
+      },
+      "dialog": {
+        "title": "Missing information to provide",
+        "firstParagraph": "To send you your next invoices as quickly as possible, we need your digitization email address.",
+        "secondParagraph": "This is the address your invoices will be sent to in electronic format.",
+        "emailLabel": "Digitization email address",
+        "emailPlaceholder": "Enter an email address",
+        "emailRequired": "Please enter an email address",
+        "emailInvalid": "Please enter a valid email address",
+        "submitError": "Saving failed. Please try again or contact us through \"Need help?\".",
+        "submitSuccess": "Your digitization email address has been submitted.",
+        "assistanceButton": "Need help?",
+        "laterButton": "Later",
+        "confirmButton": "Confirm"
+      }
     }
   }
 }

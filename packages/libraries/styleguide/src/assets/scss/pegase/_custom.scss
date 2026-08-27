@@ -62,6 +62,9 @@
   &--inherit {
     width: inherit !important;
   }
+  &--auto {
+    width: auto !important;
+  }
 }
 
 .transform {

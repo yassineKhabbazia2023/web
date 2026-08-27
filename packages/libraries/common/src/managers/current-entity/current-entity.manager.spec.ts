@@ -50,7 +50,7 @@ describe('test current-entity.manager', () => {
       await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
 
       expect(InvoicesAccessService.fetchInvoicesAccess).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
-      expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(accessMock)
+      expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(entityMock.accountId, accessMock)
     })
 
     it('should not fetch invoices access for a prospect entity', async () => {
@@ -89,7 +89,7 @@ describe('test current-entity.manager', () => {
 
       await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
 
-      expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(null)
+      expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(entityMock.accountId, null)
     })
   })
 

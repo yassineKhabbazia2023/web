@@ -6,5 +6,5 @@ export default ({ mode }: ConfigEnv) =>
   createAppletConfig({
     mode,
     packageName: name,
-    pages: ['entity-pages.index.ts', 'wallet-pages.index.ts'],
+    pages: ['entity-pages.index.ts', 'wallet-pages.index.ts', 'demat-mail.index.ts'],
   })

@@ -24,6 +24,7 @@
       </PCHeader>
 
       <PContainer class="mobile-home-layout__main padding--4">
+        <slot name="banner" />
         <ContentLoader v-show="isContentLoading === true" />
         <router-view v-show="isContentLoading === false" />
       </PContainer>

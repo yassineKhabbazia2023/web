@@ -7,6 +7,7 @@ export const API_PREFIXES = {
   CONNECT: 'connect/api',
   CONTACT: 'contact/api',
   CUSTOMER_WALLET: 'customer-wallet/api',
+  DEMAT: 'demat/api',
   ENTITY_CREATOR: 'entitycreator/api',
   GED: 'ged/api',
   HISTORY: 'history/api',
