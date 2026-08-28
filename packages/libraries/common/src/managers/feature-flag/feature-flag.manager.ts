@@ -13,6 +13,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.INVOICES_EXPERIENCE,
   Feature.LAST_ACTIVITY_FEATURE,
   Feature.MANAGE_WALLET_MENU,
+  Feature.PENNYLANE_SSO_FORCE_PROXY,
   Feature.PROSPECT_EXPERIENCE,
   Feature.WALLET_TABLE_LOAD_MORE_PAGINATION,
   Feature.WALLET_V2,
@@ -79,6 +80,11 @@ export class FeatureFlagManager {
 
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
+  }
+
+  // Temporary bypass for clients whose SSO redirect back to Pennylane doesn't work
+  static isPennylaneSsoForceProxyActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_FORCE_PROXY)
   }
 
   static isSeresInvoicesActivated() {

@@ -1,13 +1,17 @@
 import { SessionStorageService, SsoProvider, CookieService } from '@pulse/common/services/storage'
 import { RouteName } from '@pulse/common/enums'
 import { SSO_ORIGIN_COOKIE, SSO_ORIGIN_RYDGE } from '@pulse/common/constants'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
 export function pennylaneSsoGuard() {
   // Check SSO connection origin
   const ssoOrigin = CookieService.get(SSO_ORIGIN_COOKIE)
   const isFromRydge = ssoOrigin === SSO_ORIGIN_RYDGE
 
-  if (isFromRydge === false) {
+  // temp bypass for clients whose SSO doesn't redirect back to Pennylane properly
+  const shouldForceProxy = isFromRydge === true || FeatureFlagManager.isPennylaneSsoForceProxyActivated() === true
+
+  if (shouldForceProxy === false) {
     return
   }
 
