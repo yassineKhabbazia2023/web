@@ -81,5 +81,77 @@ describe('useAzureDevOpsStore', () => {
       expect(store.repositories).toEqual([])
       expect(store.selectedRepository).toBe(AZURE_DEVOPS_CONFIG.repository)
     })
+
+    it('should not select any repository by default when the repository list loads', () => {
+      const store = useAzureDevOpsStore()
+
+      store.setRepositories([
+        { id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'Repo2', defaultBranch: 'main', isDisabled: false },
+      ])
+
+      expect(store.selectedRepositories).toEqual([])
+      expect(store.getEffectiveRepositories).toEqual([])
+    })
+
+    it('should never override an existing selection when the repository list is (re)loaded', () => {
+      const store = useAzureDevOpsStore()
+      const mockRepos = [
+        { id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'Repo2', defaultBranch: 'main', isDisabled: false },
+      ]
+      store.setRepositories(mockRepos)
+      store.setSelectedRepositories(['Repo1'])
+
+      store.setRepositories(mockRepos)
+
+      expect(store.selectedRepositories).toEqual(['Repo1'])
+    })
+  })
+
+  describe('setSelectedRepositories / getEffectiveRepositories', () => {
+    const mockRepos = [
+      { id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false },
+      { id: '2', name: 'Repo2', defaultBranch: 'main', isDisabled: false },
+    ]
+
+    it('should reflect an explicit selection', () => {
+      const store = useAzureDevOpsStore()
+      store.setRepositories(mockRepos)
+
+      store.setSelectedRepositories(['Repo1'])
+
+      expect(store.selectedRepositories).toEqual(['Repo1'])
+      expect(store.getEffectiveRepositories).toEqual(['Repo1'])
+      expect(store.hasMultipleRepositoriesSelected).toBe(false)
+    })
+
+    it('should allow deselecting every repository', () => {
+      const store = useAzureDevOpsStore()
+      store.setRepositories(mockRepos)
+
+      store.setSelectedRepositories([])
+
+      expect(store.selectedRepositories).toEqual([])
+      expect(store.getEffectiveRepositories).toEqual([])
+    })
+
+    it('should ignore repository names that no longer exist in the repository list', () => {
+      const store = useAzureDevOpsStore()
+      store.setRepositories(mockRepos)
+
+      store.setSelectedRepositories(['Repo1', 'DeletedRepo'])
+
+      expect(store.getEffectiveRepositories).toEqual(['Repo1'])
+    })
+
+    it('should report multiple repositories selected only when more than one is effectively selected', () => {
+      const store = useAzureDevOpsStore()
+      store.setRepositories(mockRepos)
+
+      store.setSelectedRepositories(['Repo1', 'Repo2'])
+
+      expect(store.hasMultipleRepositoriesSelected).toBe(true)
+    })
   })
 })

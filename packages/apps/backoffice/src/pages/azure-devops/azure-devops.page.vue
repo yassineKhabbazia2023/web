@@ -74,19 +74,29 @@
       class="padding-x--6 padding-top--6"
     >
       <PForm>
-        <PFormItem pLabel="Repository">
-          <div class="azure-devops-page__repo-select">
-            <PDropdown
-              v-model="selectedRepository"
-              data-testid="azure-devops-repo-select"
-              pPlaceholder="Sélectionnez un repository"
-              :pLoading="azureDevOpsStore.isLoadingRepositories"
-              :pDisabled="azureDevOpsStore.hasRepositories === false"
-              :pOptions="repositoryOptions"
-              pFilterable
-            />
-          </div>
-        </PFormItem>
+        <div class="flex flex-gap--4 flex--align-items-flex-start">
+          <PFormItem
+            pLabel="Repositories (Multi-select)"
+            class="flex-1"
+          >
+            <div class="azure-devops-page__repos-multi-select">
+              <PDropdown
+                v-model="selectedRepositories"
+                data-testid="azure-devops-repos-multi-select"
+                pPlaceholder="Sélectionnez plusieurs repositories"
+                :pLoading="azureDevOpsStore.isLoadingRepositories"
+                :pDisabled="azureDevOpsStore.hasRepositories === false"
+                :pMaxCollapseTags="2"
+                :pOptions="repositoryOptionsWithAll"
+                pFilterable
+                pMultiple
+                pCollapseTags
+                pCheckAllLabel="Tous"
+                @change="onRepositoriesChanged"
+              />
+            </div>
+          </PFormItem>
+        </div>
       </PForm>
 
       <PTabs
@@ -94,14 +104,17 @@
         class="margin-top--4"
       >
         <PTabPane
+          v-if="azureDevOpsStore.getEffectiveRepositories.length > 0"
           pLabel="MEP Standard"
           pName="mep-standard"
         >
           <div class="padding-top--4">
             <WorkItemsSearch
+              v-if="azureDevOpsStore.getEffectiveRepositories.length > 0"
               v-model:fromCommitId="fromCommitId"
               v-model:toCommitId="toCommitId"
               v-model:backofficeOnly="backofficeOnly"
+              v-model:repositoryFilter="repositoryFilter"
               :isLoading="isLoading"
               :canSearch="canSearch"
               :latestMepTag="latestMepTag"
@@ -110,6 +123,7 @@
               :isLoadingHead="isLoadingHead"
               :fromCommitIdError="fromCommitIdError"
               :toCommitIdError="toCommitIdError"
+              :availableRepositories="azureDevOpsStore.getEffectiveRepositories"
               @search="fetchWorkItems"
               @apply-mep-tag="applyMepTagToFromCommit"
               @apply-head="applyHeadToToCommit"
@@ -120,35 +134,35 @@
             <WorkItemsResults
               v-if="shouldDisplayWorkItemsResults"
               :workItemsByTeam="workItemsByTeam"
+              :workItemsByRepository="workItemsByRepository"
               :sortedTeamNames="sortedTeamNames"
+              :sortedRepositoryNames="sortedRepositoryNames"
               :totalWorkItems="totalWorkItems"
               :isLoading="isLoading"
               :error="error"
               :failedWorkItemIds="failedWorkItemIds"
               :warnings="warnings"
+              :reposWithoutMepTag="reposWithoutMepTag"
+              :reposWithFetchError="reposWithFetchError"
+              :reposWithNoWorkItems="reposWithNoWorkItems"
               :hasResults="hasResults"
               :hasPartialErrors="hasPartialErrors"
               :hasWarnings="hasWarnings"
               :repositoryName="selectedRepository"
+              :isMultiRepoMode="isMultiRepoMode"
               class="margin-top--6"
             />
           </div>
         </PTabPane>
 
         <PTabPane
+          v-if="azureDevOpsStore.getEffectiveRepositories.length > 0"
           pLabel="Explorateur de commits"
           pName="commit-explorer"
+          pLazy
         >
           <div class="padding-top--4">
-            <CommitExplorerList
-              :commits="explorerCommits"
-              :isLoading="isExplorerLoading"
-              :isLoadingMore="isExplorerLoadingMore"
-              :error="explorerError"
-              :hasMore="explorerHasMore"
-              :repository="selectedRepository"
-              @load-more="loadMoreExplorer"
-            />
+            <CommitExplorerTab />
           </div>
         </PTabPane>
 
@@ -180,7 +194,7 @@
 
     <CommitExplorerModal
       v-model="isExplorerOpen"
-      :repository="selectedRepository"
+      :repository="repositoryFilter"
       @commit-selected="handleCommitSelected"
     />
   </div>
@@ -206,8 +220,7 @@ import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devo
 import WorkItemsSearch from './WorkItemsSearch/work-items-search.vue'
 import WorkItemsResults from './WorkItemsResults/work-items-results.vue'
 import CommitExplorerModal from './CommitExplorerModal/commit-explorer-modal.vue'
-import CommitExplorerList from './CommitExplorer/commit-explorer-list.vue'
-import { useCommitExplorer } from './CommitExplorer/use-commit-explorer.composable'
+import CommitExplorerTab from './CommitExplorer/commit-explorer-tab.vue'
 import ContributionGraphTab from './ContributionGraph/contribution-graph-tab.vue'
 import PrCompletionTimeTab from './PrCompletionTime/pr-completion-time-tab.vue'
 import MepPlannerTab from './mep-planner/mep-planner-tab.vue'
@@ -219,11 +232,18 @@ const selectedRepository = computed({
   set: (value: string) => azureDevOpsStore.setSelectedRepository(value),
 })
 
-const repositoryOptions = computed(() => {
-  return azureDevOpsStore.repositories.map((repo) => ({
-    pValue: repo.name,
-    pLabel: repo.name,
-  }))
+const selectedRepositories = computed({
+  get: () => azureDevOpsStore.selectedRepositories,
+  set: (value: string[]) => azureDevOpsStore.setSelectedRepositories(value),
+})
+
+const repositoryOptionsWithAll = computed(() => {
+  return [
+    ...azureDevOpsStore.repositories.map((repo) => ({
+      pValue: repo.name,
+      pLabel: repo.name,
+    })),
+  ]
 })
 
 const patTooltipContent = `Comment créer un PAT :
@@ -243,20 +263,11 @@ const isTestingPat = ref(false)
 const patTestResult = ref<{ success: boolean; message: string } | null>(null)
 const isPatValidated = ref(false)
 
-const activeTab = ref('mep-standard')
+// "MEP Standard" and "Explorateur de commits" are hidden while no repository is selected,
+// so default to a tab that stays visible in that state.
+const activeTab = ref('contribution-graph')
 const isExplorerOpen = ref(false)
 const explorerTargetField = ref<'from' | 'to'>('from')
-
-const {
-  commits: explorerCommits,
-  isLoading: isExplorerLoading,
-  isLoadingMore: isExplorerLoadingMore,
-  error: explorerError,
-  hasMore: explorerHasMore,
-  load: loadExplorer,
-  loadMore: loadMoreExplorer,
-  reset: resetExplorer,
-} = useCommitExplorer()
 
 // Reset validation when PAT changes
 watch(
@@ -267,20 +278,18 @@ watch(
   },
 )
 
-// Load explorer when tab changes to commit-explorer
-watch(activeTab, (newTab) => {
-  if (newTab === 'commit-explorer' && explorerCommits.value.length === 0) {
-    loadExplorer()
-  }
-})
-
-// Reload explorer when repository changes
-watch(selectedRepository, () => {
-  resetExplorer()
-  if (activeTab.value === 'commit-explorer') {
-    loadExplorer()
-  }
-})
+// Switch to a tab that stays visible whenever the repository selection becomes empty,
+// and back to "MEP Standard" as soon as a repository is selected again.
+watch(
+  () => azureDevOpsStore.getEffectiveRepositories.length,
+  (length, previousLength) => {
+    if (length === 0) {
+      activeTab.value = 'contribution-graph'
+    } else if (previousLength === 0) {
+      activeTab.value = 'mep-standard'
+    }
+  },
+)
 
 const testPat = async () => {
   isTestingPat.value = true
@@ -342,18 +351,29 @@ const handleCommitSelected = (commitId: string): void => {
   }
 }
 
+const onRepositoriesChanged = (): void => {
+  // Clear results when repositories selection changes
+  resetResults()
+}
+
 const {
   fromCommitId,
   toCommitId,
   backofficeOnly,
+  repositoryFilter,
   workItemsByTeam,
+  workItemsByRepository,
   failedWorkItemIds,
   warnings,
+  reposWithoutMepTag,
+  reposWithFetchError,
+  reposWithNoWorkItems,
   isLoading,
   error,
   hasResults,
   totalWorkItems,
   sortedTeamNames,
+  sortedRepositoryNames,
   canSearch,
   hasPartialErrors,
   hasWarnings,
@@ -363,6 +383,8 @@ const {
   isLoadingMepTag,
   headInfo,
   isLoadingHead,
+  isMultiRepoMode,
+  resetResults,
   fetchWorkItems,
   fetchLatestMepTag,
   applyMepTagToFromCommit,
@@ -380,6 +402,10 @@ const shouldDisplayWorkItemsResults = computed(
 }
 
 .azure-devops-page__repo-select {
+  width: min(400px, 60vw);
+}
+
+.azure-devops-page__repos-multi-select {
   width: min(400px, 60vw);
 }
 </style>

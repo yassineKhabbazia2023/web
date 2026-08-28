@@ -7,11 +7,19 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
   const pat = ref<string>('')
   const repositories = ref<AzureDevOpsRepository[]>([])
   const selectedRepository = ref<string>(AZURE_DEVOPS_CONFIG.repository)
+  const selectedRepositories = ref<string[]>([])
   const isLoadingRepositories = ref<boolean>(false)
   const currentUserProfile = ref<AzureDevOpsUserProfile | null>(null)
 
   const hasPat = computed(() => pat.value.length > 0)
   const hasRepositories = computed(() => repositories.value.length > 0)
+
+  const getEffectiveRepositories = computed(() => {
+    const validNames = new Set(repositories.value.map((repo) => repo.name))
+    return selectedRepositories.value.filter((name) => validNames.has(name))
+  })
+
+  const hasMultipleRepositoriesSelected = computed(() => getEffectiveRepositories.value.length > 1)
 
   const setPat = (value: string) => {
     pat.value = value
@@ -25,6 +33,10 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
     selectedRepository.value = repo
   }
 
+  const setSelectedRepositories = (repos: string[]) => {
+    selectedRepositories.value = repos
+  }
+
   const setIsLoadingRepositories = (loading: boolean) => {
     isLoadingRepositories.value = loading
   }
@@ -32,6 +44,7 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
   const resetRepositories = () => {
     repositories.value = []
     selectedRepository.value = AZURE_DEVOPS_CONFIG.repository
+    selectedRepositories.value = []
   }
 
   const setCurrentUserProfile = (profile: AzureDevOpsUserProfile) => {
@@ -47,6 +60,10 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
     setRepositories,
     selectedRepository,
     setSelectedRepository,
+    selectedRepositories,
+    setSelectedRepositories,
+    hasMultipleRepositoriesSelected,
+    getEffectiveRepositories,
     isLoadingRepositories,
     setIsLoadingRepositories,
     resetRepositories,

@@ -24,7 +24,9 @@ import type {
   MepTag,
   WorkItem,
   WorkItemsByTeam,
+  WorkItemsByRepository,
   WorkItemsResult,
+  MultiRepoWorkItemsResult,
 } from '@backoffice/types/azure-devops.type'
 import {
   AZURE_DEVOPS_API_VERSION,
@@ -509,6 +511,64 @@ export class AzureDevOpsService {
     } catch (error) {
       logger.error('Failed to fetch work items batch:', error)
       throw error
+    }
+  }
+
+  // Each repository has its own commit history, so a single commit range can't be reused across
+  // repositories: every repository resolves its own REC (HEAD) → PROD (latest MEP tag) commit range.
+  static async getWorkItemsForMultipleRepos(
+    pat: string,
+    repositories: string[],
+    backofficeOnly: boolean = false,
+  ): Promise<MultiRepoWorkItemsResult> {
+    const workItemsByRepository: WorkItemsByRepository = {}
+    const allFailedIds: Set<number> = new Set()
+    const allWarnings: Set<string> = new Set()
+    const reposWithoutMepTag: Set<string> = new Set()
+    const reposWithFetchError: Set<string> = new Set()
+    const reposWithNoWorkItems: Set<string> = new Set()
+
+    for (const repository of repositories) {
+      try {
+        const [latestMepTag, headInfo] = await Promise.all([
+          this.getLatestMepTag(pat, repository, backofficeOnly),
+          this.getHeadInfo(pat, repository),
+        ])
+
+        if (latestMepTag === null) {
+          reposWithoutMepTag.add(repository)
+          continue
+        }
+
+        const result = await this.getWorkItemsForCommitRange(
+          pat,
+          repository,
+          latestMepTag.commitId,
+          headInfo.commitId,
+          backofficeOnly,
+        )
+
+        if (Object.keys(result.workItemsByTeam).length > 0) {
+          workItemsByRepository[repository] = result.workItemsByTeam
+        } else {
+          reposWithNoWorkItems.add(repository)
+        }
+
+        result.failedIds.forEach((id) => allFailedIds.add(id))
+        result.warnings.forEach((warning) => allWarnings.add(warning))
+      } catch (err) {
+        logger.warn(`Failed to fetch work items for repository ${repository}:`, err)
+        reposWithFetchError.add(repository)
+      }
+    }
+
+    return {
+      workItemsByRepository,
+      failedIds: Array.from(allFailedIds),
+      warnings: Array.from(allWarnings),
+      reposWithoutMepTag: Array.from(reposWithoutMepTag),
+      reposWithFetchError: Array.from(reposWithFetchError),
+      reposWithNoWorkItems: Array.from(reposWithNoWorkItems),
     }
   }
 

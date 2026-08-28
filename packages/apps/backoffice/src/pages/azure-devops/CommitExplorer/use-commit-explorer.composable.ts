@@ -80,7 +80,9 @@ const enrichCommits = (
   }))
 }
 
-export const useCommitExplorer = () => {
+// Accepts a getter (rather than a plain string) so the target repository can change over the
+// composable's lifetime — e.g. the commit picker modal stays mounted while the selected repository changes.
+export const useCommitExplorer = (getRepository: () => string) => {
   const store = useAzureDevOpsStore()
 
   const commits = ref<CommitWithDetails[]>([])
@@ -96,7 +98,7 @@ export const useCommitExplorer = () => {
       return tagsCache.value
     }
 
-    const tags = await AzureDevOpsService.getAllTags(store.pat, store.selectedRepository)
+    const tags = await AzureDevOpsService.getAllTags(store.pat, getRepository())
     tagsCache.value = buildTagsMap(tags)
     return tagsCache.value
   }
@@ -125,7 +127,7 @@ export const useCommitExplorer = () => {
       const batch = mergeCommits.slice(i, i + PR_FETCH_CONCURRENCY)
       await Promise.all(
         batch.map(({ commitId, prId }) =>
-          AzureDevOpsService.getPullRequestWorkItemIds(store.pat, store.selectedRepository, prId)
+          AzureDevOpsService.getPullRequestWorkItemIds(store.pat, getRepository(), prId)
             .then((ids) => {
               prWorkItemIdsByCommit.set(commitId, ids)
             })
@@ -142,7 +144,7 @@ export const useCommitExplorer = () => {
 
   const fetchAndEnrichCommits = async (skip: number): Promise<FetchResult> => {
     const [pageResult, tagsMap] = await Promise.all([
-      AzureDevOpsService.fetchCommitsForExplorer(store.pat, store.selectedRepository, skip, EXPLORER_PAGE_SIZE),
+      AzureDevOpsService.fetchCommitsForExplorer(store.pat, getRepository(), skip, EXPLORER_PAGE_SIZE),
       loadTags(),
     ])
 

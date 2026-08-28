@@ -25,7 +25,7 @@ import { PDialog } from '@pulse/styleguide/components'
 import CommitExplorerList from '../CommitExplorer/commit-explorer-list.vue'
 import { useCommitExplorer } from '../CommitExplorer/use-commit-explorer.composable'
 
-defineProps<{
+const props = defineProps<{
   repository: string
 }>()
 
@@ -44,7 +44,7 @@ const {
   load,
   loadMore,
   reset,
-} = useCommitExplorer()
+} = useCommitExplorer(() => props.repository)
 
 const handleBeforeClose = (done: () => void): void => {
   if (isLoading.value === false) {

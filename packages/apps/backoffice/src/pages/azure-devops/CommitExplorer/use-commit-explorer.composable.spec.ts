@@ -50,7 +50,7 @@ describe('useCommitExplorer', () => {
   })
 
   it('should initialize with default values', () => {
-    const composable = useCommitExplorer()
+    const composable = useCommitExplorer(() => 'TestRepo')
 
     expect(composable.commits.value).toEqual([])
     expect(composable.isLoading.value).toBe(false)
@@ -60,7 +60,7 @@ describe('useCommitExplorer', () => {
 
   describe('load', () => {
     it('should set error when PAT is not configured', async () => {
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
 
       await composable.load()
 
@@ -79,7 +79,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValueOnce(mockTags)
       mockedGetWorkItemsByIds.mockResolvedValueOnce(mockWorkItems)
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value).toHaveLength(2)
@@ -95,7 +95,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValueOnce([])
       mockedGetWorkItemsByIds.mockResolvedValueOnce([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value[0].shortCommitId).toBe('abc123d')
@@ -110,7 +110,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValueOnce(mockTags)
       mockedGetWorkItemsByIds.mockResolvedValueOnce([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value[0].tags).toContain('V1.0.0')
@@ -130,7 +130,7 @@ describe('useCommitExplorer', () => {
         .mockReturnValueOnce([])
       mockedGetWorkItemsByIds.mockResolvedValueOnce(mockWorkItems)
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value[0].workItems).toHaveLength(1)
@@ -168,7 +168,7 @@ describe('useCommitExplorer', () => {
       mockedGetPullRequestWorkItemIds.mockResolvedValueOnce([1, 2, 3])
       mockedGetWorkItemsByIds.mockResolvedValueOnce(prWorkItems)
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value[0].workItems).toHaveLength(3)
@@ -202,7 +202,7 @@ describe('useCommitExplorer', () => {
       mockedGetPullRequestWorkItemIds.mockResolvedValueOnce([1, 2])
       mockedGetWorkItemsByIds.mockResolvedValueOnce(allWorkItems)
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value[0].workItems).toHaveLength(2)
@@ -229,7 +229,7 @@ describe('useCommitExplorer', () => {
       mockedGetPullRequestWorkItemIds.mockRejectedValueOnce(new Error('PR not found'))
       mockedGetWorkItemsByIds.mockResolvedValueOnce([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.warnings.value).toHaveLength(1)
@@ -243,7 +243,7 @@ describe('useCommitExplorer', () => {
 
       mockedFetchCommitsForExplorer.mockRejectedValueOnce(new Error('API Error'))
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.error.value).toContain('Erreur lors du chargement des commits')
@@ -277,7 +277,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValue([])
       mockedGetWorkItemsByIds.mockResolvedValue([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value).toHaveLength(30)
@@ -299,7 +299,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValue([])
       mockedGetWorkItemsByIds.mockResolvedValue([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       expect(composable.commits.value).toHaveLength(2)
@@ -322,7 +322,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValueOnce(mockTags)
       mockedGetWorkItemsByIds.mockResolvedValueOnce(mockWorkItems)
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       composable.reset()
@@ -341,7 +341,7 @@ describe('useCommitExplorer', () => {
       mockedGetAllTags.mockResolvedValue(mockTags)
       mockedGetWorkItemsByIds.mockResolvedValue([])
 
-      const composable = useCommitExplorer()
+      const composable = useCommitExplorer(() => 'TestRepo')
       await composable.load()
 
       composable.reset()

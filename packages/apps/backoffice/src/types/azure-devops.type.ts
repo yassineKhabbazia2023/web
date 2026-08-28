@@ -67,10 +67,23 @@ export interface WorkItemsByTeam {
   [teamName: string]: WorkItem[]
 }
 
+export interface WorkItemsByRepository {
+  [repositoryName: string]: WorkItemsByTeam
+}
+
 export interface WorkItemsResult {
   workItemsByTeam: WorkItemsByTeam
   failedIds: number[]
   warnings: string[]
+}
+
+export interface MultiRepoWorkItemsResult {
+  workItemsByRepository: WorkItemsByRepository
+  failedIds: number[]
+  warnings: string[]
+  reposWithoutMepTag: string[]
+  reposWithFetchError: string[]
+  reposWithNoWorkItems: string[]
 }
 
 export interface AzureDevOpsRef {
@@ -110,6 +123,8 @@ export interface AzureDevOpsRepositoriesResponse {
 export interface CopyWorkItemsToClipboardOptions {
   workItemsByTeam: WorkItemsByTeam
   sortedTeamNames: string[]
+  workItemsByRepository?: WorkItemsByRepository
+  sortedRepositoryNames?: string[]
   repositoryName?: string
 }
 

@@ -1,6 +1,6 @@
 import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly, extractWorkItemIdsFromClipboard } from './work-items-clipboard.utils'
 import { displayNotification } from '@pulse/styleguide'
-import type { WorkItemsByTeam } from '@backoffice/types/azure-devops.type'
+import type { WorkItemsByRepository, WorkItemsByTeam } from '@backoffice/types/azure-devops.type'
 
 const mockWorkItemsByTeam: WorkItemsByTeam = {
   'Team Alpha': [
@@ -13,6 +13,21 @@ const mockWorkItemsByTeam: WorkItemsByTeam = {
 }
 
 const mockSortedTeamNames = ['Team Alpha', 'Team Beta']
+
+const mockWorkItemsByRepository: WorkItemsByRepository = {
+  RepoA: {
+    'Team Alpha': [
+      { id: 1, title: 'Feature A', type: 'User Story', state: 'Closed', webUrl: 'https://dev.azure.com/1', team: 'Team Alpha' },
+    ],
+  },
+  RepoB: {
+    'Team Beta': [
+      { id: 2, title: 'Task B', type: 'Task', state: 'Active', webUrl: 'https://dev.azure.com/2', team: 'Team Beta' },
+    ],
+  },
+}
+
+const mockSortedRepositoryNames = ['RepoA', 'RepoB']
 
 const createDataTransfer = (data: Record<string, string>): DataTransfer => ({
   getData: (type: string) => data[type] ?? '',
@@ -272,6 +287,50 @@ describe('copyWorkItemsAsTeamsExport', () => {
 
     expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de copier dans le presse-papiers')
   })
+
+  describe('multi-repository mode', () => {
+    it('groups work items by repository then by team in HTML', async () => {
+      await copyWorkItemsAsTeamsExport({
+        workItemsByTeam: {},
+        sortedTeamNames: [],
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+      })
+
+      expect(capturedHtml).toContain('<strong>[RepoA]</strong>')
+      expect(capturedHtml).toContain('<strong>[RepoB]</strong>')
+      expect(capturedHtml).toContain('<strong>Team Alpha</strong> (1 work item)')
+      expect(capturedHtml).toContain('<strong>Team Beta</strong> (1 work item)')
+      expect(capturedHtml).toContain('Feature A')
+      expect(capturedHtml).toContain('Task B')
+    })
+
+    it('groups work items by repository then by team in plain text', async () => {
+      await copyWorkItemsAsTeamsExport({
+        workItemsByTeam: {},
+        sortedTeamNames: [],
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+      })
+
+      expect(capturedText).toContain('[RepoA]')
+      expect(capturedText).toContain('[RepoB]')
+      expect(capturedText).toContain('Team Alpha (1 work item)')
+      expect(capturedText).toContain('Team Beta (1 work item)')
+    })
+
+    it('ignores the flat workItemsByTeam when repository groups are provided', async () => {
+      await copyWorkItemsAsTeamsExport({
+        workItemsByTeam: mockWorkItemsByTeam,
+        sortedTeamNames: mockSortedTeamNames,
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+      })
+
+      expect(capturedHtml).not.toContain('Bug B')
+      expect(capturedHtml).not.toContain('Task C')
+    })
+  })
 })
 
 describe('copyWorkItemsOnly', () => {
@@ -418,5 +477,48 @@ describe('copyWorkItemsOnly', () => {
     })
 
     expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de copier dans le presse-papiers')
+  })
+
+  describe('multi-repository mode', () => {
+    it('groups work items by repository then by team in HTML', async () => {
+      await copyWorkItemsOnly({
+        workItemsByTeam: {},
+        sortedTeamNames: [],
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+      })
+
+      expect(capturedHtml).toContain('<strong>[RepoA]</strong>')
+      expect(capturedHtml).toContain('<strong>[RepoB]</strong>')
+      expect(capturedHtml).toContain('<strong>Team Alpha</strong> (1 work item)')
+      expect(capturedHtml).toContain('<strong>Team Beta</strong> (1 work item)')
+    })
+
+    it('groups work items by repository then by team in plain text', async () => {
+      await copyWorkItemsOnly({
+        workItemsByTeam: {},
+        sortedTeamNames: [],
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+      })
+
+      expect(capturedText).toContain('[RepoA]')
+      expect(capturedText).toContain('[RepoB]')
+      expect(capturedText).toContain('Team Alpha (1 work item)')
+      expect(capturedText).toContain('Team Beta (1 work item)')
+    })
+
+    it('ignores the top-level repositoryName when repository groups are provided', async () => {
+      await copyWorkItemsOnly({
+        workItemsByTeam: {},
+        sortedTeamNames: [],
+        workItemsByRepository: mockWorkItemsByRepository,
+        sortedRepositoryNames: mockSortedRepositoryNames,
+        repositoryName: 'ShouldNotAppear',
+      })
+
+      expect(capturedHtml).not.toContain('ShouldNotAppear')
+      expect(capturedText).not.toContain('ShouldNotAppear')
+    })
   })
 })

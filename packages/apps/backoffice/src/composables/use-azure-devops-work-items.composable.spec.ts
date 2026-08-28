@@ -17,7 +17,8 @@ describe('useAzureDevOpsWorkItems', () => {
       .mockResolvedValue({ workItemsByTeam: {}, failedIds: [], warnings: [] })
     mockedGetLatestMepTag = vi.spyOn(AzureDevOpsService, 'getLatestMepTag').mockResolvedValue(null)
     mockedGetHeadInfo = vi.spyOn(AzureDevOpsService, 'getHeadInfo').mockResolvedValue({ commitId: '', tagName: null })
-    mockedGetRepositories = vi.spyOn(AzureDevOpsService, 'getRepositories').mockResolvedValue([])
+    mockedGetRepositories = vi.spyOn(AzureDevOpsService, 'getRepositories')
+      .mockResolvedValue([{ id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false }])
   })
 
   it('should initialize with default values', () => {
@@ -60,11 +61,15 @@ describe('useAzureDevOpsWorkItems', () => {
       expect(composable.canSearch.value).toBe(false)
     })
 
-    it('should return true when all conditions are met', () => {
+    it('should return true when all conditions are met', async () => {
       const store = useAzureDevOpsStore()
       store.setPat('valid-pat')
 
       const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
       composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
       composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
 
@@ -80,6 +85,24 @@ describe('useAzureDevOpsWorkItems', () => {
       composable.toCommitId.value = 'also-invalid'
 
       expect(composable.canSearch.value).toBe(false)
+    })
+
+    it('should return true in multi-repository mode without commit IDs, as long as repositories are selected', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+
+      expect(composable.canSearch.value).toBe(true)
     })
   })
 
@@ -105,6 +128,10 @@ describe('useAzureDevOpsWorkItems', () => {
       })
 
       const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
       composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
       composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
 
@@ -124,6 +151,10 @@ describe('useAzureDevOpsWorkItems', () => {
       )
 
       const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
       composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
       composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
 
@@ -144,6 +175,10 @@ describe('useAzureDevOpsWorkItems', () => {
       })
 
       const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
       composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
       composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
 
@@ -151,6 +186,114 @@ describe('useAzureDevOpsWorkItems', () => {
 
       expect(composable.failedWorkItemIds.value).toEqual([123, 456])
       expect(composable.hasPartialErrors.value).toBe(true)
+    })
+  })
+
+  describe('reposWithoutMepTag', () => {
+    it('should populate reposWithoutMepTag and mark hasResults as true in multi-repo mode', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+      const mockedGetWorkItemsForMultipleRepos = vi.spyOn(AzureDevOpsService, 'getWorkItemsForMultipleRepos')
+        .mockResolvedValueOnce({
+          workItemsByRepository: {},
+          failedIds: [],
+          warnings: [],
+          reposWithoutMepTag: ['RepoA', 'RepoB'],
+          reposWithFetchError: [],
+          reposWithNoWorkItems: [],
+        })
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+
+      await vi.waitFor(() => {
+        expect(mockedGetWorkItemsForMultipleRepos).toHaveBeenCalled()
+      })
+
+      expect(composable.reposWithoutMepTag.value).toEqual(['RepoA', 'RepoB'])
+      expect(composable.hasResults.value).toBe(true)
+
+      mockedGetWorkItemsForMultipleRepos.mockRestore()
+    })
+  })
+
+  describe('reposWithFetchError', () => {
+    it('should populate reposWithFetchError and mark hasResults as true in multi-repo mode', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+      const mockedGetWorkItemsForMultipleRepos = vi.spyOn(AzureDevOpsService, 'getWorkItemsForMultipleRepos')
+        .mockResolvedValueOnce({
+          workItemsByRepository: {},
+          failedIds: [],
+          warnings: [],
+          reposWithoutMepTag: [],
+          reposWithFetchError: ['RepoA', 'RepoB'],
+          reposWithNoWorkItems: [],
+        })
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+
+      await vi.waitFor(() => {
+        expect(mockedGetWorkItemsForMultipleRepos).toHaveBeenCalled()
+      })
+
+      expect(composable.reposWithFetchError.value).toEqual(['RepoA', 'RepoB'])
+      expect(composable.hasResults.value).toBe(true)
+
+      mockedGetWorkItemsForMultipleRepos.mockRestore()
+    })
+  })
+
+  describe('reposWithNoWorkItems', () => {
+    it('should populate reposWithNoWorkItems and mark hasResults as true in multi-repo mode', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+      const mockedGetWorkItemsForMultipleRepos = vi.spyOn(AzureDevOpsService, 'getWorkItemsForMultipleRepos')
+        .mockResolvedValueOnce({
+          workItemsByRepository: {},
+          failedIds: [],
+          warnings: [],
+          reposWithoutMepTag: [],
+          reposWithFetchError: [],
+          reposWithNoWorkItems: ['RepoA', 'RepoB'],
+        })
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+
+      await vi.waitFor(() => {
+        expect(mockedGetWorkItemsForMultipleRepos).toHaveBeenCalled()
+      })
+
+      expect(composable.reposWithNoWorkItems.value).toEqual(['RepoA', 'RepoB'])
+      expect(composable.hasResults.value).toBe(true)
+
+      mockedGetWorkItemsForMultipleRepos.mockRestore()
     })
   })
 
@@ -172,6 +315,10 @@ describe('useAzureDevOpsWorkItems', () => {
       })
 
       const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
       composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
       composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
       composable.backofficeOnly.value = true
@@ -190,13 +337,16 @@ describe('useAzureDevOpsWorkItems', () => {
     it('should re-fetch MEP tag when fetchLatestMepTag is called after backofficeOnly changes', async () => {
       mockedGetLatestMepTag.mockResolvedValue(null)
       mockedGetHeadInfo.mockResolvedValue({ commitId: 'head', tagName: null })
-      mockedGetRepositories.mockResolvedValue([])
+      mockedGetRepositories.mockResolvedValue([{ id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false }])
 
       const store = useAzureDevOpsStore()
       store.setPat('valid-pat')
 
       const composable = useAzureDevOpsWorkItems()
-      await nextTick()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
 
       await vi.waitFor(() => {
         expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', expect.any(String), false)
@@ -213,6 +363,124 @@ describe('useAzureDevOpsWorkItems', () => {
       await composable.fetchLatestMepTag()
 
       expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', expect.any(String), true)
+    })
+  })
+
+  describe('repositoryFilter', () => {
+    it('should narrow the search to the filtered repository, auto-populating its own commit range, while keeping the global selection', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+      const mepCommitId = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      const headCommitId = 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+      mockedGetLatestMepTag.mockResolvedValue({
+        name: 'MEP-RepoA',
+        commitId: mepCommitId,
+        date: new Date(),
+      })
+      mockedGetHeadInfo.mockResolvedValue({ commitId: headCommitId, tagName: null })
+      mockedGetWorkItemsForCommitRange.mockResolvedValue({
+        workItemsByTeam: { Team: [{ id: 1, title: '', type: '', state: '', team: 'Team', webUrl: '' }] },
+        failedIds: [],
+        warnings: [],
+      })
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+      // Let the "reset filter on global selection change" watcher settle before applying the filter.
+      await nextTick()
+
+      composable.repositoryFilter.value = 'RepoA'
+
+      await vi.waitFor(() => {
+        expect(mockedGetWorkItemsForCommitRange).toHaveBeenCalledWith(
+          'valid-pat', 'RepoA', mepCommitId, headCommitId, false,
+        )
+      })
+
+      expect(composable.fromCommitId.value).toBe(mepCommitId)
+      expect(composable.toCommitId.value).toBe(headCommitId)
+      expect(composable.workItemsByRepository.value.RepoA.Team).toHaveLength(1)
+      expect(store.selectedRepositories).toEqual(['RepoA', 'RepoB'])
+      expect(composable.isMultiRepoMode.value).toBe(true)
+    })
+
+    it('should fetch "Dernière MEP" / "Tag le plus récent" for the filtered repository, not the first globally selected one', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+      mockedGetLatestMepTag.mockImplementation(async (_pat: string, repository: string) => ({
+        name: `MEP-${repository}`,
+        commitId: `mep-commit-${repository}`,
+        date: new Date(),
+      }))
+      mockedGetHeadInfo.mockImplementation(async (_pat: string, repository: string) => ({
+        commitId: `head-commit-${repository}`,
+        tagName: null,
+      }))
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+      await nextTick()
+
+      mockedGetLatestMepTag.mockClear()
+      mockedGetHeadInfo.mockClear()
+      composable.repositoryFilter.value = 'RepoB'
+
+      await vi.waitFor(() => {
+        expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', 'RepoB', false)
+        expect(mockedGetHeadInfo).toHaveBeenCalledWith('valid-pat', 'RepoB')
+      })
+      expect(composable.latestMepTag.value?.name).toBe('MEP-RepoB')
+      expect(composable.headInfo.value?.commitId).toBe('head-commit-RepoB')
+
+      mockedGetLatestMepTag.mockClear()
+      mockedGetHeadInfo.mockClear()
+      composable.repositoryFilter.value = ''
+
+      await vi.waitFor(() => {
+        expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', 'RepoA', false)
+        expect(mockedGetHeadInfo).toHaveBeenCalledWith('valid-pat', 'RepoA')
+      })
+    })
+
+    it('should reset the filter when the global repository selection changes', async () => {
+      mockedGetRepositories.mockResolvedValue([
+        { id: '1', name: 'RepoA', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'RepoB', defaultBranch: 'main', isDisabled: false },
+      ])
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA', 'RepoB'])
+      await nextTick()
+
+      composable.repositoryFilter.value = 'RepoA'
+      await nextTick()
+
+      store.setSelectedRepositories(['RepoB'])
+      await nextTick()
+
+      expect(composable.repositoryFilter.value).toBe('')
     })
   })
 
@@ -263,7 +531,10 @@ describe('useAzureDevOpsWorkItems', () => {
       useAzureDevOpsWorkItems()
 
       store.setPat('valid-pat')
-      await nextTick()
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+      store.setSelectedRepositories(['RepoA'])
 
       await vi.waitFor(() => {
         expect(mockedGetLatestMepTag).toHaveBeenCalled()

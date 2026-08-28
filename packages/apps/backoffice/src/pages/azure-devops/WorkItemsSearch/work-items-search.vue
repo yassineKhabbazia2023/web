@@ -9,7 +9,30 @@
     </p>
 
     <PForm>
-      <div class="flex flex-gap--4 flex--align-items-center">
+      <div
+        v-if="availableRepositories && availableRepositories.length > 0"
+      >
+        <PFormItem
+          pLabel="Filtre par repository"
+        >
+          <div class="work-items-search__repository-filter">
+            <PDropdown
+              :modelValue="repositoryFilter"
+              data-testid="work-items-repository-filter"
+              pPlaceholder="Sélectionnez un repository"
+              :pOptions="repositoryFilterOptions"
+              pFilterable
+              pClearable
+              @update:model-value="repositoryFilter = $event ?? ''"
+            />
+          </div>
+        </PFormItem>
+      </div>
+
+      <div
+        v-if="repositoryFilter !== ''"
+        class="flex flex-gap--4 flex--align-items-center"
+      >
         <PFormItem
           class="work-items-search__input"
           pLabel="Commit de départ (plus ancien)"
@@ -97,7 +120,10 @@
         </div>
       </div>
 
-      <div class="flex flex-gap--4 margin-top--1">
+      <div
+        v-if="repositoryFilter !== ''"
+        class="flex flex-gap--4 margin-top--1"
+      >
         <div class="work-items-search__tag-row">
           <PLoader
             v-if="isLoadingMepTag"
@@ -140,23 +166,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PForm, PFormItem, PInput, PButton, PIcon, PTag, PLoader, PCheckbox } from '@pulse/styleguide/components'
-import type { MepTag, HeadInfo } from '@backoffice/types/azure-devops.type'
+import { PForm, PFormItem, PInput, PButton, PIcon, PTag, PLoader, PCheckbox, PDropdown } from '@pulse/styleguide/components'
+import type { WorkItemsSearchProps } from './work-items-search.types'
 
 const fromCommitId = defineModel<string>('fromCommitId', { required: true })
 const toCommitId = defineModel<string>('toCommitId', { required: true })
 const backofficeOnly = defineModel<boolean>('backofficeOnly', { required: true })
+const repositoryFilter = defineModel<string>('repositoryFilter', { default: '' })
 
-const props = defineProps<{
-  isLoading: boolean
-  canSearch: boolean
-  latestMepTag: MepTag | null
-  isLoadingMepTag: boolean
-  headInfo: HeadInfo | null
-  isLoadingHead: boolean
-  fromCommitIdError: string | null
-  toCommitIdError: string | null
-}>()
+const props = defineProps<WorkItemsSearchProps>()
 
 defineEmits<{
   'search': []
@@ -164,6 +182,16 @@ defineEmits<{
   'applyHead': []
   'openExplorer': [target: 'from' | 'to']
 }>()
+
+const repositoryFilterOptions = computed(() => {
+  if (props.availableRepositories === undefined) {
+    return []
+  }
+  return props.availableRepositories.map((repo) => ({
+    pValue: repo,
+    pLabel: repo,
+  }))
+})
 
 const headTagLabel = computed(() => {
   if (props.headInfo === null) {
@@ -177,6 +205,10 @@ const headTagLabel = computed(() => {
 
 <style lang="scss" scoped>
 .work-items-search {
+  &__repository-filter {
+    width: min(400px, 60vw);
+  }
+
   &__input {
     flex: 1;
     max-width: 300px;

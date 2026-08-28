@@ -648,6 +648,119 @@ describe('AzureDevOpsService', () => {
     })
   })
 
+  describe('getWorkItemsForMultipleRepos', () => {
+    it('resolves each repository\'s own REC/PROD commit range instead of reusing one', async () => {
+      const mepTagByRepo: Record<string, string> = { RepoA: 'mep-a', RepoB: 'mep-b' }
+      const headByRepo: Record<string, string> = { RepoA: 'head-a', RepoB: 'head-b' }
+
+      const getLatestMepTagSpy = vi.spyOn(AzureDevOpsService, 'getLatestMepTag')
+        .mockImplementation(async (_pat, repository) => ({
+          name: `MEP.${repository}`,
+          commitId: mepTagByRepo[repository],
+          date: new Date(),
+        }))
+      const getHeadInfoSpy = vi.spyOn(AzureDevOpsService, 'getHeadInfo')
+        .mockImplementation(async (_pat, repository) => ({
+          commitId: headByRepo[repository],
+          tagName: null,
+        }))
+      const getWorkItemsForCommitRangeSpy = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+        .mockResolvedValue({ workItemsByTeam: { Team: [] }, failedIds: [], warnings: [] })
+
+      await AzureDevOpsService.getWorkItemsForMultipleRepos(mockPat, ['RepoA', 'RepoB'])
+
+      expect(getLatestMepTagSpy).toHaveBeenCalledWith(mockPat, 'RepoA', false)
+      expect(getLatestMepTagSpy).toHaveBeenCalledWith(mockPat, 'RepoB', false)
+      expect(getWorkItemsForCommitRangeSpy).toHaveBeenCalledWith(mockPat, 'RepoA', 'mep-a', 'head-a', false)
+      expect(getWorkItemsForCommitRangeSpy).toHaveBeenCalledWith(mockPat, 'RepoB', 'mep-b', 'head-b', false)
+
+      getLatestMepTagSpy.mockRestore()
+      getHeadInfoSpy.mockRestore()
+      getWorkItemsForCommitRangeSpy.mockRestore()
+    })
+
+    it('skips a repository and reports it as missing a MEP tag', async () => {
+      const getLatestMepTagSpy = vi.spyOn(AzureDevOpsService, 'getLatestMepTag').mockResolvedValue(null)
+      const getHeadInfoSpy = vi.spyOn(AzureDevOpsService, 'getHeadInfo')
+        .mockResolvedValue({ commitId: 'head', tagName: null })
+      const getWorkItemsForCommitRangeSpy = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+
+      const result = await AzureDevOpsService.getWorkItemsForMultipleRepos(mockPat, ['RepoA'])
+
+      expect(getWorkItemsForCommitRangeSpy).not.toHaveBeenCalled()
+      expect(result.workItemsByRepository).toEqual({})
+      expect(result.warnings).toEqual([])
+      expect(result.reposWithoutMepTag).toEqual(['RepoA'])
+
+      getLatestMepTagSpy.mockRestore()
+      getHeadInfoSpy.mockRestore()
+      getWorkItemsForCommitRangeSpy.mockRestore()
+    })
+
+    it('skips a repository and reports it as having a fetch error', async () => {
+      const getLatestMepTagSpy = vi.spyOn(AzureDevOpsService, 'getLatestMepTag')
+        .mockRejectedValue(new Error('Network error'))
+      const getHeadInfoSpy = vi.spyOn(AzureDevOpsService, 'getHeadInfo')
+        .mockResolvedValue({ commitId: 'head', tagName: null })
+
+      const result = await AzureDevOpsService.getWorkItemsForMultipleRepos(mockPat, ['RepoA'])
+
+      expect(result.workItemsByRepository).toEqual({})
+      expect(result.warnings).toEqual([])
+      expect(result.reposWithFetchError).toEqual(['RepoA'])
+
+      getLatestMepTagSpy.mockRestore()
+      getHeadInfoSpy.mockRestore()
+    })
+
+    it('reports a repository as having no work items instead of dropping it', async () => {
+      const getLatestMepTagSpy = vi.spyOn(AzureDevOpsService, 'getLatestMepTag')
+        .mockResolvedValue({ name: 'MEP', commitId: 'mep', date: new Date() })
+      const getHeadInfoSpy = vi.spyOn(AzureDevOpsService, 'getHeadInfo')
+        .mockResolvedValue({ commitId: 'head', tagName: null })
+      const getWorkItemsForCommitRangeSpy = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+        .mockResolvedValue({ workItemsByTeam: {}, failedIds: [], warnings: [] })
+
+      const result = await AzureDevOpsService.getWorkItemsForMultipleRepos(mockPat, ['RepoA'])
+
+      expect(result.workItemsByRepository).toEqual({})
+      expect(result.reposWithNoWorkItems).toEqual(['RepoA'])
+
+      getLatestMepTagSpy.mockRestore()
+      getHeadInfoSpy.mockRestore()
+      getWorkItemsForCommitRangeSpy.mockRestore()
+    })
+
+    it('aggregates work items, failed IDs and warnings across repositories', async () => {
+      const getLatestMepTagSpy = vi.spyOn(AzureDevOpsService, 'getLatestMepTag')
+        .mockResolvedValue({ name: 'MEP', commitId: 'mep', date: new Date() })
+      const getHeadInfoSpy = vi.spyOn(AzureDevOpsService, 'getHeadInfo')
+        .mockResolvedValue({ commitId: 'head', tagName: null })
+      const getWorkItemsForCommitRangeSpy = vi.spyOn(AzureDevOpsService, 'getWorkItemsForCommitRange')
+        .mockResolvedValueOnce({
+          workItemsByTeam: { Team: [{ id: 1, title: '', type: '', state: '', team: 'Team', webUrl: '' }] },
+          failedIds: [123],
+          warnings: ['warn-a'],
+        })
+        .mockResolvedValueOnce({
+          workItemsByTeam: { Team: [{ id: 2, title: '', type: '', state: '', team: 'Team', webUrl: '' }] },
+          failedIds: [456],
+          warnings: ['warn-b'],
+        })
+
+      const result = await AzureDevOpsService.getWorkItemsForMultipleRepos(mockPat, ['RepoA', 'RepoB'])
+
+      expect(result.workItemsByRepository.RepoA.Team).toHaveLength(1)
+      expect(result.workItemsByRepository.RepoB.Team).toHaveLength(1)
+      expect(result.failedIds).toEqual([123, 456])
+      expect(result.warnings).toEqual(['warn-a', 'warn-b'])
+
+      getLatestMepTagSpy.mockRestore()
+      getHeadInfoSpy.mockRestore()
+      getWorkItemsForCommitRangeSpy.mockRestore()
+    })
+  })
+
   describe('extractPrId', () => {
     it('extracts PR ID from merge commit comment', () => {
       const result = AzureDevOpsService.extractPrId('Merged PR 1234: Title of the PR')
