@@ -52,6 +52,14 @@ const routes: RouteRecordRaw[] = [
               title: 'Dashboard Monitoring IA - Pulse Back Office',
             },
           },
+          {
+            path: BACKOFFICE_ROUTES.authenticated.agentsDashboard.path,
+            name: BACKOFFICE_ROUTES.authenticated.agentsDashboard.name,
+            component: () => import('@backoffice/pages/agents-dashboard/agents-dashboard.page.vue'),
+            meta: {
+              title: 'Dashboard agents - Pulse Back Office',
+            },
+          },
         ],
       },
     ],

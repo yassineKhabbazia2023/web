@@ -5,4 +5,5 @@ export enum AdminRouteNames {
   APP_SETTINGS = 'app-settings',
   AZURE_DEVOPS = 'azure-devops',
   AI_MONITORING = 'ai-monitoring',
+  AGENTS_DASHBOARD = 'agents-dashboard',
 }

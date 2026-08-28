@@ -47,6 +47,13 @@
             >
               Dashboard Monitoring IA
             </router-link>
+            <router-link
+              :to="{ name: AdminRouteNames.AGENTS_DASHBOARD }"
+              class="dashboard-layout__nav-link"
+              :class="{ 'dashboard-layout__nav-link--active': isAgentsDashboardActive }"
+            >
+              Dashboard agents
+            </router-link>
           </nav>
         </div>
 
@@ -133,6 +140,7 @@ const userInitials = computed(() => getUserInitials(userInfo.value?.name))
 const isAppSettingsActive = computed(() => route.name === AdminRouteNames.APP_SETTINGS)
 const isAzureDevopsActive = computed(() => route.name === AdminRouteNames.AZURE_DEVOPS)
 const isAiMonitoringActive = computed(() => route.name === AdminRouteNames.AI_MONITORING)
+const isAgentsDashboardActive = computed(() => route.name === AdminRouteNames.AGENTS_DASHBOARD)
 
 const handleLogout = async () => {
   isLoading.value = true
