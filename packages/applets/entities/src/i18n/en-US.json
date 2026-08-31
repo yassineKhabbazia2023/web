@@ -382,7 +382,15 @@
       "downloadLabel": "Download the invoice",
       "viewError": "The invoice could not be opened. Please try again later.",
       "downloadError": "The invoice could not be downloaded. Please try again later.",
-      "popupBlockedError": "Your browser blocked the invoice from opening. Allow pop-ups and try again."
+      "popupBlockedError": "Your browser blocked the invoice from opening. Allow pop-ups and try again.",
+      "oldInvoicesDialog": {
+        "ctaLabel": "Old RYDGE invoices",
+        "title": "Access {highlight}",
+        "titleHighlight": "your secure digital vault",
+        "description": "Access to your old RYDGE Conseil invoices in dematerialized format. You will find your old RYDGE invoices there.",
+        "assistanceButton": "Need help?",
+        "loginButton": "Log in"
+      }
     },
     "history": {
       "searchPlaceholder": "Search in label and activity details",

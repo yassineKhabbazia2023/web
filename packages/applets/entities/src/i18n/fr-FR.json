@@ -382,7 +382,15 @@
       "downloadLabel": "Télécharger la facture",
       "viewError": "L'ouverture de la facture a échoué. Veuillez réessayer plus tard.",
       "downloadError": "Le téléchargement de la facture a échoué. Veuillez réessayer plus tard.",
-      "popupBlockedError": "L'ouverture de la facture a été bloquée par votre navigateur. Autorisez les pop-ups puis réessayez."
+      "popupBlockedError": "L'ouverture de la facture a été bloquée par votre navigateur. Autorisez les pop-ups puis réessayez.",
+      "oldInvoicesDialog": {
+        "ctaLabel": "Anciennes factures RYDGE",
+        "title": "Accédez à {highlight}",
+        "titleHighlight": "votre coffre-fort sécurisé",
+        "description": "Accès à vos anciennes factures RYDGE Conseil sous format dématérialisé. Vous y retrouverez vos anciennes factures RYDGE.",
+        "assistanceButton": "Besoin d'assistance ?",
+        "loginButton": "Se connecter"
+      }
     },
     "history": {
       "searchPlaceholder": "Rechercher dans libellé et détail de l'activité",

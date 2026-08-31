@@ -12,6 +12,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.HUBSPOT_PRODUCT_FRUITS,
   Feature.INVOICES_EXPERIENCE,
   Feature.LAST_ACTIVITY_FEATURE,
+  Feature.LEGACY_VENTYA_INVOICES_ACCESS,
   Feature.MANAGE_WALLET_MENU,
   Feature.PENNYLANE_SSO_FORCE_PROXY,
   Feature.PROSPECT_EXPERIENCE,
@@ -64,6 +65,10 @@ export class FeatureFlagManager {
 
   static isLastActivityFeatureActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.LAST_ACTIVITY_FEATURE)
+  }
+
+  static isLegacyVentyaInvoicesAccessActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.LEGACY_VENTYA_INVOICES_ACCESS)
   }
 
   static isMaintenanceModeActivated() {

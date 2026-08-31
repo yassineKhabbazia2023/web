@@ -117,6 +117,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isLegacyVentyaInvoicesAccessActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isLegacyVentyaInvoicesAccessActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.LEGACY_VENTYA_INVOICES_ACCESS, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isLegacyVentyaInvoicesAccessActivated()).toBe(false)
+    })
+  })
+
   describe('isWalletV2Activated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

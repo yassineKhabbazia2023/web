@@ -7,15 +7,44 @@
       class="margin-bottom--4"
     />
 
-    <PFormSearch
-      v-model:pSearch="search"
-      class="max-width-800 margin-bottom--6"
-      :pPlaceholder="t('entities.seresInvoices.searchPlaceholder')"
-      :pSearchInvalidMessage="t('entities.seresInvoices.searchInvalidMessage')"
-      pClearable
-      pSize="small"
-      pTestId="seres-invoices-search"
-    />
+    <div
+      class="
+        flex
+        flex--justify-content-space-between
+        flex--align-items-center
+        flex-gap--3
+        bg--surface-primary
+        shadow--6
+        padding-x--4
+        padding-y--3
+        margin-bottom--6
+      "
+      style="border-bottom: 1px solid var(--p-stroke-neutral)"
+    >
+      <PFormSearch
+        v-model:pSearch="search"
+        class="max-width-800 flex--grow-1"
+        :pPlaceholder="t('entities.seresInvoices.searchPlaceholder')"
+        :pSearchInvalidMessage="t('entities.seresInvoices.searchInvalidMessage')"
+        pClearable
+        pSize="small"
+        pTestId="seres-invoices-search"
+      />
+
+      <PButton
+        v-if="isCtaVisible"
+        pType="primary"
+        pTestId="old-rydge-invoices-cta"
+        @click="openDialog"
+      >
+        {{ t('entities.seresInvoices.oldInvoicesDialog.ctaLabel') }}
+        <PIcon
+          pName="arrowRight"
+          pSize="16"
+          class="margin-left--2"
+        />
+      </PButton>
+    </div>
 
     <div
       v-if="isLoading"
@@ -117,6 +146,13 @@
         <p>{{ paginationLabel }}</p>
       </PPagination>
     </div>
+
+    <OldRydgeInvoicesDialog
+      v-model="isDialogOpen"
+      :login-url="loginUrl"
+      @login-click="handleLoginClick"
+      @assistance-click="handleAssistanceClick"
+    />
   </div>
 </template>
 
@@ -145,6 +181,8 @@ import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { useSeresInvoices } from './seres-invoices.composable'
 import { useSeresInvoicesDownload } from './seres-invoices-download.composable'
 import { SeresInvoiceAction } from './seres-invoices.enums'
+import OldRydgeInvoicesDialog from './old-rydge-invoices-dialog/old-rydge-invoices-dialog.vue'
+import { useOldRydgeInvoicesDialog } from './old-rydge-invoices-dialog/old-rydge-invoices-dialog.composable'
 
 const { d, t } = useI18n()
 
@@ -167,6 +205,15 @@ const {
 } = useSeresInvoices(currentAccountId, search)
 
 const { isInvoiceLocked, isActionProcessing, viewInvoice, downloadInvoice } = useSeresInvoicesDownload()
+
+const {
+  isCtaVisible,
+  isDialogOpen,
+  loginUrl,
+  openDialog,
+  handleLoginClick,
+  handleAssistanceClick,
+} = useOldRydgeInvoicesDialog()
 
 const emptyStateMessage = computed(() => isNotNullNorEmpty(search.value)
   ? t('entities.seresInvoices.noSearchResult')

@@ -8,6 +8,7 @@ export enum Feature {
   HUBSPOT_PRODUCT_FRUITS = 'isHubspotProductFruitsEnabled',
   INVOICES_EXPERIENCE = 'isInvoicesExperienceEnabled',
   LAST_ACTIVITY_FEATURE = 'isLastActivityFeatureEnabled',
+  LEGACY_VENTYA_INVOICES_ACCESS = 'isLegacyVentyaInvoicesAccessEnabled',
   MAINTENANCE_MODE = 'VITE_MAINTENANCE_MODE_ACTIVATED',
   MANAGE_WALLET_MENU = 'isManageWalletMenuEnabled',
   MODSCREEN_V2 = 'VITE_MODSCREEN_V2_ACTIVATED',
