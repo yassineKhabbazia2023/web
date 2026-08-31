@@ -21,6 +21,7 @@ export enum AmplitudeEvent {
   WALLET_ACTION_ACCOUNTS_SEARCHED = 'Wallet Action Search Researched',
   DELEGATION_PERMANENT_DELETE_REQUESTED = 'Delegation Permanent Delete Requested',
   DELEGATION_PERMANENT_DELETE_COMPLETED = 'Delegation Permanent Delete Completed',
+  INVOICE_SERENITE_RESPONSE = 'Invoice Serenite Response',
 }
 
 export enum AmplitudeFeatureName {

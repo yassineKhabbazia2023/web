@@ -53,6 +53,14 @@
       v-model="showPennylaneAmendmentDeclineDialog"
       :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
     />
+
+    <!-- Serenite offer dialog (electronic invoicing reform) -->
+    <InvoicesSereniteDialog
+      v-model="isInvoicesSereniteDialogVisible"
+      @comply="onInvoicesSereniteComply"
+      @understand-reform="onInvoicesSereniteUnderstandReform"
+      @close="onInvoicesSereniteDialogClose"
+    />
   </div>
 </template>
 
@@ -68,9 +76,10 @@ import { useUserStore, useCurrentEntityStore, useDematMailStore } from '@pulse/c
 import { useBookingCustomerStore } from '@pulse/booking/stores'
 import { useResponsive } from '@pulse/styleguide'
 import { useCustomerQueryParams } from '@customer/composables/use-customer-query-params.composable'
-import { usePennylaneAmendment } from '@pulse/widgets/composables'
+import { usePennylaneAmendment, useInvoicesSerenite } from '@pulse/widgets/composables'
 import GlobalPennylaneAmendmentDialog from '@customer/components/global-pennylane-amendment-dialog.vue'
 import { PennylaneAmendmentSuccessDialog, PennylaneAmendmentDeclineDialog } from '@pulse/widgets/pennylane-dialogs'
+import { InvoicesSereniteDialog } from '@pulse/widgets/invoices-serenite-dialog'
 
 const MobileHomeLayout = defineAsyncComponent(() =>
   import('@pulse/shared/layouts').then(m => m.MobileHomeLayout),
@@ -129,6 +138,15 @@ const {
   onPennylaneAmendmentDecline,
 } = usePennylaneAmendment()
 
+// Serenite offer dialog
+const {
+  isDialogVisible: isInvoicesSereniteDialogVisible,
+  checkEligibility: checkInvoicesSereniteEligibility,
+  onComply: onInvoicesSereniteComply,
+  onUnderstandReform: onInvoicesSereniteUnderstandReform,
+  onDialogClose: onInvoicesSereniteDialogClose,
+} = useInvoicesSerenite()
+
 function handleAcceptSuccess() {
   captureAcceptedFreeTrialInfo()
   onPennylaneAmendmentAcceptSuccess()
@@ -138,6 +156,11 @@ onMounted(async () => {
   await checkPennylaneAccess()
   if (shouldShowPennylaneAmendmentDialog.value) {
     showPennylaneAmendmentDialog.value = true
+  }
+
+  // the Serenite dialog must not compete with the Pennylane amendment flow
+  if (shouldShowPennylaneAmendmentDialog.value === false) {
+    await checkInvoicesSereniteEligibility()
   }
 })
 </script>

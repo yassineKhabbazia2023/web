@@ -233,6 +233,23 @@
       "description": "Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert.",
       "primaryAction": "Démarrer la vérification de conformité",
       "primaryActionMobile": "Démarrer la conformité"
+    },
+    "invoicesSereniteDialog": {
+      "title": "Réforme de la facturation électronique",
+      "intro": "Depuis le 1er septembre 2026, toutes les entreprises assujetties à la TVA doivent recevoir leurs factures via une plateforme agréée. C’est un service certifié par l’État qui centralise vos factures fournisseurs.",
+      "offer": {
+        "titlePart1": "Notre plateforme agréée :",
+        "titleHighlight": "Sérénité",
+        "descriptionPart1": "Elle couvre la réception des factures, la gestion des achats et l’e-invoicing, et s’intègre à vos outils existants.",
+        "descriptionPart2": "RYDGE Conseil met à votre disposition la plateforme agréée leader du marché, qui s’intègre à votre environnement sans remplacer vos outils.",
+        "tagIntegration": "S’intègre à vos outils",
+        "tagNoCommitment": "Sans engagement",
+        "price": "à partir de 7 €",
+        "priceUnit": "HT / mois"
+      },
+      "legalWarning": "Si vous n’avez pas déclaré de plateforme agréée, vos fournisseurs ne peuvent plus vous transmettre légalement leurs factures.",
+      "understandReformButton": "Comprendre la réforme",
+      "complyButton": "Me mettre en conformité"
     }
   }
 }

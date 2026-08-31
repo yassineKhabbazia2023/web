@@ -8,4 +8,10 @@ export const invoicesHandlers = [
       externalDematMail: 'testauto@conseilescgs.onmicrosoft.com',
     })
   }),
+  http.get('*/connect/api/serenity-modal', () => {
+    return HttpResponse.json({ shouldDisplay: false })
+  }),
+  http.post('*/connect/api/serenity-modal', () => {
+    return new HttpResponse(null, { status: 204 })
+  }),
 ]

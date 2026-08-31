@@ -17,6 +17,7 @@
     "./utils": "./src/utils.ts",
     "./composables": "./src/composables.ts",
     "./pennylane-dialogs": "./src/widgets/gridless/pennylane-sso/components/index.ts",
+    "./invoices-serenite-dialog": "./src/widgets/gridless/invoices-serenite/components/index.ts",
     "./pennylane-tracking": "./src/widgets/gridless/pennylane-sso/tracking.ts"
   },
   "scripts": {

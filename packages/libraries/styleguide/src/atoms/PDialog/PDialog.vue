@@ -12,6 +12,8 @@
     :alignCenter="pAlignCenter"
     :showClose="pShowClose"
     :destroyOnClose="pDestroyOnClose"
+    :closeOnClickModal="pCloseOnClickModal"
+    :closeOnPressEscape="pCloseOnPressEscape"
     :closeIcon="closeIcon"
     :data-testid="pTestId"
     @close="handleClose"
@@ -42,6 +44,8 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pCloseIconName: 'x',
   pFullscreen: false,
   pAppendToBody: false,
+  pCloseOnClickModal: true,
+  pCloseOnPressEscape: true,
   pTestId: undefined,
 })
 

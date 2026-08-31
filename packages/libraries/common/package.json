@@ -24,6 +24,7 @@
     "./services/logout": "./src/services/logout/index.ts",
     "./services/token-provider": "./src/services/token-provider/index.ts",
     "./services/invoices-access": "./src/services/invoices-access/index.ts",
+    "./services/invoices-serenite": "./src/services/invoices-serenite/index.ts",
     "./services/invoices": "./src/services/invoices/index.ts",
     "./services/pennylane": "./src/services/pennylane/index.ts",
     "./services/storage": "./src/services/storage/index.ts",

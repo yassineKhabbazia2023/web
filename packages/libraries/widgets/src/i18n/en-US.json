@@ -233,6 +233,23 @@
       "description": "This space lets you easily track your support, provide the information we need and move forward step by step with your expert.",
       "primaryAction": "Start compliance check",
       "primaryActionMobile": "Start compliance check"
+    },
+    "invoicesSereniteDialog": {
+      "title": "Electronic invoicing reform",
+      "intro": "Since September 1, 2026, all VAT-registered companies must receive their invoices through an accredited platform. It is a state-certified service that centralizes your supplier invoices.",
+      "offer": {
+        "titlePart1": "Our accredited platform:",
+        "titleHighlight": "Sérénité",
+        "descriptionPart1": "It covers invoice reception, purchase management and e-invoicing, and integrates with your existing tools.",
+        "descriptionPart2": "RYDGE Conseil provides you with the market-leading accredited platform, which integrates with your environment without replacing your tools.",
+        "tagIntegration": "Integrates with your tools",
+        "tagNoCommitment": "No commitment",
+        "price": "from €7",
+        "priceUnit": "excl. VAT / month"
+      },
+      "legalWarning": "If you have not declared an accredited platform, your suppliers can no longer legally send you their invoices.",
+      "understandReformButton": "Understand the reform",
+      "complyButton": "Get compliant"
     }
   }
 }
