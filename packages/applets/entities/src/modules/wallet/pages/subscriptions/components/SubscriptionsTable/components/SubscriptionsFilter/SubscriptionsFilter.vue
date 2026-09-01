@@ -16,6 +16,7 @@
 import { useI18n } from 'vue-i18n'
 import { watch, onMounted, computed } from 'vue'
 import { PDropdown } from '@pulse/styleguide/components'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import type { SubscriptionsFilterProps } from './SubscriptionsFilterTypes'
 
 const { t } = useI18n({
@@ -39,28 +40,39 @@ const emit = defineEmits<{
   'update:offerTypeSelection': [string[]]
 }>()
 
-const offerTypeDropdown = [
-  {
-    pValue: 'MEG Smart',
-    pLabel: 'MEG Smart',
-  },
-  {
-    pValue: 'MEG Premium',
-    pLabel: 'MEG Premium',
-  },
-  {
-    pValue: 'Loop collaboratif',
-    pLabel: 'Loop collaboratif',
-  },
-  {
-    pValue: 'Forms',
-    pLabel: 'Forms',
-  },
-  {
-    pValue: 'Pennylane',
-    pLabel: 'Pennylane',
-  },
-]
+const offerTypeDropdown = computed(() => {
+  const baseOptions = [
+    {
+      pValue: 'MEG Smart',
+      pLabel: 'MEG Smart',
+    },
+    {
+      pValue: 'MEG Premium',
+      pLabel: 'MEG Premium',
+    },
+    {
+      pValue: 'Loop collaboratif',
+      pLabel: 'Loop collaboratif',
+    },
+    {
+      pValue: 'Forms',
+      pLabel: 'Forms',
+    },
+    {
+      pValue: 'Pennylane',
+      pLabel: 'Pennylane',
+    },
+  ]
+
+  if (FeatureFlagManager.isRFinanceActivated()) {
+    baseOptions.push({
+      pValue: 'R/Finance',
+      pLabel: 'R/Finance',
+    })
+  }
+
+  return baseOptions
+})
 
 const selectedOfferType = computed({
   get() {
@@ -76,7 +88,7 @@ watch(selectedOfferType, () => {
 })
 
 onMounted(() => {
-  selectedOfferType.value = offerTypeDropdown.map(
+  selectedOfferType.value = offerTypeDropdown.value.map(
     ({ pValue }: { pValue: string }) => pValue,
   )
 })

@@ -1,14 +1,17 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import SubscriptionsFilter from '.'
 import { nextTick } from 'vue'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
-const offerTypes = [
+const baseOfferTypes = [
   'MEG Smart',
   'MEG Premium',
   'Loop collaboratif',
   'Forms',
   'Pennylane',
 ]
+
+const offerTypesWithRFinance = [...baseOfferTypes, 'R/Finance']
 
 const createWrapper = (): VueWrapper =>
   shallowMount(SubscriptionsFilter, {
@@ -29,25 +32,40 @@ const createWrapper = (): VueWrapper =>
 
 describe('subscriptionsFilter', () => {
   let wrapper: VueWrapper<any>
+
   beforeEach(async () => {
+    vi.spyOn(FeatureFlagManager, 'isRFinanceActivated').mockReturnValue(false)
     wrapper = createWrapper()
     await nextTick()
   })
+
   describe('display', () => {
-    it('should correctly display the subscription table filtered by offer type', () => {
+    it('should correctly display the subscription table filtered by offer type without R/Finance when flag is disabled', () => {
       const filterOfferTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
 
       expect(filterOfferTypesDropdown.exists()).toBeTruthy()
-      expect(filterOfferTypesDropdown.props('pOptions')).toHaveLength(offerTypes.length)
+      expect(filterOfferTypesDropdown.props('pOptions')).toHaveLength(baseOfferTypes.length)
+    })
+
+    it('should include R/Finance option when feature flag is enabled', async () => {
+      vi.spyOn(FeatureFlagManager, 'isRFinanceActivated').mockReturnValue(true)
+      wrapper = createWrapper()
+      await nextTick()
+
+      const filterOfferTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
+
+      expect(filterOfferTypesDropdown.props('pOptions')).toHaveLength(offerTypesWithRFinance.length)
+      expect(filterOfferTypesDropdown.props('pOptions').map((o: { pValue: string }) => o.pValue)).toContain('R/Finance')
     })
   })
+
   describe('events', () => {
     it('should filter the subscription table to show all offer types by default', async () => {
       wrapper.vm.$emit('apply-offer-filter')
       await nextTick()
 
       expect(wrapper.emitted('update:offerTypeSelection')).toStrictEqual([
-        [offerTypes],
+        [baseOfferTypes],
       ])
       expect(wrapper.emitted('apply-offer-filter')).toBeTruthy()
     })

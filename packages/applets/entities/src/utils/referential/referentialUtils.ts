@@ -21,6 +21,7 @@ import PennylaneOfferFormStructure from '@entities/config/forms/PennylaneOfferFo
 import PennylaneModOfferFormStructure from '@entities/config/forms/PennylaneModOfferFormStructure.json'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
 import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorFormStructure.json'
+import RFinanceOfferFormStructure from '@entities/config/forms/RFinanceOfferFormStructure.json'
 import { ProviderName } from '@entities/enums'
 import type { FormStructureName } from './referentialUtilsTypes'
 import { get, setWith } from 'lodash-es'
@@ -137,6 +138,8 @@ export const getFormSections = (formStructureName: FormStructureName) => {
       return InformationFormStructure as FormSection[]
     case 'EntityCreator':
       return EntityCreatorFormStructure as FormSection[]
+    case ProviderName.RYDGE:
+      return RFinanceOfferFormStructure as FormSection[]
     default:
       return []
   }

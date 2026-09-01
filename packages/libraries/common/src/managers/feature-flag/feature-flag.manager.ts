@@ -18,6 +18,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.PROSPECT_EXPERIENCE,
   Feature.WALLET_TABLE_LOAD_MORE_PAGINATION,
   Feature.WALLET_V2,
+  Feature.RFINANCE,
 ])
 
 declare let window: {
@@ -87,9 +88,12 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
   }
 
-  // Temporary bypass for clients whose SSO redirect back to Pennylane doesn't work
   static isPennylaneSsoForceProxyActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_FORCE_PROXY)
+  }
+
+  static isRFinanceActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.RFINANCE)
   }
 
   static isSeresInvoicesActivated() {
