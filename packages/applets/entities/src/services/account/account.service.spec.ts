@@ -9,6 +9,9 @@ import {
   delegateAccounts,
   createDelegationRequest,
   fetchPermanentDelegations,
+  fetchPendingDelegationRequests,
+  acceptDelegationRequests,
+  refuseDelegationRequests,
   addContactToEntity,
   fetchContactsFromSameHub,
   createCustomer,
@@ -142,6 +145,11 @@ describe('test accountServices', () => {
         })
       }
       if (url === `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`) {
+        return Promise.resolve({
+          data: { items: [], currentPage: 1, totalPage: 0, totalItems: 0 },
+        })
+      }
+      if (url.startsWith(`${API_PREFIXES.ACCOUNT}/delegations/requests/received/currentuser`)) {
         return Promise.resolve({
           data: { items: [], currentPage: 1, totalPage: 0, totalItems: 0 },
         })
@@ -317,6 +325,36 @@ describe('test accountServices', () => {
 
       expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl)
       expect(result).toStrictEqual({ items: [], currentPage: 1, totalPage: 0, totalItems: 0 })
+    })
+
+    it('fetch pending delegation requests', async () => {
+      const result = await fetchPendingDelegationRequests(1, 15)
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/delegations/requests/received/currentuser?page=1&pageSize=15`
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl)
+      expect(result).toStrictEqual({ items: [], currentPage: 1, totalPage: 0, totalItems: 0 })
+    })
+
+    it('accept delegation requests', async () => {
+      const responseMock = true
+      postSpy.mockResolvedValue(responseMock)
+      const delegationRequestIds = [1, 2]
+      const response = await acceptDelegationRequests(delegationRequestIds)
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/delegations/requests/accept/currentuser`
+
+      expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, { delegationRequestIds })
+      expect(response).toStrictEqual(responseMock)
+    })
+
+    it('refuse delegation requests', async () => {
+      const responseMock = true
+      postSpy.mockResolvedValue(responseMock)
+      const delegationRequestIds = [3]
+      const response = await refuseDelegationRequests(delegationRequestIds)
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/delegations/requests/refuse/currentuser`
+
+      expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, { delegationRequestIds })
+      expect(response).toStrictEqual(responseMock)
     })
   })
 

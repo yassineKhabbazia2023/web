@@ -12,6 +12,7 @@ import type {
   AccountsDelegation,
   CreateDelegationRequest,
   PermanentDelegationApiItem,
+  DelegationRequestApiItem,
   SearchAccountItem,
   LastCollaboratorCheckResponse,
   AccountSelfRemovalRequest,
@@ -106,6 +107,28 @@ export async function fetchPermanentDelegations() {
   const url = `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`
 
   return await fetchGatewayApi<QueryResult<PermanentDelegationApiItem>>(url)
+}
+
+export async function fetchPendingDelegationRequests(page: number, pageSize: number) {
+  const searchParams = new URLSearchParams({
+    page: String(page),
+    pageSize: String(pageSize),
+  })
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/requests/received/currentuser?${searchParams}`
+
+  return await fetchGatewayApi<QueryResult<DelegationRequestApiItem>>(url)
+}
+
+export async function acceptDelegationRequests(delegationRequestIds: number[]) {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/requests/accept/currentuser`
+
+  return await api.gateway.post(url, { delegationRequestIds })
+}
+
+export async function refuseDelegationRequests(delegationRequestIds: number[]) {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/requests/refuse/currentuser`
+
+  return await api.gateway.post(url, { delegationRequestIds })
 }
 
 export async function checkLastCollaboratorOnAccounts(accountIds: number[]): Promise<LastCollaboratorCheckResponse> {

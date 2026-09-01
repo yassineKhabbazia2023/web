@@ -62,7 +62,10 @@
         />
       </PTabs>
 
-      <PendingRequestsTab v-if="activeTab === DelegationTab.PENDING_REQUESTS" />
+      <PendingRequestsTab
+        v-if="activeTab === DelegationTab.PENDING_REQUESTS"
+        @update:pending-requests-count="handlePendingRequestsCountChange"
+      />
 
       <RequestDelegationTab
         v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
@@ -127,14 +130,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PDrawerActions, PSteps, PTabPane, PTabs } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
-import { delegateAccounts } from '@entities/services/account'
+import { delegateAccounts, fetchPendingDelegationRequests } from '@entities/services/account'
 import type { AccountsDelegation, AccountsDelegationDetails } from '@entities/services/account/account.type'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
@@ -193,6 +196,30 @@ const isDelegationDrawerOpened = computed({
   set(value) {
     emit('update:modelValue', value)
   },
+})
+
+async function refreshPendingRequestsCount() {
+  if (shouldShowDelegationRequestTabs.value === false) {
+    return
+  }
+
+  try {
+    const response = await fetchPendingDelegationRequests(1, 1)
+    pendingRequestsCount.value = response?.totalItems ?? 0
+  } catch (error) {
+    logger.error('Failed to fetch pending delegation requests count', error)
+  }
+}
+
+const hasUserSelectedTab = ref(false)
+
+onMounted(async () => {
+  await refreshPendingRequestsCount()
+
+  if (props.selectedFolders.length === 0 && props.initialTab === undefined && hasUserSelectedTab.value === false) {
+    activeTab.value = getDefaultTab()
+    previousTab.value = activeTab.value
+  }
 })
 
 const flowType = computed(() => props.selectedFolders.length
@@ -330,7 +357,12 @@ const handleDisplayNotification = (isSuccess: boolean, numberOfSelectedFolders: 
   displayNotification(isSuccess ? 'success' : 'error', message)
 }
 
+function handlePendingRequestsCountChange(count: number) {
+  pendingRequestsCount.value = count
+}
+
 function handleTabChange(clickedTab: DelegationTab) {
+  hasUserSelectedTab.value = true
   if (clickedTab !== previousTab.value) {
     resetDelegationState()
   }

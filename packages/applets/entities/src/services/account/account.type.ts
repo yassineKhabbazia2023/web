@@ -1,4 +1,5 @@
 import type { Address } from '@pulse/common/types'
+import type { DelegationRequestStatus } from '@entities/enums'
 
 export interface Accounting {
   fiscalExerciseStartDate?: string
@@ -177,17 +178,43 @@ export interface AccountSelfRemovalResponse {
   failed: AccountSelfRemovalItem[]
 }
 
-export interface PermanentDelegationDelegatee {
+export interface DelegationContact {
   contactId: number
   firstName: string
   lastName: string
   email: string
 }
 
+export type PermanentDelegationDelegatee = DelegationContact
+
 export interface PermanentDelegationApiItem {
   delegationId: number
   startDate: string
   delegatee: PermanentDelegationDelegatee
+}
+
+export interface DelegationRequestRequester extends DelegationContact {
+  isActive: boolean
+  actionLevel: number
+}
+
+export interface DelegationRequestAccount {
+  accountId: number
+  accountNumber: string
+  legalName: string
+  isClarityVisible: boolean
+  isSignatory: boolean
+}
+
+export interface DelegationRequestApiItem {
+  delegationRequestId: number
+  requesterId: number
+  recipientId: number
+  accountId: number
+  createdAt: string
+  status: DelegationRequestStatus
+  requester: DelegationRequestRequester
+  account: DelegationRequestAccount
 }
 
 export interface SearchAccountItem {

@@ -1,4 +1,5 @@
 export * from './conformity-documents.enums'
+export * from './delegation-request-status.enum'
 export * from './conformity-payment.enums'
 export * from './provider-name.enum'
 export * from './subscription-price-type.enum'

@@ -700,6 +700,23 @@
         "laterButton": "Plus tard",
         "confirmButton": "Confirmer"
       }
+    },
+    "pendingRequests": {
+      "table": {
+        "legalName": "Raison Sociale",
+        "customerCode": "Code Client",
+        "requester": "Demandeur",
+        "requestedAt": "Demandé le"
+      },
+      "refuseButton": "Refuser la délégation",
+      "acceptButton": "Accepter la délégation ({count})",
+      "notification": {
+        "acceptSuccess": "La délégation a bien été acceptée.",
+        "acceptError": "La délégation n'a pas pu être acceptée.",
+        "refuseSuccess": "La délégation a bien été refusée.",
+        "refuseError": "La délégation n'a pas pu être refusée."
+      },
+      "emptyState": "Aucune demande de délégation en attente."
     }
   }
 }

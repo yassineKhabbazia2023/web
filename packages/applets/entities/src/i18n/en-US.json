@@ -700,6 +700,23 @@
         "laterButton": "Later",
         "confirmButton": "Confirm"
       }
+    },
+    "pendingRequests": {
+      "table": {
+        "legalName": "Legal name",
+        "customerCode": "Customer code",
+        "requester": "Requester",
+        "requestedAt": "Requested on"
+      },
+      "refuseButton": "Refuse delegation",
+      "acceptButton": "Accept delegation ({count})",
+      "notification": {
+        "acceptSuccess": "The delegation has been accepted.",
+        "acceptError": "The delegation could not be accepted.",
+        "refuseSuccess": "The delegation has been refused.",
+        "refuseError": "The delegation could not be refused."
+      },
+      "emptyState": "No pending delegation requests."
     }
   }
 }
