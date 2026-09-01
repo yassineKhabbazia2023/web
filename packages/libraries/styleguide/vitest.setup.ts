@@ -1,9 +1,13 @@
 import { vi } from 'vitest'
+import { config } from '@vue/test-utils'
+import { createI18n } from 'vue-i18n'
 import { spyWrappedExports, spyWrappedModule } from '@pulse/toolbox/mocks/spy-module.helper'
 import { toolboxLoggerHubMock } from '../../@config/vitest.hub-mocks'
 import { setupIsolateSafeGuards } from '../../@config/vitest.setup.base'
 import { setAssetsBaseUrl } from './src/utils/imageResolverInit'
 import { TEST_ASSETS_BASE_URL } from './src/__mocks__/test-assets.constants'
+import frFR from './src/i18n/fr-FR.json'
+import enUS from './src/i18n/en-US.json'
 
 // Hub mocks, uniform for every spec of the worker (see the doctrine in
 // docs/guidelines/isolate-safe-tests.md).
@@ -32,5 +36,21 @@ vi.mock('./src/atoms/PUploadFileLine/PUploadFileLineUtils', (importOriginal) => 
 vi.mock('./src/atoms/PCalendar/PCalendarUtils', (importOriginal) => spyWrappedModule(importOriginal))
 
 setAssetsBaseUrl(TEST_ASSETS_BASE_URL)
+
+const styleguideI18n = createI18n({
+  locale: 'fr-FR',
+  legacy: false,
+  messages: {
+    'fr-FR': frFR,
+    'en-US': enUS,
+  },
+  fallbackWarn: false,
+  missingWarn: false,
+})
+
+config.global.plugins = [
+  ...(config.global.plugins ?? []),
+  styleguideI18n,
+]
 
 setupIsolateSafeGuards({ withTestingPinia: false })

@@ -52,7 +52,7 @@
     :pIconName="getIconName(rejectedEntry.fileName, 'filetypeNone')"
     pHasButton
     pButtonIconName="trash"
-    :pTitleButton="pDeleteButtonTitle"
+    :pTitleButton="pDeleteButtonTitle ?? t('styleguide.upload.deleteButtonTitle')"
     data-testid="upload-rejected-file"
     v-bind="$attrs"
     @on-click-file-action="dismissRejectedEntry(rejectedEntry.uid)"
@@ -65,7 +65,7 @@
     :pIconName="getIconName(pUploadedFile.fileName, 'filetypeNone')"
     :pHasButton="pCanDeleteUploadedFile"
     pButtonIconName="trash"
-    :pTitleButton="pDeleteButtonTitle"
+    :pTitleButton="pDeleteButtonTitle ?? t('styleguide.upload.deleteButtonTitle')"
     data-testid="upload-uploaded-file"
     v-bind="$attrs"
     @on-click-file-action="onUploadedFileDeleteRequested"
@@ -78,20 +78,20 @@
     :pIconName="getIconName(model.name, 'filetypeNone')"
     pHasButton
     pButtonIconName="trash"
-    :pTitleButton="pDeleteButtonTitle"
+    :pTitleButton="pDeleteButtonTitle ?? t('styleguide.upload.deleteButtonTitle')"
     data-testid="upload-pending-file"
     v-bind="$attrs"
     @on-click-file-action="model = null"
   />
   <PConfirmationPopup
     v-model:pIsVisible="isDeleteConfirmationVisible"
-    :pTitle="pDeleteConfirmationTitle"
-    :pConfirmButtonContent="pDeleteConfirmationConfirmLabel"
-    :pCancelButtonContent="pDeleteConfirmationCancelLabel"
+    :pTitle="pDeleteConfirmationTitle ?? t('styleguide.upload.deleteConfirmation.title')"
+    :pConfirmButtonContent="pDeleteConfirmationConfirmLabel ?? t('styleguide.upload.deleteConfirmation.confirmLabel')"
+    :pCancelButtonContent="pDeleteConfirmationCancelLabel ?? t('styleguide.upload.deleteConfirmation.cancelLabel')"
     @on-confirm-button-click="onDeleteConfirmed"
     @on-cancel-button-click="isDeleteConfirmationVisible = false"
   >
-    {{ pDeleteConfirmationMessage }}
+    {{ pDeleteConfirmationMessage ?? t('styleguide.upload.deleteConfirmation.message') }}
   </PConfirmationPopup>
 </template>
 
@@ -99,34 +99,19 @@
 import { ElUpload } from 'element-plus'
 import type { UploadFile, UploadInstance } from 'element-plus'
 import { ref, computed, watch, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { getIconName } from '../../utils/fileExtension'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
 import PConfirmationPopup from '../../organisms/PConfirmationPopup'
 import { UploadFileStatus } from '../../constants/uploadStatus.const'
 import { useUploadCore } from './PUploadCore.composable'
-import {
-  DELETE_CONFIRMATION_CANCEL_LABEL,
-  DELETE_CONFIRMATION_CONFIRM_LABEL,
-  DELETE_CONFIRMATION_MESSAGE,
-  DELETE_CONFIRMATION_TITLE,
-  MAX_FILES_EXCEEDED_MESSAGE,
-  REMOTE_DELETE_ERROR_MESSAGE,
-} from './PUpload.constants'
 import type { PUploadProps } from './PUploadTypes'
 
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<PUploadProps>(), {
-  pRejectedFileMessage: 'Extension non supportée, le fichier ne sera pas enregistré',
-  pMaxFilesExceededMessage: MAX_FILES_EXCEEDED_MESSAGE,
-  pDeleteButtonTitle: 'Supprimer le document',
   pCanDeleteUploadedFile: true,
   pCanRemoteDelete: false,
-  pRemoteDeleteErrorMessage: REMOTE_DELETE_ERROR_MESSAGE,
-  pDeleteConfirmationTitle: DELETE_CONFIRMATION_TITLE,
-  pDeleteConfirmationMessage: DELETE_CONFIRMATION_MESSAGE,
-  pDeleteConfirmationConfirmLabel: DELETE_CONFIRMATION_CONFIRM_LABEL,
-  pDeleteConfirmationCancelLabel: DELETE_CONFIRMATION_CANCEL_LABEL,
 })
 
 const emit = defineEmits<{
@@ -139,6 +124,7 @@ const emit = defineEmits<{
 const model = defineModel<File | null>({ default: null })
 
 const uploadElement = useTemplateRef<UploadInstance>('uploadElement')
+const { t } = useI18n()
 
 const {
   rejectedEntries,
@@ -152,11 +138,12 @@ const {
   uploadElement,
   accept: computed(() => props.pAccept),
   maxFileSizeInMo: computed(() => props.pMaxFileSize),
-  rejectedFileMessage: computed(() => props.pRejectedFileMessage),
-  maxFilesExceededMessage: computed(() => props.pMaxFilesExceededMessage),
+  rejectedFileMessage: computed(() => props.pRejectedFileMessage ?? t('styleguide.upload.rejectedFileMessage')),
+  oversizedFileMessage: computed(() => t('styleguide.upload.oversizedFileMessage')),
+  maxFilesExceededMessage: computed(() => props.pMaxFilesExceededMessage ?? t('styleguide.upload.maxFilesExceededMessage')),
   canRemoteDelete: computed(() => props.pCanRemoteDelete),
   remoteDeleteUrl: computed(() => props.pRemoteDeleteUrl),
-  remoteDeleteErrorMessage: computed(() => props.pRemoteDeleteErrorMessage),
+  remoteDeleteErrorMessage: computed(() => props.pRemoteDeleteErrorMessage ?? t('styleguide.upload.remoteDeleteErrorMessage')),
   uploadedFileIds: computed(() => props.pUploadedFile === undefined ? [] : [props.pUploadedFile.id]),
 })
 

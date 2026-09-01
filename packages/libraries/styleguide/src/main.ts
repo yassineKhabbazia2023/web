@@ -13,6 +13,8 @@ import './assets/scss/index.scss'
 
 import { setAssetsBaseUrl } from './utils/imageResolverInit'
 import { setAxiosInstance } from './utils/axiosInstanceInit'
+import frFR from './i18n/fr-FR.json'
+import enUS from './i18n/en-US.json'
 
 export { setAxiosInstance } from './utils/axiosInstanceInit'
 
@@ -40,11 +42,15 @@ export default {
     // Ensure Monday is first day of week
     dayjs.Ls.en.weekStart = 1
 
-    const { assetsBaseUrl, axiosInstance } = options
+    const { assetsBaseUrl, axiosInstance, i18n } = options
 
     setAssetsBaseUrl(assetsBaseUrl)
     if (axiosInstance !== undefined) {
       setAxiosInstance(axiosInstance)
+    }
+    if (i18n !== undefined) {
+      i18n.global.mergeLocaleMessage('fr-FR', frFR)
+      i18n.global.mergeLocaleMessage('en-US', enUS)
     }
   },
 }

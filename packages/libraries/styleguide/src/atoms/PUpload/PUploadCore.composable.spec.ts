@@ -5,7 +5,6 @@ import { logger } from '@pulse/toolbox'
 import { displayNotification } from '../../utils/PNotification/PNotification'
 import { getAxiosInstance } from '../../utils/axiosInstanceInit'
 import { useUploadCore } from './PUploadCore.composable'
-import { OVERSIZED_FILE_MESSAGE } from './PUpload.constants'
 import type { PUploadCoreOptions } from './PUploadTypes'
 
 const buildUploadFile = (name: string, type: string, uid = 1, size = 100): UploadFile => {
@@ -24,6 +23,7 @@ const buildOptions = (overrides: Partial<PUploadCoreOptions> = {}): PUploadCoreO
   accept: ref(undefined),
   maxFileSizeInMo: ref(undefined),
   rejectedFileMessage: ref('Extension non supportée'),
+  oversizedFileMessage: ref('Fichier trop volumineux'),
   maxFilesExceededMessage: ref('Trop de fichiers'),
   canRemoteDelete: ref(false),
   remoteDeleteUrl: ref(undefined),
@@ -111,7 +111,7 @@ describe('useUploadCore', () => {
 
       expect(core.tryAcceptFile(buildUploadFile('image.png', 'image/png', 4, 2_000_000))).toBe(false)
       expect(core.rejectedEntries.value).toStrictEqual([
-        { uid: 4, fileName: 'image.png', message: OVERSIZED_FILE_MESSAGE },
+        { uid: 4, fileName: 'image.png', message: 'Fichier trop volumineux' },
       ])
       app.unmount()
     })

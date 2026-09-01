@@ -14,7 +14,7 @@
   >
     <div class="flex flex--align-items-center flex-gap--2">
       <PIcon :pName="pIconName" pSize="16" />
-      {{ pEmptyText }}
+      {{ pEmptyText ?? t('styleguide.table.emptyText') }}
     </div>
 
     <PButton
@@ -29,6 +29,7 @@
 
 <script lang="ts" setup>
 import { isNotNullNorEmpty } from '@pulse/toolbox'
+import { useI18n } from 'vue-i18n'
 import type { PTableNoDataProps } from './p-table-no-data.types'
 import PIcon from '../PIcon/PIcon.vue'
 import PButton from '../PButton/PButton.vue'
@@ -40,9 +41,9 @@ defineEmits<{
 withDefaults(
   defineProps<PTableNoDataProps>(),
   {
-    pEmptyText: 'Aucune donnée',
     pIconName: 'infoCircle',
   },
 )
 
+const { t } = useI18n()
 </script>

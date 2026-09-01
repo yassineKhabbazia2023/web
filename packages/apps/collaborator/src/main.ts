@@ -6,6 +6,7 @@ import { waitForMsw } from '@pulse/toolbox/utils/e2e'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
 import { api } from '@pulse/common/api'
+import { i18n } from '@pulse/common/i18n'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import styleguideLibrary from '@pulse/styleguide'
 import sharedLibrary from '@pulse/shared'
@@ -64,7 +65,7 @@ async function bootstrap() {
     .use(hubspotPlugin, { isActive: isHubspotProductFruitsActivated })
     // install internal libraries
     .use(commonLibrary, {})
-    .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL, axiosInstance: api.gateway })
+    .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL, axiosInstance: api.gateway, i18n })
     .use(sharedLibrary, {})
     .use(widgetsLibrary, {})
     // install applets

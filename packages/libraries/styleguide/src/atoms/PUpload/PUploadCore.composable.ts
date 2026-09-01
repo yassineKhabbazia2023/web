@@ -33,6 +33,7 @@ export function useUploadCore(options: PUploadCoreOptions) {
       accept: options.accept.value,
       maxFileSizeInMo: options.maxFileSizeInMo.value,
       rejectedFileMessage: options.rejectedFileMessage.value,
+      oversizedFileMessage: options.oversizedFileMessage.value,
     })
     if (rejectionMessage === undefined) {
       return true

@@ -59,6 +59,7 @@ export interface PUploadCoreOptions {
   accept: Ref<string | undefined>
   maxFileSizeInMo: Ref<number | undefined>
   rejectedFileMessage: Ref<string>
+  oversizedFileMessage: Ref<string>
   maxFilesExceededMessage: Ref<string>
   canRemoteDelete: Ref<boolean>
   remoteDeleteUrl: Ref<string | undefined>
@@ -72,4 +73,5 @@ export interface FileRejectionOptions {
   accept: string | undefined
   maxFileSizeInMo: number | undefined
   rejectedFileMessage: string | undefined
+  oversizedFileMessage: string
 }

@@ -1,6 +1,6 @@
 import type { UploadFile } from 'element-plus'
 import { isNullOrEmpty, isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
-import { BYTES_PER_MEGABYTE, OVERSIZED_FILE_MESSAGE } from './PUpload.constants'
+import { BYTES_PER_MEGABYTE } from './PUpload.constants'
 import type { FileRejectionOptions } from './PUploadTypes'
 
 // Identity comparison is intentional: the same native File instance flows
@@ -60,7 +60,7 @@ export const getFileRejectionMessage = (file: UploadFile, options: FileRejection
   }
 
   if (isFileSizeValid(file, options.maxFileSizeInMo) === false) {
-    return OVERSIZED_FILE_MESSAGE
+    return options.oversizedFileMessage
   }
 
   return undefined

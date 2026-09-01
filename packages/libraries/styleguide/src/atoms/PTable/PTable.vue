@@ -14,7 +14,7 @@
     <slot />
     <template #empty>
       <PTableNoData
-        :pEmptyText="pEmptyText"
+        :pEmptyText="pEmptyText ?? t('styleguide.table.emptyText')"
         :pIconName="pEmptyIconName"
         :pActionLabel="pEmptyActionLabel"
         @action-click="$emit('empty-action-click')"
@@ -26,6 +26,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElTable } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import PTableNoData from '../PTableNoData'
 import type { PTableProps } from './PTableTypes'
 
@@ -41,10 +42,11 @@ withDefaults(defineProps<PTableProps>(), {
   pStripe: false,
   pFit: true,
   pRowKey: undefined,
-  pEmptyText: 'Aucune donnée',
   pEmptyIconName: 'infoCircle',
   pTestId: undefined,
 })
+
+const { t } = useI18n()
 
 // handle row selection background color not implemented by element plus
 const tableRowClassName = ({ row, rowIndex } : { row: any, rowIndex: number }) => {

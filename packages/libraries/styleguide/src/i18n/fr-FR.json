@@ -1,0 +1,20 @@
+{
+  "styleguide": {
+    "table": {
+      "emptyText": "Aucune donnée"
+    },
+    "upload": {
+      "deleteButtonTitle": "Supprimer le document",
+      "deleteConfirmation": {
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Supprimer",
+        "message": "Êtes-vous sûr de vouloir supprimer ce document ?",
+        "title": "Supprimer le document"
+      },
+      "maxFilesExceededMessage": "Le nombre maximum de fichiers autorisés est atteint",
+      "oversizedFileMessage": "Le fichier dépasse la taille autorisée, le fichier ne sera pas enregistré",
+      "rejectedFileMessage": "Extension non supportée, le fichier ne sera pas enregistré",
+      "remoteDeleteErrorMessage": "La suppression du document a échoué"
+    }
+  }
+}

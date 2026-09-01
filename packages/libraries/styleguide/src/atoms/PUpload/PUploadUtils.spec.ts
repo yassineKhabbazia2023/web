@@ -1,6 +1,6 @@
 import type { UploadFile } from 'element-plus'
 import { isFileAccepted, isFileSizeValid, getFileRejectionMessage, isSameFileList } from './PUploadUtils'
-import { BYTES_PER_MEGABYTE, OVERSIZED_FILE_MESSAGE } from './PUpload.constants'
+import { BYTES_PER_MEGABYTE } from './PUpload.constants'
 
 const buildUploadFile = (name: string, mimeType: string): UploadFile => ({
   name,
@@ -135,6 +135,7 @@ describe('getFileRejectionMessage', () => {
     accept: '.pdf',
     maxFileSizeInMo: 5,
     rejectedFileMessage: 'Extension non supportée',
+    oversizedFileMessage: 'Fichier trop volumineux',
     ...overrides,
   })
 
@@ -149,7 +150,7 @@ describe('getFileRejectionMessage', () => {
 
   it('should return the oversized message when the file is too large', () => {
     const file = buildSizedUploadFile(6 * BYTES_PER_MEGABYTE)
-    expect(getFileRejectionMessage(file, buildOptions())).toBe(OVERSIZED_FILE_MESSAGE)
+    expect(getFileRejectionMessage(file, buildOptions())).toBe('Fichier trop volumineux')
   })
 
   it('should prioritize the extension message over the size message', () => {
