@@ -28,9 +28,20 @@ describe('landingCollaboratorRoutes', () => {
       const mockLandingPage = { name: RouteName.FOLDERS }
       vi.spyOn(CollaboratorAuthenticatedFlowManager, 'getCollaboratorLandingPage').mockReturnValue(mockLandingPage)
 
-      const result = redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized)
+      const result = redirectionGuard({ query: {} } as RouteLocationNormalized, {} as RouteLocationNormalized)
 
       expect(result).toEqual(mockLandingPage)
+    })
+
+    it('should forward the current route query to getCollaboratorLandingPage', () => {
+      const mockLandingPage = { name: RouteName.FOLDERS }
+      const getCollaboratorLandingPageSpy = vi.spyOn(CollaboratorAuthenticatedFlowManager, 'getCollaboratorLandingPage')
+        .mockReturnValue(mockLandingPage)
+      const query = { delegationDrawer: 'true' }
+
+      redirectionGuard({ query } as unknown as RouteLocationNormalized, {} as RouteLocationNormalized)
+
+      expect(getCollaboratorLandingPageSpy).toHaveBeenCalledExactlyOnceWith(query)
     })
   })
 })

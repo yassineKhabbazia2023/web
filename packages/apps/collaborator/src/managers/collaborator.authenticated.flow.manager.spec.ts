@@ -16,6 +16,7 @@ import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse
 import { RouteName } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/managers'
+import { DELEGATION_QUERY_PARAM_DRAWER } from '@pulse/entities/constants'
 import type { QueryResult, Entity, EntitySummary } from '@pulse/common/types'
 
 import { CollaboratorAuthenticatedFlowManager } from './collaborator.authenticated.flow.manager'
@@ -341,8 +342,33 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
   })
 
   describe('getCollaboratorLandingPage', () => {
-    it('should return the collaborator landing page', () => {
+    it('should return the collaborator landing page when no query is given', () => {
       const result = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
+
+      expect(result).toEqual({ name: RouteName.FOLDERS })
+    })
+
+    it('should return the collaborator landing page without delegation params when the query is empty', () => {
+      const result = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage({})
+
+      expect(result).toEqual({ name: RouteName.FOLDERS })
+    })
+
+    it('should forward the delegationDrawer param when it is "true"', () => {
+      const result = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage({
+        [DELEGATION_QUERY_PARAM_DRAWER]: 'true',
+      })
+
+      expect(result).toEqual({
+        name: RouteName.FOLDERS,
+        query: { [DELEGATION_QUERY_PARAM_DRAWER]: 'true' },
+      })
+    })
+
+    it('should not forward the delegationDrawer param when it is not "true"', () => {
+      const result = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage({
+        [DELEGATION_QUERY_PARAM_DRAWER]: 'false',
+      })
 
       expect(result).toEqual({ name: RouteName.FOLDERS })
     })

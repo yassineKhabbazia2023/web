@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     ".": "./src/main.ts",
+    "./constants": "./src/constants/index.ts",
     "./enums": "./src/modules/wallet/enums/index.ts",
     "./wallet-managers": "./src/modules/wallet/managers/index.ts",
     "./wallet-pages": "./src/wallet-pages.index.ts",

@@ -364,6 +364,7 @@ import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFilte
 import AccountSearchBar from './components/AccountSearchBar/AccountSearchBar.vue'
 import { useFolders } from './folders.composable'
 import { useFoldersAccountFilters } from './folders-account-filters.composable'
+import { useFoldersDelegationQueryParams } from './folders-delegation-query-params.composable'
 import { useFoldersManageAccess } from './folders-manage-access.composable'
 import { useFoldersOffersDrawer } from './folders-offers-drawer.composable'
 import { useFoldersWalletActions } from './folders-wallet-actions.composable'
@@ -453,6 +454,8 @@ const {
   handleDisplayRemoveCurrentUserFromFolderModal,
   confirmRemoveFromFolders,
 } = useFoldersWalletActions(selectedFolders, selectedFolderIds, fetchTableDataAndFavorites)
+
+useFoldersDelegationQueryParams(isDelegationDrawerOpened, openSelectedFoldersDelegationDrawer)
 
 const {
   openOffersDrawer,

@@ -69,7 +69,7 @@ async function bootstrap() {
     .use(sharedLibrary, {})
     .use(widgetsLibrary, {})
     // install applets
-    .use(entitiesApplet, {})
+    .use(entitiesApplet, { isCollaboratorApp: true })
     .use(pennylaneApplet, {})
     .use(bookingApplet, {})
     .use(feedCenterApplet, {})

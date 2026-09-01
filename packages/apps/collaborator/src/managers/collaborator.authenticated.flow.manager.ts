@@ -1,3 +1,4 @@
+import type { LocationQuery, RouteLocationNamedRaw } from 'vue-router'
 import {
   useUserStore,
   useCurrentEntityStore,
@@ -11,11 +12,13 @@ import {
   stopProductFruits,
 } from '@pulse/shared/plugins'
 import { logger } from '@pulse/toolbox'
+import { isQueryParamTrue } from '@pulse/toolbox/utils/url'
 import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import { Entity } from '@pulse/common/types'
 import { RouteName } from '@pulse/common/enums'
 import { COLLABORATOR_BASE_PATH, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/managers'
+import { DELEGATION_QUERY_PARAM_DRAWER } from '@pulse/entities/constants'
 
 export class CollaboratorAuthenticatedFlowManager {
   // Guard preventing the authenticated flow from running more than once per session.
@@ -150,7 +153,27 @@ export class CollaboratorAuthenticatedFlowManager {
   }
   // #endregion
 
-  static getCollaboratorLandingPage() {
+  /**
+   * Extracts delegation-related query parameters for landing page redirection
+   * Only returns params if delegationDrawer=true is present
+   */
+  private static extractDelegationParams(query: LocationQuery): LocationQuery | null {
+    if (isQueryParamTrue(query[DELEGATION_QUERY_PARAM_DRAWER]) === false) {
+      return null
+    }
+
+    return {
+      [DELEGATION_QUERY_PARAM_DRAWER]: 'true',
+    }
+  }
+
+  static getCollaboratorLandingPage(query: LocationQuery = {}): RouteLocationNamedRaw {
+    const delegationParams = this.extractDelegationParams(query)
+
+    if (delegationParams !== null) {
+      return { name: RouteName.FOLDERS, query: delegationParams }
+    }
+
     return { name: RouteName.FOLDERS }
   }
 }

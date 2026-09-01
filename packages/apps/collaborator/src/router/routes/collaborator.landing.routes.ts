@@ -16,8 +16,8 @@ export const landingCollaboratorRoutes: RouteRecordRaw[] = [
     component: () => import('@collaborator/pages/CollaboratorLanding.page.vue'),
     beforeEnter: [
       deepLinkGuard,
-      () => {
-        return CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
+      (to) => {
+        return CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage(to.query)
       },
     ],
   },

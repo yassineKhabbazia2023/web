@@ -1,3 +1,4 @@
+export * from './entities-applet.types'
 export * from './offer.types'
 export * from './account.types'
 export * from './contact.types'
