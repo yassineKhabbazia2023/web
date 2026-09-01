@@ -80,7 +80,7 @@
     </div>
 
     <PButton
-      data-testid="agents-dashboard-filters-reset"
+      pTestId="agents-dashboard-filters-reset"
       pType="primary"
       pPlain
       :pDisabled="isLoading === true || hasActiveFilters === false"
@@ -95,12 +95,9 @@
 import { computed } from 'vue'
 import { PButton, PDatePicker, PDropdown, PInput } from '@pulse/styleguide/components'
 import { DATE_FORMAT } from '@pulse/toolbox'
-import type { PDropdownOption } from '@pulse/styleguide/types'
-import type {
-  AgentLockEnvironmentItem,
-  AgentLocksFiltersState,
-} from '@backoffice/types/agents-dashboard.type'
+import type { AgentLocksFiltersState } from '@backoffice/types/agents-dashboard.type'
 import type { AgentsDashboardFiltersProps } from './agents-dashboard-filters.type'
+import { mapAgentLockEnvironmentsToDropdownOptions } from '../agents-dashboard.helpers'
 
 type DateRangeValue = [Date, Date] | ''
 
@@ -147,22 +144,13 @@ const lockedByModel = computed<string | null>({
   },
 })
 
-const environmentOptions = computed<PDropdownOption[]>(() =>
-  environments.map((environment) => ({
-    pValue: environment.id,
-    pLabel: getEnvironmentLabel(environment),
-  })),
-)
+const environmentOptions = computed(() => mapAgentLockEnvironmentsToDropdownOptions(environments))
 
 const hasActiveFilters = computed<boolean>(() =>
   filters.dateRange !== null ||
   filters.environmentId !== null ||
   filters.lockedBy !== null,
 )
-
-const getEnvironmentLabel = (environment: AgentLockEnvironmentItem): string => {
-  return `${environment.name} (${environment.poolName})`
-}
 
 const handleFilterChange = (): void => {
   emit('filter-change')

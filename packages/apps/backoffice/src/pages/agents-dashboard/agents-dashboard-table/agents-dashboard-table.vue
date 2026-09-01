@@ -31,7 +31,7 @@
       :pRowKey="getRowKey"
     >
       <PTableColumn
-        data-testid="agents-dashboard-table-status-column"
+        pTestId="agents-dashboard-table-status-column"
         pLabel="Statut"
         pWidth="140px"
       >
@@ -45,7 +45,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-environment-column"
+        pTestId="agents-dashboard-table-environment-column"
         pLabel="Environnement"
         pMinWidth="160px"
       >
@@ -58,7 +58,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-locked-by-column"
+        pTestId="agents-dashboard-table-locked-by-column"
         pLabel="Verrouillé par"
         pMinWidth="160px"
       >
@@ -68,7 +68,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-created-at-column"
+        pTestId="agents-dashboard-table-created-at-column"
         pLabel="Créé le"
         pMinWidth="170px"
       >
@@ -78,7 +78,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-expires-at-column"
+        pTestId="agents-dashboard-table-expires-at-column"
         pLabel="Expire le"
         pMinWidth="170px"
       >
@@ -88,7 +88,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-reason-column"
+        pTestId="agents-dashboard-table-reason-column"
         pLabel="Motif"
         pMinWidth="220px"
       >
@@ -98,7 +98,7 @@
       </PTableColumn>
 
       <PTableColumn
-        data-testid="agents-dashboard-table-unlocked-by-column"
+        pTestId="agents-dashboard-table-unlocked-by-column"
         pLabel="Déverrouillé par"
         pMinWidth="170px"
       >
@@ -131,7 +131,7 @@
 
     <PPagination
       v-if="locks.length > 0"
-      data-testid="agents-dashboard-table-pagination"
+      pTestId="agents-dashboard-table-pagination"
       class="margin-top--8"
       :pCurrentPage="currentPage"
       :pPageSize="pageSize"

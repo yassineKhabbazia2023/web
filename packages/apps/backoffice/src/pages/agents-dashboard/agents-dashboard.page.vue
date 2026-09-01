@@ -7,19 +7,36 @@
         padding-bottom--0
       "
     >
-      <h1
+      <div
         class="
-          font-large
-          font-bold
-          text-color--black-rock-900
+          flex
+          flex--align-items-center
+          flex--justify-content-space-between
+          flex-gap--4
         "
-        data-testid="agents-dashboard-page-title"
       >
-        Dashboard agents
-      </h1>
-      <p class="text-color--neutral-gray-500 font-small">
-        Suivi des verrous posés sur les agents Azure DevOps
-      </p>
+        <div>
+          <h1
+            class="
+              font-large
+              font-bold
+              text-color--black-rock-900
+            "
+            data-testid="agents-dashboard-page-title"
+          >
+            Dashboard agents
+          </h1>
+          <p class="text-color--neutral-gray-500 font-small">
+            Suivi des verrous posés sur les agents Azure DevOps
+          </p>
+        </div>
+
+        <CreateAgentLock
+          :environments
+          :isLoading="isLoadingFilters"
+          @lock-created="initialize"
+        />
+      </div>
     </div>
 
     <div class="padding--6">
@@ -70,6 +87,7 @@ import { onMounted } from 'vue'
 import { useAgentsDashboard } from '@backoffice/composables/use-agents-dashboard.composable'
 import AgentsDashboardFilters from './agents-dashboard-filters/agents-dashboard-filters.vue'
 import AgentsDashboardTable from './agents-dashboard-table/agents-dashboard-table.vue'
+import CreateAgentLock from './create-agent-lock/create-agent-lock.vue'
 
 const {
   locks,

@@ -122,4 +122,29 @@ describe('AgentsDashboardService', () => {
       await expect(AgentsDashboardService.getEnvironments()).rejects.toThrow('Network error')
     })
   })
+
+  describe('createLock', () => {
+    it('should create an agent lock', async () => {
+      mockPost.mockResolvedValue({ data: null })
+
+      await AgentsDashboardService.createLock({
+        environmentId: 1,
+        reason: 'Deployment',
+      })
+
+      expect(mockPost).toHaveBeenCalledWith('/lock', {
+        environmentId: 1,
+        reason: 'Deployment',
+      })
+    })
+
+    it('should throw error when create lock API call fails', async () => {
+      mockPost.mockRejectedValue(new Error('Network error'))
+
+      await expect(AgentsDashboardService.createLock({
+        environmentId: 1,
+        reason: 'Deployment',
+      })).rejects.toThrow('Network error')
+    })
+  })
 })

@@ -4,6 +4,7 @@ import type {
   AgentLocksRequestPayload,
   AgentLocksResponse,
   AgentLockEnvironmentItem,
+  CreateAgentLockPayload,
   GetAgentLocksParams,
 } from '@backoffice/types/agents-dashboard.type'
 
@@ -53,5 +54,9 @@ export class AgentsDashboardService {
     }
 
     return response.data
+  }
+
+  static async createLock(payload: CreateAgentLockPayload): Promise<void> {
+    await backofficeApi.post('/lock', payload)
   }
 }
