@@ -4,6 +4,7 @@ import { useUserStore } from '@pulse/common/stores'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { RouteParam } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { useRoute } from 'vue-router'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
@@ -30,6 +31,7 @@ beforeEach(() => {
   vi.mocked(cleanRecordStructure).mockImplementation(() => undefined)
   vi.mocked(fetchAccount).mockResolvedValue(accountMock)
   vi.mocked(getCanEdit).mockReturnValue(true)
+  vi.spyOn(FeatureFlagManager, 'isElectronicAddressAvailable').mockReturnValue(false)
 })
 
 const getWrapper = () => shallowMount(Information, {
@@ -63,6 +65,26 @@ describe('information', () => {
 
       expect(alertInstruction.exists()).toBe(false)
     })
+
+    it.each([{ isElectronicAddressAvailable: false }, { isElectronicAddressAvailable: true }])(
+      'should display the addressing identification section according to the feature flag when it is $isElectronicAddressAvailable',
+      async ({ isElectronicAddressAvailable }) => {
+        vi.mocked(FeatureFlagManager.isElectronicAddressAvailable).mockReturnValue(isElectronicAddressAvailable)
+
+        const wrapper = getWrapper()
+        await flushPromises()
+
+        const addressingIdentificationSection = wrapper.find(
+          '[data-testid="folder-information-form-addressing-identification-section"]',
+        )
+
+        expect(FeatureFlagManager.isElectronicAddressAvailable).toHaveBeenCalledOnce()
+        expect(addressingIdentificationSection.exists()).toBe(isElectronicAddressAvailable)
+        expect(wrapper.find('[data-testid="folder-information-form"]').exists()).toBe(true)
+        expect(wrapper.text()).toContain('Facture électronique')
+        expect(fetchAccount).toHaveBeenCalledExactlyOnceWith(ACCOUNT_ID)
+      },
+    )
   })
 
   describe('test onMounted', () => {

@@ -51,7 +51,10 @@
           />
         </section>
         <section
-          v-if="section.sectionKey === 'electronicInvoicing'"
+          v-if="
+            section.sectionKey === 'electronicInvoicing'
+              && isElectronicAddressAvailable
+          "
           class="entity-information__form-section
           padding-x--5
           padding-bottom--5 margin-bottom--6"
@@ -93,6 +96,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
 import { PButton, PAlert, PForm, PDynamicFields, PLoader } from '@pulse/styleguide/components'
 import { fetchAccount, type Account } from '@entities/services/account'
@@ -137,6 +141,7 @@ const props = withDefaults(defineProps<{
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
+const isElectronicAddressAvailable = FeatureFlagManager.isElectronicAddressAvailable()
 
 const route = useRoute()
 const isLoading = ref<boolean>(true)

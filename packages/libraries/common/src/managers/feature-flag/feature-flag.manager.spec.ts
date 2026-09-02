@@ -168,6 +168,25 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isElectronicAddressAvailable', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue for ELECTRONIC_ADDRESS_AVAILABLE', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isElectronicAddressAvailable()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.ELECTRONIC_ADDRESS_AVAILABLE, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false for ELECTRONIC_ADDRESS_AVAILABLE when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      const result = FeatureFlagManager.isElectronicAddressAvailable()
+
+      expect(result).toBe(false)
+    })
+  })
+
   describe('isFeatureActivated with OpenFeature flag', () => {
     it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

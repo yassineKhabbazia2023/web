@@ -8,6 +8,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.DELEGATION_REQUEST_TABS,
   Feature.DEMAT_MAIL_COLLECT,
+  Feature.ELECTRONIC_ADDRESS_AVAILABLE,
   Feature.FAVORITE_SORT,
   Feature.HUBSPOT_PRODUCT_FRUITS,
   Feature.INVOICES_EXPERIENCE,
@@ -41,6 +42,10 @@ export class FeatureFlagManager {
 
   static isDematMailCollectActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.DEMAT_MAIL_COLLECT)
+  }
+
+  static isElectronicAddressAvailable() {
+    return FeatureFlagManager.isFeatureActivated(Feature.ELECTRONIC_ADDRESS_AVAILABLE)
   }
 
   static isFavoriteSortActivated() {
