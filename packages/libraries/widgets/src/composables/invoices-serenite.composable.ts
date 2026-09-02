@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { logger } from '@pulse/toolbox'
 import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL, RYDGE_ELECTRONIC_INVOICING_REFORM_URL } from '@pulse/common/constants'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { InvoicesSereniteService } from '@pulse/common/services/invoices-serenite'
 import type { InvoicesSereniteResponseResult } from '@pulse/common/services/invoices-serenite'
 import { InvoicesSereniteTrackingManager } from '../widgets/gridless/invoices-serenite/invoices-serenite-tracking.manager'
@@ -11,6 +12,10 @@ export function useInvoicesSerenite() {
   let hasBeenSeen = false
 
   async function checkEligibility(): Promise<void> {
+    if (FeatureFlagManager.isSerenityRedirectionModalActivated() === false) {
+      return
+    }
+
     try {
       isDialogVisible.value = await InvoicesSereniteService.fetchShouldDisplayModal()
     } catch (error) {

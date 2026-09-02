@@ -1,12 +1,14 @@
 import { flushPromises } from '@vue/test-utils'
 import { logger } from '@pulse/toolbox'
 import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL, RYDGE_ELECTRONIC_INVOICING_REFORM_URL } from '@pulse/common/constants'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { InvoicesSereniteService } from '@pulse/common/services/invoices-serenite'
 import { InvoicesSereniteTrackingManager } from '../widgets/gridless/invoices-serenite/invoices-serenite-tracking.manager'
 import { useInvoicesSerenite } from './invoices-serenite.composable'
 
 describe('useInvoicesSerenite', () => {
   beforeEach(() => {
+    vi.spyOn(FeatureFlagManager, 'isSerenityRedirectionModalActivated').mockReturnValue(true)
     vi.spyOn(InvoicesSereniteService, 'fetchShouldDisplayModal').mockResolvedValue(true)
     vi.spyOn(InvoicesSereniteService, 'markModalAsSeen').mockResolvedValue()
     vi.spyOn(InvoicesSereniteTrackingManager, 'trackResponse').mockImplementation(() => undefined)
@@ -40,6 +42,16 @@ describe('useInvoicesSerenite', () => {
 
       expect(isDialogVisible.value).toBe(false)
       expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Invoices Serenite eligibility check failed', error)
+    })
+
+    it('should keep the dialog hidden and skip the eligibility call when the feature is disabled', async () => {
+      vi.mocked(FeatureFlagManager.isSerenityRedirectionModalActivated).mockReturnValue(false)
+      const { isDialogVisible, checkEligibility } = useInvoicesSerenite()
+
+      await checkEligibility()
+
+      expect(isDialogVisible.value).toBe(false)
+      expect(InvoicesSereniteService.fetchShouldDisplayModal).not.toHaveBeenCalled()
     })
   })
 

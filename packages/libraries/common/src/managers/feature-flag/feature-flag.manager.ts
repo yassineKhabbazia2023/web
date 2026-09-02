@@ -16,6 +16,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.MANAGE_WALLET_MENU,
   Feature.PENNYLANE_SSO_FORCE_PROXY,
   Feature.PROSPECT_EXPERIENCE,
+  Feature.SERENITY_REDIRECTION_MODAL,
   Feature.WALLET_TABLE_LOAD_MORE_PAGINATION,
   Feature.WALLET_V2,
   Feature.RFINANCE,
@@ -94,6 +95,10 @@ export class FeatureFlagManager {
 
   static isRFinanceActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.RFINANCE)
+  }
+
+  static isSerenityRedirectionModalActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.SERENITY_REDIRECTION_MODAL)
   }
 
   static isSeresInvoicesActivated() {

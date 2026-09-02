@@ -17,6 +17,7 @@ export enum Feature {
   PROSPECT_EXPERIENCE = 'isProspectExperienceEnabled',
   RFINANCE = 'isFinthesisReportEnabled',
   RYDGE_INVOICES = 'VITE_RYDGE_INVOICES_ACTIVATED',
+  SERENITY_REDIRECTION_MODAL = 'isSerenityRedirectionModalEnabled',
   SMART_SEARCH_OFFER_CATALOG = 'VITE_SMART_SEARCH_OFFER_CATALOG_ACTIVATED',
   WALLET_TABLE_LOAD_MORE_PAGINATION = 'isWalletTableLoadMorePaginationEnabled',
   WALLET_V2 = 'isWalletV2Enabled',

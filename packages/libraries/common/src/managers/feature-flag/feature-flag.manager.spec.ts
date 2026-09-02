@@ -117,6 +117,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isSerenityRedirectionModalActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isSerenityRedirectionModalActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.SERENITY_REDIRECTION_MODAL, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isSerenityRedirectionModalActivated()).toBe(false)
+    })
+  })
+
   describe('isLegacyVentyaInvoicesAccessActivated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
