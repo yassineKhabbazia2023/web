@@ -56,6 +56,14 @@ describe('InvoicesTracking', () => {
     })
   })
 
+  describe('trackAccessNewInvoicesExperienceClick', () => {
+    it('should track the new invoices experience access', () => {
+      InvoicesTracking.trackAccessNewInvoicesExperienceClick()
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith('Invoice Digitization New Experience Access')
+    })
+  })
+
   describe('trackAssistanceButtonClick', () => {
     it('should track assistance button click with the given step', () => {
       InvoicesTracking.trackAssistanceButtonClick(InvoicesFormStep.EMAIL_AND_TERMS)

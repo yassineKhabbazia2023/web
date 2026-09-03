@@ -31,6 +31,10 @@ export class InvoicesTracking {
   static trackInvoiceLoginButtonClick() {
     AmplitudeService.track('Invoice Digitization Vault Access')
   }
+
+  static trackAccessNewInvoicesExperienceClick() {
+    AmplitudeService.track('Invoice Digitization New Experience Access')
+  }
   static trackAssistanceButtonClick(step: InvoicesFormStep) {
     AmplitudeService.track('Invoice Digitization Get Help', {
       invoice_digitization_get_help_step: step,

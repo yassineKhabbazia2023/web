@@ -353,6 +353,15 @@
         "notAllowedAccess": "Vous n'êtes pas désigné pour accéder au coffre-fort des factures dématérialisées. L'accès est réservé exclusivement à l'utilisateur associé à l'adresse : {email}.",
         "notAllowedReason": "Pour des raisons de sécurité, un seul utilisateur peut être habilité à se connecter au coffre-fort."
       },
+      "accessVaultRedirect": {
+        "tag": "Nouveau",
+        "title": "Vos factures ont maintenant leur dossier sur la plateforme RYDGE.",
+        "description": "Dans le cadre de la réforme de la facture électronique, les modalités d'accès à vos factures ont évolué. Vous pouvez désormais consulter et récupérer vos factures de deux façons :",
+        "ventyaBullet": "Depuis votre plateforme agréée Ventya, toujours disponible, qui réceptionne l'ensemble de vos factures électroniques.",
+        "rydgeBullet": "{highlight} qui regroupe vos factures (nouvelles et historiques) ainsi que des informations associées.",
+        "rydgeBulletHighlight": "Depuis votre nouvel espace sur la plateforme RYDGE,",
+        "ctaLabel": "Accéder à mes factures"
+      },
       "formSubtitle": "Veuillez renseigner la boite mail sur laquelle recevoir vos factures dématérialisées.",
       "emailLabel": "Adresse e-mail pour recevoir vos factures",
       "emailPlaceholder": "Saisissez une adresse e-mail",
