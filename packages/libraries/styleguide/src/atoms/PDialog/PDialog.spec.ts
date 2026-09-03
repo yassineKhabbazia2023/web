@@ -38,6 +38,15 @@ describe('display dialog', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toStrictEqual([false])
   })
 
+  it('forwards the close event to the parent', async () => {
+    const wrapper: VueWrapper<any> = createWrapper({ modelValue: true })
+
+    wrapper.findComponent({ name: 'ElDialog' }).vm.$emit('close')
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.emitted('close')).toHaveLength(1)
+  })
+
   it('lets the dialog close on overlay click and escape by default', () => {
     const wrapper: VueWrapper<any> = createWrapper({ modelValue: true })
 

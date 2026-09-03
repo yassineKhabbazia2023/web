@@ -67,6 +67,7 @@ const emit = defineEmits([
 
 const handleClose = () => {
   emit('update:modelValue', false)
+  emit('close')
 }
 
 defineExpose({ handleClose })
