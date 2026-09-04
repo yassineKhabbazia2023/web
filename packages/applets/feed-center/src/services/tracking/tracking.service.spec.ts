@@ -38,6 +38,18 @@ describe('feedcenter notification consultation tracking', () => {
       notificationKind: NotificationKindEnum.Delegation,
       expectedTrackingValue: NotificationTrackingType.DELEGATION,
     },
+    {
+      notificationKind: NotificationKindEnum.DelegationRequested,
+      expectedTrackingValue: NotificationTrackingType.DELEGATION,
+    },
+    {
+      notificationKind: NotificationKindEnum.DelegationRequestAccepted,
+      expectedTrackingValue: NotificationTrackingType.DELEGATION,
+    },
+    {
+      notificationKind: NotificationKindEnum.DelegationRequestRefused,
+      expectedTrackingValue: NotificationTrackingType.DELEGATION,
+    },
   ])('tracks notification consulted $notificationKind with tracking value $expectedTrackingValue', ({ notificationKind, expectedTrackingValue }) => {
     trackNotificationsConsulted(notificationKind)
     expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feedcenter notifications consulted', {

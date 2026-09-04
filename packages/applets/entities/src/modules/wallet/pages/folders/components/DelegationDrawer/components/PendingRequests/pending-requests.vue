@@ -97,8 +97,8 @@
           pSize="default"
           pType="danger"
           class="margin-right--2"
-          :pDisabled="hasNoSelection"
-          :pLoading="isSubmitting"
+          :pDisabled="isActionButtonDisabled"
+          :pLoading="isRefusing"
           pTestId="pending-requests-refuse-button"
           @click="handleRefuse"
         >
@@ -107,8 +107,8 @@
 
         <PButton
           pType="primary"
-          :pDisabled="hasNoSelection"
-          :pLoading="isSubmitting"
+          :pDisabled="isActionButtonDisabled"
+          :pLoading="isAccepting"
           pTestId="pending-requests-accept-button"
           @click="handleAccept"
         >
@@ -155,7 +155,8 @@ const {
   pageSize,
   totalItems,
   selectedIds,
-  isSubmitting,
+  isAccepting,
+  isRefusing,
   changePage,
   changePageSize,
   acceptSelected,
@@ -163,6 +164,7 @@ const {
 } = usePendingRequests()
 
 const hasNoSelection = computed(() => selectedIds.value.length === 0)
+const isActionButtonDisabled = computed(() => hasNoSelection.value || isAccepting.value || isRefusing.value)
 
 watch(totalItems, (value) => emit('update:pending-requests-count', value))
 

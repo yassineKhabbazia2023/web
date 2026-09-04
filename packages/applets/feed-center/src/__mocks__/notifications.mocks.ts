@@ -135,6 +135,39 @@ export const reportCustomerUpdatedNotificationMock: FeedCenterNotification = {
   redirectLink: String(accountsMock[2].id),
 }
 
+export const delegationRequestedNotificationMock: FeedCenterNotification = {
+  id: 12,
+  message: 'A new delegation has been requested',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.DelegationRequested,
+  accounts: [
+    accountsMock[0],
+  ],
+  isRead: false,
+}
+
+export const delegationRequestAcceptedNotificationMock: FeedCenterNotification = {
+  id: 13,
+  message: 'A delegation request has been accepted',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.DelegationRequestAccepted,
+  accounts: [
+    accountsMock[0],
+  ],
+  isRead: false,
+}
+
+export const delegationRequestRefusedNotificationMock: FeedCenterNotification = {
+  id: 14,
+  message: 'A delegation request has been declined',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.DelegationRequestRefused,
+  accounts: [
+    accountsMock[0],
+  ],
+  isRead: false,
+}
+
 export const PennylaneDocumentSyncCompletedNotificationMock: FeedCenterNotification = {
   id: 10,
   message: 'Document Has Been Added to Pennylane',

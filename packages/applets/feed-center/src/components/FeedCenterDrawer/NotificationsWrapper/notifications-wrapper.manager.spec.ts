@@ -12,6 +12,9 @@ import {
   reportCustomerCreatedNotificationMock,
   reportCustomerUpdatedNotificationMock,
   PennylaneDocumentSyncCompletedNotificationMock,
+  delegationRequestedNotificationMock,
+  delegationRequestAcceptedNotificationMock,
+  delegationRequestRefusedNotificationMock,
 } from '../../../__mocks__/notifications.mocks'
 import { accountsMock } from '../../../__mocks__/accounts.mocks'
 import {
@@ -27,7 +30,8 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
-import { NotificationKindEnum, RouteName, RouteParam } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName, RouteParam, RedirectAction } from '@pulse/common/enums'
+import { REDIRECT_ACTION_QUERY_PARAM } from '@pulse/common/constants'
 
 import {
   patchUnreadNotification,
@@ -297,6 +301,36 @@ describe('handleNotificationAction', () => {
         notificationType: NotificationKindEnum.GSDocumentUploaded,
       },
     })
+  })
+
+  it('should call the router with the appropriate query on DelegationRequested notification type', () => {
+    handleNotificationAction({
+      notification: delegationRequestedNotificationMock,
+      router: routerMock,
+    })
+
+    expect(routerMock.push).toHaveBeenCalledWith({
+      name: RouteName.REDIRECT_ACTION,
+      query: { [REDIRECT_ACTION_QUERY_PARAM]: RedirectAction.OPEN_DELEGATION_DRAWER },
+    })
+  })
+
+  it('should not call the router on DelegationRequestAccepted notification type', () => {
+    handleNotificationAction({
+      notification: delegationRequestAcceptedNotificationMock,
+      router: routerMock,
+    })
+
+    expect(routerMock.push).not.toHaveBeenCalled()
+  })
+
+  it('should not call the router on DelegationRequestRefused notification type', () => {
+    handleNotificationAction({
+      notification: delegationRequestRefusedNotificationMock,
+      router: routerMock,
+    })
+
+    expect(routerMock.push).not.toHaveBeenCalled()
   })
 
   it('should call the router with the appropriate query on PennylaneDocumentSyncUpdated notification type', () => {

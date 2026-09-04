@@ -7,7 +7,8 @@ import type {
 import { patchNotificationReadStatus } from '../../../services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { NotificationKindEnum, RouteName, RouteParam } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName, RouteParam, RedirectAction } from '@pulse/common/enums'
+import { REDIRECT_ACTION_QUERY_PARAM } from '@pulse/common/constants'
 
 dayjs.extend(relativeTime)
 
@@ -95,6 +96,15 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
       query: { accountNumbers },
     })
   },
+  [NotificationKindEnum.DelegationRequested]: (params: NotificationActionsMappingParams) => {
+    const { router } = params
+    router.push({
+      name: RouteName.REDIRECT_ACTION,
+      query: { [REDIRECT_ACTION_QUERY_PARAM]: RedirectAction.OPEN_DELEGATION_DRAWER },
+    })
+  },
+  [NotificationKindEnum.DelegationRequestAccepted]: () => {},
+  [NotificationKindEnum.DelegationRequestRefused]: () => {},
   [NotificationKindEnum.AccountingDocumentUploaded]: handleGEDNotification,
   [NotificationKindEnum.GSDocumentUploaded]: handleGEDNotification,
 

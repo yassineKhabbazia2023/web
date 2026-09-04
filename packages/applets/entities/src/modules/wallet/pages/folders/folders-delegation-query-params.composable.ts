@@ -6,7 +6,7 @@ import { DELEGATION_QUERY_PARAM_DRAWER } from '@entities/constants'
 
 export function useFoldersDelegationQueryParams(
   isDelegationDrawerOpened: Ref<boolean>,
-  openSelectedFoldersDelegationDrawer: () => void,
+  openDelegationDrawer: () => void,
 ) {
   const route = useRoute()
   const router = useRouter()
@@ -31,7 +31,7 @@ export function useFoldersDelegationQueryParams(
     if (isDelegationDrawerOpened.value === true) {
       return
     }
-    openSelectedFoldersDelegationDrawer()
+    openDelegationDrawer()
   }
 
   watch(isDelegationDrawerOpened, (isOpen) => {
@@ -40,5 +40,9 @@ export function useFoldersDelegationQueryParams(
     }
   })
 
-  handleDelegationQueryParam()
+  watch(
+    () => route.query[DELEGATION_QUERY_PARAM_DRAWER],
+    () => handleDelegationQueryParam(),
+    { immediate: true },
+  )
 }

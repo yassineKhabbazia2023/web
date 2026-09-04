@@ -352,6 +352,7 @@ import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/Ma
 import { TrackingLocalisation } from '@entities/enums'
 import type { AccountRow } from '@entities/types'
 import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
+import { DelegationTab } from '@entities/modules/wallet/enums'
 import type { EntityStatus } from '@entities/modules/wallet/enums'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
@@ -440,6 +441,7 @@ const {
   delegationInitialTab,
   foldersToDelegate,
   openSelectedFoldersDelegationDrawer,
+  openDelegationDrawerOnTab,
   handleDisplayDelegationDrawer,
   isBulkCustomerRelationDrawerOpened,
   targetCustomerRelationStatus,
@@ -455,7 +457,9 @@ const {
   confirmRemoveFromFolders,
 } = useFoldersWalletActions(selectedFolders, selectedFolderIds, fetchTableDataAndFavorites)
 
-useFoldersDelegationQueryParams(isDelegationDrawerOpened, openSelectedFoldersDelegationDrawer)
+const openDelegationDrawerOnPendingRequests = () => openDelegationDrawerOnTab(DelegationTab.PENDING_REQUESTS)
+
+useFoldersDelegationQueryParams(isDelegationDrawerOpened, openDelegationDrawerOnPendingRequests)
 
 const {
   openOffersDrawer,

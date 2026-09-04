@@ -31,7 +31,8 @@ export function usePendingRequests() {
   const pageSize = ref(PAGE_SIZES[0])
   const totalItems = ref(0)
   const selectedIds = ref<number[]>([])
-  const isSubmitting = ref(false)
+  const isAccepting = ref(false)
+  const isRefusing = ref(false)
 
   async function refresh() {
     isLoading.value = true
@@ -70,7 +71,7 @@ export function usePendingRequests() {
   }
 
   async function acceptSelected() {
-    isSubmitting.value = true
+    isAccepting.value = true
     try {
       await acceptDelegationRequests(selectedIds.value)
       selectedIds.value = []
@@ -79,12 +80,12 @@ export function usePendingRequests() {
       logger.error(error)
       throw error
     } finally {
-      isSubmitting.value = false
+      isAccepting.value = false
     }
   }
 
   async function refuseSelected() {
-    isSubmitting.value = true
+    isRefusing.value = true
     try {
       await refuseDelegationRequests(selectedIds.value)
       selectedIds.value = []
@@ -93,7 +94,7 @@ export function usePendingRequests() {
       logger.error(error)
       throw error
     } finally {
-      isSubmitting.value = false
+      isRefusing.value = false
     }
   }
 
@@ -108,7 +109,8 @@ export function usePendingRequests() {
     pageSize,
     totalItems,
     selectedIds,
-    isSubmitting,
+    isAccepting,
+    isRefusing,
     changePage,
     changePageSize,
     acceptSelected,

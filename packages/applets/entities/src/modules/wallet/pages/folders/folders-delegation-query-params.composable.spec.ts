@@ -11,10 +11,10 @@ const routeMock = reactive({
   query: {} as Record<string, string | string[] | undefined>,
 })
 
-const mountComposable = (isDelegationDrawerOpened = ref(false), openSelectedFoldersDelegationDrawer = vi.fn()) =>
+const mountComposable = (isDelegationDrawerOpened = ref(false), openDelegationDrawer = vi.fn()) =>
   withSetup(() => {
-    useFoldersDelegationQueryParams(isDelegationDrawerOpened, openSelectedFoldersDelegationDrawer)
-    return { isDelegationDrawerOpened, openSelectedFoldersDelegationDrawer }
+    useFoldersDelegationQueryParams(isDelegationDrawerOpened, openDelegationDrawer)
+    return { isDelegationDrawerOpened, openDelegationDrawer }
   })
 
 describe('useFoldersDelegationQueryParams', () => {
@@ -27,38 +27,49 @@ describe('useFoldersDelegationQueryParams', () => {
 
   it('opens the drawer when the delegationDrawer query param is "true"', () => {
     routeMock.query = { [DELEGATION_QUERY_PARAM_DRAWER]: 'true' }
-    const openSelectedFoldersDelegationDrawer = vi.fn()
+    const openDelegationDrawer = vi.fn()
 
-    mountComposable(ref(false), openSelectedFoldersDelegationDrawer)
+    mountComposable(ref(false), openDelegationDrawer)
 
-    expect(openSelectedFoldersDelegationDrawer).toHaveBeenCalledOnce()
+    expect(openDelegationDrawer).toHaveBeenCalledOnce()
   })
 
   it('does not open the drawer when the query param is missing', () => {
     routeMock.query = {}
-    const openSelectedFoldersDelegationDrawer = vi.fn()
+    const openDelegationDrawer = vi.fn()
 
-    mountComposable(ref(false), openSelectedFoldersDelegationDrawer)
+    mountComposable(ref(false), openDelegationDrawer)
 
-    expect(openSelectedFoldersDelegationDrawer).not.toHaveBeenCalled()
+    expect(openDelegationDrawer).not.toHaveBeenCalled()
   })
 
   it('does not open the drawer when the query param is not "true"', () => {
     routeMock.query = { [DELEGATION_QUERY_PARAM_DRAWER]: 'false' }
-    const openSelectedFoldersDelegationDrawer = vi.fn()
+    const openDelegationDrawer = vi.fn()
 
-    mountComposable(ref(false), openSelectedFoldersDelegationDrawer)
+    mountComposable(ref(false), openDelegationDrawer)
 
-    expect(openSelectedFoldersDelegationDrawer).not.toHaveBeenCalled()
+    expect(openDelegationDrawer).not.toHaveBeenCalled()
+  })
+
+  it('opens the drawer when the query param becomes "true" while already mounted', async () => {
+    routeMock.query = {}
+    const openDelegationDrawer = vi.fn()
+
+    mountComposable(ref(false), openDelegationDrawer)
+    routeMock.query = { [DELEGATION_QUERY_PARAM_DRAWER]: 'true' }
+    await nextTick()
+
+    expect(openDelegationDrawer).toHaveBeenCalledOnce()
   })
 
   it('does not reopen the drawer when it is already open', () => {
     routeMock.query = { [DELEGATION_QUERY_PARAM_DRAWER]: 'true' }
-    const openSelectedFoldersDelegationDrawer = vi.fn()
+    const openDelegationDrawer = vi.fn()
 
-    mountComposable(ref(true), openSelectedFoldersDelegationDrawer)
+    mountComposable(ref(true), openDelegationDrawer)
 
-    expect(openSelectedFoldersDelegationDrawer).not.toHaveBeenCalled()
+    expect(openDelegationDrawer).not.toHaveBeenCalled()
   })
 
   it('clears the query param when the drawer closes after being opened via the URL', async () => {

@@ -1,5 +1,8 @@
 export enum NotificationKindEnum {
   Delegation = 'Delegation-AddDelegation',
+  DelegationRequested = 'Delegation-DelegationRequestCreated',
+  DelegationRequestAccepted = 'Delegation-DelegationRequestAccepted',
+  DelegationRequestRefused = 'Delegation-DelegationRequestRefused',
   Mandate = 'Mandate-MandateStatusChanged',
   ReportCustomerCreated = 'Reporting-ReportCreatedCustomer',
   ReportCustomerUpdated = 'Reporting-ReportUpdatedCustomer',

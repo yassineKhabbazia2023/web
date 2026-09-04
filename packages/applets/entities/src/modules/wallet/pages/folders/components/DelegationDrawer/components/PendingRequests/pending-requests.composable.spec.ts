@@ -81,18 +81,19 @@ describe('usePendingRequests', () => {
 
     result.selectedIds.value = [1]
     const acceptPromise = result.acceptSelected()
-    expect(result.isSubmitting.value).toBe(true)
+    expect(result.isAccepting.value).toBe(true)
+    expect(result.isRefusing.value).toBe(false)
     await acceptPromise
 
     expect(vi.mocked(acceptDelegationRequests)).toHaveBeenCalledWith([1])
     expect(result.selectedIds.value).toEqual([])
     expect(vi.mocked(fetchPendingDelegationRequests)).toHaveBeenCalledTimes(2)
-    expect(result.isSubmitting.value).toBe(false)
+    expect(result.isAccepting.value).toBe(false)
 
     app.unmount()
   })
 
-  it('should throw and reset isSubmitting when accepting fails', async () => {
+  it('should throw and reset isAccepting when accepting fails', async () => {
     vi.mocked(acceptDelegationRequests).mockRejectedValue(new Error('Accept error'))
 
     const [result, app] = withSetup(() => usePendingRequests())
@@ -100,7 +101,7 @@ describe('usePendingRequests', () => {
 
     result.selectedIds.value = [1]
     await expect(result.acceptSelected()).rejects.toThrow('Accept error')
-    expect(result.isSubmitting.value).toBe(false)
+    expect(result.isAccepting.value).toBe(false)
 
     app.unmount()
   })
@@ -111,17 +112,18 @@ describe('usePendingRequests', () => {
 
     result.selectedIds.value = [1]
     const refusePromise = result.refuseSelected()
-    expect(result.isSubmitting.value).toBe(true)
+    expect(result.isRefusing.value).toBe(true)
+    expect(result.isAccepting.value).toBe(false)
     await refusePromise
 
     expect(vi.mocked(refuseDelegationRequests)).toHaveBeenCalledWith([1])
     expect(result.selectedIds.value).toEqual([])
-    expect(result.isSubmitting.value).toBe(false)
+    expect(result.isRefusing.value).toBe(false)
 
     app.unmount()
   })
 
-  it('should throw and reset isSubmitting when refusing fails', async () => {
+  it('should throw and reset isRefusing when refusing fails', async () => {
     vi.mocked(refuseDelegationRequests).mockRejectedValue(new Error('Refuse error'))
 
     const [result, app] = withSetup(() => usePendingRequests())
@@ -129,7 +131,7 @@ describe('usePendingRequests', () => {
 
     result.selectedIds.value = [1]
     await expect(result.refuseSelected()).rejects.toThrow('Refuse error')
-    expect(result.isSubmitting.value).toBe(false)
+    expect(result.isRefusing.value).toBe(false)
 
     app.unmount()
   })
