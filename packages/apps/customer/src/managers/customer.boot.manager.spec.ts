@@ -6,6 +6,24 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CustomerBootManager } from './customer.boot.manager'
 
 describe('CustomerBootManager', () => {
+  describe('checkMaintenanceMode', () => {
+    it('should return true and log when maintenance mode is activated', () => {
+      vi.spyOn(FeatureFlagManager, 'isMaintenanceModeActivated').mockReturnValue(true)
+
+      const result = CustomerBootManager.checkMaintenanceMode()
+
+      expect(result).toBe(true)
+      expect(loggerMock.info).toHaveBeenCalledWith('Maintenance mode is activated')
+    })
+
+    it('should return false when maintenance mode is not activated', () => {
+      vi.spyOn(FeatureFlagManager, 'isMaintenanceModeActivated').mockReturnValue(false)
+
+      const result = CustomerBootManager.checkMaintenanceMode()
+
+      expect(result).toBe(false)
+    })
+  })
   describe('getDefaultRedirection', () => {
     it('should return the default authenticated route when user is authenticated', () => {
       vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)

@@ -3,12 +3,16 @@ import type { EvaluationDetails, FlagValue, JsonValue } from '@openfeature/web-s
 import { ConfigCatWebProvider } from '@openfeature/config-cat-web-provider'
 import { DataGovernance } from '@configcat/sdk'
 import { logger } from '@pulse/toolbox'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import type { OpenFeatureInitOptions } from './open-feature.types'
 
 // Identity used while no user is authenticated. ConfigCat always receives a User
 // object from the provider, so leaving the targeting key empty makes it warn on
 // every flag evaluated before login (missing User.Identifier attribute).
 const ANONYMOUS_TARGETING_KEY = 'anonymous'
+
+// Query param, sessionStorage key and custom attribute for the maintenance mode ConfigCat targeting rule.
+const BYPASS_MAINTENANCE_KEY = 'bypassMaintenance'
 
 /**
  * Wrapper around the OpenFeature Web SDK backed by ConfigCat (EU-only).
@@ -26,6 +30,8 @@ export class OpenFeatureService {
 
   /** Initializes the ConfigCat provider. Must be called before any flag evaluation. */
   static async init(sdkKey: string, options?: OpenFeatureInitOptions): Promise<void> {
+    OpenFeatureService.captureBypassMaintenanceToken()
+
     try {
       const provider = ConfigCatWebProvider.create(sdkKey, {
         dataGovernance: DataGovernance.EuOnly,
@@ -41,7 +47,10 @@ export class OpenFeatureService {
     }
 
     try {
-      await OpenFeature.setContext({ targetingKey: ANONYMOUS_TARGETING_KEY })
+      await OpenFeature.setContext({
+        targetingKey: ANONYMOUS_TARGETING_KEY,
+        ...OpenFeatureService.getContextAttributes(),
+      })
     } catch (error) {
       logger.error('Failed to set the anonymous evaluation context', error)
     }
@@ -93,7 +102,7 @@ export class OpenFeatureService {
       return
     }
 
-    await OpenFeature.setContext({ targetingKey: email, email })
+    await OpenFeature.setContext({ targetingKey: email, email, ...OpenFeatureService.getContextAttributes() })
   }
 
   /** Resets the evaluation context back to the anonymous identity (e.g. on logout). */
@@ -102,12 +111,29 @@ export class OpenFeatureService {
       return
     }
 
-    await OpenFeature.setContext({ targetingKey: ANONYMOUS_TARGETING_KEY })
+    await OpenFeature.setContext({
+      targetingKey: ANONYMOUS_TARGETING_KEY,
+      ...OpenFeatureService.getContextAttributes(),
+    })
   }
 
   /** @internal Resets state for testing purposes only. */
   static resetForTesting(): void {
     OpenFeatureService.initialized = false
+  }
+
+  /** Reads `?bypassMaintenance=<token>` once, persists it and strips it from the URL bar. */
+  private static captureBypassMaintenanceToken(): void {
+    const token = new URLSearchParams(window.location.search).get(BYPASS_MAINTENANCE_KEY)
+    if (isNotNullNorEmpty(token)) {
+      sessionStorage.setItem(BYPASS_MAINTENANCE_KEY, token)
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }
+
+  /** Custom attributes merged into every evaluation context (anonymous or authenticated). */
+  private static getContextAttributes(): Record<string, string> {
+    return { bypassMaintenance: sessionStorage.getItem(BYPASS_MAINTENANCE_KEY) ?? '' }
   }
 
   /** Extracts the value from evaluation details and logs a trace on error. */

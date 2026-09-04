@@ -83,6 +83,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isMaintenanceModeActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isMaintenanceModeActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.MAINTENANCE_MODE, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isMaintenanceModeActivated()).toBe(false)
+    })
+  })
+
   describe('isManageWalletMenuActivated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

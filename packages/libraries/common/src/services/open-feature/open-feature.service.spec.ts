@@ -16,6 +16,7 @@ describe('OpenFeatureService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     OpenFeatureService.resetForTesting()
+    sessionStorage.removeItem('bypassMaintenance')
   })
 
   describe('before init', () => {
@@ -75,7 +76,38 @@ describe('OpenFeatureService', () => {
 
       await OpenFeatureService.init('test-sdk-key')
 
-      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous' })
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous', bypassMaintenance: '' })
+    })
+
+    it('should capture the bypassMaintenance token from the URL, strip it from the URL bar and persist it to sessionStorage', async () => {
+      setProviderAndWaitMock.mockResolvedValue(undefined)
+      vi.stubGlobal('location', { ...window.location, search: '?bypassMaintenance=abc123', pathname: '/some-page' })
+      const replaceStateSpy = vi.spyOn(window.history, 'replaceState')
+
+      await OpenFeatureService.init('test-sdk-key')
+
+      expect(sessionStorage.getItem('bypassMaintenance')).toBe('abc123')
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous', bypassMaintenance: 'abc123' })
+      expect(replaceStateSpy).toHaveBeenCalledWith(null, '', '/some-page')
+    })
+
+    it('should not touch the URL bar when there is no bypassMaintenance token to capture', async () => {
+      setProviderAndWaitMock.mockResolvedValue(undefined)
+      const replaceStateSpy = vi.spyOn(window.history, 'replaceState')
+
+      await OpenFeatureService.init('test-sdk-key')
+
+      expect(replaceStateSpy).not.toHaveBeenCalled()
+    })
+
+    it('should keep a previously captured bypassMaintenance token when the URL has none', async () => {
+      setProviderAndWaitMock.mockResolvedValue(undefined)
+      sessionStorage.setItem('bypassMaintenance', 'previous-token')
+
+      await OpenFeatureService.init('test-sdk-key')
+
+      expect(sessionStorage.getItem('bypassMaintenance')).toBe('previous-token')
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous', bypassMaintenance: 'previous-token' })
     })
 
     it('should pass flagOverrides to ConfigCat provider when provided', async () => {
@@ -184,13 +216,29 @@ describe('OpenFeatureService', () => {
     it('should set the user email as targeting key', async () => {
       await OpenFeatureService.setUserContext('user@pulse.fr')
 
-      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'user@pulse.fr', email: 'user@pulse.fr' })
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'user@pulse.fr', email: 'user@pulse.fr', bypassMaintenance: '' })
+    })
+
+    it('should keep the bypassMaintenance token when setting the user context', async () => {
+      sessionStorage.setItem('bypassMaintenance', 'abc123')
+
+      await OpenFeatureService.setUserContext('user@pulse.fr')
+
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'user@pulse.fr', email: 'user@pulse.fr', bypassMaintenance: 'abc123' })
     })
 
     it('should fall back to the anonymous targeting key when the user context is reset', async () => {
       await OpenFeatureService.resetToAnonymousContext()
 
-      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous' })
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous', bypassMaintenance: '' })
+    })
+
+    it('should keep the bypassMaintenance token when the context is reset to anonymous', async () => {
+      sessionStorage.setItem('bypassMaintenance', 'abc123')
+
+      await OpenFeatureService.resetToAnonymousContext()
+
+      expect(setContextMock).toHaveBeenCalledWith({ targetingKey: 'anonymous', bypassMaintenance: 'abc123' })
     })
   })
 })

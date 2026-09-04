@@ -10,7 +10,7 @@ export enum Feature {
   INVOICES_EXPERIENCE = 'isInvoicesExperienceEnabled',
   LAST_ACTIVITY_FEATURE = 'isLastActivityFeatureEnabled',
   LEGACY_VENTYA_INVOICES_ACCESS = 'isLegacyVentyaInvoicesAccessEnabled',
-  MAINTENANCE_MODE = 'VITE_MAINTENANCE_MODE_ACTIVATED',
+  MAINTENANCE_MODE = 'isMaintenanceModeEnabled',
   MANAGE_WALLET_MENU = 'isManageWalletMenuEnabled',
   MODSCREEN_V2 = 'VITE_MODSCREEN_V2_ACTIVATED',
   PENNYLANE_AMENDMENT_FLOW = 'VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED',
