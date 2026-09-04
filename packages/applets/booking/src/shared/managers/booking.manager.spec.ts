@@ -48,37 +48,37 @@ describe('BookingManager', () => {
   })
 
   describe('setupBookingForCustomer', () => {
-    it('should set customer booking enabled to true when user is eligible and has access', async () => {
-      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(true)
+    it('should set customer booking enabled to true when user has access and is eligible', async () => {
       vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(true)
+      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(true)
 
       await BookingManager.setupBookingForCustomer()
 
-      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
       expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
+      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
       expect(bookingCustomerStoreMock.setIsBookingEnabled).toHaveBeenCalledWith(true)
       expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
     })
 
-    it('should set customer booking enabled to false when user is eligible but has no access', async () => {
-      vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(true)
-      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(false)
-
-      await BookingManager.setupBookingForCustomer()
-
-      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
-      expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
-      expect(bookingCustomerStoreMock.setIsBookingEnabled).toHaveBeenCalledWith(false)
-      expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
-    })
-
-    it('should not check enabled flag nor update store when user is not eligible', async () => {
+    it('should set customer booking enabled to false when user has access but is not eligible', async () => {
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(true)
       vi.spyOn(BookingService, 'getBookingEligibility').mockResolvedValue(false)
 
       await BookingManager.setupBookingForCustomer()
 
+      expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
       expect(BookingService.getBookingEligibility).toHaveBeenCalled()
-      expect(BookingService.getBookingEnabledFlag).not.toHaveBeenCalled()
+      expect(bookingCustomerStoreMock.setIsBookingEnabled).toHaveBeenCalledWith(false)
+      expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
+    })
+
+    it('should not check eligibility nor update store when user has no access', async () => {
+      vi.spyOn(BookingService, 'getBookingEnabledFlag').mockResolvedValue(false)
+
+      await BookingManager.setupBookingForCustomer()
+
+      expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
+      expect(BookingService.getBookingEligibility).not.toHaveBeenCalled()
       expect(bookingCustomerStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
       expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
     })

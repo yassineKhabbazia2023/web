@@ -12,10 +12,10 @@ export class BookingManager {
 
   static async setupBookingForCustomer() {
     const bookingCustomerStore = useBookingCustomerStore()
-    const isEligibleForBooking = await BookingService.getBookingEligibility()
-    if (isEligibleForBooking) {
-      const hasAccess = await BookingService.getBookingEnabledFlag()
-      bookingCustomerStore.setIsBookingEnabled(hasAccess)
+    const hasAccess = await BookingService.getBookingEnabledFlag()
+    if (hasAccess) {
+      const isEligibleForBooking = await BookingService.getBookingEligibility()
+      bookingCustomerStore.setIsBookingEnabled(isEligibleForBooking)
     }
   }
 
