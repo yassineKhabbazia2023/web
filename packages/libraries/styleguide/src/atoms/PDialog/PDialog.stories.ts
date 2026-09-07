@@ -69,6 +69,40 @@ export const Default: Story = {
   }),
 }
 
+export const CustomHeader: Story = {
+  args: {
+    pWidth: '480px',
+    pTitle: 'Informations manquantes à renseigner',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Le slot #header remplace le rendu visuel du titre (ici bicolore) — pTitle reste renseigné avec l\'équivalent en texte brut, car c\'est lui qui alimente aria-label/aria-labelledby sur le dialogue.',
+      },
+    },
+  },
+  render: (args) => ({
+    components: { PDialog, PButton },
+    setup() {
+      const open = ref(true)
+      return { args, open }
+    },
+    template: `
+      <div>
+        <PDialog v-bind="args" v-model="open">
+          <template #header>
+            <h2 style="margin: 0; font-size: 24px; font-weight: 600;">
+              Informations manquantes
+              <span style="color: var(--p-jungle-400);">à renseigner</span>
+            </h2>
+          </template>
+          Contenu du dialogue: votre message ici.
+        </PDialog>
+      </div>
+    `,
+  }),
+}
+
 export const CenteredAndSmall: Story = {
   args: { pCenter: true, pWidth: '480px' },
   render: (args) => ({

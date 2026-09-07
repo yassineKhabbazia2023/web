@@ -33,6 +33,7 @@ export {
   disableForceDesktopMode,
 } from './composables/use-responsive.composable'
 export * from './composables/use-responsive.types'
+export { useDialogAccessibleTitle } from './composables/use-dialog-accessible-title.composable'
 export * from './utils/avatar-colors.helper'
 export * from './utils/fileExtension'
 export * from './utils/scroll.utils'

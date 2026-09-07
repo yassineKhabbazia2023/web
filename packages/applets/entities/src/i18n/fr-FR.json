@@ -696,7 +696,8 @@
         "button": "Compléter"
       },
       "dialog": {
-        "title": "Informations manquantes à renseigner",
+        "title": "Informations manquantes {highlight}",
+        "titleHighlight": "à renseigner",
         "firstParagraph": "Pour vous transmettre vos prochaines factures dans les meilleurs délais, nous avons besoin de votre adresse mail de dématérialisation.",
         "secondParagraph": "C'est à cette adresse que vos factures vous seront envoyées au format électronique.",
         "emailLabel": "Adresse e-mail de dématérialisation",

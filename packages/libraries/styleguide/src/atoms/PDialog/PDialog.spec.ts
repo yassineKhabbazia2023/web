@@ -12,7 +12,7 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
         ElDialog: {
           name: 'ElDialog',
           props: ['closeOnClickModal', 'closeOnPressEscape'],
-          template: '<div><slot /></div>',
+          template: '<div><slot name="header" /><slot /></div>',
         },
       },
     },
@@ -53,6 +53,20 @@ describe('display dialog', () => {
     const elDialog = wrapper.findComponent({ name: 'ElDialog' })
     expect(elDialog.props('closeOnClickModal')).toBe(true)
     expect(elDialog.props('closeOnPressEscape')).toBe(true)
+  })
+
+  it('does not render a header slot when none is provided', () => {
+    const wrapper: VueWrapper<any> = createWrapper({ modelValue: true })
+    expect(wrapper.find('h2').exists()).toBe(false)
+  })
+
+  it('forwards the header slot to the dialog when provided', () => {
+    const wrapper: VueWrapper<any> = createWrapper(
+      { modelValue: true },
+      { header: '<h2>Custom title</h2>' },
+    )
+
+    expect(wrapper.find('h2').text()).toBe('Custom title')
   })
 
   it('forwards pCloseOnClickModal and pCloseOnPressEscape to the dialog', () => {

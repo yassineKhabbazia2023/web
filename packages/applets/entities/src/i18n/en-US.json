@@ -696,7 +696,8 @@
         "button": "Complete"
       },
       "dialog": {
-        "title": "Missing information to provide",
+        "title": "Missing information {highlight}",
+        "titleHighlight": "to provide",
         "firstParagraph": "To send you your next invoices as quickly as possible, we need your digitization email address.",
         "secondParagraph": "This is the address your invoices will be sent to in electronic format.",
         "emailLabel": "Digitization email address",

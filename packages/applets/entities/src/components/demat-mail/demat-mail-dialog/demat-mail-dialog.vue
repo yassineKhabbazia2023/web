@@ -1,15 +1,36 @@
 <template>
   <PDialog
     v-model="isDialogOpen"
-    :pWidth="overlaySize"
-    :pTitle="t('entities.dematMail.dialog.title')"
+    :pWidth="dialogWidth"
+    :pTitle="plainTitle"
     pTestId="demat-mail-dialog"
   >
+    <template #header>
+      <h2
+        class="
+          font-size--24
+          font-semibold
+          text-color--text-heading
+          line-height--inherit
+          margin--0
+          padding-right--11
+        "
+      >
+        <i18n-t keypath="entities.dematMail.dialog.title">
+          <template #highlight>
+            <span class="text-color--jungle-400">
+              {{ t('entities.dematMail.dialog.titleHighlight') }}
+            </span>
+          </template>
+        </i18n-t>
+      </h2>
+    </template>
+
     <p
       class="
         font-size--14
         text-color--gray-900
-        margin-bottom--3
+        margin-bottom--4
       "
     >
       {{ t('entities.dematMail.dialog.firstParagraph') }}
@@ -18,7 +39,7 @@
       class="
         font-size--14
         text-color--gray-900
-        margin-bottom--3
+        margin-bottom--4
       "
     >
       {{ t('entities.dematMail.dialog.secondParagraph') }}
@@ -29,7 +50,6 @@
       :pModel="formModel"
       :pRules="rules"
       pRequireAsteriskPosition="right"
-      class="margin-top--6"
     >
       <PFormItem
         pProp="email"
@@ -84,7 +104,7 @@
             {{ t('entities.dematMail.dialog.confirmButton') }}
             <PIcon
               pName="arrowRight"
-              pSize="16"
+              pSize="14"
               class="margin-left--2"
             />
           </PButton>
@@ -120,7 +140,7 @@ import {
   PInput,
 } from '@pulse/styleguide/components'
 import type { FormInstance } from '@pulse/styleguide/types'
-import { BREAKPOINT_SIZES, useOverlaySize, useResponsive } from '@pulse/styleguide'
+import { BREAKPOINT_SIZES, useDialogAccessibleTitle, useOverlaySize, useResponsive } from '@pulse/styleguide'
 import { useDematMailStore } from '@pulse/common/stores'
 import { useDematMailDialog } from './demat-mail-dialog.composable'
 import { createDematMailRules } from './demat-mail-dialog.validation'
@@ -135,10 +155,21 @@ const formRef = useTemplateRef<FormInstance>('formRef')
 const overlaySize = useOverlaySize()
 const { width } = useResponsive()
 
+const plainTitle = useDialogAccessibleTitle(
+  t,
+  'entities.dematMail.dialog.title',
+  'entities.dematMail.dialog.titleHighlight',
+)
+
 // The design system flex utilities are not responsive, so the breakpoint is
 // resolved here. Below md the three actions stack: laid out side by side they
 // take different widths, which makes the transparent one look misaligned.
 const isFooterStacked = computed(() => width.value < BREAKPOINT_SIZES.md)
+
+// 591px matches the maquette exactly, but a fixed width overflows narrow
+// viewports (nothing clamps .p-dialog to the screen) — below md it falls back
+// to the same responsive sizing used for the rest of the app's overlays.
+const dialogWidth = computed(() => (isFooterStacked.value ? overlaySize.value : '591px'))
 
 const footerClasses = computed(() => (
   isFooterStacked.value

@@ -2,35 +2,25 @@
   <PDialog
     v-model="isOpen"
     pWidth="528px"
+    :pTitle="plainTitle"
     pTestId="old-rydge-invoices-dialog"
     pAlignCenter
-    class="no-spacing"
   >
-    <div
-      class="
-        flex
-        flex--direction-column
-        flex--justify-content-center
-        flex--align-items-start
-        flex-gap--4
-        padding--6
-      "
-    >
-      <PImage
-        pType="logos"
-        pName="brand-color"
-        class="old-rydge-invoices-dialog__logo"
-      />
-
+    <template #header>
       <div
         class="
           flex
           flex--direction-column
           flex--align-items-start
           flex-gap--4
-          flex--align-self-stretch
         "
       >
+        <PImage
+          pType="logos"
+          pName="brand-color"
+          class="old-rydge-invoices-dialog__logo"
+        />
+
         <h2
           class="
             font-size--28
@@ -48,19 +38,28 @@
             </template>
           </i18n-t>
         </h2>
-
-        <p
-          class="
-            font-size--14
-            font-normal
-            text-color--gray-900
-            line-height--inherit
-            margin--0
-          "
-        >
-          {{ t('entities.seresInvoices.oldInvoicesDialog.description') }}
-        </p>
       </div>
+    </template>
+
+    <div
+      class="
+        flex
+        flex--direction-column
+        flex--align-items-start
+        flex-gap--4
+      "
+    >
+      <p
+        class="
+          font-size--14
+          font-normal
+          text-color--gray-900
+          line-height--inherit
+          margin--0
+        "
+      >
+        {{ t('entities.seresInvoices.oldInvoicesDialog.description') }}
+      </p>
 
       <div
         class="
@@ -97,6 +96,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton, PDialog, PImage } from '@pulse/styleguide/components'
+import { useDialogAccessibleTitle } from '@pulse/styleguide'
 import type { OldRydgeInvoicesDialogEmits, OldRydgeInvoicesDialogProps } from './old-rydge-invoices-dialog.types'
 
 defineProps<OldRydgeInvoicesDialogProps>()
@@ -105,6 +105,12 @@ const emit = defineEmits<OldRydgeInvoicesDialogEmits>()
 const isOpen = defineModel<boolean>({ default: false })
 
 const { t } = useI18n()
+
+const plainTitle = useDialogAccessibleTitle(
+  t,
+  'entities.seresInvoices.oldInvoicesDialog.title',
+  'entities.seresInvoices.oldInvoicesDialog.titleHighlight',
+)
 </script>
 
 <style scoped lang="scss">

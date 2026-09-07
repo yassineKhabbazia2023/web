@@ -18,6 +18,9 @@
     :data-testid="pTestId"
     @close="handleClose"
   >
+    <template v-if="$slots.header !== undefined" #header>
+      <slot name="header" />
+    </template>
     <slot />
     <template v-if="$slots.footer" #footer>
       <slot name="footer" />
