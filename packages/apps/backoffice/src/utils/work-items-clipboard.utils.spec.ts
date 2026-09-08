@@ -268,6 +268,40 @@ describe('copyWorkItemsAsTeamsExport', () => {
     expect(capturedText).toContain('https://dev.azure.com/1')
   })
 
+  describe('header formatting', () => {
+    it('does not insert blank lines between header fields, and keeps a single line break before content, in HTML', async () => {
+      await copyWorkItemsAsTeamsExport({
+        workItemsByTeam: mockWorkItemsByTeam,
+        sortedTeamNames: mockSortedTeamNames,
+      })
+
+      const expectedHeader = '<p>🚄 <strong>Statut livraison</strong> : proposition<br/>'
+        + '✅ <strong>Validé par</strong> : <br/>'
+        + '🎯 <strong>Cible livraison</strong> : <br/>'
+        + '🚀 <strong>Date réelle livraison</strong> : <br/>'
+        + '🛑 <strong>Indisponibilité de la plateforme</strong> : <br/>'
+        + '📖 <strong>Contenu</strong> : </p>'
+
+      expect(capturedHtml.startsWith(expectedHeader)).toBe(true)
+    })
+
+    it('does not insert blank lines between header fields, and keeps a single blank line before content, in plain text', async () => {
+      await copyWorkItemsAsTeamsExport({
+        workItemsByTeam: mockWorkItemsByTeam,
+        sortedTeamNames: mockSortedTeamNames,
+      })
+
+      const expectedHeader = '🚄 Statut livraison : proposition\n'
+        + '✅ Validé par :\n'
+        + '🎯 Cible livraison :\n'
+        + '🚀 Date réelle livraison :\n'
+        + '🛑 Indisponibilité de la plateforme :\n'
+        + '📖 Contenu :\n\n'
+
+      expect(capturedText.startsWith(expectedHeader)).toBe(true)
+    })
+  })
+
   it('shows success notification on successful copy', async () => {
     await copyWorkItemsAsTeamsExport({
       workItemsByTeam: mockWorkItemsByTeam,

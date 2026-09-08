@@ -39,15 +39,18 @@ const getSortedTeamNamesByCount = (workItemsByTeam: WorkItemsByTeam): string[] =
 }
 
 const buildTeamsExportHeader = (): { html: string, text: string } => {
-  const html = `
-<p>🚄 <strong>Statut livraison</strong> : proposition</p>
-<p>✅ <strong>Validé par</strong> : </p>
-<p>🎯 <strong>Cible livraison</strong> : </p>
-<p>🚀 <strong>Date réelle livraison</strong> : </p>
-<p>🛑 <strong>Indisponibilité de la plateforme</strong> : </p>
-<p>📖 <strong>Contenu</strong> : </p>
-<br/>
-`.trim()
+  // No literal newlines between the lines below: the clipboard copy container uses
+  // white-space: pre-wrap, so a source newline here would render as an extra line break
+  // on top of the explicit <br/>, producing a blank line after every field.
+  const html = [
+    '<p>🚄 <strong>Statut livraison</strong> : proposition<br/>',
+    '✅ <strong>Validé par</strong> : <br/>',
+    '🎯 <strong>Cible livraison</strong> : <br/>',
+    '🚀 <strong>Date réelle livraison</strong> : <br/>',
+    '🛑 <strong>Indisponibilité de la plateforme</strong> : <br/>',
+    '📖 <strong>Contenu</strong> : </p>',
+    '<br/>',
+  ].join('')
 
   const text = `🚄 Statut livraison : proposition
 ✅ Validé par :
@@ -55,7 +58,7 @@ const buildTeamsExportHeader = (): { html: string, text: string } => {
 🚀 Date réelle livraison :
 🛑 Indisponibilité de la plateforme :
 📖 Contenu :
-`
+`.trim()
 
   return { html, text }
 }
@@ -123,7 +126,7 @@ const formatForTeamsHtml = (options: CopyWorkItemsToClipboardOptions): string =>
 
 const formatForTeamsText = (options: CopyWorkItemsToClipboardOptions): string => {
   const { text: header } = buildTeamsExportHeader()
-  const lines: string[] = [header]
+  const lines: string[] = [header, '']
 
   if (hasRepositoryGroups(options)) {
     for (const repoName of options.sortedRepositoryNames!) {
