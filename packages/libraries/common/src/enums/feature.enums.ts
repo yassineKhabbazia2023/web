@@ -13,6 +13,7 @@ export enum Feature {
   MAINTENANCE_MODE = 'isMaintenanceModeEnabled',
   MANAGE_WALLET_MENU = 'isManageWalletMenuEnabled',
   MODSCREEN_V2 = 'VITE_MODSCREEN_V2_ACTIVATED',
+  MONTHLY_NOTE = 'isMonthlyNoteEnabled',
   PENNYLANE_AMENDMENT_FLOW = 'VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED',
   PENNYLANE_SSO_FORCE_PROXY = 'isPennylaneSsoForceProxyEnabled',
   PROSPECT_EXPERIENCE = 'isProspectExperienceEnabled',

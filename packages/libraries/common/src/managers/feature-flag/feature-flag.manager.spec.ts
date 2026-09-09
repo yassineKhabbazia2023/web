@@ -204,6 +204,23 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isMonthlyNoteActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isMonthlyNoteActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.MONTHLY_NOTE, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isMonthlyNoteActivated()).toBe(false)
+    })
+  })
+
   describe('isFeatureActivated with OpenFeature flag', () => {
     it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

@@ -1,6 +1,9 @@
 <template>
   <div class="p-offer-services-card padding--4">
-    <div class="p-offer-services-card__offer margin-bottom--3">
+    <div
+      v-if="pHasHeader === true"
+      class="p-offer-services-card__offer margin-bottom--3"
+    >
       <PImage
         class="p-offer-services-card__logo"
         pType="logos"
@@ -48,7 +51,9 @@ import PTag from '../../atoms/PTag'
 import { ElSwitch } from 'element-plus'
 import type { PService, POfferServicesCardProps } from './POfferServicesCardTypes'
 
-const props = defineProps<POfferServicesCardProps>()
+const props = withDefaults(defineProps<POfferServicesCardProps>(), {
+  pHasHeader: true,
+})
 defineEmits<{
   changeServiceStatus: [PService]
 }>()

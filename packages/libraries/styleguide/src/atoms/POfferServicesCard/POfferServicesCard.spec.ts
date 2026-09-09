@@ -55,6 +55,13 @@ describe('pOfferServicesCard', () => {
     expect(wrapper.find('.p-offer-services-card__services')).toBeTruthy()
   })
 
+  it('should not render the offer header when pHasHeader is false', () => {
+    wrapper = createWrapper({ ...defaultProps, pHasHeader: false })
+
+    expect(wrapper.find('.p-offer-services-card__offer').exists()).toBe(false)
+    expect(wrapper.findAll('.p-offer-services-card__service').length).toBe(2)
+  })
+
   it('should display all services of an offer', () => {
     const servicesCount = wrapper.findAll(
       '.p-offer-services-card__service',

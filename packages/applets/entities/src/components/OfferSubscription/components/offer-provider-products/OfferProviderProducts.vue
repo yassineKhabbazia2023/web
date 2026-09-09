@@ -4,6 +4,7 @@
       data-testid="offer-services"
       :pLogo="offerProvider.logoName"
       :pTitle="title"
+      :pHasHeader="hasHeader"
       :pServices="services"
       @change-service-status="onChangeServiceStatus"
     />
@@ -16,6 +17,7 @@ import { useI18n } from 'vue-i18n'
 import { POfferServicesCard } from '@pulse/styleguide/components'
 import type { OfferProviderProductsProps, ExtendedService } from './OfferProviderProductsTypes'
 import { getProviderServices, getTitle } from './OfferProviderProductsUtils'
+import { OfferProviderProductsManager } from './offer-provider-products.manager'
 import type { PService } from '@pulse/styleguide/types'
 
 const { t } = useI18n({
@@ -80,6 +82,8 @@ const title = computed(() => {
     providerName,
   )
 })
+
+const hasHeader = computed(() => OfferProviderProductsManager.hasHeader(props.offerProvider.providerName))
 
 function onChangeServiceStatus(service: PService) {
   const { productConfigurationId, pStatus } =

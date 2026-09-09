@@ -16,6 +16,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.LEGACY_VENTYA_INVOICES_ACCESS,
   Feature.MAINTENANCE_MODE,
   Feature.MANAGE_WALLET_MENU,
+  Feature.MONTHLY_NOTE,
   Feature.PENNYLANE_SSO_FORCE_PROXY,
   Feature.PROSPECT_EXPERIENCE,
   Feature.SERENITY_REDIRECTION_MODAL,
@@ -85,6 +86,10 @@ export class FeatureFlagManager {
 
   static isManageWalletMenuActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MANAGE_WALLET_MENU)
+  }
+
+  static isMonthlyNoteActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.MONTHLY_NOTE)
   }
 
   static isModscreenV2Activated() {

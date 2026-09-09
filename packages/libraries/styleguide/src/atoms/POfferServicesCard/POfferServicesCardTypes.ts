@@ -12,4 +12,5 @@ export interface POfferServicesCardProps {
   pLogo: ImageName
   pTitle: string
   pServices: PService[]
+  pHasHeader?: boolean
 }
