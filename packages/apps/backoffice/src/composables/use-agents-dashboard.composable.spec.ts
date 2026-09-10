@@ -36,6 +36,7 @@ describe('useAgentsDashboard', () => {
         poolName: 'pulse-itg',
       },
     ])
+    vi.spyOn(AgentsDashboardService, 'unlockLock').mockResolvedValue()
   })
 
   describe('initialize', () => {
@@ -189,6 +190,36 @@ describe('useAgentsDashboard', () => {
         page: DEFAULT_PAGE_NUMBER,
         pageSize: DEFAULT_PAGE_SIZE,
       })
+    })
+  })
+
+  describe('handleUnlockLock', () => {
+    it('should unlock lock and refresh locks', async () => {
+      const { handleUnlockLock, unlockingLockId } = useAgentsDashboard()
+
+      await handleUnlockLock('lock-id')
+
+      expect(AgentsDashboardService.unlockLock).toHaveBeenCalledWith('lock-id')
+      expect(AgentsDashboardService.getLocks).toHaveBeenCalledWith({
+        page: DEFAULT_PAGE_NUMBER,
+        pageSize: DEFAULT_PAGE_SIZE,
+      })
+      expect(displayNotification).toHaveBeenCalledWith(
+        'success',
+        'L\'environnement a été déverrouillé avec succès.',
+      )
+      expect(unlockingLockId.value).toBe(null)
+    })
+
+    it('should display error notification when unlock lock fails', async () => {
+      vi.mocked(AgentsDashboardService.unlockLock).mockRejectedValue(new Error('API Error'))
+
+      const { handleUnlockLock, unlockingLockId } = useAgentsDashboard()
+
+      await handleUnlockLock('lock-id')
+
+      expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de déverrouiller le lock')
+      expect(unlockingLockId.value).toBe(null)
     })
   })
 })

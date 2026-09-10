@@ -74,8 +74,10 @@
           :currentPage="pagination.currentPage"
           :pageSize="pagination.pageSize"
           :isLoading
+          :unlockingLockId
           @page-change="handlePageChange"
           @page-size-change="handlePageSizeChange"
+          @unlock-environment="handleUnlockLock"
         />
       </div>
     </div>
@@ -94,12 +96,14 @@ const {
   environments,
   isLoading,
   isLoadingFilters,
+  unlockingLockId,
   filters,
   pagination,
   handlePageChange,
   handlePageSizeChange,
   handleFilterChange,
   resetFilters,
+  handleUnlockLock,
   initialize,
 } = useAgentsDashboard()
 

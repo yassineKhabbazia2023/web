@@ -59,4 +59,8 @@ export class AgentsDashboardService {
   static async createLock(payload: CreateAgentLockPayload): Promise<void> {
     await backofficeApi.post('/lock', payload)
   }
+
+  static async unlockLock(lockId: string): Promise<void> {
+    await backofficeApi.delete(`/unlock/${lockId}`)
+  }
 }

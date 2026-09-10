@@ -106,6 +106,37 @@
           <span>{{ formatNullableText(row.unlockedBy) }}</span>
         </template>
       </PTableColumn>
+
+      <PTableColumn
+        pTestId="agents-dashboard-table-actions-column"
+        pLabel="Actions"
+        pWidth="100px"
+        pAlign="center"
+        pHeaderAlign="center"
+        pFixed="right"
+      >
+        <template #default="{ row }">
+          <PTooltip
+            v-if="row.isLocked === true"
+            pContent="Déverrouiller l'environnement"
+          >
+            <PButton
+              :pTestId="`agents-dashboard-unlock-${row.id}-button`"
+              pSize="small"
+              pIconOnly
+              :pDisabled="unlockingLockId !== null"
+              :pLoading="unlockingLockId === row.id"
+              @click="handleUnlockLock(row.id)"
+            >
+              <PIcon
+                pName="unlock"
+                :pColor="AppColors.GREEN_500"
+              />
+            </PButton>
+          </PTooltip>
+          <span v-else>-</span>
+        </template>
+      </PTableColumn>
     </PTable>
 
     <div
@@ -149,7 +180,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PIcon, PLoader, PPagination, PTable, PTableColumn, PTag } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
+import { PButton, PIcon, PLoader, PPagination, PTable, PTableColumn, PTag, PTooltip } from '@pulse/styleguide/components'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { formatDateTime } from '@pulse/toolbox/utils/dates'
 import type { AgentLockItem } from '@backoffice/types/agents-dashboard.type'
@@ -166,11 +198,13 @@ const {
   currentPage,
   pageSize,
   isLoading,
+  unlockingLockId,
 } = defineProps<AgentsDashboardTableProps>()
 
 const emit = defineEmits<{
   'page-change': [page: number]
   'page-size-change': [pageSize: number]
+  'unlock-environment': [lockId: string]
 }>()
 
 const paginationLabel = computed(() =>
@@ -192,6 +226,10 @@ const handlePageChange = (page: number) => {
 
 const handlePageSizeChange = (newPageSize: number) => {
   emit('page-size-change', newPageSize)
+}
+
+const handleUnlockLock = (lockId: string) => {
+  emit('unlock-environment', lockId)
 }
 </script>
 

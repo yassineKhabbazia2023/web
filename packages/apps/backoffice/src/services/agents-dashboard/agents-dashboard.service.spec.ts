@@ -5,6 +5,7 @@ import type { AgentLocksResponse } from '@backoffice/types/agents-dashboard.type
 
 const mockPost = vi.mocked(backofficeApi.post)
 const mockGet = vi.mocked(backofficeApi.get)
+const mockDelete = vi.mocked(backofficeApi.delete)
 
 describe('AgentsDashboardService', () => {
   const mockResponse: AgentLocksResponse = {
@@ -145,6 +146,22 @@ describe('AgentsDashboardService', () => {
         environmentId: 1,
         reason: 'Deployment',
       })).rejects.toThrow('Network error')
+    })
+  })
+
+  describe('unlockLock', () => {
+    it('should unlock an agent lock', async () => {
+      mockDelete.mockResolvedValue({ data: null })
+
+      await AgentsDashboardService.unlockLock('lock-id')
+
+      expect(mockDelete).toHaveBeenCalledWith('/unlock/lock-id')
+    })
+
+    it('should throw error when unlock lock API call fails', async () => {
+      mockDelete.mockRejectedValue(new Error('Network error'))
+
+      await expect(AgentsDashboardService.unlockLock('lock-id')).rejects.toThrow('Network error')
     })
   })
 })

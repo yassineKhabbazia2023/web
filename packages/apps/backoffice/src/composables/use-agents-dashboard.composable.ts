@@ -22,6 +22,7 @@ export function useAgentsDashboard() {
   const environments = ref<AgentLockEnvironmentItem[]>([])
   const isLoading = ref<boolean>(false)
   const isLoadingFilters = ref<boolean>(false)
+  const unlockingLockId = ref<string | null>(null)
   const filters = ref<AgentLocksFiltersState>(getDefaultFilters())
 
   const pagination = ref({
@@ -100,6 +101,21 @@ export function useAgentsDashboard() {
     await fetchLocks()
   }
 
+  const handleUnlockLock = async (lockId: string) => {
+    unlockingLockId.value = lockId
+
+    try {
+      await AgentsDashboardService.unlockLock(lockId)
+      displayNotification('success', 'L\'environnement a été déverrouillé avec succès.')
+      await fetchLocks()
+    } catch (error) {
+      logger.error('Failed to unlock agent lock:', error)
+      displayNotification('error', 'Impossible de déverrouiller le lock')
+    } finally {
+      unlockingLockId.value = null
+    }
+  }
+
   const initialize = async () => {
     await Promise.all([fetchEnvironments(), fetchLocks()])
   }
@@ -109,12 +125,14 @@ export function useAgentsDashboard() {
     environments,
     isLoading,
     isLoadingFilters,
+    unlockingLockId,
     filters,
     pagination,
     handlePageChange,
     handlePageSizeChange,
     handleFilterChange,
     resetFilters,
+    handleUnlockLock,
     initialize,
   }
 }

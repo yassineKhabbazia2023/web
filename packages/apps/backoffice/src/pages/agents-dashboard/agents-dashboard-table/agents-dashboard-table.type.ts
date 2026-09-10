@@ -6,4 +6,5 @@ export interface AgentsDashboardTableProps {
   currentPage: number
   pageSize: number
   isLoading: boolean
+  unlockingLockId: string | null
 }
