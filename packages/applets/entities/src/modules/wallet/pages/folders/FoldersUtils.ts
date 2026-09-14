@@ -1,6 +1,7 @@
 import type { RegularWalletData, SearchCriteria, DeploymentStatus } from '@entities/modules/wallet/types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
+import { fetchWalletAccounts } from '@entities/services/wallet'
 import { getInitials } from '@entities/helpers'
 import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
@@ -13,8 +14,9 @@ export async function fetchWalletData(
   searchCriteria: SearchCriteria,
   allAccounts: boolean = false,
 ) {
-  const searchParams = getSearchParams(searchCriteria, allAccounts)
-  const queryResult = await fetchAccounts(searchParams)
+  const queryResult = allAccounts === true
+    ? await fetchAccounts(getSearchParams(searchCriteria, true))
+    : await fetchWalletAccounts(searchCriteria)
   const items = queryResult.items
     .map((account, index) => getMappedAccount(deploymentStatuses, account, index))
 

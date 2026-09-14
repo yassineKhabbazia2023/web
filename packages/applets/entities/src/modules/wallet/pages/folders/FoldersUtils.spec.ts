@@ -8,6 +8,7 @@ import {
 } from '@entities/__mocks__/deploy-utils.mocks'
 import type { DeploymentStatus, SearchCriteria } from '@entities/modules/wallet/types'
 import * as accountService from '@entities/services/account'
+import { fetchWalletAccounts } from '@entities/services/wallet'
 import {
   getMockedAccountQueryResult,
   getMockedAccountRow,
@@ -46,13 +47,8 @@ describe('test FoldersUtils', () => {
       const mockedAccountQueryResult = getMockedAccountQueryResult({
         currentPage: 0,
       })
-      const fetchAccountsSpy = vi.mocked(accountService.fetchAccounts)
-      fetchAccountsSpy.mockResolvedValue(mockedAccountQueryResult)
-      const expectedArguments = [
-        'currentuser',
-        `?pageNumber=${searchCriteria.currentPage}`,
-        `&pageSize=${searchCriteria.limit}`,
-      ].join('')
+      const fetchWalletAccountsSpy = vi.mocked(fetchWalletAccounts)
+      fetchWalletAccountsSpy.mockResolvedValue(mockedAccountQueryResult)
 
       const queryResult = await fetchWalletData(
         deploymentStatuses,
@@ -75,9 +71,65 @@ describe('test FoldersUtils', () => {
         totalPage: 1,
       }
 
-      expect(fetchAccountsSpy).toHaveBeenCalledOnce()
-      expect(fetchAccountsSpy).toHaveBeenNthCalledWith(1, expectedArguments)
+      expect(fetchWalletAccountsSpy).toHaveBeenCalledExactlyOnceWith(searchCriteria)
+      expect(accountService.fetchAccounts).not.toHaveBeenCalled()
       expect(queryResult).toMatchObject(expectedQueryResult)
+    })
+
+    it('keeps account management on the legacy all-accounts endpoint', async () => {
+      apiGatewayGetMock.mockResolvedValueOnce({ data: getMockedAccountQueryResult() })
+
+      const result = await fetchWalletData(deploymentStatuses, searchCriteria, true)
+
+      expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
+        'account/api/accounts/all?pageNumber=1&pageSize=15',
+      )
+      expect(fetchWalletAccounts).not.toHaveBeenCalled()
+      expect(result.items).toHaveLength(2)
+      expect(CurrentUserService.getUserWalletInformation).toHaveBeenCalledOnce()
+    })
+
+    it('maps the optimized response and preserves filtered totals and user-specific fields', async () => {
+      const accounts = getMockedAccountQueryResult({
+        items: [getMockedAccountRow({ isFavorite: true, isCustomerRelation: true })],
+        currentPage: 2,
+        totalItems: 16,
+        totalPage: 2,
+      })
+      apiGatewayGetMock.mockResolvedValueOnce({
+        data: { accounts, favorites: null },
+      })
+
+      const result = await fetchWalletData(deploymentStatuses, { ...searchCriteria, currentPage: 2 })
+
+      expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(
+        'wallet/api/currentuser?pageNumber=2&pageSize=15&includeFavorites=false',
+      )
+      expect(result).toMatchObject({ currentPage: 2, totalItems: 16, totalPage: 2 })
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0]).toMatchObject({
+        accountId: accounts.items[0].accountId,
+        isFavorite: true,
+        isCustomerRelation: true,
+      })
+      expect(useUserStore().setWalletInformation).toHaveBeenCalledOnce()
+    })
+
+    it('returns an empty filtered page even when the portfolio is not empty', async () => {
+      const accounts = getMockedAccountQueryResult({ items: [], totalItems: 0, totalPage: 0 })
+      apiGatewayGetMock.mockResolvedValueOnce({
+        data: { accounts, favorites: null },
+      })
+
+      expect(await fetchWalletData(deploymentStatuses, searchCriteria)).toStrictEqual(accounts)
+    })
+
+    it('propagates optimized endpoint errors to the existing loading and error handling', async () => {
+      apiGatewayGetMock.mockRejectedValueOnce(new Error('Wallet unavailable'))
+
+      await expect(fetchWalletData(deploymentStatuses, searchCriteria)).rejects.toThrow('Wallet unavailable')
+      expect(apiGatewayGetMock).toHaveBeenCalledOnce()
+      expect(CurrentUserService.getUserWalletInformation).not.toHaveBeenCalled()
     })
   })
 
