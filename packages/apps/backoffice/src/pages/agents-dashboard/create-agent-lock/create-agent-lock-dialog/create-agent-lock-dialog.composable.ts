@@ -64,13 +64,13 @@ export function useCreateAgentLockDialog(options: UseCreateAgentLockDialogOption
     isCreating.value = true
 
     try {
-      await AgentsDashboardService.createLock({
+      const response = await AgentsDashboardService.createLock({
         environmentId: form.value.environmentId,
         reason: form.value.reason.trim(),
       })
 
       displayNotification('success', 'Lock créé avec succès')
-      options.onSuccess()
+      options.onSuccess(response.message)
       options.onClose()
       resetForm()
     } catch (error) {

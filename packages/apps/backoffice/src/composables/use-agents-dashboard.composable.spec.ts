@@ -39,6 +39,10 @@ describe('useAgentsDashboard', () => {
     vi.spyOn(AgentsDashboardService, 'unlockLock').mockResolvedValue()
   })
 
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   describe('initialize', () => {
     it('should fetch locks and environments with default pagination', async () => {
       const {
@@ -220,6 +224,68 @@ describe('useAgentsDashboard', () => {
 
       expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de déverrouiller le lock')
       expect(unlockingLockId.value).toBe(null)
+    })
+  })
+
+  describe('handleLockCreated', () => {
+    it('should store created lock message and refresh dashboard data', async () => {
+      const { handleLockCreated, createdLockMessage } = useAgentsDashboard()
+
+      await handleLockCreated('<b>VERROUILLAGE APPLIQUÉ</b>')
+
+      expect(createdLockMessage.value).toBe('<b>VERROUILLAGE APPLIQUÉ</b>')
+      expect(AgentsDashboardService.getLocks).toHaveBeenCalledWith({
+        page: DEFAULT_PAGE_NUMBER,
+        pageSize: DEFAULT_PAGE_SIZE,
+      })
+      expect(AgentsDashboardService.getEnvironments).toHaveBeenCalledOnce()
+    })
+  })
+
+  describe('clearCreatedLockMessage', () => {
+    it('should clear created lock message', async () => {
+      const { handleLockCreated, clearCreatedLockMessage, createdLockMessage } = useAgentsDashboard()
+
+      await handleLockCreated('<b>VERROUILLAGE APPLIQUÉ</b>')
+      clearCreatedLockMessage()
+
+      expect(createdLockMessage.value).toBe(null)
+    })
+  })
+
+  describe('copyCreatedLockMessage', () => {
+    it('should copy created lock message as plain text when rich clipboard is not available', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      vi.stubGlobal('navigator', {
+        clipboard: {
+          writeText,
+        },
+      })
+      vi.stubGlobal('ClipboardItem', undefined)
+
+      const { handleLockCreated, copyCreatedLockMessage } = useAgentsDashboard()
+
+      await handleLockCreated('<b>VERROUILLAGE APPLIQUÉ</b><br>L\'environnement <b>ITG</b> est verrouillé.')
+      await copyCreatedLockMessage()
+
+      expect(writeText).toHaveBeenCalledWith('VERROUILLAGE APPLIQUÉ\nL\'environnement ITG est verrouillé.')
+      expect(displayNotification).toHaveBeenCalledWith('success', 'Message copié avec succès')
+    })
+
+    it('should display error notification when copy fails', async () => {
+      vi.stubGlobal('navigator', {
+        clipboard: {
+          writeText: vi.fn().mockRejectedValue(new Error('Clipboard error')),
+        },
+      })
+      vi.stubGlobal('ClipboardItem', undefined)
+
+      const { handleLockCreated, copyCreatedLockMessage } = useAgentsDashboard()
+
+      await handleLockCreated('<b>VERROUILLAGE APPLIQUÉ</b>')
+      await copyCreatedLockMessage()
+
+      expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de copier le message')
     })
   })
 })

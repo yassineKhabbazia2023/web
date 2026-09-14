@@ -34,7 +34,7 @@
         <CreateAgentLock
           :environments
           :isLoading="isLoadingFilters"
-          @lock-created="initialize"
+          @lock-created="handleLockCreated"
         />
       </div>
     </div>
@@ -58,6 +58,14 @@
           @reset-filters="resetFilters"
         />
       </div>
+
+      <AgentLockMessage
+        v-if="createdLockMessage !== null"
+        :message="createdLockMessage"
+        class="margin-bottom--4"
+        @close="clearCreatedLockMessage"
+        @copy="copyCreatedLockMessage"
+      />
 
       <div
         class="
@@ -89,6 +97,7 @@ import { onMounted } from 'vue'
 import { useAgentsDashboard } from '@backoffice/composables/use-agents-dashboard.composable'
 import AgentsDashboardFilters from './agents-dashboard-filters/agents-dashboard-filters.vue'
 import AgentsDashboardTable from './agents-dashboard-table/agents-dashboard-table.vue'
+import AgentLockMessage from './agent-lock-message/agent-lock-message.vue'
 import CreateAgentLock from './create-agent-lock/create-agent-lock.vue'
 
 const {
@@ -97,6 +106,7 @@ const {
   isLoading,
   isLoadingFilters,
   unlockingLockId,
+  createdLockMessage,
   filters,
   pagination,
   handlePageChange,
@@ -104,6 +114,9 @@ const {
   handleFilterChange,
   resetFilters,
   handleUnlockLock,
+  handleLockCreated,
+  clearCreatedLockMessage,
+  copyCreatedLockMessage,
   initialize,
 } = useAgentsDashboard()
 

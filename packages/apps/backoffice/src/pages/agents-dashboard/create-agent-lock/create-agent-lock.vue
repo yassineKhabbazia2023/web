@@ -34,7 +34,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'lock-created': []
+  'lock-created': [message: string]
 }>()
 
 const isDialogOpened = ref(false)
@@ -43,7 +43,7 @@ const handleOpenDialog = (): void => {
   isDialogOpened.value = true
 }
 
-const handleLockCreated = (): void => {
-  emit('lock-created')
+const handleLockCreated = (message: string): void => {
+  emit('lock-created', message)
 }
 </script>

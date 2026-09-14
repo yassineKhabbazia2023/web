@@ -10,7 +10,7 @@ export interface CreateAgentLockFormData {
 }
 
 export interface UseCreateAgentLockDialogOptions {
-  onSuccess: () => void
+  onSuccess: (message: string) => void
   onClose: () => void
 }
 

@@ -4,6 +4,7 @@ import { logger } from '@pulse/toolbox'
 import { formatEndDateToISO, formatStartDateToISO } from '@pulse/toolbox/utils/dates'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
+import { getPlainTextFromAgentLockMessage } from '@backoffice/helpers/agent-lock-message.helper'
 import { AgentsDashboardService } from '@backoffice/services/agents-dashboard/agents-dashboard.service'
 import type {
   AgentLockEnvironmentItem,
@@ -23,6 +24,7 @@ export function useAgentsDashboard() {
   const isLoading = ref<boolean>(false)
   const isLoadingFilters = ref<boolean>(false)
   const unlockingLockId = ref<string | null>(null)
+  const createdLockMessage = ref<string | null>(null)
   const filters = ref<AgentLocksFiltersState>(getDefaultFilters())
 
   const pagination = ref({
@@ -116,6 +118,44 @@ export function useAgentsDashboard() {
     }
   }
 
+  const handleLockCreated = async (message: string) => {
+    createdLockMessage.value = message
+    await initialize()
+  }
+
+  const clearCreatedLockMessage = () => {
+    createdLockMessage.value = null
+  }
+
+  const copyCreatedLockMessage = async () => {
+    if (createdLockMessage.value === null) {
+      return
+    }
+
+    const htmlMessage = createdLockMessage.value
+    const textMessage = getPlainTextFromAgentLockMessage(htmlMessage)
+
+    try {
+      const clipboard = navigator.clipboard
+
+      if (clipboard.write !== undefined && globalThis.ClipboardItem !== undefined) {
+        await clipboard.write([
+          new ClipboardItem({
+            'text/html': new Blob([htmlMessage], { type: 'text/html' }),
+            'text/plain': new Blob([textMessage], { type: 'text/plain' }),
+          }),
+        ])
+      } else {
+        await clipboard.writeText(textMessage)
+      }
+
+      displayNotification('success', 'Message copié avec succès')
+    } catch (error) {
+      logger.error('Failed to copy agent lock message:', error)
+      displayNotification('error', 'Impossible de copier le message')
+    }
+  }
+
   const initialize = async () => {
     await Promise.all([fetchEnvironments(), fetchLocks()])
   }
@@ -126,6 +166,7 @@ export function useAgentsDashboard() {
     isLoading,
     isLoadingFilters,
     unlockingLockId,
+    createdLockMessage,
     filters,
     pagination,
     handlePageChange,
@@ -133,6 +174,9 @@ export function useAgentsDashboard() {
     handleFilterChange,
     resetFilters,
     handleUnlockLock,
+    handleLockCreated,
+    clearCreatedLockMessage,
+    copyCreatedLockMessage,
     initialize,
   }
 }

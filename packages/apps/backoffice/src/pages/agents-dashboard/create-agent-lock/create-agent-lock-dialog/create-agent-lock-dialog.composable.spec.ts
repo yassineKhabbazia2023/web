@@ -9,7 +9,10 @@ describe('useCreateAgentLockDialog', () => {
   beforeEach(() => {
     onSuccess.mockClear()
     onClose.mockClear()
-    vi.spyOn(AgentsDashboardService, 'createLock').mockResolvedValue()
+    vi.spyOn(AgentsDashboardService, 'createLock').mockResolvedValue({
+      status: 'Success',
+      message: '<b>VERROUILLAGE APPLIQUÉ</b>',
+    })
   })
 
   describe('isFormValid', () => {
@@ -64,7 +67,7 @@ describe('useCreateAgentLockDialog', () => {
         reason: 'Deployment',
       })
       expect(displayNotification).toHaveBeenCalledWith('success', 'Lock créé avec succès')
-      expect(onSuccess).toHaveBeenCalledOnce()
+      expect(onSuccess).toHaveBeenCalledWith('<b>VERROUILLAGE APPLIQUÉ</b>')
       expect(onClose).toHaveBeenCalledOnce()
     })
 

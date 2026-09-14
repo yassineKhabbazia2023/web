@@ -109,7 +109,7 @@ import { mapAgentLockEnvironmentsToDropdownOptions } from '../../agents-dashboar
 const { environments } = defineProps<CreateAgentLockDialogProps>()
 
 const emit = defineEmits<{
-  'lock-created': []
+  'lock-created': [message: string]
 }>()
 
 const isDialogOpened = defineModel<boolean>({ default: false })
@@ -122,8 +122,8 @@ const {
   handleClose: closeDialog,
   handleCreate: createLock,
 } = useCreateAgentLockDialog({
-  onSuccess: () => {
-    emit('lock-created')
+  onSuccess: (message: string) => {
+    emit('lock-created', message)
   },
   onClose: () => {
     isDialogOpened.value = false

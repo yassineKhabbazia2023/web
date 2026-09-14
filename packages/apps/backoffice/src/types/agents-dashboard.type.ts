@@ -41,6 +41,11 @@ export interface CreateAgentLockPayload {
   reason: string
 }
 
+export interface CreateAgentLockResponse {
+  status: string
+  message: string
+}
+
 export interface AgentLocksFiltersState {
   dateRange: [Date, Date] | null
   environmentId: number | null

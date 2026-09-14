@@ -126,9 +126,13 @@ describe('AgentsDashboardService', () => {
 
   describe('createLock', () => {
     it('should create an agent lock', async () => {
-      mockPost.mockResolvedValue({ data: null })
+      const mockCreateLockResponse = {
+        status: 'Success',
+        message: '<b>VERROUILLAGE APPLIQUÉ</b>',
+      }
+      mockPost.mockResolvedValue({ data: mockCreateLockResponse })
 
-      await AgentsDashboardService.createLock({
+      const result = await AgentsDashboardService.createLock({
         environmentId: 1,
         reason: 'Deployment',
       })
@@ -137,6 +141,7 @@ describe('AgentsDashboardService', () => {
         environmentId: 1,
         reason: 'Deployment',
       })
+      expect(result).toEqual(mockCreateLockResponse)
     })
 
     it('should throw error when create lock API call fails', async () => {
