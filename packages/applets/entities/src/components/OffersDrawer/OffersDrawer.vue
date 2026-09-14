@@ -59,7 +59,7 @@
       <template v-if="internalIsOpened && !isLoading">
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
-            v-if="currentSubscriptionOffer?.approvalRequired"
+            v-if="hasStepper"
             :pActive="currentStepIndex"
             :pDirection="offerStepperConfig.direction"
             :pProcessStatus="offerStepperConfig.processStatus"
@@ -69,7 +69,7 @@
             data-testid="offer-stepper"
           />
           <CustomersDetails
-            v-if="!currentSubscriptionOffer?.approvalRequired"
+            v-if="isInstantlyValidatedOffer"
             :principalContacts="principalContacts"
             data-testid="customers-step"
           />
@@ -161,7 +161,7 @@ import {
 import { getPatchOperations } from '@entities/services/patch-record/patch-record.service'
 import { type PatchValue } from '@entities/services/patch-record'
 import { OffersDrawerStep, ProviderName } from '@entities/enums'
-import { OFFERS_DRAWER_STEPS } from './OffersDrawer.const'
+import { OFFERS_DRAWER_STEPS, RFINANCE_DRAWER_STEPS } from './OffersDrawer.const'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
 import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, ContactWithRoles } from '@entities/types'
 import { fetchAccount, patchAccount, getAccountSignatories, type Account } from '@entities/services/account'
@@ -176,7 +176,7 @@ import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import { type Contact } from '@entities/services/contact/contactTypes'
 import { HTTP_RESPONSES, BackEndErrors } from '@pulse/common/constants'
-import { ContactType, APICallStatus } from '@pulse/common/enums'
+import { ContactType, APICallStatus, SubscriptionOfferCode } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
 import { OfferPlanManager } from '../OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
@@ -231,7 +231,20 @@ const { t } = useI18n({
 
 const currentStepIndex = ref(0)
 const saveOfferApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
-const currentStep = computed(() => OFFERS_DRAWER_STEPS[currentStepIndex.value])
+const isRFinanceOffer = computed(
+  () => currentSubscriptionOffer.value?.offerCode === SubscriptionOfferCode.RFINANCE,
+)
+const drawerSteps = computed<OffersDrawerStep[]>(
+  () => isRFinanceOffer.value ? RFINANCE_DRAWER_STEPS : OFFERS_DRAWER_STEPS,
+)
+const currentStep = computed(() => drawerSteps.value[currentStepIndex.value])
+const isLastStep = computed(() => currentStepIndex.value === drawerSteps.value.length - 1)
+const hasStepper = computed(
+  () => currentSubscriptionOffer.value?.approvalRequired === true || isRFinanceOffer.value,
+)
+const isInstantlyValidatedOffer = computed(
+  () => currentSubscriptionOffer.value?.approvalRequired !== true && isRFinanceOffer.value === false,
+)
 const isSaveOfferInProgress = computed(() => saveOfferApiCallStatus.value === APICallStatus.LOADING)
 
 const offerStepperConfig: any = {
@@ -240,25 +253,19 @@ const offerStepperConfig: any = {
   finishStatus: PStepStatus.SUCCESS,
 }
 
-const offerStepTitles = {
-  services: t('services'),
-  customers: t('customers'),
-  collaborators: t('collaborators'),
-  information: t('information'),
+const stepTitleByStep: Record<OffersDrawerStep, string> = {
+  [OffersDrawerStep.SERVICES]: t('services'),
+  [OffersDrawerStep.CUSTOMERS]: t('customers'),
+  [OffersDrawerStep.COLLABORATORS]: t('collaborators'),
+  [OffersDrawerStep.INFORMATION]: t('information'),
 }
 
-const offerStepItems = computed<PStepsItem[]>(() => [
-  { pTitle: offerStepTitles.services },
-  { pTitle: offerStepTitles.customers },
-  { pTitle: offerStepTitles.collaborators },
-  { pTitle: offerStepTitles.information },
-])
+const offerStepItems = computed<PStepsItem[]>(() =>
+  drawerSteps.value.map((step) => ({ pTitle: stepTitleByStep[step] })),
+)
 
 const isSubmitButton = computed((): boolean => {
-  return (
-    currentStep.value === OffersDrawerStep.INFORMATION ||
-    !currentSubscriptionOffer.value?.approvalRequired
-  )
+  return isLastStep.value || isInstantlyValidatedOffer.value
 })
 
 const isNextButtonDisabled = computed(() => {

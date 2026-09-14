@@ -1,7 +1,7 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { loggerErrorSpy } from '@pulse/toolbox/mocks'
-import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
+import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices, getRFinanceSubscriptionOfferServiceMock } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
 import type { SubscriptionOffer, SubscriptionOfferServices } from '@entities/types'
@@ -751,6 +751,66 @@ describe('offersDrawer', () => {
       expect(confirmModalAfter.props('modelValue')).toBe(false)
 
       expect(wrapper.emitted('offer-saved')).toBeFalsy()
+    })
+  })
+
+  describe('R/Finance offer', () => {
+    const rFinanceOfferService = getRFinanceSubscriptionOfferServiceMock()
+    const rFinanceOfferSummary: SubscriptionOffer = {
+      offerId: rFinanceOfferService.offerId,
+      offerName: rFinanceOfferService.offerName,
+      offerLabel: rFinanceOfferService.offerLabel,
+      offerPrice: rFinanceOfferService.offerPrice,
+      offerCode: rFinanceOfferService.offerCode,
+      offerPriceType: rFinanceOfferService.offerPriceType,
+      logoName: rFinanceOfferService.logoName,
+    }
+
+    beforeEach(() => {
+      getIsNextButtonDisabledMock.mockReturnValue(false)
+      getAllOffersMock.mockResolvedValue([...subscriptionOffers, rFinanceOfferSummary])
+      vi.mocked(getOffer).mockResolvedValue(rFinanceOfferService)
+    })
+
+    it('should display a 3-step flow without an information step and activate the offer on submit', async () => {
+      const createSubscriptionRequestSpy = vi.mocked(subscriptionService.createSubscriptionRequest)
+
+      const wrapper = await getWrapper(true)
+
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      offers.vm.$emit('select-offer', rFinanceOfferService.offerId)
+      await flushPromises()
+
+      const stepper = wrapper.findComponent({ name: 'PSteps' })
+      expect(stepper.exists()).toBe(true)
+      expect(stepper.props('pSteps')).toHaveLength(3)
+
+      // No MOD note step: R/Finance is an instant activation
+      expect(wrapper.findComponent({ name: 'StepNote' }).exists()).toBe(false)
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+
+      // Step 1 (services) -> step 2 (customers)
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      expect(wrapper.find('[data-testid=customers-step]').exists()).toBe(true)
+
+      // Step 2 (customers) -> step 3 (collaborators)
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      expect(wrapper.find('[data-testid=collaborators-step]').exists()).toBe(true)
+
+      // The information step never appears
+      expect(wrapper.find('[data-testid=information-step]').exists()).toBe(false)
+
+      // Submitting on the last step opens the confirmation modal
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmationModal.props('modelValue')).toBe(true)
+
+      await confirmationModal.vm.$emit('confirm')
+      await flushPromises()
+
+      expect(createSubscriptionRequestSpy).toHaveBeenCalledOnce()
+      expect(wrapper.emitted('offer-saved')).toStrictEqual([[]])
     })
   })
 })

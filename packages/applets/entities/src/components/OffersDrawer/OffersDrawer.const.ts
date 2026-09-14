@@ -6,3 +6,9 @@ export const OFFERS_DRAWER_STEPS: OffersDrawerStep[] = [
   OffersDrawerStep.COLLABORATORS,
   OffersDrawerStep.INFORMATION,
 ]
+
+export const RFINANCE_DRAWER_STEPS: OffersDrawerStep[] = [
+  OffersDrawerStep.SERVICES,
+  OffersDrawerStep.CUSTOMERS,
+  OffersDrawerStep.COLLABORATORS,
+]

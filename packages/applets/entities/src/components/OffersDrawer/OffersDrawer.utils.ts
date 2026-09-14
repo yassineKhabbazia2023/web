@@ -13,7 +13,9 @@ export function getHasNoSignatory(
   principalContacts: AccountSignatories[],
   currentSubscriptionOffer: SubscriptionOfferServices,
 ) {
-  const needSignatory = currentStep === OffersDrawerStep.CUSTOMERS || !currentSubscriptionOffer.approvalRequired
+  const isInstantOffer = currentSubscriptionOffer.approvalRequired !== true &&
+    currentSubscriptionOffer.offerCode !== SubscriptionOfferCode.RFINANCE
+  const needSignatory = currentStep === OffersDrawerStep.CUSTOMERS || isInstantOffer
 
   return needSignatory && principalContacts.length === 0
 }

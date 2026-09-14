@@ -1,5 +1,5 @@
 import type { SubscriptionContact } from '@entities/services/subscription/subscriptionTypes'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, SubscriptionOfferCode } from '@pulse/common/enums'
 import { SubscriptionPriceType, ProviderName } from '@entities/enums'
 import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct, OfferPlan } from '@entities/types'
 
@@ -329,6 +329,45 @@ export function getMockedSubscriptionOffers() {
   }] satisfies SubscriptionOffer[] as SubscriptionOffer[]
 
   return Subscription
+}
+
+export function getRFinanceSubscriptionOfferServiceMock(
+  override: Partial<SubscriptionOfferServices> = {},
+): SubscriptionOfferServices {
+  return {
+    offerId: 6,
+    offerName: 'R/Finance',
+    offerLabel: 'Rapports financiers Finthesis',
+    offerPrice: 0,
+    offerCode: SubscriptionOfferCode.RFINANCE,
+    offerPriceType: SubscriptionPriceType.free,
+    logoName: 'brand-color',
+    approvalRequired: false,
+    offersBookLink: 'test link',
+    offerDescription: 'test description',
+    intranetLink: 'test-link',
+    functions: [],
+    providers: [
+      {
+        providerName: ProviderName.RYDGE,
+        providerEditor: 'RYDGE',
+        providerCategory: 'RYDGE',
+        logoName: 'brand-color',
+        products: [
+          {
+            productName: 'Finthesis',
+            productLabel: 'Rapports Finthesis',
+            enabled: true,
+            isOptionnal: false,
+            price: 0.0,
+            priceType: SubscriptionPriceType.free,
+            productConfigurationId: 10,
+          },
+        ],
+      },
+    ],
+    ...override,
+  }
 }
 
 export function getMockedSubscriptionOfferProduct(override: Partial<SubscriptionOfferProduct> = {}) {

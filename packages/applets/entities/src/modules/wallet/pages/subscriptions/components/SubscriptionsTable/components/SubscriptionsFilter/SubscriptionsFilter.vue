@@ -16,7 +16,6 @@
 import { useI18n } from 'vue-i18n'
 import { watch, onMounted, computed } from 'vue'
 import { PDropdown } from '@pulse/styleguide/components'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import type { SubscriptionsFilterProps } from './SubscriptionsFilterTypes'
 
 const { t } = useI18n({
@@ -63,13 +62,6 @@ const offerTypeDropdown = computed(() => {
       pLabel: 'Pennylane',
     },
   ]
-
-  if (FeatureFlagManager.isRFinanceActivated()) {
-    baseOptions.push({
-      pValue: 'R/Finance',
-      pLabel: 'R/Finance',
-    })
-  }
 
   return baseOptions
 })

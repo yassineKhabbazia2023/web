@@ -1,4 +1,4 @@
-import { getSubscriptionOffersServiceMock } from '@entities/__mocks__/offer-subscription.mocks'
+import { getSubscriptionOffersServiceMock, getRFinanceSubscriptionOfferServiceMock } from '@entities/__mocks__/offer-subscription.mocks'
 import { OffersDrawerStep } from '@entities/enums'
 import { getClientContactMock, getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import type { AccountSignatories } from '@entities/services/account/account.type'
@@ -110,6 +110,16 @@ describe('test OffersDrawer.utils', () => {
           expect(hasNoSignatory).toBe(expected)
 
         })
+    })
+
+    describe('when R/Finance offer (instant activation but multi-step)', () => {
+      const rFinanceOffer = getRFinanceSubscriptionOfferServiceMock()
+
+      it('should require a signatory only on the customers step, not on every step', () => {
+        expect(getHasNoSignatory(OffersDrawerStep.SERVICES, [], rFinanceOffer)).toBe(false)
+        expect(getHasNoSignatory(OffersDrawerStep.CUSTOMERS, [], rFinanceOffer)).toBe(true)
+        expect(getHasNoSignatory(OffersDrawerStep.COLLABORATORS, [], rFinanceOffer)).toBe(false)
+      })
     })
   })
 
