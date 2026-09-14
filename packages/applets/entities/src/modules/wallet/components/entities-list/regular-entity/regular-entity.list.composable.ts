@@ -143,6 +143,28 @@ export function useRegularEntitiesList(
     selectedFolderIds.value = [...nextSelectedFolderIds]
   }
 
+  const areAllFoldersSelected = computed(() =>
+    props.data.length > 0 && props.data.every((row) => isFolderSelected(row.accountId)),
+  )
+
+  const isFoldersSelectionIndeterminate = computed(() =>
+    areAllFoldersSelected.value === false && props.data.some((row) => isFolderSelected(row.accountId)),
+  )
+
+  const toggleAllSelectedFolders = () => {
+    const currentPageIds = props.data.map((row) => row.accountId)
+
+    if (areAllFoldersSelected.value === true) {
+      const currentPageIdSet = new Set(currentPageIds)
+      selectedFolderIds.value = selectedFolderIds.value.filter(
+        (accountId) => currentPageIdSet.has(accountId) === false,
+      )
+      return
+    }
+
+    selectedFolderIds.value = [...new Set([...selectedFolderIds.value, ...currentPageIds])]
+  }
+
   const trackWalletSearch = (row: RegularWalletData) => {
     if (isNotNullNorEmpty(props.searchValue) === false) {
       return
@@ -191,6 +213,9 @@ export function useRegularEntitiesList(
     onToolboxItemClicked,
     toggleSelectedFolder,
     isFolderSelected,
+    areAllFoldersSelected,
+    isFoldersSelectionIndeterminate,
+    toggleAllSelectedFolders,
     onRowClick,
     trackWalletSearch,
   }

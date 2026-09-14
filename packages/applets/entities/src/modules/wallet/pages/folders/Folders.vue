@@ -33,7 +33,7 @@
           <ManageWalletButton
             v-if="isManageWalletMenuActivated"
             :selectedFoldersCount="selectedFolders.length"
-            :is-selected-folder-customer-relation="selectedFolderCustomerRelationStatus"
+            :selected-folders="selectedFolders"
             @action-selected="onWalletAction"
           />
           <template v-else>
@@ -157,7 +157,7 @@
         <ManageWalletButton
           v-if="isManageWalletMenuActivated"
           :selectedFoldersCount="selectedFolders.length"
-          :is-selected-folder-customer-relation="selectedFolderCustomerRelationStatus"
+          :selected-folders="selectedFolders"
           @action-selected="onWalletAction"
         />
         <template v-else>
@@ -403,7 +403,6 @@ const {
   searchResult,
   selectedFolders,
   selectedFolderIds,
-  selectedFolderCustomerRelationStatus,
   searchPlaceholder,
   pageSizes,
   paginationLabel,

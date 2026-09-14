@@ -217,6 +217,14 @@
         pWidth="46"
         :pShowOverflowTooltip="false"
       >
+        <template #header>
+          <PCheckbox
+            :model-value="areAllFoldersSelected"
+            :p-indeterminate="isFoldersSelectionIndeterminate"
+            data-testid="wallet-folder-select-all-checkbox"
+            @update:model-value="toggleAllSelectedFolders"
+          />
+        </template>
         <template #default="scope">
           <PCheckbox
             :model-value="isFolderSelected(scope.row.accountId)"
@@ -341,6 +349,9 @@ const {
   onToolboxItemClicked,
   toggleSelectedFolder,
   isFolderSelected,
+  areAllFoldersSelected,
+  isFoldersSelectionIndeterminate,
+  toggleAllSelectedFolders,
   onRowClick,
 } = useRegularEntitiesList(props, emit, selectedFolderIds)
 

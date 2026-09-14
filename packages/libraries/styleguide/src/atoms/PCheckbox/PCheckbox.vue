@@ -7,6 +7,7 @@
     }"
     :value="pLabel"
     :disabled="pDisabled"
+    :indeterminate="pIndeterminate"
     :model-value="model"
     :data-testid="pTestId"
     @update:model-value="onUpdateModelValue"
@@ -28,6 +29,7 @@ withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
   pLabelLeft: false,
   pDisabled: undefined,
+  pIndeterminate: undefined,
   pTestId: undefined,
 })
 

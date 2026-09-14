@@ -4,6 +4,7 @@ import { ManageWalletAction } from '@entities/modules/wallet/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ManageWalletMenuTranslations } from './manage-wallet-button.types'
+import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
 
 let hasPermissionMock: MockInstance
 const isDelegationRequestTabsActivatedMock = vi.fn(() => false)
@@ -25,9 +26,17 @@ const translations: ManageWalletMenuTranslations = {
   createTestAccount: 'Create',
 }
 
-const getActions = (selectedFoldersCount: number, isSelectedFolderCustomerRelation?: boolean) =>
+const buildSelectedFolder = (isCustomerRelation: boolean): SelectedFolder => ({
+  accountNumber: 'A1',
+  id: 1,
+  name: 'Folder',
+  avatarColor: 'persian',
+  isCustomerRelation,
+})
+
+const getActions = (selectedFoldersCount: number, selectedFolders: SelectedFolder[] = []) =>
   ManageWalletMenuManager
-    .getMenuElements(selectedFoldersCount, translations, isSelectedFolderCustomerRelation)
+    .getMenuElements(selectedFoldersCount, translations, selectedFolders)
     .map((item) => item.pActionName)
 
 describe('ManageWalletMenuManager', () => {
@@ -64,15 +73,7 @@ describe('ManageWalletMenuManager', () => {
     hasPermissionMock.mockReturnValue(true)
     isDelegationRequestTabsActivatedMock.mockReturnValue(true)
 
-    expect(getActions(1, false)).toEqual([
-      ManageWalletAction.DECLARE_CUSTOMER_RELATION,
-      ManageWalletAction.DELEGATE_FOLDERS,
-      ManageWalletAction.REMOVE_FROM_FOLDERS,
-    ])
-  })
-
-  it('returns the declare action when the single folder relation status is unavailable', () => {
-    expect(getActions(1)).toEqual([
+    expect(getActions(1, [buildSelectedFolder(false)])).toEqual([
       ManageWalletAction.DECLARE_CUSTOMER_RELATION,
       ManageWalletAction.DELEGATE_FOLDERS,
       ManageWalletAction.REMOVE_FROM_FOLDERS,
@@ -80,15 +81,37 @@ describe('ManageWalletMenuManager', () => {
   })
 
   it('returns the remove relation action for a single folder with a customer relation', () => {
-    expect(getActions(1, true)).toEqual([
+    expect(getActions(1, [buildSelectedFolder(true)])).toEqual([
       ManageWalletAction.REMOVE_CUSTOMER_RELATION,
       ManageWalletAction.DELEGATE_FOLDERS,
       ManageWalletAction.REMOVE_FROM_FOLDERS,
     ])
   })
 
-  it('returns both customer relation actions when multiple folders are selected', () => {
-    expect(getActions(3)).toEqual([
+  it('returns only the declare action when every selected folder lacks a customer relation', () => {
+    const selectedFolders = [buildSelectedFolder(false), buildSelectedFolder(false), buildSelectedFolder(false)]
+
+    expect(getActions(3, selectedFolders)).toEqual([
+      ManageWalletAction.DECLARE_CUSTOMER_RELATION,
+      ManageWalletAction.DELEGATE_FOLDERS,
+      ManageWalletAction.REMOVE_FROM_FOLDERS,
+    ])
+  })
+
+  it('returns only the remove action when every selected folder has a customer relation', () => {
+    const selectedFolders = [buildSelectedFolder(true), buildSelectedFolder(true), buildSelectedFolder(true)]
+
+    expect(getActions(3, selectedFolders)).toEqual([
+      ManageWalletAction.REMOVE_CUSTOMER_RELATION,
+      ManageWalletAction.DELEGATE_FOLDERS,
+      ManageWalletAction.REMOVE_FROM_FOLDERS,
+    ])
+  })
+
+  it('returns both customer relation actions when the selection is mixed', () => {
+    const selectedFolders = [buildSelectedFolder(true), buildSelectedFolder(false), buildSelectedFolder(true)]
+
+    expect(getActions(3, selectedFolders)).toEqual([
       ManageWalletAction.DECLARE_CUSTOMER_RELATION,
       ManageWalletAction.REMOVE_CUSTOMER_RELATION,
       ManageWalletAction.DELEGATE_FOLDERS,
@@ -96,9 +119,17 @@ describe('ManageWalletMenuManager', () => {
     ])
   })
 
+  it('hides both customer relation actions when no selected folder relation data is available', () => {
+    expect(getActions(2)).toEqual([
+      ManageWalletAction.DELEGATE_FOLDERS,
+      ManageWalletAction.REMOVE_FROM_FOLDERS,
+    ])
+  })
+
   it('uses the expected icons for selected folders actions', () => {
+    const selectedFolders = [buildSelectedFolder(true), buildSelectedFolder(false)]
     const [declareRelationAction, removeRelationAction, delegateFoldersAction, removeFromFoldersAction] =
-      ManageWalletMenuManager.getMenuElements(2, translations)
+      ManageWalletMenuManager.getMenuElements(2, translations, selectedFolders)
 
     expect(declareRelationAction.pIconName).toBe('personCheck')
     expect(removeRelationAction.pIconName).toBe('personSlash')

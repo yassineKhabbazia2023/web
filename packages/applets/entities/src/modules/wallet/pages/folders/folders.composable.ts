@@ -71,7 +71,6 @@ export function useFolders() {
   const {
     selectedFolders,
     selectedFolderIds,
-    selectedFolderCustomerRelationStatus,
   } = useFolderSelection(searchResult)
 
   const paginationLabel = computed(() => getPaginationLabel(t(`${I18N_KEY}.on`), {
@@ -221,7 +220,6 @@ export function useFolders() {
     searchResult,
     selectedFolders,
     selectedFolderIds,
-    selectedFolderCustomerRelationStatus,
     searchPlaceholder,
     pageSizes,
     paginationLabel,

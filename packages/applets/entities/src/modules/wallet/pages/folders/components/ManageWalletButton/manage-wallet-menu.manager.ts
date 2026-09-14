@@ -4,6 +4,7 @@ import { filterAccessibleMenuItems } from '@entities/utils'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { ManageWalletAction } from '@entities/modules/wallet/enums'
+import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
 import type { ManageWalletMenuTranslations } from './manage-wallet-button.types'
 
 export class ManageWalletMenuManager {
@@ -51,23 +52,25 @@ export class ManageWalletMenuManager {
 
   static buildSelectedFoldersMenuElements(
     translations: ManageWalletMenuTranslations,
-    selectedFoldersCount: number,
-    isSelectedFolderCustomerRelation?: boolean,
+    selectedFolders: SelectedFolder[],
   ): AccessibleMenuItem[] {
+    const hasCustomerRelationFolderSelected = selectedFolders.some((folder) => folder.isCustomerRelation === true)
+    const hasNonCustomerRelationFolderSelected = selectedFolders.some((folder) => folder.isCustomerRelation === false)
+
     return [
       {
         pIconName: 'personCheck',
         pValue: translations.declareCustomerRelation,
         pActionName: ManageWalletAction.DECLARE_CUSTOMER_RELATION,
         pState: 'default',
-        display: selectedFoldersCount > 1 || isSelectedFolderCustomerRelation !== true,
+        display: hasNonCustomerRelationFolderSelected,
       },
       {
         pIconName: 'personSlash',
         pValue: translations.removeCustomerRelation,
         pActionName: ManageWalletAction.REMOVE_CUSTOMER_RELATION,
         pState: 'default',
-        display: selectedFoldersCount > 1 || isSelectedFolderCustomerRelation === true,
+        display: hasCustomerRelationFolderSelected,
       },
       {
         pIconName: 'folderSymlink',
@@ -89,13 +92,12 @@ export class ManageWalletMenuManager {
   static getMenuElements(
     selectedFoldersCount: number,
     translations: ManageWalletMenuTranslations,
-    isSelectedFolderCustomerRelation?: boolean,
+    selectedFolders: SelectedFolder[],
   ): PToolboxItemProps[] {
     if (selectedFoldersCount > 0) {
       return filterAccessibleMenuItems(ManageWalletMenuManager.buildSelectedFoldersMenuElements(
         translations,
-        selectedFoldersCount,
-        isSelectedFolderCustomerRelation,
+        selectedFolders,
       ))
     }
     return filterAccessibleMenuItems(ManageWalletMenuManager.buildWalletMenuElements(translations))

@@ -3,5 +3,6 @@ export interface PCheckboxProps {
   pRounded?: boolean
   pLabelLeft?: boolean
   pDisabled?: boolean
+  pIndeterminate?: boolean
   pTestId?: string
 }

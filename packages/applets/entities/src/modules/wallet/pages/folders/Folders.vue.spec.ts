@@ -233,7 +233,9 @@ describe('deploy', () => {
     await nextTick()
 
     expect(manageWalletButton.props('selectedFoldersCount')).toBe(1)
-    expect(manageWalletButton.props('isSelectedFolderCustomerRelation')).toBe(firstFolder.isCustomerRelation)
+    expect(manageWalletButton.props('selectedFolders')).toEqual([
+      expect.objectContaining({ id: firstFolder.accountId, isCustomerRelation: firstFolder.isCustomerRelation }),
+    ])
   })
 
   it('displays a skeleton instead of the folders count while the accounts are loading', async () => {
@@ -326,7 +328,9 @@ describe('deploy', () => {
     tableData.vm.$emit('update:selectedFolderIds', [relatedFolder.accountId])
     await nextTick()
 
-    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+    expect(
+      wrapper.findComponent(ManageWalletButton).props('selectedFolders').map((folder) => folder.isCustomerRelation),
+    ).toStrictEqual([true])
   })
 
   it.each([
@@ -412,7 +416,9 @@ describe('deploy', () => {
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(wrapper.findComponent(BulkCustomerRelationDrawer).exists()).toBe(false)
-    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+    expect(
+      wrapper.findComponent(ManageWalletButton).props('selectedFolders').map((folder) => folder.isCustomerRelation),
+    ).toStrictEqual([true])
   })
 
   it('updates only folders that succeeded after a partial customer relation update', async () => {
@@ -445,11 +451,15 @@ describe('deploy', () => {
 
     tableData.vm.$emit('update:selectedFolderIds', [succeededFolder.accountId])
     await nextTick()
-    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(true)
+    expect(
+      wrapper.findComponent(ManageWalletButton).props('selectedFolders').map((folder) => folder.isCustomerRelation),
+    ).toStrictEqual([true])
 
     tableData.vm.$emit('update:selectedFolderIds', [failedFolder.accountId])
     await nextTick()
-    expect(wrapper.findComponent(ManageWalletButton).props('isSelectedFolderCustomerRelation')).toBe(false)
+    expect(
+      wrapper.findComponent(ManageWalletButton).props('selectedFolders').map((folder) => folder.isCustomerRelation),
+    ).toStrictEqual([false])
   })
 
   it.each([

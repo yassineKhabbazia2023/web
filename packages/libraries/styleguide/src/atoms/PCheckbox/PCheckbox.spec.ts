@@ -71,4 +71,16 @@ describe('pCheckbox', () => {
 
     expect(wrapper.findComponent({ name: 'ElCheckbox' }).props('disabled')).toBe(true)
   })
+
+  it('should pass undefined to ElCheckbox indeterminate by default', () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).props('indeterminate')).toBeUndefined()
+  })
+
+  it('should pass pIndeterminate to ElCheckbox indeterminate', () => {
+    const wrapper: VueWrapper<any> = createWrapper({ pIndeterminate: true })
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).props('indeterminate')).toBe(true)
+  })
 })

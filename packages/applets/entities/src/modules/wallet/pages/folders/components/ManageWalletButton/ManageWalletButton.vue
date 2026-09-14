@@ -88,7 +88,7 @@ const toolboxItems = computed(() =>
   ManageWalletMenuManager.getMenuElements(
     props.selectedFoldersCount,
     menuTranslations.value,
-    props.isSelectedFolderCustomerRelation,
+    props.selectedFolders,
   ),
 )
 

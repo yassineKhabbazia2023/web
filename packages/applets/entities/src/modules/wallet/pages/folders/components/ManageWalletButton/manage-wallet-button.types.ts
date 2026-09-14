@@ -1,6 +1,8 @@
+import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
+
 export interface ManageWalletButtonProps {
   selectedFoldersCount: number
-  isSelectedFolderCustomerRelation?: boolean
+  selectedFolders: SelectedFolder[]
 }
 
 export interface ManageWalletMenuTranslations {

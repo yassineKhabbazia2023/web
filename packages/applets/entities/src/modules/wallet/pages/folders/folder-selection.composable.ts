@@ -46,16 +46,8 @@ export function useFolderSelection(searchResult: Ref<SearchResult<RegularWalletD
     },
   })
 
-  // Only a single selected folder can expose a meaningful customer relation status.
-  const selectedFolderCustomerRelationStatus = computed(() =>
-    selectedFolders.value.length === 1
-      ? selectedFolders.value[0].isCustomerRelation
-      : undefined,
-  )
-
   return {
     selectedFolders,
     selectedFolderIds,
-    selectedFolderCustomerRelationStatus,
   }
 }

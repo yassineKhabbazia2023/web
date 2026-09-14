@@ -458,6 +458,125 @@ describe('useRegularEntitiesList', () => {
     })
   })
 
+  describe('areAllFoldersSelected', () => {
+    it('is false when no folder from the current page is selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const { result, app } = setupComposable({ data: rows })
+
+      expect(result.areAllFoldersSelected.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('is false when only some folders from the current page are selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const selectedFolderIds = ref<number[]>([100])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      expect(result.areAllFoldersSelected.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('is true when every folder from the current page is selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const selectedFolderIds = ref<number[]>([100, 200])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      expect(result.areAllFoldersSelected.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('is false when the current page has no rows', () => {
+      const { result, app } = setupComposable({ data: [] })
+
+      expect(result.areAllFoldersSelected.value).toBe(false)
+
+      app.unmount()
+    })
+  })
+
+  describe('isFoldersSelectionIndeterminate', () => {
+    it('is false when no folder from the current page is selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const { result, app } = setupComposable({ data: rows })
+
+      expect(result.isFoldersSelectionIndeterminate.value).toBe(false)
+
+      app.unmount()
+    })
+
+    it('is true when only some folders from the current page are selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const selectedFolderIds = ref<number[]>([100])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      expect(result.isFoldersSelectionIndeterminate.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('is false when every folder from the current page is selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const selectedFolderIds = ref<number[]>([100, 200])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      expect(result.isFoldersSelectionIndeterminate.value).toBe(false)
+
+      app.unmount()
+    })
+  })
+
+  describe('toggleAllSelectedFolders', () => {
+    it('selects every folder from the current page when none is selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const { result, app, selectedFolderIds } = setupComposable({ data: rows })
+
+      result.toggleAllSelectedFolders()
+
+      expect(selectedFolderIds.value).toStrictEqual([100, 200])
+
+      app.unmount()
+    })
+
+    it('deselects every folder from the current page when all are selected', () => {
+      const rows = [buildRow({ accountId: 100 }), buildRow({ accountId: 200 })]
+      const selectedFolderIds = ref<number[]>([100, 200])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      result.toggleAllSelectedFolders()
+
+      expect(selectedFolderIds.value).toStrictEqual([])
+
+      app.unmount()
+    })
+
+    it('keeps folders selected from another page when selecting the current page', () => {
+      const rows = [buildRow({ accountId: 100 })]
+      const selectedFolderIds = ref<number[]>([999])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      result.toggleAllSelectedFolders()
+
+      expect(selectedFolderIds.value).toStrictEqual([999, 100])
+
+      app.unmount()
+    })
+
+    it('only deselects the current page folders, keeping folders selected from another page', () => {
+      const rows = [buildRow({ accountId: 100 })]
+      const selectedFolderIds = ref<number[]>([999, 100])
+      const { result, app } = setupComposable({ data: rows }, undefined, selectedFolderIds)
+
+      result.toggleAllSelectedFolders()
+
+      expect(selectedFolderIds.value).toStrictEqual([999])
+
+      app.unmount()
+    })
+  })
+
   describe('isFolderSelected', () => {
     it('returns true when row id is selected', () => {
       const selectedFolderIds = ref<number[]>([100])
