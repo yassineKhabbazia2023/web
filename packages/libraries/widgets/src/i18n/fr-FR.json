@@ -236,19 +236,18 @@
     },
     "invoicesSereniteDialog": {
       "title": "Réforme de la facturation électronique",
-      "intro": "Depuis le 1er septembre 2026, toutes les entreprises assujetties à la TVA doivent recevoir leurs factures via une plateforme agréée. C’est un service certifié par l’État qui centralise vos factures fournisseurs.",
+      "intro": "Depuis le 1er septembre 2026, toutes les entreprises assujetties à la TVA doivent recevoir leurs factures via une plateforme agréée. C’est un service certifié par l’État qui sert d’intermédiaire de confiance pour la réception, l’émission et le contrôle des factures électroniques.",
       "offer": {
-        "titlePart1": "Notre plateforme agréée :",
+        "titlePart1": "Notre offre",
         "titleHighlight": "Sérénité",
-        "descriptionPart1": "Elle couvre la réception des factures, la gestion des achats et l’e-invoicing, et s’intègre à vos outils existants.",
+        "titlePart2": ": la plateforme agréée by Pennylane",
+        "descriptionPart1": "Elle couvre la réception des factures, la gestion des achats, l’e-invoicing.",
         "descriptionPart2": "RYDGE Conseil met à votre disposition la plateforme agréée leader du marché, qui s’intègre à votre environnement sans remplacer vos outils.",
-        "tagIntegration": "S’intègre à vos outils",
         "tagNoCommitment": "Sans engagement",
         "price": "à partir de 7 €",
         "priceUnit": "HT / mois"
       },
-      "legalWarning": "Si vous n’avez pas déclaré de plateforme agréée, vos fournisseurs ne peuvent plus vous transmettre légalement leurs factures.",
-      "understandReformButton": "Comprendre la réforme",
+      "legalWarning": "Sans plateforme agréée, les garanties de conformité, de sécurité et de traçabilité des échanges ne sont plus assurées, exposant l’entreprise à des risques réglementaires et financiers.",
       "complyButton": "Me mettre en conformité"
     }
   }

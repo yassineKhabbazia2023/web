@@ -58,7 +58,6 @@
     <InvoicesSereniteDialog
       v-model="isInvoicesSereniteDialogVisible"
       @comply="onInvoicesSereniteComply"
-      @understand-reform="onInvoicesSereniteUnderstandReform"
       @close="onInvoicesSereniteDialogClose"
     />
   </div>
@@ -143,7 +142,6 @@ const {
   isDialogVisible: isInvoicesSereniteDialogVisible,
   checkEligibility: checkInvoicesSereniteEligibility,
   onComply: onInvoicesSereniteComply,
-  onUnderstandReform: onInvoicesSereniteUnderstandReform,
   onDialogClose: onInvoicesSereniteDialogClose,
 } = useInvoicesSerenite()
 

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { logger } from '@pulse/toolbox'
-import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL, RYDGE_ELECTRONIC_INVOICING_REFORM_URL } from '@pulse/common/constants'
+import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL } from '@pulse/common/constants'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { InvoicesSereniteService } from '@pulse/common/services/invoices-serenite'
 import type { InvoicesSereniteResponseResult } from '@pulse/common/services/invoices-serenite'
@@ -48,11 +48,6 @@ export function useInvoicesSerenite() {
     markAsSeen('yes')
   }
 
-  // purely informative: the modal is not marked as seen and the dialog stays open
-  function onUnderstandReform(): void {
-    window.open(RYDGE_ELECTRONIC_INVOICING_REFORM_URL, '_blank', 'noopener,noreferrer')
-  }
-
   function onDialogClose(): void {
     markAsSeen('no')
   }
@@ -61,7 +56,6 @@ export function useInvoicesSerenite() {
     isDialogVisible,
     checkEligibility,
     onComply,
-    onUnderstandReform,
     onDialogClose,
   }
 }

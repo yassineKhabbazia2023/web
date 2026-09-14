@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { logger } from '@pulse/toolbox'
-import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL, RYDGE_ELECTRONIC_INVOICING_REFORM_URL } from '@pulse/common/constants'
+import { RYDGE_ELECTRONIC_INVOICING_PLATFORM_URL } from '@pulse/common/constants'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { InvoicesSereniteService } from '@pulse/common/services/invoices-serenite'
 import { InvoicesSereniteTrackingManager } from '../widgets/gridless/invoices-serenite/invoices-serenite-tracking.manager'
@@ -79,21 +79,6 @@ describe('useInvoicesSerenite', () => {
 
       expect(InvoicesSereniteTrackingManager.trackResponse).toHaveBeenCalledExactlyOnceWith('yes')
       expect(InvoicesSereniteService.markModalAsSeen).toHaveBeenCalledExactlyOnceWith('yes')
-    })
-  })
-
-  describe('onUnderstandReform', () => {
-    it('should open the reform page in a new tab without closing the dialog nor marking the modal as seen', async () => {
-      const { isDialogVisible, checkEligibility, onUnderstandReform } = useInvoicesSerenite()
-      await checkEligibility()
-
-      onUnderstandReform()
-      await flushPromises()
-
-      expect(window.open).toHaveBeenCalledExactlyOnceWith(RYDGE_ELECTRONIC_INVOICING_REFORM_URL, '_blank', 'noopener,noreferrer')
-      expect(isDialogVisible.value).toBe(true)
-      expect(InvoicesSereniteTrackingManager.trackResponse).not.toHaveBeenCalled()
-      expect(InvoicesSereniteService.markModalAsSeen).not.toHaveBeenCalled()
     })
   })
 

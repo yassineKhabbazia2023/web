@@ -30,6 +30,7 @@
         <h3 class="font-large font-bold">
           {{ t('widgets.invoicesSereniteDialog.offer.titlePart1') }}
           <span class="text-color--jungle-400">{{ t('widgets.invoicesSereniteDialog.offer.titleHighlight') }}</span>
+          {{ t('widgets.invoicesSereniteDialog.offer.titlePart2') }}
         </h3>
 
         <div class="flex flex--direction-column flex-gap--2 font-base">
@@ -39,12 +40,6 @@
 
         <div class="flex flex--align-items-center flex--justify-content-space-between flex-gap--3">
           <div class="flex flex--align-items-center flex-gap--3">
-            <PTag
-              pColor="dark-blue"
-              pSize="small"
-              pIconLeftName="link45deg"
-              :pContent="t('widgets.invoicesSereniteDialog.offer.tagIntegration')"
-            />
             <PTag
               pColor="dark-blue"
               pIconLeftName="calendarEvent"
@@ -70,13 +65,6 @@
     <template #footer>
       <div class="flex flex--align-items-center flex--justify-content-flex-end flex-gap--3">
         <PButton
-          pType="secondary"
-          pTestId="invoices-serenite-understand-reform-button"
-          @click="emit('understand-reform')"
-        >
-          {{ t('widgets.invoicesSereniteDialog.understandReformButton') }}
-        </PButton>
-        <PButton
           pType="primary"
           pTestId="invoices-serenite-comply-button"
           @click="emit('comply')"
@@ -94,7 +82,6 @@ import { useResponsive } from '@pulse/styleguide'
 import { PDialog, PButton, PAlert, PTag } from '@pulse/styleguide/components'
 const emit = defineEmits<{
   'comply': []
-  'understand-reform': []
   'close': []
 }>()
 
