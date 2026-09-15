@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { apiGatewayMock } from '../../__mocks__/vitest'
 import { API_PREFIXES } from '../../constants/api-prefixes'
 import { DematMailRoutingCode } from './invoices.enums'
@@ -94,6 +95,48 @@ describe('InvoicesService', () => {
       apiGatewayMock.post.mockRejectedValueOnce(error)
 
       await expect(InvoicesService.closeDematModal(ACCOUNT_ID)).rejects.toThrow(error)
+    })
+  })
+
+  describe('hasHubspotSubmission', () => {
+    it('should return true on a successful response', async () => {
+      apiGatewayMock.get.mockResolvedValueOnce({ data: undefined })
+
+      const result = await InvoicesService.hasHubspotSubmission(ACCOUNT_ID)
+
+      expect(result).toBe(true)
+      expect(apiGatewayMock.get)
+        .toHaveBeenCalledExactlyOnceWith(`${API_PREFIXES.REGISTRY}/accounts/${ACCOUNT_ID}/hubspot/submissions`)
+    })
+
+    it('should return false on a 404 error', async () => {
+      const error = new AxiosError('Not Found', '404', undefined, undefined, {
+        status: 404,
+        data: null,
+        headers: {},
+        statusText: 'Not Found',
+        config: {} as any,
+      })
+
+      apiGatewayMock.get.mockRejectedValueOnce(error)
+
+      const result = await InvoicesService.hasHubspotSubmission(ACCOUNT_ID)
+
+      expect(result).toBe(false)
+    })
+
+    it('should rethrow non-404 errors', async () => {
+      const error = new AxiosError('Server Error', '500', undefined, undefined, {
+        status: 500,
+        data: null,
+        headers: {},
+        statusText: 'Internal Server Error',
+        config: {} as any,
+      })
+
+      apiGatewayMock.get.mockRejectedValueOnce(error)
+
+      await expect(InvoicesService.hasHubspotSubmission(ACCOUNT_ID)).rejects.toThrow(error)
     })
   })
 })

@@ -459,6 +459,14 @@ export const devMockHandlers: RequestHandler[] = [
     return HttpResponse.json({}, { status: 204 })
   }),
 
+  // 200 = a submission already dispatched to HubSpot exists for this account (hides the
+  // banner/modal even before Akuiteo propagates the mail); 404 = no successful dispatch yet.
+  // Return `HttpResponse.json({})` (200) to exercise the "already submitted" scenario.
+  http.get('*/registry/api/accounts/:accountId/hubspot/submissions', async () => {
+    await delay(400)
+    return HttpResponse.json({}, { status: 404 })
+  }),
+
   // #endregion
 
   // #region folder Informations page

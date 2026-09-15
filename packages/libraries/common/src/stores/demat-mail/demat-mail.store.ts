@@ -24,6 +24,7 @@ export const useDematMailStore = defineStore('demat-mail', () => {
   const isDialogOpen = ref(false)
   const isSubmitting = ref(false)
   const hasSubmitError = ref(false)
+  const hasHubspotSubmission = ref(false)
 
   // Guards against out-of-order responses when the user switches folders quickly.
   let lastRequestedAccountId: number | null = null
@@ -56,6 +57,13 @@ export const useDematMailStore = defineStore('demat-mail', () => {
     }
 
     if (isNullOrEmpty(dematMail.value) === false) {
+      return false
+    }
+
+    // A submission already dispatched to HubSpot (see load()) stops the solicitation account-wide,
+    // ahead of Akuiteo's propagation into dematMail: same intent as externalDematMail below, from
+    // a dedicated dispatch-status check instead of the invoices-access payload.
+    if (hasHubspotSubmission.value === true) {
       return false
     }
 
@@ -94,10 +102,33 @@ export const useDematMailStore = defineStore('demat-mail', () => {
         return
       }
 
+      let hasSubmission = false
+
+      // Only checked for the accounts the solicitation would otherwise target: the demat account
+      // payload has no visibility into whether a HubSpot submission already succeeded (see
+      // isEligible). Resolved before assigning any state below: assigning accountId/dematMail
+      // first would flip isEligible to true for the whole time this call is in flight, flashing
+      // the banner/modal before this check comes back and hides them again.
+      if (isNullOrEmpty(response.dematMail) === true
+        && response.routingCode !== null
+        && ELIGIBLE_ROUTING_CODES.has(response.routingCode) === true) {
+        try {
+          hasSubmission = await InvoicesService.hasHubspotSubmission(entityId)
+        } catch (error) {
+          logger.error('Error fetching hubspot submission state :', error)
+        }
+
+        // A faster folder switch (or a logout) may have superseded this request while it awaited.
+        if (lastRequestedAccountId !== entityId) {
+          return
+        }
+      }
+
       accountId.value = entityId
       dematMail.value = response.dematMail
       routingCode.value = response.routingCode
       modalClosedAt.value = response.modalClosedAt
+      hasHubspotSubmission.value = hasSubmission
     } catch (error) {
       logger.error('Error fetching demat account :', error)
     }
@@ -181,6 +212,7 @@ export const useDematMailStore = defineStore('demat-mail', () => {
     isDialogOpen.value = false
     isSubmitting.value = false
     hasSubmitError.value = false
+    hasHubspotSubmission.value = false
   }
 
   return {
@@ -190,6 +222,7 @@ export const useDematMailStore = defineStore('demat-mail', () => {
     isDialogOpen,
     isSubmitting,
     hasSubmitError,
+    hasHubspotSubmission,
     isDialogDismissed,
     isEligible,
     shouldShowBanner,

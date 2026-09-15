@@ -1,4 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
+import { logger } from '@pulse/toolbox'
 import { getDematAccountResponseMock, getInvoicesAccessResponseMock, getMockedUser } from '../../__mocks__'
 import { FeatureFlagManager } from '../../managers/feature-flag/feature-flag.manager'
 import { InvoicesService } from '../../services/invoices/invoices.service'
@@ -53,6 +54,7 @@ describe('useDematMailStore', () => {
     vi.spyOn(InvoicesTracking, 'trackSubmissionSuccess').mockReturnValue(undefined)
     vi.spyOn(InvoicesTracking, 'trackSubmissionFail').mockReturnValue(undefined)
     vi.spyOn(InvoicesService, 'closeDematModal').mockResolvedValue(undefined)
+    vi.spyOn(InvoicesService, 'hasHubspotSubmission').mockResolvedValue(false)
   })
 
   describe('initial state', () => {
@@ -168,6 +170,60 @@ describe('useDematMailStore', () => {
 
       expect(store.isEligible).toBe(true)
       expect(store.shouldAutoOpenDialog).toBe(true)
+    })
+
+    it('should not be eligible when a submission was already dispatched to HubSpot', async () => {
+      vi.mocked(InvoicesService.hasHubspotSubmission).mockResolvedValue(true)
+
+      const store = await loadEligibleStore()
+
+      expect(store.hasHubspotSubmission).toBe(true)
+      expect(store.isEligible).toBe(false)
+      expect(store.shouldShowBanner).toBe(false)
+      expect(store.shouldAutoOpenDialog).toBe(false)
+      expect(vi.mocked(InvoicesService.hasHubspotSubmission)).toHaveBeenCalledExactlyOnceWith(ACCOUNT_ID)
+    })
+
+    it('should not check the HubSpot submission when the demat mail is already filled', async () => {
+      vi.spyOn(InvoicesService, 'fetchDematAccount')
+        .mockResolvedValue(getDematAccountResponseMock({ dematMail: DEMAT_EMAIL }))
+
+      const store = useDematMailStore()
+      await store.load(ACCOUNT_ID)
+
+      expect(vi.mocked(InvoicesService.hasHubspotSubmission)).not.toHaveBeenCalled()
+    })
+
+    it('should not check the HubSpot submission for a routing code out of scope', async () => {
+      await loadEligibleStore('0-B2B')
+
+      expect(vi.mocked(InvoicesService.hasHubspotSubmission)).not.toHaveBeenCalled()
+    })
+
+    it('should log and stay eligible when the HubSpot submission check fails', async () => {
+      vi.mocked(InvoicesService.hasHubspotSubmission).mockRejectedValue(new Error('boom'))
+
+      const store = await loadEligibleStore()
+
+      expect(store.hasHubspotSubmission).toBe(false)
+      expect(store.isEligible).toBe(true)
+      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Error fetching hubspot submission state :', expect.any(Error))
+    })
+
+    it('should ignore a HubSpot submission response superseded by a faster folder switch', async () => {
+      const otherAccountId = 99
+      vi.spyOn(InvoicesService, 'fetchDematAccount').mockResolvedValue(getDematAccountResponseMock())
+      vi.mocked(InvoicesService.hasHubspotSubmission).mockImplementation(async (accountId) => (
+        accountId === ACCOUNT_ID
+      ))
+
+      const store = useDematMailStore()
+      const firstLoad = store.load(ACCOUNT_ID)
+      const secondLoad = store.load(otherAccountId)
+      await Promise.all([firstLoad, secondLoad])
+
+      expect(store.accountId).toBe(otherAccountId)
+      expect(store.hasHubspotSubmission).toBe(false)
     })
 
     it('should ignore a response superseded by a faster folder switch', async () => {
