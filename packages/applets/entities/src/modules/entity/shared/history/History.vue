@@ -218,7 +218,7 @@ const formatDate = (dateString: string): string => {
   }
 
   &__details {
-    color: var(--p-jungle-400);
+    color: var(--p-text-neutral);
   }
 
   &__list {
@@ -230,4 +230,3 @@ const formatDate = (dateString: string): string => {
   }
 }
 </style>
-
