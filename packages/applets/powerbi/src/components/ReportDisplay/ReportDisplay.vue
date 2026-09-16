@@ -34,6 +34,7 @@ import { PEntityHeader } from '@pulse/styleguide/components'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { ReportDisplayProps } from './report-display.types'
 import { fetchBIToken } from '@powerbi/services/reporting.service'
+import { useMonthlyNoteTracking } from '@powerbi/composables/monthly-note-tracking/monthly-note-tracking.composable'
 
 import ReportActions from '@powerbi/components/ReportActions/ReportActions.vue'
 
@@ -59,6 +60,8 @@ const { selectedReport } = toRefs(props)
 const currentEntityStore = useCurrentEntityStore()
 const { currentEntity } = storeToRefs(currentEntityStore)
 
+const { trackMonthlyNoteDisplayed } = useMonthlyNoteTracking()
+
 const powerBIConfig = computed(() => ({
   type: 'report',
   accessToken: reportToken.value,
@@ -78,6 +81,7 @@ const loadPowerBIReport = async () => {
     const { embededReportId, accountId } = selectedReport.value
     reportToken.value = await fetchBIToken(embededReportId, accountId)
     window.powerbi.embed(powerbiContainer, powerBIConfig.value)
+    trackMonthlyNoteDisplayed(selectedReport.value)
   } catch {
     displayNotification('error', t('biReportLoadingError'))
   }

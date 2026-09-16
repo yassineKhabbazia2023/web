@@ -8,6 +8,7 @@ import type {
   ReportStatistics,
 } from '@powerbi/types/bi-reports.types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
+import type { AccountResponse } from '@powerbi/types/account.types'
 
 export const getMockedBIReports = (): Report[] => {
   return [
@@ -230,5 +231,37 @@ export const getMockReportStatistics = (): ReportStatistics => {
     failed: 10,
     offline: 2,
     online: 20,
+  }
+}
+
+export const getMockedMonthlyNoteReport = (): Report => {
+  return {
+    ...getMockedBIReports()[0],
+    reportId: 12,
+    reportLabel: 'Note mensuelle comptable',
+    name: 'Note mensuelle comptable',
+    type: {
+      reportTypeId: 12,
+      name: 'noteMensuelleEC',
+      collaboratorLabel: 'Note mensuelle comptable',
+      customerLabel: 'Note mensuelle comptable',
+    },
+  }
+}
+
+export const getMockedAccountResponse = (override: Partial<AccountResponse> = {}): AccountResponse => {
+  return {
+    accountId: 602,
+    office: {
+      officeId: 32,
+      name: 'Alençon',
+      phoneNumber: '02 33 82 33 00',
+      addressId: 223193,
+    },
+    hub: {
+      hubId: 4,
+      hubName: 'Toulouse Midi Pyrénées',
+    },
+    ...override,
   }
 }
