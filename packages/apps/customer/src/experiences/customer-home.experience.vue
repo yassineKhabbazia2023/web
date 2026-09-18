@@ -109,17 +109,17 @@ const userConfig = computed((): UserConfig => ({
 // Setup query params watchers (automatic via reactive watchers)
 useCustomerQueryParams()
 
-// Demat mail collect: the eligibility is account-level, it is reloaded on every folder switch
+// Demat mail collect: the eligibility is account-level, it is reloaded on every folder switch.
+// The current entity is also set outside entity views (restored from the local storage on the
+// wallet), where the solicitation is never shown: only an entity actually viewed is loaded.
 const dematMailStore = useDematMailStore()
 const { isEligible: isDematMailEligible } = storeToRefs(dematMailStore)
+const dematMailEntityId = computed(() => (isEntityView.value ? currentEntityStore.currentEntityId : undefined))
 
-watch(() => currentEntityStore.currentEntityId, (entityId) => {
-  if (entityId === undefined) {
-    dematMailStore.reset()
-    return
+watch(dematMailEntityId, (entityId) => {
+  if (entityId !== undefined) {
+    dematMailStore.load(entityId)
   }
-
-  dematMailStore.load(entityId)
 }, { immediate: true })
 
 // Pennylane amendment

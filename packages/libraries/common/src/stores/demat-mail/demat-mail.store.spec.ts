@@ -253,6 +253,29 @@ describe('useDematMailStore', () => {
       expect(store.isEligible).toBe(false)
       expect(store.accountId).toBeNull()
     })
+
+    it('should not refetch an account already loaded', async () => {
+      const store = await loadEligibleStore()
+
+      await store.load(ACCOUNT_ID)
+
+      expect(InvoicesService.fetchDematAccount).toHaveBeenCalledTimes(1)
+      expect(store.accountId).toBe(ACCOUNT_ID)
+      expect(store.isEligible).toBe(true)
+    })
+
+    it('should retry an account whose previous fetch failed', async () => {
+      vi.spyOn(InvoicesService, 'fetchDematAccount')
+        .mockRejectedValueOnce(new Error('boom'))
+        .mockResolvedValueOnce(getDematAccountResponseMock({ accountId: ACCOUNT_ID, dematMail: null }))
+
+      const store = useDematMailStore()
+      await store.load(ACCOUNT_ID)
+      await store.load(ACCOUNT_ID)
+
+      expect(InvoicesService.fetchDematAccount).toHaveBeenCalledTimes(2)
+      expect(store.accountId).toBe(ACCOUNT_ID)
+    })
   })
 
   describe('openDialog', () => {

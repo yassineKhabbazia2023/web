@@ -84,6 +84,12 @@ export const useDematMailStore = defineStore('demat-mail', () => {
   const shouldAutoOpenDialog = computed(() => isEligible.value === true && isDialogDismissed.value === false)
 
   async function load(entityId: number): Promise<void> {
+    // accountId is only assigned once a fetch succeeded: re-entering the same folder (e.g. from
+    // the wallet) keeps the loaded state, including the local updates made by submit()/closeDialog().
+    if (accountId.value === entityId) {
+      return
+    }
+
     reset()
 
     // The flag is readable synchronously here: OpenFeature is awaited before createApp().
