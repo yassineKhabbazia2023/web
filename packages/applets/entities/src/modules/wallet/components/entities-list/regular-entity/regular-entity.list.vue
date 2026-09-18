@@ -68,7 +68,8 @@
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
           />
-          <a
+          <router-link
+            :to="getEntityRedirectRoute(scope.row.accountId)"
             class="
               font-semibold
               margin-left--2
@@ -78,10 +79,11 @@
               text-overflow--ellipsis
             "
             data-testid="account-access-link"
-            @click="onDirectFolderAccess(scope.row.accountId)"
+            @click="trackDirectFolderAccess"
+            @auxclick.middle="trackDirectFolderAccess"
           >
             {{ scope.row.name }}
-          </a>
+          </router-link>
         </div>
       </template>
     </PTableColumn>
@@ -320,6 +322,7 @@ import { useRegularEntitiesList } from './regular-entity.list.composable'
 import { RegularEntitiesListManager } from './regular-entity.list.manager'
 import { RegularEntityAction } from './regular-entity.list.enums'
 import { FAVORITE_SORT_ORDERS } from './regular-entity.list.consts'
+import { getEntityRedirectRoute } from '../entities-list.utils'
 
 const { t } = useI18n()
 const LIST_KEY = 'entities.wallet.entitiesList'
@@ -344,7 +347,7 @@ const {
   callHandleAddFavorite,
   menuElementsCollaborator,
   handleSort,
-  onDirectFolderAccess,
+  trackDirectFolderAccess,
   onToolboxVisibleChange,
   onToolboxItemClicked,
   toggleSelectedFolder,

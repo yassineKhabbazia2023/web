@@ -1,9 +1,6 @@
 import { test, expect, type Page, type Locator } from '@playwright/test'
 import { tokenMock } from '@pulse/common/mocks'
-// Side-effect import: activates the globalThis.__AMPLITUDE_EVENTS__ type augmentation
-import '@pulse/e2e-mocks/shims/amplitude'
-
-import type { AmplitudeEvent } from '@pulse/e2e-mocks/shims/amplitude'
+import { getAmplitudeEvents, clearAmplitudeEvents, expectAmplitudeEvent } from '@pulse/e2e-mocks/helpers/amplitude'
 
 // ─── URLs ────────────────────────────────────────────────────────────────────
 const FOLDERS_URL = 'portefeuille/dossiers'
@@ -26,50 +23,6 @@ function getTableRows(page: Page): Locator {
 
 function getFirstRow(page: Page): Locator {
   return getTableRows(page).first()
-}
-
-async function getAmplitudeEvents(page: Page): Promise<AmplitudeEvent[]> {
-  return page.evaluate(() => globalThis.__AMPLITUDE_EVENTS__ ?? [])
-}
-
-async function clearAmplitudeEvents(page: Page) {
-  await page.evaluate(() => {
-    globalThis.__AMPLITUDE_EVENTS__ = []
-  })
-}
-
-function matchesEventProperties(
-  event: AmplitudeEvent,
-  expectedProperties: Record<string, unknown>,
-): boolean {
-  return Object.entries(expectedProperties).every(([key, value]) => {
-    const actual = (event.event_properties as Record<string, unknown>)?.[key]
-    if (Array.isArray(value)) {
-      return Array.isArray(actual)
-        && value.every((v) => actual.includes(v))
-    }
-    return actual === value
-  })
-}
-
-async function expectAmplitudeEvent(
-  page: Page,
-  eventType: string,
-  expectedProperties?: Record<string, unknown>,
-) {
-  await expect(async () => {
-    const events = await getAmplitudeEvents(page)
-    const match = events.find((e) => {
-      if (e.event_type !== eventType) {
-        return false
-      }
-      if (expectedProperties === undefined) {
-        return true
-      }
-      return matchesEventProperties(e, expectedProperties)
-    })
-    expect(match).toBeDefined()
-  }).toPass({ timeout: 10000 })
 }
 
 async function clickFirstRowToolbox(page: Page) {
@@ -174,6 +127,35 @@ test.describe('RegularEntityList - direct folder access', () => {
   test('should navigate away when clicking company name link', async ({ page }) => {
     await getFirstRow(page).getByTestId('account-access-link').click()
     await expect(page).not.toHaveURL(new RegExp(FOLDERS_URL))
+  })
+
+  test('should open a new tab and keep the wallet tab on ctrl+click', async ({ page, context }) => {
+    const newTabPromise = context.waitForEvent('page')
+
+    await getFirstRow(page).getByTestId('account-access-link').click({ modifiers: ['ControlOrMeta'] })
+
+    const newTab = await newTabPromise
+    await expect(newTab).toHaveURL(/\/dossier\/\d+\/accueil/)
+    await expect(page).toHaveURL(new RegExp(FOLDERS_URL))
+  })
+
+  // The link opens in a new tab, the tracking is expected in the tab where the link was clicked
+  test('should track Feature Consulted on ctrl+click', async ({ page }) => {
+    await getFirstRow(page).getByTestId('account-access-link').click({ modifiers: ['ControlOrMeta'] })
+
+    await expectAmplitudeEvent(page, 'Feature Consulted', {
+      feature_name: 'homepage',
+      feature_localisation_consultation: 'portefeuille',
+    })
+  })
+
+  test('should track Feature Consulted on middle click', async ({ page }) => {
+    await getFirstRow(page).getByTestId('account-access-link').click({ button: 'middle' })
+
+    await expectAmplitudeEvent(page, 'Feature Consulted', {
+      feature_name: 'homepage',
+      feature_localisation_consultation: 'portefeuille',
+    })
   })
 })
 

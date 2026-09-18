@@ -21,7 +21,6 @@
         data-testid="accounts-table"
         :data="searchResult.items"
         @sort-account="handleSort"
-        @access="handleOpenFolder"
         @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
       />
@@ -57,7 +56,6 @@
 <script lang='ts' setup>
 import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { computed, onMounted, ref, watch } from 'vue'
 import {
   PLoader,
@@ -73,8 +71,7 @@ import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import type { AccountRow } from '@entities/types'
-import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
-import { TrackingCenter } from '@pulse/common/services/amplitude'
+import { AccountType } from '@pulse/common/enums'
 import type {
   SearchCriteria,
   SearchResult,
@@ -105,8 +102,6 @@ const { t } = useI18n({
     },
   },
 })
-
-const router = useRouter()
 
 const isLoading = ref(true)
 const selectedAccount = ref<AccountRow>()
@@ -186,10 +181,6 @@ const fetchAccountList = async () => {
 }
 const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
-}
-const handleOpenFolder = (entityId: number) => {
-  TrackingCenter.trackHomepageConsulted()
-  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleSort = (param: SortingCriteria) => {
   const { handleSortCriteria } = useSort()

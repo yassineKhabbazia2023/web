@@ -31,10 +31,6 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
     })
   }
 
-  const onDirectFolderAccess = (accountId: number) => {
-    emit('access', accountId)
-  }
-
   const onToolboxItemClicked = (action: ProspectAction, row: ProspectWalletData) => {
     if (action === ProspectAction.RETRY_MASS_ACTIVATION_EMAIL) {
       emit('displayResendActivationEmailDrawer', row)
@@ -62,7 +58,6 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
     isArchiveDialogVisible,
     selectedProspect,
     handleSort,
-    onDirectFolderAccess,
     onToolboxItemClicked,
     onProspectArchived,
     onRowClick,

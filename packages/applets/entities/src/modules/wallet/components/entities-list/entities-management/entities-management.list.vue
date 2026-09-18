@@ -28,7 +28,8 @@
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
           />
-          <a
+          <router-link
+            :to="getEntityRedirectRoute(scope.row.accountId)"
             class="
               font-semibold
               margin-left--2
@@ -38,10 +39,11 @@
               text-overflow--ellipsis
             "
             data-testid="account-access-link"
-            @click="onDirectFolderAccess(scope.row.accountId)"
+            @click="trackDirectFolderAccess"
+            @auxclick.middle="trackDirectFolderAccess"
           >
             {{ scope.row.name }}
-          </a>
+          </router-link>
         </div>
       </template>
     </PTableColumn>
@@ -217,6 +219,7 @@ import { useI18n } from 'vue-i18n'
 import type { EntitiesManagementListProps, EntitiesManagementListEmit } from './entities-management.list.types'
 import { useEntitiesManagementList } from './entities-management.list.composable'
 import { EntitiesManagementAction } from './entities-management.list.enums'
+import { getEntityRedirectRoute } from '../entities-list.utils'
 
 const { t } = useI18n()
 const I18N_LIST_KEY = 'entities.wallet.entitiesList'
@@ -232,7 +235,7 @@ const {
   menuElements,
   isToolboxDisabled,
   handleSort,
-  onDirectFolderAccess,
+  trackDirectFolderAccess,
   onToolboxItemClicked,
 } = useEntitiesManagementList(emit)
 </script>

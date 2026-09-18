@@ -30,7 +30,8 @@
             pAccountType="PROSPECT"
             pType="xsmall"
           />
-          <a
+          <router-link
+            :to="getEntityRedirectRoute(scope.row.accountId)"
             class="
               font-semibold
               margin-left--2
@@ -40,10 +41,9 @@
               text-overflow--ellipsis
             "
             data-testid="account-access-link"
-            @click="onDirectFolderAccess(scope.row.accountId)"
           >
             {{ scope.row.name }}
-          </a>
+          </router-link>
         </div>
       </template>
     </PTableColumn>
@@ -225,6 +225,7 @@ import { SORT_ORDERS } from '@pulse/common/constants'
 import { useProspectsEntitiesList } from './prospect-entity.list.composable'
 import { ProspectAction, ProspectColumn } from './prospect-entity.list.enums'
 import ProspectArchiveDialog from '../../prospect-archive/prospect-archive.dialog.vue'
+import { getEntityRedirectRoute } from '../entities-list.utils'
 
 const { t } = useI18n()
 const I18N_LIST_KEY = 'entities.wallet.entitiesList'
@@ -243,7 +244,6 @@ const {
   isArchiveDialogVisible,
   selectedProspect,
   handleSort,
-  onDirectFolderAccess,
   onToolboxItemClicked,
   onProspectArchived,
   onRowClick,

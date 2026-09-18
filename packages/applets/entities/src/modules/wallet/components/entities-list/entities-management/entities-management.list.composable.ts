@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import type { SortChangeEventData } from '@pulse/common/types'
 import type { RegularWalletData } from '../../../types/wallet-data.types'
 import { SortDirection } from '@pulse/common/enums'
+import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { EntitiesManagementListManager } from './entities-management.list.manager'
 import type { EntitiesManagementListEmit } from './entities-management.list.types'
 import { EntitiesManagementAction } from './entities-management.list.enums'
@@ -21,8 +22,10 @@ export function useEntitiesManagementList(emit: EntitiesManagementListEmit) {
     })
   }
 
-  const onDirectFolderAccess = (accountId: number) => {
-    emit('access', accountId)
+  // Bound to both `click` and `auxclick.middle` on the link so that left click, ctrl+click and middle click are tracked.
+  // This list has no dedicated localisation
+  const trackDirectFolderAccess = () => {
+    TrackingCenter.trackHomepageConsulted()
   }
 
   const onToolboxItemClicked = (action: EntitiesManagementAction, row: RegularWalletData) => {
@@ -37,7 +40,7 @@ export function useEntitiesManagementList(emit: EntitiesManagementListEmit) {
     menuElements,
     isToolboxDisabled,
     handleSort,
-    onDirectFolderAccess,
+    trackDirectFolderAccess,
     onToolboxItemClicked,
   }
 }

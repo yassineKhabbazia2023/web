@@ -33,6 +33,8 @@ const parentRoute = {
 }
 
 const navigationRoutes = [
+  // The entity name links resolve this route at render time: it must exist or RouterLink throws
+  { path: '/entity-redirect/:entityId', name: RouteName.ENTITY_REDIRECT, component: PlaceholderPage },
   { path: '/entity/:entityId', name: 'entity-overview', component: PlaceholderPage },
 ]
 

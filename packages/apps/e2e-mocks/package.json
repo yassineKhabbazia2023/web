@@ -13,6 +13,7 @@
     "./handlers": "./src/handlers/index.ts",
     "./handlers/backoffice": "./src/handlers/backoffice/index.ts",
     "./helpers": "./src/helpers/index.ts",
+    "./helpers/amplitude": "./src/helpers/amplitude.helper.ts",
     "./vite-plugin": "./src/vite-plugin/plugin.e2e.ts",
     "./shims/vitest": "./src/shims/vitest-shim.ts",
     "./shims/signalr": "./src/shims/signalr-shim.ts",

@@ -6,7 +6,6 @@ export interface EntitiesManagementListProps {
 }
 
 export type EntitiesManagementListEmit = {
-  (e: 'access', accountId: number): void
   (e: 'sort-account', sortingCriteria: SortingCriteria): void
   (e: 'displayAccountRightsDrawer', row: RegularWalletData): void
   (e: 'displayResendActivationEmailDrawer', row: RegularWalletData): void

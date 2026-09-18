@@ -154,16 +154,6 @@ describe('useProspectsEntitiesList', () => {
 
   })
 
-  describe('onDirectFolderAccess', () => {
-    it('should emit access with the provided accountId', () => {
-      const { emit, result } = createTestSetup()
-
-      result.onDirectFolderAccess(42)
-
-      expect(emit).toHaveBeenCalledWith('access', 42)
-    })
-  })
-
   describe('onRowClick', () => {
     beforeEach(() => {
       isMobileMock.value = false

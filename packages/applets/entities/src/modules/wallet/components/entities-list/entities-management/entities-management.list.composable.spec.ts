@@ -1,4 +1,5 @@
 import { SortDirection } from '@pulse/common/enums'
+import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { EntitiesManagementListManager } from './entities-management.list.manager'
 import { useEntitiesManagementList } from './entities-management.list.composable'
 import type { EntitiesManagementListEmit } from './entities-management.list.types'
@@ -99,13 +100,14 @@ describe('useEntitiesManagementList', () => {
     })
   })
 
-  describe('onDirectFolderAccess', () => {
-    it('should emit access with accountId', () => {
-      const { emit, result } = createTestSetup()
+  describe('trackDirectFolderAccess', () => {
+    it('should track homepage consulted without localisation', () => {
+      vi.spyOn(TrackingCenter, 'trackHomepageConsulted').mockImplementation(() => undefined)
+      const { result } = createTestSetup()
 
-      result.onDirectFolderAccess(100)
+      result.trackDirectFolderAccess()
 
-      expect(emit).toHaveBeenCalledWith('access', 100)
+      expect(vi.mocked(TrackingCenter.trackHomepageConsulted)).toHaveBeenCalledExactlyOnceWith()
     })
   })
 

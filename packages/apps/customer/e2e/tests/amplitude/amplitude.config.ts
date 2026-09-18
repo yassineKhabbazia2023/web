@@ -1,8 +1,13 @@
-import { Page, expect } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { tokenMock } from '@pulse/common/mocks'
-// Side-effect import: activates the globalThis.__AMPLITUDE_EVENTS__ type augmentation
-import '@pulse/e2e-mocks/shims/amplitude'
-export type { AmplitudeEvent } from '@pulse/e2e-mocks/shims/amplitude'
+
+export {
+  getAmplitudeEvents,
+  clearAmplitudeEvents,
+  expectAmplitudeEvent,
+  expectFeatureConsulted,
+} from '@pulse/e2e-mocks/helpers/amplitude'
+export type { AmplitudeEvent } from '@pulse/e2e-mocks/helpers/amplitude'
 
 /**
  * Setup a page for Amplitude E2E tests:
@@ -10,54 +15,6 @@ export type { AmplitudeEvent } from '@pulse/e2e-mocks/shims/amplitude'
  */
 export async function setupAmplitudePage(page: Page) {
   await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
-}
-
-/**
- * Get all recorded Amplitude events from the shim.
- */
-export async function getAmplitudeEvents(page: Page) {
-  return page.evaluate(() => globalThis.__AMPLITUDE_EVENTS__ ?? [])
-}
-
-/**
- * Clear all recorded Amplitude events
- */
-export async function clearAmplitudeEvents(page: Page) {
-  await page.evaluate(() => {
-    globalThis.__AMPLITUDE_EVENTS__ = []
-  })
-}
-
-/**
- * Assert that an Amplitude event was tracked with the given type and optional properties
- */
-export async function expectAmplitudeEvent(
-  page: Page,
-  eventType: string,
-  expectedProperties?: Record<string, unknown>,
-) {
-  await expect(async () => {
-    const events = await getAmplitudeEvents(page)
-    const match = events.find((e) => {
-      if (e.event_type !== eventType) {
-        return false
-      }
-      if (expectedProperties === undefined) {
-        return true
-      }
-      return Object.entries(expectedProperties).every(
-        ([key, value]) => (e.event_properties as Record<string, unknown>)?.[key] === value,
-      )
-    })
-    expect(match).toBeDefined()
-  }).toPass({ timeout: 10000 })
-}
-
-/**
- * Assert that a "Feature Consulted" event was tracked with the given feature_name
- */
-export async function expectFeatureConsulted(page: Page, featureName: string) {
-  await expectAmplitudeEvent(page, 'Feature Consulted', { feature_name: featureName })
 }
 
 /**

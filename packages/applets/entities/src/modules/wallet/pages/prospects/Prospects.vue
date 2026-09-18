@@ -93,10 +93,11 @@ import NoResult from '@entities/components/NoResult'
 import { useProspects } from './prospects.composable'
 import { useUserStore } from '@pulse/common/stores'
 import { useSort } from '@pulse/common/composables/sort'
-import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
+import { AccountType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import ProspectCreationDrawer from './components/prospect-creation-drawer'
 import type { ProspectWalletData } from '@entities/modules/wallet/types'
+import { getEntityRedirectRoute } from '../../components/entities-list/entities-list.utils'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -148,6 +149,6 @@ function handleSortAccount(sortCriteria: SortingCriteria) {
 }
 
 function onClickFolder(accountId: number) {
-  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: accountId } })
+  router.push(getEntityRedirectRoute(accountId))
 }
 </script>

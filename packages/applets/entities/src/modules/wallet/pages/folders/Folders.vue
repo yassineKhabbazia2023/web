@@ -344,7 +344,7 @@ import {
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
-import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
+import { AccountType } from '@pulse/common/enums'
 import NoResult from '@entities/components/NoResult'
 import OffersDrawer from '@entities/components/OffersDrawer'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
@@ -356,6 +356,7 @@ import { DelegationTab } from '@entities/modules/wallet/enums'
 import type { EntityStatus } from '@entities/modules/wallet/enums'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
+import { getEntityRedirectRoute } from '../../components/entities-list/entities-list.utils'
 import DelegationDrawer from './components/DelegationDrawer'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
@@ -489,7 +490,7 @@ function clearSelectedFolders() {
 }
 
 function onClickFolder(entityId: number) {
-  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
+  router.push(getEntityRedirectRoute(entityId))
 }
 
 function handleFilterByDeploymentStatus(filterValue: EntityStatus) {

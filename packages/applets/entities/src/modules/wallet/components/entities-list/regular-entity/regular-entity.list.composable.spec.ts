@@ -273,14 +273,13 @@ describe('useRegularEntitiesList', () => {
     })
   })
 
-  describe('onDirectFolderAccess', () => {
-    it('emits access and tracks homepage consulted', () => {
-      const { result, app, emit } = setupComposable()
+  describe('trackDirectFolderAccess', () => {
+    it('tracks homepage consulted from the wallet', () => {
+      const { result, app } = setupComposable()
 
-      result.onDirectFolderAccess(100)
+      result.trackDirectFolderAccess()
 
-      expect(vi.mocked(TrackingCenter.trackHomepageConsulted)).toHaveBeenCalledWith(AmplitudeFeatureLocalisation.PORTEFEUILLE)
-      expect(emit).toHaveBeenCalledWith('access', 100)
+      expect(vi.mocked(TrackingCenter.trackHomepageConsulted)).toHaveBeenCalledExactlyOnceWith(AmplitudeFeatureLocalisation.PORTEFEUILLE)
 
       app.unmount()
     })

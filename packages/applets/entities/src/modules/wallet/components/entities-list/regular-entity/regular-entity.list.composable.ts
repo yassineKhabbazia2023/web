@@ -87,9 +87,9 @@ export function useRegularEntitiesList(
     })
   }
 
-  const onDirectFolderAccess = (accountId: number) => {
+  // Bound to both `click` and `auxclick.middle` on the link so that left click, ctrl+click and middle click are tracked
+  const trackDirectFolderAccess = () => {
     TrackingCenter.trackHomepageConsulted(AmplitudeFeatureLocalisation.PORTEFEUILLE)
-    emit('access', accountId)
   }
 
   const onToolboxVisibleChange = (isVisible: boolean) => {
@@ -208,7 +208,7 @@ export function useRegularEntitiesList(
     callHandleAddFavorite,
     menuElementsCollaborator,
     handleSort,
-    onDirectFolderAccess,
+    trackDirectFolderAccess,
     onToolboxVisibleChange,
     onToolboxItemClicked,
     toggleSelectedFolder,
