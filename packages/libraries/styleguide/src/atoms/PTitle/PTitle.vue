@@ -6,7 +6,9 @@
       :pSize="pIconSize"
     />
     <span class="text-color--base-blue-pulse margin-left--2">
-      {{ pTitle }}
+      <!-- A title made of several parts is written as markup; the prop stays
+           the way to pass a plain one -->
+      <slot>{{ pTitle }}</slot>
     </span>
   </h3>
 </template>

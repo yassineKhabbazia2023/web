@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { FEATURE_FLAG_META, LAYOUT_NO_PADDING_META, PERMISSIONS_META, ACCOUNT_PERMISSIONS, GED_CONTEXT_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { FEATURE_FLAG_META, LAYOUT_MOBILE_NO_PADDING_META, LAYOUT_NO_PADDING_META, PERMISSIONS_META, ACCOUNT_PERMISSIONS, GED_CONTEXT_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
 import { GedContext, CollaboratorPermission, Feature } from '@pulse/common/enums'
 import {
@@ -78,6 +78,29 @@ export const regularCollaboratorRoutes = [
         component: () => import('@pulse/powerbi/entity-pages').then(pages => pages.BiReports),
         meta: {
           [LAYOUT_NO_PADDING_META]: true,
+        },
+      },
+      // KEY MOMENTS (COLLABORATOR ONLY)
+      {
+        path: COLLABORATOR_ROUTES.entity.regular.keyMoments.path,
+        name: COLLABORATOR_ROUTES.entity.regular.keyMoments.name,
+        component: () => import('@pulse/key-moments/entity-pages').then(pages => pages.KeyMoments),
+        meta: {
+          [LAYOUT_NO_PADDING_META]: true,
+          [LAYOUT_MOBILE_NO_PADDING_META]: true,
+          [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
+        },
+      },
+      // KEY MOMENTS — WHAT THE CLIENT READS, WHICH IS WHERE UNPUBLISHING LIVES
+      {
+        path: COLLABORATOR_ROUTES.entity.regular.keyMomentsPreview.path,
+        name: COLLABORATOR_ROUTES.entity.regular.keyMomentsPreview.name,
+        component: () => import('@pulse/key-moments/entity-pages')
+          .then(pages => pages.KeyMomentsPreview),
+        meta: {
+          [LAYOUT_NO_PADDING_META]: true,
+          [LAYOUT_MOBILE_NO_PADDING_META]: true,
+          [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
         },
       },
       // GED LEGACY DIRECT ACCESS

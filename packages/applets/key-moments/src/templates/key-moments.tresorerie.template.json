@@ -1,0 +1,399 @@
+{
+  "version": "1.0.0",
+  "id": "tresorerie",
+  "label": "Comptabilité de trésorerie",
+  "defaultMeasures": [
+    {
+      "measure": "N"
+    },
+    {
+      "measure": "N-1"
+    },
+    {
+      "measure": "N-2"
+    },
+    {
+      "role": "variation"
+    },
+    {
+      "role": "variationPct"
+    }
+  ],
+  "screens": [
+    {
+      "id": "tableau-de-bord",
+      "title": "Votre tableau de bord d'activité",
+      "subtitle": "Vos chiffres clés financiers",
+      "widgets": [
+        {
+          "id": "tba-tresorerie",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "marge"
+            },
+            {
+              "indicator": "resultat"
+            },
+            {
+              "indicator": "tresorerie"
+            }
+          ],
+          "comment": "tba",
+          "display": {
+            "title": "Votre tableau de bord d'activité",
+            "renderer": "cards",
+            "span": 12
+          },
+          "cards": {
+            "heroFirst": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "activite",
+      "title": "Votre activité",
+      "subtitle": "De votre chiffre d'affaires à votre marge",
+      "widgets": [
+        {
+          "id": "synthese",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "achats-consommes"
+            },
+            {
+              "indicator": "synthese-sous-traitance"
+            },
+            {
+              "indicator": "marge-globale",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "autres-achats-et-charges-externes"
+            },
+            {
+              "indicator": "impots-et-taxes"
+            },
+            {
+              "indicator": "charges-de-personnel-participation"
+            },
+            {
+              "indicator": "autres-produits-autres-charges"
+            },
+            {
+              "indicator": "excedent-brut-d-exploitation-ebe",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "dot-reprises-de-provisions-bfr"
+            },
+            {
+              "indicator": "dotations-aux-amortissements"
+            },
+            {
+              "indicator": "resultat-financier"
+            },
+            {
+              "indicator": "resultat-exceptionnel"
+            },
+            {
+              "indicator": "impots-sur-les-societes"
+            },
+            {
+              "indicator": "resultat-net",
+              "role": "total"
+            },
+            {
+              "indicator": "resultat-generant-un-flux-de-tresorerie",
+              "role": "memo"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ],
+          "comment": "synthese",
+          "display": {
+            "title": "Synthèse de l'activité",
+            "renderer": "table",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "chiffre-d-affaires",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "marge-globale",
+                "color": "seriesAccent"
+              },
+              {
+                "indicator": "excedent-brut-d-exploitation-ebe",
+                "color": "seriesMuted"
+              },
+              {
+                "indicator": "resultat-net",
+                "color": "seriesSoft"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "charges",
+      "title": "Vos charges",
+      "subtitle": "Vos charges externes et de personnel",
+      "widgets": [
+        {
+          "id": "charges-externes",
+          "lines": [
+            {
+              "indicator": "achats-autres"
+            },
+            {
+              "indicator": "evolchargesext-sous-traitance"
+            },
+            {
+              "indicator": "location-et-charges-locatives"
+            },
+            {
+              "indicator": "entretien-et-reparation"
+            },
+            {
+              "indicator": "assurances"
+            },
+            {
+              "indicator": "honoraires-et-interimaires"
+            },
+            {
+              "indicator": "publicite-kdo-foire-expo-dons"
+            },
+            {
+              "indicator": "frais-de-transport"
+            },
+            {
+              "indicator": "deplacement-et-reception"
+            },
+            {
+              "indicator": "frais-postaux-et-telecom"
+            },
+            {
+              "indicator": "frais-bancaires"
+            },
+            {
+              "indicator": "autres"
+            },
+            {
+              "indicator": "total-des-charges-externes",
+              "role": "total"
+            }
+          ],
+          "comment": "evolchargesext",
+          "display": {
+            "title": "Évolution des charges externes",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        },
+        {
+          "id": "remtns",
+          "lines": [
+            {
+              "indicator": "remtns-remuneration-dirigeant"
+            },
+            {
+              "indicator": "remtns-charges-tns"
+            },
+            {
+              "indicator": "remtns-csg-crds"
+            },
+            {
+              "indicator": "remtns-total-charges-tns",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "remtns-taux-de-charges"
+            }
+          ],
+          "comment": "remtns",
+          "display": {
+            "title": "Les éléments de votre rémunération (TNS)",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tresorerie",
+      "title": "Votre trésorerie",
+      "subtitle": "Vos flux de trésorerie",
+      "widgets": [
+        {
+          "id": "kpi-emprunt",
+          "lines": [
+            {
+              "indicator": "nouveaux-emprunts"
+            },
+            {
+              "indicator": "remboursements"
+            }
+          ],
+          "comment": "emprunt",
+          "display": {
+            "title": "Emprunt",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "kpi-dispo",
+          "lines": [
+            {
+              "indicator": "disponibilites"
+            }
+          ],
+          "comment": "dispo",
+          "display": {
+            "title": "Disponibilité",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "kpi-invest",
+          "lines": [
+            {
+              "indicator": "investissement-exercice"
+            }
+          ],
+          "comment": "invest",
+          "display": {
+            "title": "Investissement exercice",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "bridge-treso",
+          "lines": [
+            {
+              "indicator": "tresorerie-ouverture",
+              "role": "total"
+            },
+            {
+              "indicator": "resultat-generant-un-flux-de-tresorerie"
+            },
+            {
+              "indicator": "bridgetreso-stocks"
+            },
+            {
+              "indicator": "bridgetreso-clients"
+            },
+            {
+              "indicator": "bridgetreso-fournisseurs"
+            },
+            {
+              "indicator": "autres-valeurs"
+            },
+            {
+              "indicator": "invest-nets"
+            },
+            {
+              "indicator": "var-des-emprunts-et-des-subv"
+            },
+            {
+              "indicator": "mouvement-capital"
+            },
+            {
+              "indicator": "dividendes"
+            },
+            {
+              "indicator": "comptes-courants"
+            },
+            {
+              "indicator": "tresorerie-cloture",
+              "role": "total"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            }
+          ],
+          "comment": "bridgetreso",
+          "display": {
+            "title": "Votre trésorerie",
+            "renderer": "waterfall",
+            "span": 12
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,8 @@ export interface PConfirmationPopupProps {
   pConfirmButtonIsLoading?: boolean
   pConfirmButtonIsDisabled?: boolean
   pAlignCenter?: boolean
+  /** Width handed to the underlying dialog; left out, it keeps the dialog default */
+  pWidth?: string | number
   pNoCloseButton?: boolean
   pDestroyOnClose?: boolean
   pTestId?: string

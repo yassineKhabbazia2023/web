@@ -1,0 +1,9 @@
+{
+  "name": "image-size",
+  "version": "1.2.2",
+  "description": "Local stub replacing image-size, declared by pptxgenjs but never loaded. See README.md.",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.js"
+}

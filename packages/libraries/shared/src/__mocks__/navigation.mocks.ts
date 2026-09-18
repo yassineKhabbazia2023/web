@@ -23,6 +23,7 @@ export function createMockNavigationContext(overrides?: Partial<NavigationContex
     hasPermission: () => false,
     hasPennylanePermission: () => false,
     shouldShowBIReports: false,
+    shouldShowKeyMoments: false,
     shouldShowRydgeInvoicesTab: false,
     shouldShowSeresInvoices: false,
   }
@@ -40,6 +41,7 @@ export function createMockNavigationContext(overrides?: Partial<NavigationContex
 export function createNavigationContext(options: {
   isCollab?: boolean
   shouldShowBIReports?: boolean
+  shouldShowKeyMoments?: boolean
   hasGed?: boolean
   hasPennylaneAccounting?: boolean
   hasPennylaneAccountingGedV2?: boolean
@@ -71,6 +73,7 @@ export function createNavigationContext(options: {
       redirectedFrom: undefined,
     } as RouteLocationNormalizedLoaded,
     shouldShowBIReports: options.shouldShowBIReports ?? false,
+    shouldShowKeyMoments: options.shouldShowKeyMoments ?? false,
     shouldShowRydgeInvoicesTab: options.shouldShowRydgeInvoicesTab ?? false,
     shouldShowSeresInvoices: options.shouldShowSeresInvoices ?? false,
     hasPermission: (permission) => {

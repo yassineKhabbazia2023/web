@@ -5,6 +5,7 @@ import { entitiesHandlers } from './entities.handlers'
 import { feedCenterHandlers } from './feed-center.handlers'
 import { gedHandlers } from './ged.handlers'
 import { invoicesHandlers } from './invoices.handlers'
+import { keyMomentsSettingsHandlers } from './key-moments-settings.handlers'
 import { mandateHandlers } from './mandate.handlers'
 import { offersCatalogHandlers } from './offers-catalog.handlers'
 import { pennylaneHandlers } from './pennylane.handlers'
@@ -18,6 +19,7 @@ export const handlers = [
   ...feedCenterHandlers,
   ...gedHandlers,
   ...invoicesHandlers,
+  ...keyMomentsSettingsHandlers,
   ...mandateHandlers,
   ...offersCatalogHandlers,
   ...pennylaneHandlers,

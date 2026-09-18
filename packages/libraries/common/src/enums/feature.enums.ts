@@ -8,6 +8,7 @@ export enum Feature {
   GIGYA_SSO = 'VITE_GIGYA_SSO_ACTIVATED',
   HUBSPOT_PRODUCT_FRUITS = 'isHubspotProductFruitsEnabled',
   INVOICES_EXPERIENCE = 'isInvoicesExperienceEnabled',
+  KEY_MOMENTS = 'isKeyMomentsEnabled',
   LAST_ACTIVITY_FEATURE = 'isLastActivityFeatureEnabled',
   LEGACY_VENTYA_INVOICES_ACCESS = 'isLegacyVentyaInvoicesAccessEnabled',
   MAINTENANCE_MODE = 'isMaintenanceModeEnabled',

@@ -1,0 +1,1412 @@
+{
+  "version": "1.0.0",
+  "id": "engagement",
+  "label": "Comptabilité d'engagement",
+  "defaultMeasures": [
+    {
+      "measure": "N"
+    },
+    {
+      "measure": "N-1"
+    },
+    {
+      "measure": "N-2"
+    },
+    {
+      "role": "variation"
+    },
+    {
+      "role": "variationPct"
+    }
+  ],
+  "screens": [
+    {
+      "id": "tableau-de-bord",
+      "title": "Votre tableau de bord d'activité",
+      "subtitle": "Vos chiffres clés financiers",
+      "widgets": [
+        {
+          "id": "tba",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "marge"
+            },
+            {
+              "indicator": "resultat"
+            },
+            {
+              "indicator": "tresorerie"
+            },
+            {
+              "indicator": "seuil-de-rentabilite-d-exploitation"
+            },
+            {
+              "indicator": "point-mort"
+            },
+            {
+              "indicator": "capacite-d-autofinancement"
+            },
+            {
+              "indicator": "credit-clients"
+            },
+            {
+              "indicator": "credit-fournisseurs"
+            }
+          ],
+          "comment": "tba",
+          "display": {
+            "title": "Votre tableau de bord d'activité",
+            "renderer": "cards",
+            "span": 12
+          },
+          "cards": {
+            "heroFirst": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "activite",
+      "title": "Votre activité",
+      "subtitle": "De votre chiffre d'affaires à votre marge",
+      "widgets": [
+        {
+          "id": "synthese",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "achats-consommes"
+            },
+            {
+              "indicator": "synthese-sous-traitance"
+            },
+            {
+              "indicator": "marge-globale",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "autres-achats-et-charges-externes"
+            },
+            {
+              "indicator": "impots-et-taxes"
+            },
+            {
+              "indicator": "charges-de-personnel-participation"
+            },
+            {
+              "indicator": "autres-produits-autres-charges"
+            },
+            {
+              "indicator": "excedent-brut-d-exploitation-ebe",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "dot-reprises-de-provisions-bfr"
+            },
+            {
+              "indicator": "dotations-aux-amortissements"
+            },
+            {
+              "indicator": "resultat-financier"
+            },
+            {
+              "indicator": "resultat-exceptionnel"
+            },
+            {
+              "indicator": "impots-sur-les-societes"
+            },
+            {
+              "indicator": "resultat-net",
+              "role": "total"
+            },
+            {
+              "indicator": "resultat-generant-un-flux-de-tresorerie",
+              "role": "memo"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ],
+          "comment": "synthese",
+          "display": {
+            "title": "Synthèse de l'activité",
+            "renderer": "table",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "chiffre-d-affaires",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "marge-globale",
+                "color": "seriesAccent"
+              },
+              {
+                "indicator": "excedent-brut-d-exploitation-ebe",
+                "color": "seriesMuted"
+              },
+              {
+                "indicator": "resultat-net",
+                "color": "seriesSoft"
+              }
+            ]
+          }
+        },
+        {
+          "id": "margetab",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "marge"
+            },
+            {
+              "indicator": "taux-de-marge"
+            }
+          ],
+          "comment": "margetab",
+          "display": {
+            "title": "Du chiffre d'affaires à la marge brute",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        },
+        {
+          "id": "evolmarged",
+          "lines": [
+            {
+              "indicator": "effet-evol-du-ca",
+              "reference": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "effet-evol-du-taux-de-marge",
+              "reference": "taux-de-marge"
+            }
+          ],
+          "comment": "evolmarged",
+          "display": {
+            "title": "Détail de l'évolution de la marge",
+            "renderer": "cards",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "effet-evol-du-ca",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "effet-evol-du-taux-de-marge",
+                "color": "seriesAccent"
+              }
+            ]
+          },
+          "cards": {
+            "signColored": true
+          }
+        },
+        {
+          "id": "graphe-marge-ca",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "taux-de-marge"
+            }
+          ],
+          "comment": "chartmargeca",
+          "display": {
+            "title": "CA et taux de marge",
+            "renderer": "chart",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "chiffre-d-affaires",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "taux-de-marge",
+                "color": "seriesAccent",
+                "type": "line"
+              }
+            ],
+            "primaryAxisTitle": "Chiffre d'affaires",
+            "secondaryAxisTitle": "Taux de marge"
+          }
+        }
+      ]
+    },
+    {
+      "id": "charges",
+      "title": "Vos charges",
+      "subtitle": "Vos charges externes et de personnel",
+      "widgets": [
+        {
+          "id": "charges-externes",
+          "lines": [
+            {
+              "indicator": "achats-autres"
+            },
+            {
+              "indicator": "evolchargesext-sous-traitance"
+            },
+            {
+              "indicator": "location-et-charges-locatives"
+            },
+            {
+              "indicator": "entretien-et-reparation"
+            },
+            {
+              "indicator": "assurances"
+            },
+            {
+              "indicator": "honoraires-et-interimaires"
+            },
+            {
+              "indicator": "publicite-kdo-foire-expo-dons"
+            },
+            {
+              "indicator": "frais-de-transport"
+            },
+            {
+              "indicator": "deplacement-et-reception"
+            },
+            {
+              "indicator": "frais-postaux-et-telecom"
+            },
+            {
+              "indicator": "frais-bancaires"
+            },
+            {
+              "indicator": "autres"
+            },
+            {
+              "indicator": "total-des-charges-externes",
+              "role": "total"
+            }
+          ],
+          "comment": "evolchargesext",
+          "display": {
+            "title": "Évolution des charges externes",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        },
+        {
+          "id": "perso",
+          "lines": [
+            {
+              "indicator": "masse-salariale"
+            },
+            {
+              "indicator": "charges-patronales-et-taxes-assises-sur-les-salaires"
+            },
+            {
+              "indicator": "cout-total",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "taux-de-charges"
+            },
+            {
+              "indicator": "du-ca",
+              "role": "memo"
+            },
+            {
+              "indicator": "effectif-en-equivalent-temps-plein"
+            }
+          ],
+          "comment": "evolperso",
+          "display": {
+            "title": "Évolution des charges de personnel",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        },
+        {
+          "id": "perso-detail",
+          "lines": [
+            {
+              "indicator": "effet-evol-effectif",
+              "reference": "effectif-en-equivalent-temps-plein"
+            },
+            {
+              "indicator": "effet-evol-salaire-moyen",
+              "reference": "salaire-moyen"
+            },
+            {
+              "indicator": "effet-evol-du-taux-de-charges",
+              "reference": "taux-de-charges"
+            }
+          ],
+          "comment": "detail",
+          "display": {
+            "title": "Détail de l'évolution des charges de personnel",
+            "renderer": "cards",
+            "span": 12
+          },
+          "cards": {
+            "signColored": true
+          }
+        },
+        {
+          "id": "graphe-perso-structure",
+          "lines": [
+            {
+              "indicator": "masse-salariale"
+            },
+            {
+              "indicator": "charges-patronales-et-taxes-assises-sur-les-salaires"
+            },
+            {
+              "indicator": "effectif-en-equivalent-temps-plein"
+            }
+          ],
+          "comment": "chartperso",
+          "display": {
+            "title": "Structure du coût du personnel",
+            "renderer": "chart",
+            "span": 12
+          },
+          "chart": {
+            "kind": "stackedBars",
+            "series": [
+              {
+                "indicator": "masse-salariale",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "charges-patronales-et-taxes-assises-sur-les-salaires",
+                "color": "seriesAccent"
+              },
+              {
+                "indicator": "effectif-en-equivalent-temps-plein",
+                "color": "seriesMuted",
+                "type": "line"
+              }
+            ],
+            "primaryAxisTitle": "Coût du personnel",
+            "secondaryAxisTitle": "ETP"
+          }
+        },
+        {
+          "id": "remtns",
+          "lines": [
+            {
+              "indicator": "remtns-remuneration-dirigeant"
+            },
+            {
+              "indicator": "remtns-charges-tns"
+            },
+            {
+              "indicator": "remtns-csg-crds"
+            },
+            {
+              "indicator": "remtns-total-charges-tns",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "remtns-taux-de-charges"
+            }
+          ],
+          "comment": "remtns",
+          "display": {
+            "title": "Les éléments de votre rémunération (TNS)",
+            "renderer": "table",
+            "span": 12
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rentabilite",
+      "title": "Votre rentabilité",
+      "subtitle": "Votre seuil de rentabilité",
+      "widgets": [
+        {
+          "id": "ebern",
+          "lines": [
+            {
+              "indicator": "impots-et-taxes-hors-taxes-liees-aux-salaires"
+            },
+            {
+              "indicator": "autres-produits-autres-charges"
+            },
+            {
+              "indicator": "excedent-brut-d-exploitation-ebe",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "dot-reprises-de-provisions-bfr"
+            },
+            {
+              "indicator": "dotations-aux-amortissements"
+            },
+            {
+              "indicator": "resultat-financier"
+            },
+            {
+              "indicator": "resultat-exceptionnel"
+            },
+            {
+              "indicator": "impots-sur-les-societes"
+            },
+            {
+              "indicator": "resultat-net",
+              "role": "total"
+            }
+          ],
+          "comment": "ebern",
+          "display": {
+            "title": "De l'EBE au résultat net",
+            "renderer": "table",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "excedent-brut-d-exploitation-ebe",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "resultat-net",
+                "color": "seriesAccent"
+              }
+            ]
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        },
+        {
+          "id": "seuilrenta",
+          "lines": [
+            {
+              "indicator": "chiffre-d-affaires"
+            },
+            {
+              "indicator": "seuilrenta-production-stockee-ou-immob"
+            },
+            {
+              "indicator": "achats-consommes"
+            },
+            {
+              "indicator": "seuilrenta-sous-traitance"
+            },
+            {
+              "indicator": "seuilrenta-autres-charges-variables"
+            },
+            {
+              "indicator": "marge-sur-couts-variables",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "taux-de-marge-sur-couts-variables",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "couts-fixes"
+            },
+            {
+              "indicator": "seuil-de-rentabilite-d-exploitation",
+              "role": "total"
+            },
+            {
+              "indicator": "ecart-du-seuil",
+              "role": "total"
+            },
+            {
+              "indicator": "point-mort-en-jours",
+              "role": "total"
+            }
+          ],
+          "comment": "seuilrenta",
+          "display": {
+            "title": "Analyse du seuil de rentabilité d'exploitation",
+            "renderer": "table",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "chiffre-d-affaires",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "seuil-de-rentabilite-d-exploitation",
+                "color": "seriesAccent"
+              }
+            ]
+          },
+          "measures": [
+            {
+              "measure": "N"
+            },
+            {
+              "measure": "N-1"
+            },
+            {
+              "measure": "N-2"
+            },
+            {
+              "role": "variation"
+            },
+            {
+              "role": "variationPct"
+            },
+            {
+              "measure": "poidsCaPct.N"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bilan",
+      "title": "Votre bilan",
+      "subtitle": "Votre situation patrimoniale",
+      "widgets": [
+        {
+          "id": "bilan-table",
+          "lines": [
+            {
+              "indicator": "immobilisations-incorporelles",
+              "side": "assets"
+            },
+            {
+              "indicator": "immobilisations-corporelles",
+              "side": "assets"
+            },
+            {
+              "indicator": "immobilisations-financieres",
+              "side": "assets"
+            },
+            {
+              "indicator": "bilan-stocks",
+              "side": "assets"
+            },
+            {
+              "indicator": "clients-et-comptes-rattaches",
+              "side": "assets"
+            },
+            {
+              "indicator": "bilan-autres-creances",
+              "side": "assets"
+            },
+            {
+              "indicator": "disponibilites",
+              "side": "assets"
+            },
+            {
+              "indicator": "total-actif",
+              "role": "total",
+              "side": "assets"
+            },
+            {
+              "indicator": "capitaux-propres-avt-resultat",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "resultat-de-l-exercice",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "bilan-provisions-r-c",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "dettes-financieres",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "bilan-fournisseurs",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "bilan-autres-dettes",
+              "side": "liabilities"
+            },
+            {
+              "indicator": "total-passif",
+              "role": "total",
+              "side": "liabilities"
+            }
+          ],
+          "comment": "bilan",
+          "display": {
+            "title": "Bilan",
+            "renderer": "balanceSheet",
+            "span": 12
+          }
+        },
+        {
+          "id": "bilan-image-n",
+          "lines": [
+            {
+              "indicator": "total-actif-immobilise-net"
+            },
+            {
+              "indicator": "bilan-stocks"
+            },
+            {
+              "indicator": "clients-et-comptes-rattaches"
+            },
+            {
+              "indicator": "bilan-autres-creances"
+            },
+            {
+              "indicator": "disponibilites"
+            },
+            {
+              "indicator": "fonds-propres-equity"
+            },
+            {
+              "indicator": "dettes-financieres"
+            },
+            {
+              "indicator": "bilan-fournisseurs"
+            },
+            {
+              "indicator": "bilan-autres-dettes"
+            }
+          ],
+          "comment": "chartbilann",
+          "display": {
+            "title": "Bilan {current:key} ({current}) en image",
+            "renderer": "balanceImage",
+            "span": 6
+          },
+          "chart": {
+            "kind": "composition",
+            "period": "current",
+            "stacks": [
+              "total-actif",
+              "total-passif"
+            ],
+            "groups": [
+              {
+                "label": "Fonds de roulement",
+                "color": "balanceWorkingCapital",
+                "indicators": [
+                  "total-actif-immobilise-net",
+                  "fonds-propres-equity"
+                ]
+              },
+              {
+                "label": "Besoin en fonds de roulement",
+                "color": "balanceWorkingCapitalNeed",
+                "indicators": [
+                  "bilan-stocks",
+                  "clients-et-comptes-rattaches",
+                  "bilan-autres-creances",
+                  "bilan-provisions-r-c",
+                  "dettes-financieres",
+                  "bilan-fournisseurs",
+                  "bilan-autres-dettes"
+                ]
+              },
+              {
+                "label": "Trésorerie",
+                "color": "balanceCash",
+                "indicators": [
+                  "disponibilites"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "bilan-image-n1",
+          "lines": [
+            {
+              "indicator": "total-actif-immobilise-net"
+            },
+            {
+              "indicator": "bilan-stocks"
+            },
+            {
+              "indicator": "clients-et-comptes-rattaches"
+            },
+            {
+              "indicator": "bilan-autres-creances"
+            },
+            {
+              "indicator": "disponibilites"
+            },
+            {
+              "indicator": "fonds-propres-equity"
+            },
+            {
+              "indicator": "dettes-financieres"
+            },
+            {
+              "indicator": "bilan-fournisseurs"
+            },
+            {
+              "indicator": "bilan-autres-dettes"
+            }
+          ],
+          "comment": "chartbilann1",
+          "display": {
+            "title": "Bilan {reference:key} ({reference}) en image",
+            "renderer": "balanceImage",
+            "span": 6
+          },
+          "chart": {
+            "kind": "composition",
+            "period": "reference",
+            "stacks": [
+              "total-actif",
+              "total-passif"
+            ],
+            "groups": [
+              {
+                "label": "Fonds de roulement",
+                "color": "balanceWorkingCapital",
+                "indicators": [
+                  "total-actif-immobilise-net",
+                  "fonds-propres-equity"
+                ]
+              },
+              {
+                "label": "Besoin en fonds de roulement",
+                "color": "balanceWorkingCapitalNeed",
+                "indicators": [
+                  "bilan-stocks",
+                  "clients-et-comptes-rattaches",
+                  "bilan-autres-creances",
+                  "bilan-provisions-r-c",
+                  "dettes-financieres",
+                  "bilan-fournisseurs",
+                  "bilan-autres-dettes"
+                ]
+              },
+              {
+                "label": "Trésorerie",
+                "color": "balanceCash",
+                "indicators": [
+                  "disponibilites"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "bilan-agregats",
+          "lines": [
+            {
+              "indicator": "fonds-de-roulement"
+            },
+            {
+              "indicator": "bfr"
+            },
+            {
+              "indicator": "tresorerie"
+            }
+          ],
+          "comment": "graphbilan",
+          "display": {
+            "title": "Analyse financière",
+            "renderer": "cards",
+            "span": 12
+          },
+          "chart": {
+            "kind": "groupedBars",
+            "series": [
+              {
+                "indicator": "fonds-de-roulement",
+                "color": "balanceWorkingCapital"
+              },
+              {
+                "indicator": "bfr",
+                "color": "balanceWorkingCapitalNeed"
+              },
+              {
+                "indicator": "tresorerie",
+                "color": "balanceCash"
+              }
+            ]
+          },
+          "cards": {
+            "colored": true
+          }
+        },
+        {
+          "id": "bilaneco",
+          "lines": [
+            {
+              "indicator": "immobilisations-incorporelles"
+            },
+            {
+              "indicator": "immobilisations-corporelles"
+            },
+            {
+              "indicator": "immobilisations-financieres"
+            },
+            {
+              "indicator": "total-actif-immobilise-net",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "stocks-nets"
+            },
+            {
+              "indicator": "clients-nets"
+            },
+            {
+              "indicator": "fournisseurs-et-compte-rattaches"
+            },
+            {
+              "indicator": "besoin-en-fonds-de-roulement-strict",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "creances-dettes-fisc-et-sociales"
+            },
+            {
+              "indicator": "produits-et-charges-constates-d-avance"
+            },
+            {
+              "indicator": "autres-creances-et-dettes"
+            },
+            {
+              "indicator": "autres-besoins-en-fonds-de-roulement",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "total-actif-circulant",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "bilaneco-vmp"
+            },
+            {
+              "indicator": "tresorerie"
+            },
+            {
+              "indicator": "disponibilites",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "actif-net",
+              "role": "total"
+            },
+            {
+              "indicator": "capital-reserves"
+            },
+            {
+              "indicator": "resultat-net"
+            },
+            {
+              "indicator": "bilaneco-provisions-pour-risques-et-charges"
+            },
+            {
+              "indicator": "fonds-propres-equity",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "emprunts-bancaires"
+            },
+            {
+              "indicator": "bilaneco-comptes-courants"
+            },
+            {
+              "indicator": "bilaneco-dividendes-a-payer"
+            },
+            {
+              "indicator": "bilaneco-autres-dettes-financieres"
+            },
+            {
+              "indicator": "total-dettes",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "passif-net",
+              "role": "total"
+            },
+            {
+              "indicator": "endettement-net"
+            }
+          ],
+          "comment": "bilaneco",
+          "display": {
+            "title": "Bilan économique",
+            "renderer": "table",
+            "span": 12
+          }
+        },
+        {
+          "id": "bfr",
+          "lines": [
+            {
+              "indicator": "bfr-stocks"
+            },
+            {
+              "indicator": "bfr-clients"
+            },
+            {
+              "indicator": "bfr-fournisseurs"
+            },
+            {
+              "indicator": "bfr-d-exploitation",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "bfr-autres-creances"
+            },
+            {
+              "indicator": "dettes-soc-fisc"
+            },
+            {
+              "indicator": "bfr-autres-dettes"
+            },
+            {
+              "indicator": "bfr-hors-exploitation",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "besoin-en-fonds-de-roulement",
+              "role": "total"
+            }
+          ],
+          "comment": "bfr",
+          "display": {
+            "title": "Focus sur le BFR",
+            "renderer": "table",
+            "span": 12
+          },
+          "chart": {
+            "kind": "stackedBars",
+            "series": [
+              {
+                "indicator": "bfr-d-exploitation",
+                "color": "seriesPrimary"
+              },
+              {
+                "indicator": "bfr-hors-exploitation",
+                "color": "seriesAccent"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "tresorerie",
+      "title": "Votre trésorerie",
+      "subtitle": "Vos flux de trésorerie",
+      "widgets": [
+        {
+          "id": "tresonv",
+          "lines": [
+            {
+              "indicator": "evoltresonv-solde-ouverture",
+              "role": "memo"
+            },
+            {
+              "indicator": "evoltresonv-resultat"
+            },
+            {
+              "indicator": "evoltresonv-charges-produits-sans-impact"
+            },
+            {
+              "indicator": "evoltresonv-capacite-de-generation",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "evoltresonv-stocks"
+            },
+            {
+              "indicator": "creances-clients"
+            },
+            {
+              "indicator": "dettes-fournisseurs"
+            },
+            {
+              "indicator": "evoltresonv-autres-creances"
+            },
+            {
+              "indicator": "evoltresonv-autres-dettes"
+            },
+            {
+              "indicator": "evoltresonv-total-decalages",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "investissements"
+            },
+            {
+              "indicator": "remboursements-d-emprunts"
+            },
+            {
+              "indicator": "evoltresonv-retraits-sur-les-comptes-courants"
+            },
+            {
+              "indicator": "dividendes-verses"
+            },
+            {
+              "indicator": "evoltresonv-total-besoins-financiers",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "evoltresonv-apports-en-capital-ou-en-compte-courant"
+            },
+            {
+              "indicator": "nouveaux-emprunts"
+            },
+            {
+              "indicator": "nouvelles-subventions-d-investissements"
+            },
+            {
+              "indicator": "produits-de-cession-d-immobilisations"
+            },
+            {
+              "indicator": "evoltresonv-total-financements-externes",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "evoltresonv-mouvement-total"
+            },
+            {
+              "indicator": "evoltresonv-solde-cloture"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            }
+          ],
+          "comment": "evoltresonv",
+          "display": {
+            "title": "Suivi de trésorerie",
+            "renderer": "narrative",
+            "span": 12
+          }
+        },
+        {
+          "id": "flux",
+          "lines": [
+            {
+              "indicator": "resultat-net"
+            },
+            {
+              "indicator": "amortissements-et-provisions"
+            },
+            {
+              "indicator": "flux-plus-values-de-cession"
+            },
+            {
+              "indicator": "resultat-generant-un-flux-de-tresorerie",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "variation-des-creances-clients"
+            },
+            {
+              "indicator": "variation-des-stocks"
+            },
+            {
+              "indicator": "variation-des-dettes-fournisseurs-hors-frs-immo"
+            },
+            {
+              "indicator": "flux-autres-creances"
+            },
+            {
+              "indicator": "flux-autres-dettes"
+            },
+            {
+              "indicator": "flux-net-de-tresorerie-genere-par-l-activite",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "acquisitions-immobilisations-incorp-corp"
+            },
+            {
+              "indicator": "flux-variations-des-immobilisations-financieres-brutes"
+            },
+            {
+              "indicator": "flux-variation-des-fournisseurs-d-immobilisations"
+            },
+            {
+              "indicator": "flux-produits-de-cession"
+            },
+            {
+              "indicator": "flux-net-de-tresorerie-lie-aux-operations-d-invest",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "dividendes-verses-aux-actionnaires"
+            },
+            {
+              "indicator": "flux-variation-des-comptes-courants"
+            },
+            {
+              "indicator": "variation-du-capital-en-numeraire"
+            },
+            {
+              "indicator": "variation-des-subventions"
+            },
+            {
+              "indicator": "variation-des-emprunts"
+            },
+            {
+              "indicator": "flux-net-de-tresorerie-lie-aux-op-de-financement",
+              "role": "subtotal"
+            },
+            {
+              "indicator": "variation-de-tresorerie",
+              "role": "total"
+            },
+            {
+              "indicator": "tresorerie-a-l-ouverture"
+            },
+            {
+              "indicator": "tresorerie-nette-a-la-cloture",
+              "role": "total"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            }
+          ],
+          "comment": "flux",
+          "display": {
+            "title": "Le tableau de flux de trésorerie",
+            "renderer": "table",
+            "span": 12
+          }
+        },
+        {
+          "id": "kpi-emprunt",
+          "lines": [
+            {
+              "indicator": "nouveaux-emprunts"
+            },
+            {
+              "indicator": "remboursements"
+            }
+          ],
+          "comment": "emprunt",
+          "display": {
+            "title": "Emprunt",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "kpi-dispo",
+          "lines": [
+            {
+              "indicator": "disponibilites"
+            }
+          ],
+          "comment": "dispo",
+          "display": {
+            "title": "Disponibilité",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "kpi-invest",
+          "lines": [
+            {
+              "indicator": "investissement-exercice"
+            }
+          ],
+          "comment": "invest",
+          "display": {
+            "title": "Investissement exercice",
+            "renderer": "cards",
+            "span": 4
+          }
+        },
+        {
+          "id": "bridge-treso",
+          "lines": [
+            {
+              "indicator": "tresorerie-ouverture",
+              "role": "total"
+            },
+            {
+              "indicator": "resultat-generant-un-flux-de-tresorerie"
+            },
+            {
+              "indicator": "bridgetreso-stocks"
+            },
+            {
+              "indicator": "bridgetreso-clients"
+            },
+            {
+              "indicator": "bridgetreso-fournisseurs"
+            },
+            {
+              "indicator": "autres-valeurs"
+            },
+            {
+              "indicator": "invest-nets"
+            },
+            {
+              "indicator": "var-des-emprunts-et-des-subv"
+            },
+            {
+              "indicator": "mouvement-capital"
+            },
+            {
+              "indicator": "dividendes"
+            },
+            {
+              "indicator": "comptes-courants"
+            },
+            {
+              "indicator": "tresorerie-cloture",
+              "role": "total"
+            }
+          ],
+          "measures": [
+            {
+              "measure": "N"
+            }
+          ],
+          "comment": "bridgetreso",
+          "display": {
+            "title": "Votre trésorerie",
+            "renderer": "waterfall",
+            "span": 12
+          }
+        }
+      ]
+    }
+  ]
+}

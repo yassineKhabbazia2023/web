@@ -32,6 +32,7 @@ export const CUSTOMER_ROUTES = {
         info: { path: 'informations', name: RouteName.INFO },
       },
       powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
+      keyMoments: { path: 'moments-cles', name: RouteName.KEY_MOMENTS },
       ged: { path: 'ged', name: RouteName.GED },
       pennylaneAccounting: {
         root: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },

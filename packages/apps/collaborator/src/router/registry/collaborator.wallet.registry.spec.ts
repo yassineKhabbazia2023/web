@@ -24,6 +24,12 @@ const PERMISSION_BASED_COLLAB_TABS = [
   WalletTab.COLLABORATORS,
   WalletTab.WALLET_LAUNCHER,
   WalletTab.ACCOUNT_MANAGEMENT,
+  WalletTab.KEY_MOMENTS_SETTINGS,
+]
+
+// Collaborator tabs gated on both a permission and a feature flag
+const PERMISSION_AND_FLAG_COLLAB_TABS = [
+  WalletTab.KEY_MOMENTS_SETTINGS,
 ]
 
 describe('registerCollaboratorWalletTabs', () => {
@@ -33,9 +39,9 @@ describe('registerCollaboratorWalletTabs', () => {
     registerCollaboratorWalletTabs()
   })
 
-  it('should register all 10 wallet tabs', () => {
+  it('should register all 11 wallet tabs', () => {
     // @ts-expect-error - Accessing private static field for test
-    expect(WalletManager.tabs.size).toBe(10)
+    expect(WalletManager.tabs.size).toBe(11)
   })
 
   it.each([
@@ -49,6 +55,7 @@ describe('registerCollaboratorWalletTabs', () => {
     { tab: WalletTab.WALLET_LAUNCHER, route: RouteName.WALLET_LAUNCHER },
     { tab: WalletTab.ACCOUNT_MANAGEMENT, route: RouteName.ACCOUNT_MANAGEMENT },
     { tab: WalletTab.OFFERS_CATALOG, route: RouteName.OFFERS_CATALOG },
+    { tab: WalletTab.KEY_MOMENTS_SETTINGS, route: RouteName.KEY_MOMENTS_SETTINGS },
   ])('should register $tab tab correctly', ({ tab, route }) => {
     const config = WalletManager.getTab(tab)
     expect(config?.route).toBe(route)
@@ -117,6 +124,19 @@ describe('registerCollaboratorWalletTabs', () => {
       }
 
       PERMISSION_BASED_COLLAB_TABS.forEach(tab => {
+        const config = WalletManager.getTab(tab)
+        expect(config?.isDisplayed(context)).toBe(false)
+      })
+    })
+
+    it('should hide the key moments settings tabs when the feature flag is disabled', () => {
+      const context = {
+        isCollab: true,
+        hasPermission: () => true,
+        hasFeatureFlag: () => false,
+      }
+
+      PERMISSION_AND_FLAG_COLLAB_TABS.forEach(tab => {
         const config = WalletManager.getTab(tab)
         expect(config?.isDisplayed(context)).toBe(false)
       })

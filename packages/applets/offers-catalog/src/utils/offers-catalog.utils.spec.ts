@@ -1,4 +1,4 @@
-import { DEFAULT_TAG_PROPS, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
+import { DEFAULT_TAG_PROPS } from '../const/offers-catalog.const'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getOfferMock, getOffersMock } from '../mocks/offers-catalog.service.mocks'
 
@@ -9,13 +9,10 @@ const offersMock = getOffersMock()
 describe('offers-catalog.utils', () => {
   describe('getCatalogTagProps', () => {
     it('should return proper props when tag label is known', () => {
-      const tagLabel = CATALOG_TAG_STYLES[0].tagLabel
-      const expectedCatalogTagProps = CATALOG_TAG_STYLES[0].tagProps
-
-      const catalogTagProps = getCatalogTagProps(tagLabel)
+      const catalogTagProps = getCatalogTagProps('Pack')
 
       expect(loggerMock.error).not.toHaveBeenCalled()
-      expect(catalogTagProps).toEqual(expectedCatalogTagProps)
+      expect(catalogTagProps).toEqual({ pColor: 'blue' })
     })
 
     it('should return default props when tag label is unknown', () => {

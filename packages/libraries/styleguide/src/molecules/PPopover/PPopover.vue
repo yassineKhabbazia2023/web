@@ -6,7 +6,7 @@
     :showArrow="pShowArrow"
     :trigger="pTrigger"
     :title="pTitle"
-    :width="212"
+    :width="pWidth"
     :data-testid="pTestId"
   >
     <div class="el-popover__content">
@@ -25,6 +25,9 @@ import type { PPopoverProps } from './PPopoverTypes'
 withDefaults(defineProps<PPopoverProps>(), {
   pPlacement: 'top',
   pDisabled: false,
+  // the width the popover has always had, kept as the default so that a caller
+  // saying nothing about it is left untouched
+  pWidth: 212,
   pTestId: undefined,
 })
 </script>

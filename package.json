@@ -61,7 +61,7 @@
     "@openfeature/config-cat-web-provider": "^0.2.0",
     "@openfeature/core": "^1.9.2",
     "@openfeature/web-sdk": "^1.7.3",
-    "@vueuse/core": "^14.0.0",
+    "@vueuse/core": "^14.4.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "element-plus": "2.14.2",
@@ -121,6 +121,7 @@
     "@vitest/spy": "^4.1.9",
     "js-beautify": "^2.0.3",
     "esbuild": "^0.28.1",
+    "image-size": "file:packages/@stubs/image-size",
     "minimatch": "^10.0.3"
   }
 }

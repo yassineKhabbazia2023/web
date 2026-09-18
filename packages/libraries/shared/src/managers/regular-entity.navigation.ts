@@ -118,4 +118,25 @@ export const REGULAR_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     order: 8,
     activeRoutes: [RouteName.SERES_INVOICES],
   },
+  {
+    /**
+     * Read by both surfaces, which are two different pages under one route
+     * name: the firm arbitrates a key moment, the customer reads the one it
+     * published. Hence the asymmetry `KeyMomentsManager.canShowKeyMoments`
+     * arbitrates: the firm gets the entry as soon as the domain is switched on,
+     * the customer only once its account has something published — an entry
+     * leading to an empty screen would take a call to understand.
+     */
+    id: 'regular-entity-key-moments',
+    title: () => 'shared.sidebar.keyMoments',
+    icon: 'flag',
+    routeName: RouteName.KEY_MOMENTS,
+    shouldDisplay: (ctx) => ctx.shouldShowKeyMoments,
+    accountType: AccountType.REGULAR,
+    order: 9,
+    // the mirror view the collaborator reads the client page through is the same
+    // entry: leaving it out would drop the highlight while the reader is still
+    // inside the key moment of the dossier
+    activeRoutes: [RouteName.KEY_MOMENTS, RouteName.KEY_MOMENTS_PREVIEW],
+  },
 ]

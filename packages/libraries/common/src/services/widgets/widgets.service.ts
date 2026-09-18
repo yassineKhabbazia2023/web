@@ -1,5 +1,5 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useKeyMomentsAccessStore } from '@pulse/common/stores'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { ReportingManager } from '@pulse/common/managers'
 
@@ -32,6 +32,7 @@ const userWithSmartWidgetNames = [
 ]
 
 const mobileAllowedWidgets: WidgetName[] = [
+  WidgetName.KEY_MOMENTS,
   WidgetName.PENNYLANE_DOCUMENTS,
   WidgetName.RSS_NEWS,
   WidgetName.DIGILAB,
@@ -52,6 +53,13 @@ export class WidgetsService {
       widgetNames = userWithPennylaneAndGedWidgetNames
     } else {
       widgetNames = userWithoutPennylaneOfferWidgetNames
+    }
+
+    // Opens the grid when the dossier has something published: it is the one
+    // widget that is about the dossier itself. The flag is loaded once per
+    // dossier by CurrentEntityManager, so reading it here costs nothing.
+    if (useKeyMomentsAccessStore().canShowKeyMoments === true) {
+      widgetNames = [WidgetName.KEY_MOMENTS, ...widgetNames]
     }
 
     if (isMobile === true) {

@@ -90,4 +90,13 @@ export function registerCollaboratorWalletTabs() {
     isDisplayed: () => true,
     order: 10,
   })
+
+  WalletManager.register({
+    id: WalletTab.KEY_MOMENTS_SETTINGS,
+    title: 'entities.wallet.keyMoments',
+    route: RouteName.KEY_MOMENTS_SETTINGS,
+    isDisplayed: (context) => context.hasFeatureFlag(Feature.KEY_MOMENTS)
+      && context.hasPermission(GLOBAL_PERMISSIONS.KEY_MOMENTS_SETTINGS),
+    order: 11,
+  })
 }

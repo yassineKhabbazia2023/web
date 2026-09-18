@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     "./components": "./src/components.ts",
+    "./constants": "./src/constants.ts",
     "./types": "./src/types.ts",
     "./fonts": "./src/assets/fonts/index.css",
     "./utils/validators": "./src/utils/validators/validators.ts",

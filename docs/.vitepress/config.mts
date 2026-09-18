@@ -125,6 +125,10 @@ export default defineConfig({
                   link: '/plu/applets/homepage',
                 },
                 {
+                  text: 'Key Moments',
+                  link: '/plu/applets/key-moments',
+                },
+                {
                   text: 'Launcher',
                   link: '/plu/applets/launcher',
                 },

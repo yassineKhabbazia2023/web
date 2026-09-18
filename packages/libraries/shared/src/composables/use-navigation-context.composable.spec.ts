@@ -2,7 +2,7 @@ import { ref, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNavigationContext } from './use-navigation-context.composable'
 import { PennylanePermission } from '@pulse/common/enums'
-import { useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
+import { useInvoicesAccessStore, useKeyMomentsAccessStore, useUserStore } from '@pulse/common/stores'
 import {
   CurrentUserManager,
   FeatureFlagManager,
@@ -24,6 +24,7 @@ beforeEach(() => {
 
 const userStoreMock = getStoreMock(useUserStore)
 const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
+const keyMomentsAccessStoreMock = getStoreMock(useKeyMomentsAccessStore)
 
 describe('useNavigationContext', () => {
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe('useNavigationContext', () => {
     vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
     userStoreMock.isCollab = false
     invoicesAccessStoreMock.isTabVisible = false
+    keyMomentsAccessStoreMock.canShowKeyMoments = false
   })
 
   describe('return value', () => {
@@ -151,6 +153,23 @@ describe('useNavigationContext', () => {
       const { navigationContext } = useNavigationContext(() => 123)
 
       expect(navigationContext.value.shouldShowSeresInvoices).toBe(false)
+    })
+  })
+
+  describe('shouldShowKeyMoments', () => {
+    it('should be false when the key moments access store hides the entry', () => {
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowKeyMoments).toBe(false)
+    })
+
+    it('should follow the key moments access store', async () => {
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      keyMomentsAccessStoreMock.canShowKeyMoments = true
+      await nextTick()
+
+      expect(navigationContext.value.shouldShowKeyMoments).toBe(true)
     })
   })
 

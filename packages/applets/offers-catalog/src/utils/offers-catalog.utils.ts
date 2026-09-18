@@ -1,18 +1,19 @@
 import type { OfferDescription, OfferWithSearchTerms } from '@offers-catalog/types/offers-catalog.types'
 import type { PTagProps } from '@pulse/styleguide/types'
-import { DEFAULT_TAG_PROPS, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
+import { DEFAULT_TAG_PROPS } from '../const/offers-catalog.const'
+import { OFFER_TAG_COLORS } from '@pulse/styleguide/constants'
 import { logger } from '@pulse/toolbox'
 import { getAlphanumericString } from '@pulse/toolbox/utils/string'
 
 export function getCatalogTagProps(label: string): Omit<PTagProps, 'pContent'> {
-  const catalogTagStyle = CATALOG_TAG_STYLES.find(({ tagLabel }) => tagLabel === label)
-  if (catalogTagStyle?.tagProps === undefined) {
+  const tagColor = OFFER_TAG_COLORS[label]
+  if (tagColor === undefined) {
     logger.error(`tag props not found for label '${label}'`)
 
     return DEFAULT_TAG_PROPS
   }
 
-  return catalogTagStyle.tagProps
+  return { pColor: tagColor }
 }
 
 export function normalizeSearchTerm(searchTerm: string): string {

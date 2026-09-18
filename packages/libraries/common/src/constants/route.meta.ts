@@ -6,6 +6,7 @@ export const HTML_TITLE_META = 'html_title' // this meta defines the title of th
 export const IS_UNITARY_VIEW_META = 'is_unitary_view' // this meta expresses that the current route has an active entity, will be removed by url driven feature
 export const LAYOUT_GRAY_BACKGROUND_META = 'layout_gray_background' // tell the layout to use a gray background
 export const LAYOUT_META = 'layout' // defines the layout to be used for the route
+export const LAYOUT_MOBILE_NO_PADDING_META = 'layout_mobile_no_padding' // tell the mobile layout to remove padding, which LAYOUT_NO_PADDING_META does not
 export const LAYOUT_NO_PADDING_META = 'layout_no_padding' // tell the layout to remove padding
 export const PERMISSIONS_META = 'permissions' // this meta defines if the route can be only accessed by users with these permissions
 export const ROUTE_IS_COLLAB_META = 'route_is_collab' // expresses that the current route and its children are to be considered as a collaborator route

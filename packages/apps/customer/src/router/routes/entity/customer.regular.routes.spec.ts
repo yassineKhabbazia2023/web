@@ -46,4 +46,18 @@ describe('regularCustomerRoutes', () => {
       [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.INVOICES,
     })
   })
+
+  /**
+   * Gated by the flag alone: no account permission covers the domain, and what
+   * a customer may read is decided by the firm publishing it, not by a right.
+   */
+  it('should protect key moments direct access with the feature flag', () => {
+    const route = findRouteByName(regularCustomerRoutes, RouteName.KEY_MOMENTS)
+
+    expect(route).toBeDefined()
+    expect(route?.meta).toMatchObject({
+      [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
+    })
+    expect(route?.meta?.[PERMISSIONS_META]).toBeUndefined()
+  })
 })

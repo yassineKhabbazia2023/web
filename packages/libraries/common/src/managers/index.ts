@@ -1,5 +1,6 @@
 export * from './current-user/current-user.manager'
 export * from './feature-flag/feature-flag.manager'
+export * from './key-moments/key-moments.manager'
 export * from './pennylane-permissions/pennylane-permissions.manager'
 export * from './pennylane-sso/pennylane-sso.manager'
 export * from './current-entity/current-entity.manager'

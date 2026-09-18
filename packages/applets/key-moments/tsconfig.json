@@ -1,0 +1,14 @@
+{
+  "extends": "../../@config/tsconfig.base.app",
+  "references": [
+    {
+      "path": "../../libraries/common"
+    },
+    {
+      "path": "../../libraries/styleguide"
+    },
+    {
+      "path": "../../libraries/toolbox"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { RouteName } from '@pulse/common/enums'
 import { REGULAR_ENTITY_NAVIGATION_ITEMS } from './regular-entity.navigation'
 import { PROSPECT_ENTITY_NAVIGATION_ITEMS } from './prospect-entity.navigation'
 import { createNavigationContext } from '../__mocks__/navigation.mocks'
@@ -32,6 +33,47 @@ describe('regular-entity navigation items', () => {
       const context = createNavigationContext({ shouldShowSeresInvoices: false })
 
       expect(seresInvoicesItem?.shouldDisplay(context)).toBe(false)
+    })
+  })
+
+  describe('key moments item shouldDisplay', () => {
+    const keyMomentsItem = REGULAR_ENTITY_NAVIGATION_ITEMS.find(
+      (item) => item.id === 'regular-entity-key-moments',
+    )
+
+    it('should display key moments for a collaborator when the feature is enabled', () => {
+      const context = createNavigationContext({ isCollab: true, shouldShowKeyMoments: true })
+
+      expect(keyMomentsItem?.shouldDisplay(context)).toBe(true)
+    })
+
+    it('should hide key moments when the feature is disabled', () => {
+      const context = createNavigationContext({ isCollab: true, shouldShowKeyMoments: false })
+
+      expect(keyMomentsItem?.shouldDisplay(context)).toBe(false)
+    })
+
+    // Both surfaces share the one entry — the firm arbitrates a key moment, the
+    // customer reads the one it published. The asymmetry between them is
+    // arbitrated upstream by `KeyMomentsManager.canShowKeyMoments`, which asks a
+    // customer account for a published key moment where the flag alone lets the
+    // firm in; the entry only ever reads the answer, pre-computed in the context.
+    it('should display key moments for a customer when the feature is enabled', () => {
+      const context = createNavigationContext({ isCollab: false, shouldShowKeyMoments: true })
+
+      expect(keyMomentsItem?.shouldDisplay(context)).toBe(true)
+    })
+
+    it('should hide key moments from a customer when the feature is disabled', () => {
+      const context = createNavigationContext({ isCollab: false, shouldShowKeyMoments: false })
+
+      expect(keyMomentsItem?.shouldDisplay(context)).toBe(false)
+    })
+
+    /** The mirror view is the same entry: the highlight must not drop on it. */
+    it('should stay the active entry on the customer view of the key moment', () => {
+      expect(keyMomentsItem?.activeRoutes)
+        .toEqual([RouteName.KEY_MOMENTS, RouteName.KEY_MOMENTS_PREVIEW])
     })
   })
 })

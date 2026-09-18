@@ -71,6 +71,7 @@ Les feature flags ConfigCat sont gérés via OpenFeature et récupérés dynamiq
 | Feature Flag ConfigCat | Description |
 |---|---|
 | isDelegationRequestTabsEnabled | Active les nouveaux onglets "Demande(s) en attente" et "Demander délégation" dans le drawer de délégation du portefeuille |
+| isKeyMomentsEnabled | Active la page Moments clés (rapport de clôture, commentaires et publication) sur un dossier |
 | isManageWalletMenuEnabled | Affichage du bouton « Gérer mon portefeuille » (menu déroulant) en remplacement des boutons délégations / création de compte de test du portefeuille |
 | isProspectExperienceEnabled | Active l'expérience Prospect |
 | isWalletV2Enabled | Active la version V2 du portefeuille (barre sticky des dossiers sélectionnés) |

@@ -1,0 +1,108 @@
+/**
+ * What the edit surfaces share: the handle a drag starts from, and the shape of
+ * the ordered lists the drawers are made of. Held here rather than repeated in
+ * every section, so that one handle looks like every other one.
+ */
+
+@mixin handle {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 4px;
+  color: var(--p-text-neutral);
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+@mixin list {
+  padding: 0;
+  margin: 0;
+
+  &__row {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--key-moments-line);
+  }
+
+  /**
+   * Names what each column of the rows below holds. Laid out on the same flex
+   * row as they are, with a placeholder standing in for the handle and for the
+   * actions, so that a label sits over the control it names.
+   */
+  &__head {
+    padding-bottom: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--p-text-neutral);
+    border-bottom: 1px solid var(--key-moments-line);
+  }
+
+  /**
+   * Columns. The header and the rows are two separate flex lines, so they only
+   * ever line up if every cell states its own width rather than taking it from
+   * what it holds — hence `flex: 1 1 0` on the elastic ones, whose basis is
+   * zero and whose share is therefore the same on both lines.
+   */
+  &__cell {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  &__cell--grow {
+    flex: 1 1 0;
+  }
+
+  &__cell--grow > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /** The handle of a row, which carries no label of its own */
+  &__cell--handle {
+    flex: 0 0 24px;
+  }
+
+  /** The trailing icon button of a row */
+  &__cell--action {
+    flex: 0 0 32px;
+    justify-content: flex-end;
+  }
+
+  &__cell--medium {
+    flex: 0 0 130px;
+  }
+
+  &__cell--wide {
+    flex: 0 0 150px;
+  }
+}
+
+/**
+ * The placeholder a drag leaves behind, and the item being carried. Written
+ * where a drag can reach them rather than scoped to one component: Sortable
+ * moves the node itself, and a fallback drag re-parents it to the body.
+ */
+@mixin ghost {
+  .key-moments-editor-ghost {
+    opacity: 1;
+    background-color: var(--p-jungle-50, #e4fcf7);
+    border: 1px dashed var(--p-jungle-400);
+    border-radius: 4px;
+  }
+
+  .key-moments-editor-ghost > * {
+    visibility: hidden;
+  }
+
+  .key-moments-editor-drag {
+    opacity: 0.9;
+    background-color: var(--p-surface-primary, #fff);
+    box-shadow: 0 6px 16px rgb(0 0 0 / 18%);
+    border-radius: 4px;
+  }
+}

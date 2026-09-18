@@ -12,6 +12,7 @@ const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.FAVORITE_SORT,
   Feature.HUBSPOT_PRODUCT_FRUITS,
   Feature.INVOICES_EXPERIENCE,
+  Feature.KEY_MOMENTS,
   Feature.LAST_ACTIVITY_FEATURE,
   Feature.LEGACY_VENTYA_INVOICES_ACCESS,
   Feature.MAINTENANCE_MODE,
@@ -70,6 +71,10 @@ export class FeatureFlagManager {
 
   static isHubspotProductFruitsActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.HUBSPOT_PRODUCT_FRUITS)
+  }
+
+  static isKeyMomentsActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.KEY_MOMENTS)
   }
 
   static isLastActivityFeatureActivated() {

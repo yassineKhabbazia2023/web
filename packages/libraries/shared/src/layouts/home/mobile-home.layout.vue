@@ -23,7 +23,10 @@
         </MobileHeader>
       </PCHeader>
 
-      <PContainer class="mobile-home-layout__main padding--4">
+      <PContainer
+        class="mobile-home-layout__main"
+        :class="hasMobilePadding ? 'padding--4' : 'padding--0'"
+      >
         <slot name="banner" />
         <ContentLoader v-show="isContentLoading === true" />
         <router-view v-show="isContentLoading === false" />
@@ -38,19 +41,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { PCHeader, PContainer } from '@pulse/styleguide/components'
 import { ContentLoader } from '@pulse/shared/components'
+import { LAYOUT_MOBILE_NO_PADDING_META } from '@pulse/common/constants'
 import { useLoadingStore, useUserStore } from '@pulse/common/stores'
 import { MobileHeader } from './header'
 import { MobileBottomNav, MobileUserMenu } from './navigation'
 import type { MobileHomeLayoutProps } from './home.layout.types'
 import { MOBILE_BOTTOM_NAV_HEIGHT } from './mobile-home.const'
 
+const router = useRouter()
 const { isContentLoading } = storeToRefs(useLoadingStore())
 const { isCollab } = storeToRefs(useUserStore())
 const hasUserMenuOpened = ref(false)
+
+/** Every route keeps the gutter of the layout unless it asked to draw its own. */
+const hasMobilePadding = computed(
+  () => router.currentRoute.value?.meta[LAYOUT_MOBILE_NO_PADDING_META] !== true,
+)
 
 defineProps<MobileHomeLayoutProps>()
 

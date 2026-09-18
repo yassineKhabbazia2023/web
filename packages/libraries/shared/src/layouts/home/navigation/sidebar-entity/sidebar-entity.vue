@@ -68,7 +68,7 @@ const menuItems = computed(() =>
   NavigationManager.getNavigationItems(navigationContext.value, currentAccountType.value),
 )
 
-// Refresh BI reports permission on mount and when entity changes
+// Refresh the entries read from the API on mount and when entity changes
 watch(currentEntityId, () => {
   refreshBIReports()
 }, { immediate: true })

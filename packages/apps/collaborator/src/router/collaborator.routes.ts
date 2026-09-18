@@ -24,6 +24,8 @@ export const COLLABORATOR_ROUTES = {
         history: { path: 'historique-dossier', name: RouteName.FOLDER_HISTORY },
       },
       powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
+      keyMoments: { path: 'moments-cles', name: RouteName.KEY_MOMENTS },
+      keyMomentsPreview: { path: `moments-cles/apercu/:${RouteParam.EXERCICE_ID}`, name: RouteName.KEY_MOMENTS_PREVIEW },
       ged: { path: 'ged', name: RouteName.GED },
       pennylaneAccounting: {
         root: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
@@ -59,6 +61,11 @@ export const COLLABORATOR_ROUTES = {
     offersCatalog: { path: 'catalogue-des-offres', name: RouteName.OFFERS_CATALOG },
     launcher: { path: 'launcher', name: RouteName.WALLET_LAUNCHER },
     mandates: { path: 'mandats', name: RouteName.MANDATES },
+    keyMomentsSettings: { path: 'moments-cles', name: RouteName.KEY_MOMENTS_SETTINGS },
+    keyMomentsTemplateEditor: {
+      path: `moments-cles/templates/:${RouteParam.TEMPLATE_ID}`,
+      name: RouteName.KEY_MOMENTS_TEMPLATE_EDITOR,
+    },
   },
   profile: {
     information: { path: 'profil/informations', name: RouteName.PROFILE_INFORMATION },

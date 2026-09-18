@@ -1,0 +1,1056 @@
+{
+  "version": "1.0.0",
+  "indicators": [
+    {
+      "id": "chiffre-d-affaires",
+      "label": "Chiffre d'affaires",
+      "shortLabel": "CA",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "marge",
+      "label": "Marge",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "resultat",
+      "label": "Résultat",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "tresorerie",
+      "label": "Trésorerie",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "seuil-de-rentabilite-d-exploitation",
+      "label": "Seuil de rentabilité d'exploitation",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "point-mort",
+      "label": "Point mort",
+      "kind": "days",
+      "sign": "expense"
+    },
+    {
+      "id": "capacite-d-autofinancement",
+      "label": "Capacité d'autofinancement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "credit-clients",
+      "label": "Crédit clients",
+      "kind": "days",
+      "sign": "expense"
+    },
+    {
+      "id": "credit-fournisseurs",
+      "label": "Crédit fournisseurs",
+      "kind": "days",
+      "sign": "income"
+    },
+    {
+      "id": "achats-consommes",
+      "label": "Achats consommés",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "synthese-sous-traitance",
+      "label": "Sous-traitance",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "marge-globale",
+      "label": "Marge globale",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "autres-achats-et-charges-externes",
+      "label": "Autres achats et charges externes",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "impots-et-taxes",
+      "label": "Impôts et taxes",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "charges-de-personnel-participation",
+      "label": "Charges de personnel, participation",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "autres-produits-autres-charges",
+      "label": "Autres produits, autres charges",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "excedent-brut-d-exploitation-ebe",
+      "label": "Excédent brut d'exploitation (EBE)",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dot-reprises-de-provisions-bfr",
+      "label": "Dot/Reprises de provisions BFR",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dotations-aux-amortissements",
+      "label": "Dotations aux amortissements",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "resultat-financier",
+      "label": "Résultat financier",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "resultat-exceptionnel",
+      "label": "Résultat exceptionnel",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "impots-sur-les-societes",
+      "label": "Impôts sur les sociétés",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "resultat-net",
+      "label": "Résultat net",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "resultat-generant-un-flux-de-tresorerie",
+      "label": "Résultat générant un flux de trésorerie",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "taux-de-marge",
+      "label": "Taux de marge",
+      "kind": "percentage",
+      "sign": "income"
+    },
+    {
+      "id": "effet-evol-du-ca",
+      "label": "Effet Evol. du CA",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "effet-evol-du-taux-de-marge",
+      "label": "Effet Evol. du taux de marge",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "achats-autres",
+      "label": "Achats autres",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "evolchargesext-sous-traitance",
+      "label": "Sous-traitance",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "location-et-charges-locatives",
+      "label": "Location et charges locatives",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "entretien-et-reparation",
+      "label": "Entretien et réparation",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "assurances",
+      "label": "Assurances",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "honoraires-et-interimaires",
+      "label": "Honoraires et intérimaires",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "publicite-kdo-foire-expo-dons",
+      "label": "Publicité, cadeaux, foire, exposition, dons",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "frais-de-transport",
+      "label": "Frais de transport",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "deplacement-et-reception",
+      "label": "Déplacement et réception",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "frais-postaux-et-telecom",
+      "label": "Frais postaux et télécom",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "frais-bancaires",
+      "label": "Frais bancaires",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "autres",
+      "label": "Autres",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "total-des-charges-externes",
+      "label": "Total des charges externes",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "masse-salariale",
+      "label": "Masse salariale",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "charges-patronales-et-taxes-assises-sur-les-salaires",
+      "label": "Charges patronales et taxes assises sur les salaires",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "taux-de-charges",
+      "label": "Taux de charges",
+      "kind": "percentage",
+      "sign": "income"
+    },
+    {
+      "id": "effectif-en-equivalent-temps-plein",
+      "label": "Effectif en équivalent temps plein (ETP)",
+      "kind": "headcount",
+      "sign": "income"
+    },
+    {
+      "id": "salaire-moyen",
+      "label": "Salaire moyen",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "cout-total",
+      "label": "Coût total",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "du-ca",
+      "label": "Pourcentage CA",
+      "kind": "percentage",
+      "sign": "income"
+    },
+    {
+      "id": "effet-evol-effectif",
+      "label": "Effet Evol. Effectif",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "effet-evol-salaire-moyen",
+      "label": "Effet Evol. Salaire moyen",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "effet-evol-du-taux-de-charges",
+      "label": "Effet Evol. du taux de charges",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remtns-remuneration-dirigeant",
+      "label": "Rémunération du dirigeant",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remtns-charges-tns",
+      "label": "Charges TNS",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remtns-csg-crds",
+      "label": "CSG CRDS",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remtns-total-charges-tns",
+      "label": "Total charge TNS",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remtns-taux-de-charges",
+      "label": "Taux de charges",
+      "kind": "percentage",
+      "sign": "income"
+    },
+    {
+      "id": "impots-et-taxes-hors-taxes-liees-aux-salaires",
+      "label": "Impôts et taxes (hors taxes liées aux salaires)",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "seuilrenta-production-stockee-ou-immob",
+      "label": "Production stockée ou immob",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "seuilrenta-sous-traitance",
+      "label": "Sous-traitance",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "seuilrenta-autres-charges-variables",
+      "label": "Autres charges variables",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "marge-sur-couts-variables",
+      "label": "Marge sur coûts variables",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "taux-de-marge-sur-couts-variables",
+      "label": "Taux de marge sur coûts variables",
+      "kind": "percentage",
+      "sign": "income"
+    },
+    {
+      "id": "couts-fixes",
+      "label": "Coûts fixes",
+      "kind": "amount",
+      "sign": "expense"
+    },
+    {
+      "id": "ecart-du-seuil",
+      "label": "Écart du seuil",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "point-mort-en-jours",
+      "label": "Point mort en jours",
+      "kind": "days",
+      "sign": "expense"
+    },
+    {
+      "id": "immobilisations-incorporelles",
+      "label": "Immobilisations incorporelles",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "immobilisations-corporelles",
+      "label": "Immobilisations corporelles",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "immobilisations-financieres",
+      "label": "Immobilisations financières",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilan-stocks",
+      "label": "Stocks",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "clients-et-comptes-rattaches",
+      "label": "Clients et comptes rattachés",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilan-autres-creances",
+      "label": "Autres créances",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "disponibilites",
+      "label": "Disponibilités",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "total-actif",
+      "label": "Total Actif",
+      "shortLabel": "Actif",
+      "kind": "amount",
+      "sign": "income",
+      "components": [
+        {
+          "indicator": "total-actif-immobilise-net"
+        },
+        {
+          "indicator": "bilan-stocks"
+        },
+        {
+          "indicator": "clients-et-comptes-rattaches"
+        },
+        {
+          "indicator": "bilan-autres-creances"
+        },
+        {
+          "indicator": "disponibilites"
+        }
+      ]
+    },
+    {
+      "id": "capitaux-propres-avt-resultat",
+      "label": "Capitaux propres avt résultat",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "resultat-de-l-exercice",
+      "label": "Résultat de l'exercice",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilan-provisions-r-c",
+      "label": "Provisions R&C",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dettes-financieres",
+      "label": "Dettes financières",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilan-fournisseurs",
+      "label": "Fournisseurs",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilan-autres-dettes",
+      "label": "Autres dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "total-passif",
+      "label": "Total Passif",
+      "shortLabel": "Passif",
+      "kind": "amount",
+      "sign": "income",
+      "components": [
+        {
+          "indicator": "fonds-propres-equity"
+        },
+        {
+          "indicator": "bilan-provisions-r-c"
+        },
+        {
+          "indicator": "dettes-financieres"
+        },
+        {
+          "indicator": "bilan-fournisseurs"
+        },
+        {
+          "indicator": "bilan-autres-dettes"
+        }
+      ]
+    },
+    {
+      "id": "fonds-de-roulement",
+      "label": "Fonds de roulement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr",
+      "label": "Besoin en fonds de roulement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "total-actif-immobilise-net",
+      "label": "Total Actif Immobilisé net",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "stocks-nets",
+      "label": "Stocks nets",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "clients-nets",
+      "label": "Clients nets",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "fournisseurs-et-compte-rattaches",
+      "label": "Fournisseurs et comptes rattachés",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "besoin-en-fonds-de-roulement-strict",
+      "label": "Besoin en fonds de roulement strict",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "creances-dettes-fisc-et-sociales",
+      "label": "Créances-Dettes / fisc. et sociales",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "produits-et-charges-constates-d-avance",
+      "label": "Produits et charges constatés d'avance",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "autres-creances-et-dettes",
+      "label": "Autres créances et dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "autres-besoins-en-fonds-de-roulement",
+      "label": "Autres besoins en fonds de roulement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "total-actif-circulant",
+      "label": "Total actif circulant",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "besoin-en-fonds-de-roulement",
+      "label": "Besoin en fonds de roulement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilaneco-vmp",
+      "label": "VMP",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "emprunts-bancaires",
+      "label": "Emprunts bancaires",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilaneco-comptes-courants",
+      "label": "Comptes courants",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilaneco-dividendes-a-payer",
+      "label": "Dividendes à payer",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilaneco-autres-dettes-financieres",
+      "label": "Autres dettes financières",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "total-dettes",
+      "label": "Total dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "passif-net",
+      "label": "Passif net",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "endettement-net",
+      "label": "Endettement net",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "actif-net",
+      "label": "Actif net",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "capital-reserves",
+      "label": "Capital & Réserves",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bilaneco-provisions-pour-risques-et-charges",
+      "label": "Provisions pour risques et charges",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "fonds-propres-equity",
+      "label": "Fonds Propres (Equity)",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-stocks",
+      "label": "Stocks",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-clients",
+      "label": "Clients",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-fournisseurs",
+      "label": "Fournisseurs",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-d-exploitation",
+      "label": "BFR d'exploitation",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-autres-creances",
+      "label": "Autres créances",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dettes-soc-fisc",
+      "label": "Dettes soc. & fisc.",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-autres-dettes",
+      "label": "Autres dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bfr-hors-exploitation",
+      "label": "BFR hors exploitation",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-resultat",
+      "label": "Le résultat de votre exercice est de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-charges-produits-sans-impact",
+      "label": "Les charges et les produits sans impact sur la trésorerie sont de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-capacite-de-generation",
+      "label": "La capacité de générer de la trésorerie est de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-stocks",
+      "label": "Stocks",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "creances-clients",
+      "label": "Créances clients",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dettes-fournisseurs",
+      "label": "Dettes fournisseurs",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-autres-creances",
+      "label": "Autres créances",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-autres-dettes",
+      "label": "Autres dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-total-decalages",
+      "label": "Le montant total des décalages de trésorerie est de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "investissements",
+      "label": "Investissements",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remboursements-d-emprunts",
+      "label": "Remboursements d'emprunts",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-retraits-sur-les-comptes-courants",
+      "label": "Retraits sur les comptes courants",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dividendes-verses",
+      "label": "Dividendes versés",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-total-besoins-financiers",
+      "label": "Ces besoins financiers consomment de la trésorerie à hauteur de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-apports-en-capital-ou-en-compte-courant",
+      "label": "Apports en capital ou en compte courant",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "nouveaux-emprunts",
+      "label": "Nouveaux emprunts",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "nouvelles-subventions-d-investissements",
+      "label": "Nouvelles subventions d'investissements",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "produits-de-cession-d-immobilisations",
+      "label": "Produits de cession d'immobilisations",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-total-financements-externes",
+      "label": "Ces financements externes génèrent de la trésorerie à hauteur de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-mouvement-total",
+      "label": "Le mouvement total de trésorerie de l'exercice est",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-solde-ouverture",
+      "label": "Le solde de trésorerie d'ouverture est de",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "evoltresonv-solde-cloture",
+      "label": "Le solde de trésorerie de clôture est",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "amortissements-et-provisions",
+      "label": "Amortissements et provisions",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-plus-values-de-cession",
+      "label": "Plus values de cession",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-des-creances-clients",
+      "label": "Variation des créances clients",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-des-stocks",
+      "label": "Variation des stocks",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-des-dettes-fournisseurs-hors-frs-immo",
+      "label": "Variation des dettes fournisseurs (hors frs immo)",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-autres-creances",
+      "label": "Autres créances",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-autres-dettes",
+      "label": "Autres dettes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-net-de-tresorerie-genere-par-l-activite",
+      "label": "Flux net de trésorerie généré par l'activité",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "acquisitions-immobilisations-incorp-corp",
+      "label": "Acquisitions immobilisations incorp & corp",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-variations-des-immobilisations-financieres-brutes",
+      "label": "Variations des immobilisations financières brutes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-variation-des-fournisseurs-d-immobilisations",
+      "label": "Variation des fournisseurs d'immobilisations",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-produits-de-cession",
+      "label": "Produits de cession",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-net-de-tresorerie-lie-aux-operations-d-invest",
+      "label": "Flux net de trésorerie lié aux opérations d'invest.",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dividendes-verses-aux-actionnaires",
+      "label": "Dividendes versés aux actionnaires",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-variation-des-comptes-courants",
+      "label": "Variation des comptes courants",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-du-capital-en-numeraire",
+      "label": "Variation du capital en numéraire",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-des-subventions",
+      "label": "Variation des Subventions",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-des-emprunts",
+      "label": "Variation des emprunts",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "flux-net-de-tresorerie-lie-aux-op-de-financement",
+      "label": "Flux net de trésorerie lié aux op. de financement",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "variation-de-tresorerie",
+      "label": "Variation de trésorerie",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "tresorerie-a-l-ouverture",
+      "label": "Trésorerie à l'ouverture",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "tresorerie-nette-a-la-cloture",
+      "label": "Trésorerie nette à la clôture",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "remboursements",
+      "label": "Remboursements",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "investissement-exercice",
+      "label": "Investissement exercice",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "tresorerie-ouverture",
+      "label": "Trésorerie Ouverture",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bridgetreso-stocks",
+      "label": "Stocks",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bridgetreso-clients",
+      "label": "Clients",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "bridgetreso-fournisseurs",
+      "label": "Fournisseurs",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "autres-valeurs",
+      "label": "Autres valeurs",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "invest-nets",
+      "label": "Invest nets",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "var-des-emprunts-et-des-subv",
+      "label": "Var. des emprunts et des subv.",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "mouvement-capital",
+      "label": "Mouvement capital",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "dividendes",
+      "label": "Dividendes",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "comptes-courants",
+      "label": "Comptes courants",
+      "kind": "amount",
+      "sign": "income"
+    },
+    {
+      "id": "tresorerie-cloture",
+      "label": "Trésorerie Clôture",
+      "kind": "amount",
+      "sign": "income"
+    }
+  ]
+}

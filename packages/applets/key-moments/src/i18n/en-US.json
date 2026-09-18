@@ -1,0 +1,597 @@
+{
+  "keyMoments": {
+    "title": "Key moments",
+    "titleOf": "Key moments of {name}",
+    "error": "The key moments of this folder could not be loaded.",
+    "empty": "No closing has been imported for this folder yet.",
+    "import": {
+      "button": "Import a closing",
+      "success": "The closing has been imported.",
+      "error": "The closing could not be imported.",
+      "rejection": {
+        "accountMismatch": "This account does not carry the SIRET of this closing, or is no longer active.",
+        "exerciceAccountConflict": "This exercice already belongs to another account.",
+        "unknownSiret": "No account carries the SIRET of this closing."
+      }
+    },
+    "export": {
+      "button": {
+        "pptx": "Export to PPT",
+        "pdf": "Export to PDF"
+      },
+      "error": {
+        "pptx": "The PowerPoint export did not complete.",
+        "pdf": "The PDF export did not complete."
+      },
+      "continued": "(continued)"
+    },
+    "publish": {
+      "button": {
+        "default": "Publish",
+        "update": "Publish the update",
+        "modifications": "Publish the changes"
+      },
+      "state": {
+        "never": "Exercise not published",
+        "published": "Published on {date} by {author}",
+        "neverViewed": "Never viewed by the client",
+        "viewed": "Viewed {count} time by the client · last viewed on {date} | Viewed {count} times by the client · last viewed on {date}",
+        "delivery": "the client is not reading the latest delivery",
+        "unreadable": "The published state could not be read: reload the page to publish.",
+        "modified": "{count} unpublished change | {count} unpublished changes",
+        "unresolvedOffers": "{count} recommendation is no longer in the catalogue: detach it to publish. | {count} recommendations are no longer in the catalogue: detach them to publish."
+      },
+      "divergence": {
+        "closing": "Closing changed: {to}",
+        "closingVersion": "New version of the closing (v{from} → v{to})",
+        "template": "Template changed ({from} → {to})",
+        "templateVersion": "New version of the template ({from} → {to})",
+        "comparison": "Comparison {from} → {to}",
+        "currency": "Read in {unit}",
+        "comments": "{count} comment changed | {count} comments changed",
+        "hiddenWidgets": "{hidden} sub-section hidden, {shown} brought back | {hidden} sub-sections hidden, {shown} brought back",
+        "offers": "{count} recommendation changed | {count} recommendations changed"
+      },
+      "revert": {
+        "title": "Unpublished changes",
+        "button": "Undo",
+        "unavailable": "Cannot be undone",
+        "unavailableHint": "This choice is no longer in the catalogue and cannot be brought back.",
+        "commentsHint": "Brings back the comments retained at publication. No text is changed."
+      },
+      "success": "The key moment is published.",
+      "error": "Publishing failed.",
+      "popup": {
+        "title": "Publish this key moment?",
+        "message": "The report will be published as displayed, with the retained comments.",
+        "replace": "A publication from {date} by {author} already exists for this exercise: it will be replaced by the following.",
+        "confirm": "Publish",
+        "cancel": "Cancel"
+      },
+      "missingOffersError": "The publication was refused: a recommendation is no longer described in the catalogue."
+    },
+    "unpublish": {
+      "button": "Unpublish",
+      "success": "The key moment is unpublished.",
+      "error": "Unpublishing failed.",
+      "popup": {
+        "title": "Unpublish this key moment?",
+        "message": "The publication from {date} by {author} will be retired: nothing will be published for this exercice any more.",
+        "confirm": "Unpublish",
+        "cancel": "Cancel"
+      }
+    },
+    "preview": {
+      "publishedButton": "View the published version",
+      "openButton": "Preview",
+      "back": "Back to the editor",
+      "caption": "Client view",
+      "captionPublished": "Client view · published on {date} by {author}",
+      "captionDraft": "Draft preview — what the client will see once published",
+      "captionDraftDivergent": "Draft preview — what the client will see once published · differs from the version published on {date}",
+      "mode": {
+        "label": "Version",
+        "draft": "Draft",
+        "published": "Published"
+      },
+      "noDraft": "No draft to display — go back to the editor."
+    },
+    "table": {
+      "label": "Label"
+    },
+    "columns": {
+      "delta": "Chg. {to}/{from}",
+      "deltaCaption": "{to} vs {from}",
+      "deltaPct": "%",
+      "deltaPctCaption": "{to}/{from}",
+      "ratio": "% {indicator}"
+    },
+    "units": {
+      "percentage": "%",
+      "days": "d",
+      "points": "pts"
+    },
+    "balanceImage": {
+      "total": "Total {side}: {amount}"
+    },
+    "cards": {
+      "variation": "Variation",
+      "referenceValue": "Year {exercise} value ({date})"
+    },
+    "comment": {
+      "title": "COMMENT",
+      "wordmark": "Comment'",
+      "empty": "No comment for this part.",
+      "placeholder": "Type your comment",
+      "edit": "Edit",
+      "save": "Save",
+      "add": "Add my comment",
+      "delivered": "Delivered",
+      "deliveredVersion": "Version {version}",
+      "unknownContributor": "Contributor",
+      "saveError": "Your comment could not be saved.",
+      "retainError": "The retained version could not be saved.",
+      "retain": "Retain",
+      "discard": "Discard",
+      "reintegrate": "Reintegrate",
+      "discarded": "Discarded slot: nothing will be published here.",
+      "discardError": "The slot could not be discarded.",
+      "publishable": "Reading retained for publication",
+      "updatedAt": "edited on {date}",
+      "tabsAriaLabel": "Comment versions"
+    },
+    "visibility": {
+      "hiddenBadge": "Hidden",
+      "hide": "Hide the sub-section",
+      "show": "Show the sub-section",
+      "error": "Unable to save which sub-sections are published"
+    },
+    "preferences": {
+      "error": "Unable to save your reading preferences"
+    },
+    "draft": {
+      "error": "The exercice data could not be loaded.",
+      "writeRefused": "The exercice data could not be loaded: reload the page before changing your choices."
+    },
+    "exerciceSelect": {
+      "ariaLabel": "Choose the exercice displayed",
+      "option": "Exercice {year}"
+    },
+    "customer": {
+      "error": "Your key moment could not be loaded.",
+      "empty": "No key moment is available at the moment.",
+      "caption": {
+        "exercice": "Exercice from {start} to {end}",
+        "publishedAt": "published on {date}"
+      }
+    },
+    "closingSelect": {
+      "ariaLabel": "Choose the closing displayed",
+      "option": "Version {version} ({date})",
+      "orphan": "Version {version}"
+    },
+    "comparisonSelect": {
+      "option": "{exercise} ({date})"
+    },
+    "filters": {
+      "template": "Template",
+      "comparison": "Comparison exercise",
+      "comparisonLocked": "The chosen closing offers a single comparison, {exercise}.\nThe filter opens as soon as an export ships one more exercise.",
+      "templateError": "The template could not be loaded.",
+      "unit": "Display unit",
+      "units": {
+        "euro": "€",
+        "thousands": "k€"
+      }
+    },
+    "nav": {
+      "title": "Navigation",
+      "collapse": "Collapse the navigation",
+      "expand": "Expand the navigation"
+    },
+    "waterfall": {
+      "balance": "Balance (total)",
+      "rise": "Positive movement",
+      "fall": "Negative movement"
+    },
+    "balanceSheet": {
+      "assets": "Assets",
+      "liabilities": "Liabilities"
+    },
+    "narrative": {
+      "start": "Starting point",
+      "end": "Final cash reconciliation"
+    },
+    "offers": {
+      "title": "Our recommendations",
+      "subtitle": "Our recommendations for the coming exercice",
+      "add": "Attach an offer",
+      "capReached": "You cannot attach more than {count} offers to an exercice.",
+      "error": "The recommendations could not be saved.",
+      "readError": "The recommendations of the exercice could not be loaded: reload the page before changing them.",
+      "picker": {
+        "title": "Attach an offer to the {year} exercice",
+        "search": "Search for an offer",
+        "allTags": "All",
+        "choose": "Choose this offer",
+        "chosen": "Already attached",
+        "empty": "No offer matches this search."
+      },
+      "card": {
+        "commentPlaceholder": "Why this offer, for this client",
+        "remove": "Remove this offer",
+        "hide": "Hide the offer",
+        "show": "Show the offer",
+        "hiddenBadge": "Hidden",
+        "retired": "Offer removed from the catalogue",
+        "priorityLabel": "Priority",
+        "priorityNone": "None",
+        "priorityHidden": "Hide the priority from the client",
+        "priorityHiddenHint": "Set a priority first.",
+        "commentEmpty": "No note on this offer.",
+        "commentTitle": "Why we recommend this offer",
+        "benefitsCommentTitle": "Benefits for your business",
+        "benefitsCommentPlaceholder": "What this offer brings to your business",
+        "benefitsCommentEmpty": "No benefits stated for this offer."
+      },
+      "priority": {
+        "primary": "Primary",
+        "significant": "Significant",
+        "informative": "Informative"
+      }
+    },
+    "settings": {
+      "title": "Key moments",
+      "tabs": {
+        "templates": "Templates",
+        "indicators": "Indicators"
+      },
+      "templates": {
+        "new": "New template",
+        "open": "Open",
+        "duplicate": "Duplicate and edit",
+        "noVisibleVersion": "No visible version",
+        "loadError": "The templates could not be read.",
+        "columns": {
+          "code": "Code",
+          "label": "Label",
+          "visibleVersion": "Visible version",
+          "actions": "Actions"
+        },
+        "createDrawer": {
+          "titleNew": "New template",
+          "titleDuplicate": "Duplicate template",
+          "code": "Code",
+          "codeHint": "e.g. accrual-accounting",
+          "codeInvalid": "The code must contain at least one letter or digit",
+          "label": "Label",
+          "copyLabel": "{label} (copy)",
+          "cancel": "Cancel",
+          "create": "Create",
+          "error": "The template could not be created."
+        },
+        "withdraw": "Withdraw from the catalogue",
+        "withdrawDialog": {
+          "title": "Withdraw this template from the catalogue",
+          "text": "No version will be visible any more: the dossiers can no longer pick this template.",
+          "confirm": "Withdraw"
+        },
+        "withdrawError": "The template could not be withdrawn from the catalogue.",
+        "withdrawn": "Template withdrawn from the catalogue."
+      },
+      "templateEditor": {
+        "title": "Template editor"
+      },
+      "indicators": {
+        "create": "Create an indicator",
+        "search": "Search a code or a label",
+        "showDeprecated": "Show the deprecated ones",
+        "count": "{count} indicator(s)",
+        "empty": "No indicator matches.",
+        "edit": "Edit",
+        "deprecate": "Deprecate",
+        "restore": "Restore",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "activeState": "Active",
+        "deprecatedState": "Deprecated",
+        "confirmDeprecate": "Deprecate « {code} »? The templates citing it keep displaying it, and {count} aggregate(s) combine it.",
+        "confirmRestore": "Put « {code} » back into the vocabulary?",
+        "deprecated": "Indicator deprecated.",
+        "restored": "Indicator restored.",
+        "alreadyInState": "This indicator was already in that state; the list has been reloaded.",
+        "actionError": "The action could not be performed.",
+        "loadError": "The indicators could not be read.",
+        "columns": {
+          "code": "Code",
+          "label": "Label",
+          "shortLabel": "Short label",
+          "kind": "Unit",
+          "sign": "Sign",
+          "state": "State",
+          "actions": "Actions"
+        },
+        "kinds": {
+          "amount": "Amount",
+          "percentage": "Percentage",
+          "days": "Days",
+          "headcount": "Headcount",
+          "points": "Points"
+        },
+        "signs": {
+          "income": "Income",
+          "expense": "Expense"
+        }
+      },
+      "indicatorSelect": {
+        "placeholder": "Pick an indicator",
+        "noMatch": "No indicator matches",
+        "option": "{label} · {code}",
+        "deprecatedOption": "{label} · {code} (deprecated)",
+        "create": "Create an indicator"
+      },
+      "renderers": {
+        "table": "Table",
+        "cards": "Cards",
+        "chart": "Chart",
+        "waterfall": "Waterfall",
+        "balanceSheet": "Balance sheet",
+        "balanceImage": "Balance sheet image",
+        "narrative": "Narrative"
+      },
+      "colors": {
+        "seriesPrimary": "Series 1",
+        "seriesAccent": "Series 2",
+        "seriesMuted": "Series 3",
+        "seriesSoft": "Series 4",
+        "balanceWorkingCapital": "Working capital",
+        "balanceWorkingCapitalNeed": "Working capital need",
+        "balanceCash": "Cash"
+      },
+      "measures": {
+        "useDefaults": "Default measures of the template",
+        "addNamed": "+ Add a measure",
+        "addRole": "+ Add a variation",
+        "labelHint": "Label (optional)",
+        "hidden": "Hidden",
+        "remove": "Remove the measure",
+        "roles": {
+          "variation": "Variation",
+          "variationPct": "Variation %"
+        },
+        "headers": {
+          "measure": "Measure",
+          "label": "Displayed label",
+          "hidden": "Hidden"
+        },
+        "hints": {
+          "measure": "The column read: a key of the closing (N, N-1…) or a role following the comparison the reader applies.",
+          "label": "Replaces the header derived from the measure. Optional.",
+          "hidden": "Keeps the column in the template without showing it. Hiding never deletes."
+        }
+      },
+      "screenDrawer": {
+        "title": "Screen title",
+        "subtitle": "Subtitle",
+        "id": "Identifier"
+      },
+      "templateDrawer": {
+        "title": "Template properties",
+        "label": "Label",
+        "code": "Code",
+        "defaultMeasures": "Default measures"
+      },
+      "widgetDrawer": {
+        "id": "Identifier",
+        "title": "Title",
+        "titleHint": "{'{N}'} writes the closing month, {'{N:key}'} its key",
+        "renderer": "Renderer",
+        "span": "Width",
+        "comment": "Comment slot",
+        "commentHint": "Empty = no comment",
+        "spans": {
+          "4": "Third width",
+          "6": "Half width",
+          "12": "Full width"
+        },
+        "sections": {
+          "general": "General",
+          "lines": "Lines",
+          "measures": "Measures",
+          "cards": "Cards",
+          "chart": "Chart"
+        },
+        "lines": {
+          "add": "+ Add a line",
+          "remove": "Remove the line",
+          "hideCard": "Hide the card",
+          "roles": {
+            "none": "No role",
+            "subtotal": "Subtotal",
+            "total": "Total",
+            "memo": "Memo"
+          },
+          "sides": {
+            "assets": "Assets",
+            "liabilities": "Liabilities"
+          },
+          "headers": {
+            "indicator": "Indicator",
+            "role": "Role",
+            "side": "Side",
+            "reference": "Reference indicator",
+            "card": "Card"
+          },
+          "hints": {
+            "indicator": "The vocabulary term this line displays. Its values come from the closing.",
+            "role": "Emphasises the line: subtotal, total, or memo. With no role, the line is an ordinary one.",
+            "side": "Side of the balance sheet the line sits on. Read by the balance sheet renderer only.",
+            "reference": "Indicator this line is an effect of. The card then shows that indicator's history: an effect has no history of its own and only means something beside what drove it. Leave empty in the usual case.",
+            "card": "Leaves the card of this line out of the cards renderer. The line stays in the table."
+          }
+        },
+        "cards": {
+          "heroFirst": "First card as a hero",
+          "signColored": "Colour on the sign of the value",
+          "colored": "Colour on the chart series"
+        },
+        "chart": {
+          "kind": "Chart kind",
+          "addSeries": "+ Add a series",
+          "removeSeries": "Remove the series",
+          "syncLines": "Align the lines on the series",
+          "primaryAxisTitle": "Primary axis title",
+          "secondaryAxisTitle": "Secondary axis title",
+          "periods": "Displayed exercises",
+          "allPeriods": "All exercises",
+          "period": "Exercise read",
+          "stacks": "Columns",
+          "groupLabel": "Group label",
+          "newGroup": "New group",
+          "addGroup": "+ Add a group",
+          "removeGroup": "Remove the group",
+          "kinds": {
+            "groupedBars": "Grouped bars",
+            "stackedBars": "Stacked bars",
+            "composition": "Composition"
+          },
+          "seriesTypes": {
+            "bar": "Bar",
+            "line": "Line"
+          },
+          "periodRoles": {
+            "current": "Current exercise",
+            "reference": "Compared exercise"
+          },
+          "headers": {
+            "indicator": "Indicator",
+            "color": "Colour",
+            "type": "Plot",
+            "group": "Group"
+          },
+          "hints": {
+            "indicator": "The term this series plots.",
+            "color": "Colour token of the template. The module picks the ink, the template picks the slot.",
+            "type": "Bar, or a line plotted against the secondary axis.",
+            "group": "Label of the group shown under the columns of the composition."
+          }
+        }
+      },
+      "editor": {
+        "commentPlaceholder": "Collaborator comment",
+        "versionSelect": "Displayed version",
+        "versionVisible": "{version} (visible)",
+        "properties": "Properties",
+        "duplicate": "Duplicate and edit",
+        "visible": "Visible version",
+        "makeVisible": "Make visible",
+        "addScreen": "+ Add a screen",
+        "addWidget": "+ Add a widget",
+        "newScreenTitle": "New screen",
+        "newWidgetTitle": "New widget",
+        "loadError": "The template could not be opened.",
+        "vocabularyError": "The indicators vocabulary could not be read.",
+        "blocked": "Some elements are not read by the rendering: fix them before saving.",
+        "idInvalid": "The identifier cannot be empty.",
+        "idTaken": "This identifier is already used by another screen or widget.",
+        "titleRequired": "The title cannot be empty.",
+        "linesRequired": "A widget must cite at least one indicator.",
+        "widgetUnrendered": "This widget cannot be displayed: none of its lines cites a known indicator, its title names an unavailable exercise, or its configuration is unreadable (unknown display type, missing id…). Fix it or remove it.",
+        "screenUnrendered": "This section cannot be displayed: its title or its id is unreadable. Fix it or remove it.",
+        "saved": "Version saved.",
+        "saveError": "The version could not be saved.",
+        "madeVisible": "This version is now visible.",
+        "visibleError": "The version could not be made visible.",
+        "saveDialog": {
+          "versionLabel": "Version number",
+          "cancel": "Cancel"
+        },
+        "visibleDialog": {
+          "title": "Make this version visible",
+          "text": "Version {version} will become the one the dossiers read.",
+          "confirm": "Make visible"
+        },
+        "remove": {
+          "screenTitle": "Remove this screen",
+          "widgetTitle": "Remove this widget",
+          "text": "This removal only takes effect once a version is saved.",
+          "confirm": "Remove"
+        },
+        "leave": {
+          "title": "Unsaved changes",
+          "text": "The changes in progress will be lost.",
+          "confirm": "Leave without saving",
+          "cancel": "Stay"
+        },
+        "warnings": {
+          "title": "{count} element(s) not read by the rendering",
+          "documentUnreadable": "The template could not be read: nothing could be displayed from it.",
+          "measureDropped": "An unreadable measure was left out of the rendering.",
+          "lineDropped": "An unreadable line was left out of the rendering.",
+          "widgetDropped": "An unreadable widget was left out of the rendering.",
+          "screenDropped": "An unreadable screen was left out of the rendering.",
+          "emptyScreenKept": "A screen holds no widget: it will not appear in the report.",
+          "unknownRole": "A widget uses a measure role the closing cannot fill.",
+          "unknownIndicators": "A widget names indicators the vocabulary does not carry.",
+          "unknownMeasures": "A widget names measures the closing does not declare.",
+          "chartWithoutColors": "A composition chart declares no colors.",
+          "rendererUnavailable": "A widget cannot be drawn in the renderer it asks for — what it declares does not fill it — and is drawn otherwise."
+        },
+        "toolbar": {
+          "edit": "Edit",
+          "hide": "Hide",
+          "show": "Show",
+          "remove": "Remove",
+          "move": "Move"
+        },
+        "save": "Save",
+        "newVersion": "New version",
+        "versionSaved": "New version created.",
+        "versionDeleted": "Version deleted.",
+        "deleteVersionError": "The version could not be deleted.",
+        "newVersionDialog": {
+          "title": "Create a new version",
+          "text": "The changes in progress will be carried by a new version, which no dossier reads until you make it visible.",
+          "confirm": "Create the version"
+        },
+        "deleteVersion": {
+          "title": "Delete this version",
+          "text": "Version {version} will be permanently deleted."
+        },
+        "refusals": {
+          "locked": "A publication pins this version: it cannot be changed any more.",
+          "schemaInvalid": "The template does not conform to the expected schema.",
+          "unknownCitations": "Some indicators the template cites are unknown to the vocabulary."
+        }
+      },
+      "indicatorDrawer": {
+        "titleCreate": "Create an indicator",
+        "titleEdit": "Edit the indicator",
+        "code": "Code",
+        "codeHint": "e.g. revenue",
+        "codeTaken": "This code is already used.",
+        "codeInvalid": "The code must contain at least a letter or a digit",
+        "label": "Label",
+        "shortLabel": "Short label",
+        "shortLabelHint": "Used where width is scarce",
+        "kind": "Unit",
+        "sign": "Sign",
+        "components": "Components",
+        "componentsHint": "The terms this aggregate combines. An aggregate never combines itself.",
+        "addComponent": "+ Add a component",
+        "removeComponent": "Remove the component",
+        "componentsError": "The composition could not be saved.",
+        "usages": "Usages",
+        "noUsage": "No template cites this indicator.",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saved": "Indicator saved.",
+        "error": "The indicator could not be saved."
+      },
+      "drawerActions": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    }
+  }
+}

@@ -17,6 +17,10 @@ export const GLOBAL_PERMISSIONS: Record<string, Permission[]> = {
   HISTORY: [
     CollaboratorPermission.HISTORIQUE_DELEGATIONS,
   ],
+  // Temporarily reuses the Collaborateurs tab permission until key moments settings get their own
+  KEY_MOMENTS_SETTINGS: [
+    CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS_ADMIN,
+  ],
   LAUNCHER: [
     CollaboratorPermission.ACCEDER_LANCEUR_SILAE,
     CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,

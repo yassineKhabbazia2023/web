@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { FEATURE_FLAG_META } from '@pulse/common/constants'
+import { FEATURE_FLAG_META, GLOBAL_PERMISSIONS, LAYOUT_NO_PADDING_META, PERMISSIONS_META } from '@pulse/common/constants'
 import { Feature } from '@pulse/common/enums'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
 
@@ -72,6 +72,26 @@ export const walletCollaboratorRoutes = [
         path: COLLABORATOR_ROUTES.wallet.mandates.path,
         name: COLLABORATOR_ROUTES.wallet.mandates.name,
         component: () => import('@pulse/mandate/pages').then(pages => pages.Mandate),
+      },
+      // Key moments settings: templates and indicators, gathered under a single tabbed page
+      {
+        path: COLLABORATOR_ROUTES.wallet.keyMomentsSettings.path,
+        name: COLLABORATOR_ROUTES.wallet.keyMomentsSettings.name,
+        component: () => import('@pulse/key-moments/settings-pages').then(pages => pages.KeyMomentsSettings),
+        meta: {
+          [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
+          [PERMISSIONS_META]: GLOBAL_PERMISSIONS.KEY_MOMENTS_SETTINGS,
+        },
+      },
+      {
+        path: COLLABORATOR_ROUTES.wallet.keyMomentsTemplateEditor.path,
+        name: COLLABORATOR_ROUTES.wallet.keyMomentsTemplateEditor.name,
+        component: () => import('@pulse/key-moments/settings-pages').then(pages => pages.TemplateEditor),
+        meta: {
+          [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
+          [PERMISSIONS_META]: GLOBAL_PERMISSIONS.KEY_MOMENTS_SETTINGS,
+          [LAYOUT_NO_PADDING_META]: true,
+        },
       },
     ],
   },

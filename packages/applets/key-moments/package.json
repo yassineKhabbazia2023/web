@@ -1,0 +1,39 @@
+{
+  "name": "@pulse/key-moments",
+  "version": "1.0.0",
+  "author": "Pulse Team",
+  "description": "Key Moments Applet",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/main.ts",
+    "./entity-pages": "./src/entity-pages.index.ts",
+    "./customer-pages": "./src/customer-pages.index.ts",
+    "./settings-pages": "./src/settings-pages.index.ts",
+    "./mocks": "./src/mocks.index.ts"
+  },
+  "scripts": {
+    "build": "npm run build:types && npm run build:vite",
+    "build:types": "vue-tsc --build",
+    "build:vite": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "3.1.0",
+    "@pulse/toolbox": "1.0.0",
+    "@vueuse/integrations": "^14.4.0",
+    "chart.js": "^4.5.1",
+    "html-to-image": "^1.11.13",
+    "jspdf": "^4.2.1",
+    "pptxgenjs": "^4.0.1",
+    "sortablejs": "^1.15.7"
+  },
+  "devDependencies": {
+    "@types/sortablejs": "^1.15.9"
+  }
+}

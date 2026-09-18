@@ -34,6 +34,12 @@ export interface NavigationContext {
   hasPennylanePermission: (type: PennylanePermission) => boolean
   /** Whether to show BI reports (async, pre-computed) */
   shouldShowBIReports: boolean
+  /**
+   * Whether the key moments entry belongs in the navigation (async,
+   * pre-computed). More than the flag for a customer: the entry only appears
+   * once the account has a published key moment to read.
+   */
+  shouldShowKeyMoments: boolean
   /** Whether to show the Rydge invoices tab for the current entity */
   shouldShowRydgeInvoicesTab: boolean
   /** Whether the Seres invoices feature is enabled and granted for the current entity */

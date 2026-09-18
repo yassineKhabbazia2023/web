@@ -7,5 +7,7 @@ export interface PPopoverProps {
   pShowArrow?: boolean
   pTrigger: TriggerOptionsType
   pTitle: string
+  /** Width of the panel, in pixels as a number or as any CSS length */
+  pWidth?: string | number
   pTestId?: string
 }

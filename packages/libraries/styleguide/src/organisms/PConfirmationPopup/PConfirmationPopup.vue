@@ -2,6 +2,7 @@
   <PDialog
     v-model="internalIsVisible"
     :pTitle="pTitle"
+    :pWidth="pWidth"
     :pShowClose="!pNoCloseButton"
     :pAlignCenter="pAlignCenter"
     :pDestroyOnClose="pDestroyOnClose"

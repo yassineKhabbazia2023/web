@@ -1,12 +1,13 @@
 import type { MockInstance } from 'vitest'
 import { WidgetName } from '@pulse/widgets/enums'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useKeyMomentsAccessStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { ReportingManager } from '@pulse/common/managers'
 
 import { WidgetsService } from './widgets.service'
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+const keyMomentsAccessStoreMock = getStoreMock(useKeyMomentsAccessStore)
 
 let canShowSmartOfferWidgetMock: MockInstance
 
@@ -14,6 +15,7 @@ describe('WidgetsService', () => {
   beforeEach(() => {
     // Called on every path: the smart offer takes precedence over the pennylane one.
     canShowSmartOfferWidgetMock = vi.spyOn(ReportingManager, 'canShowSmartOfferWidget').mockReturnValue(false)
+    keyMomentsAccessStoreMock.canShowKeyMoments = false
   })
 
   describe('getHomeWidgetNames', () => {
@@ -62,6 +64,44 @@ describe('WidgetsService', () => {
 
         expect(homeWidgetNames).toEqual(expectedWidgets)
         expect(currentEntityStoreMock.hasOffer).toHaveBeenCalledOnce()
+      })
+    })
+
+    describe('key moments', () => {
+      it('should not offer the key moments when the dossier has none', () => {
+        currentEntityStoreMock.hasOffer.mockReturnValue(false)
+
+        const homeWidgetNames = WidgetsService.getHomeWidgetNames()
+
+        expect(homeWidgetNames).not.toContain(WidgetName.KEY_MOMENTS)
+      })
+
+      it('should open the grid with the key moments when the dossier has one', () => {
+        currentEntityStoreMock.hasOffer.mockReturnValue(false)
+        keyMomentsAccessStoreMock.canShowKeyMoments = true
+
+        const homeWidgetNames = WidgetsService.getHomeWidgetNames()
+
+        expect(homeWidgetNames).toEqual([
+          WidgetName.KEY_MOMENTS,
+          WidgetName.RSS_NEWS,
+          WidgetName.DIGILAB,
+          WidgetName.BOOKING_APPOINTMENT,
+        ])
+      })
+
+      it('should keep the key moments first on mobile', () => {
+        currentEntityStoreMock.hasOffer.mockReturnValue(true)
+        keyMomentsAccessStoreMock.canShowKeyMoments = true
+
+        const homeWidgetNames = WidgetsService.getHomeWidgetNames(true)
+
+        expect(homeWidgetNames).toEqual([
+          WidgetName.KEY_MOMENTS,
+          WidgetName.PENNYLANE_DOCUMENTS,
+          WidgetName.RSS_NEWS,
+          WidgetName.DIGILAB,
+        ])
       })
     })
 

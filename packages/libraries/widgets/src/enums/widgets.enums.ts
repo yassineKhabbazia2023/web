@@ -3,6 +3,7 @@ export enum WidgetName {
   CONTACTS = 'Contacts',
   DIGILAB = 'Digilab',
   EMAIL_PENNYLANE = 'EmailPennylane',
+  KEY_MOMENTS = 'KeyMoments',
   PENNYLANE_DOCUMENTS = 'PennylaneDocuments',
   PENNYLANE_INTRO = 'PennylaneIntro',
   POWERBI_INTRO = 'PowerBIIntro',

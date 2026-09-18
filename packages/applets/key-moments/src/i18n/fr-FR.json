@@ -1,0 +1,597 @@
+{
+  "keyMoments": {
+    "title": "Moments clés",
+    "titleOf": "Moments clés de {name}",
+    "error": "Les moments clés de ce dossier n'ont pas pu être chargés.",
+    "empty": "Aucune clôture n'a encore été importée pour ce dossier.",
+    "import": {
+      "button": "Importer une clôture",
+      "success": "La clôture a été importée.",
+      "error": "La clôture n'a pas pu être importée.",
+      "rejection": {
+        "accountMismatch": "Ce dossier ne porte pas le SIRET de cette clôture, ou n'est plus actif.",
+        "exerciceAccountConflict": "Cet exercice appartient déjà à un autre dossier.",
+        "unknownSiret": "Aucun dossier ne porte le SIRET de cette clôture."
+      }
+    },
+    "export": {
+      "button": {
+        "pptx": "Exporter en PPT",
+        "pdf": "Exporter en PDF"
+      },
+      "error": {
+        "pptx": "L'export PowerPoint n'a pas abouti.",
+        "pdf": "L'export PDF n'a pas abouti."
+      },
+      "continued": "(suite)"
+    },
+    "publish": {
+      "button": {
+        "default": "Publier",
+        "update": "Publier la mise à jour",
+        "modifications": "Publier les modifications"
+      },
+      "state": {
+        "never": "Exercice non publié",
+        "published": "Publié le {date} par {author}",
+        "neverViewed": "Jamais consulté par le client",
+        "viewed": "Consulté {count} fois par le client · dernière consultation le {date}",
+        "delivery": "le client ne lit pas la dernière livraison",
+        "unreadable": "L'état publié n'a pas pu être lu : rechargez la page pour publier.",
+        "modified": "{count} modification non publiée | {count} modifications non publiées",
+        "unresolvedOffers": "{count} recommandation introuvable au catalogue : détachez-la pour publier. | {count} recommandations introuvables au catalogue : détachez-les pour publier."
+      },
+      "divergence": {
+        "closing": "Clôture changée : {to}",
+        "closingVersion": "Nouvelle version de la clôture (v{from} → v{to})",
+        "template": "Template changé ({from} → {to})",
+        "templateVersion": "Nouvelle version du template ({from} → {to})",
+        "comparison": "Comparaison {from} → {to}",
+        "currency": "Lecture en {unit}",
+        "comments": "{count} commentaire modifié | {count} commentaires modifiés",
+        "hiddenWidgets": "{hidden} sous-section masquée, {shown} réaffichée | {hidden} sous-sections masquées, {shown} réaffichées",
+        "offers": "{count} recommandation modifiée | {count} recommandations modifiées"
+      },
+      "revert": {
+        "title": "Modifications non publiées",
+        "button": "Annuler",
+        "unavailable": "Non annulable",
+        "unavailableHint": "Ce choix n'est plus au catalogue : il ne peut plus être rétabli.",
+        "commentsHint": "Rétablit les commentaires retenus lors de la publication. Aucun texte n'est modifié."
+      },
+      "success": "Le Moment clé est publié.",
+      "error": "La publication a échoué.",
+      "popup": {
+        "title": "Publier ce Moment clé ?",
+        "message": "Le rapport sera publié tel qu'il s'affiche, avec les commentaires retenus.",
+        "replace": "Une publication du {date} par {author} existe déjà pour cet exercice : elle sera remplacée par ce qui suit.",
+        "confirm": "Publier",
+        "cancel": "Annuler"
+      },
+      "missingOffersError": "La publication a été refusée : une recommandation n'est plus décrite au catalogue."
+    },
+    "unpublish": {
+      "button": "Dépublier",
+      "success": "Le Moment clé est dépublié.",
+      "error": "La dépublication a échoué.",
+      "popup": {
+        "title": "Dépublier ce Moment clé ?",
+        "message": "La publication du {date} par {author} sera retirée : plus rien ne sera publié pour cet exercice.",
+        "confirm": "Dépublier",
+        "cancel": "Annuler"
+      }
+    },
+    "preview": {
+      "publishedButton": "Voir la version publiée",
+      "openButton": "Prévisualiser",
+      "back": "Retour à l'éditeur",
+      "caption": "Vue client",
+      "captionPublished": "Vue client · publié le {date} par {author}",
+      "captionDraft": "Aperçu du brouillon — ce que le client verra une fois publié",
+      "captionDraftDivergent": "Aperçu du brouillon — ce que le client verra une fois publié · diffère de la version publiée du {date}",
+      "mode": {
+        "label": "Version",
+        "draft": "Brouillon",
+        "published": "Publiée"
+      },
+      "noDraft": "Aucun brouillon à afficher — revenez à l'éditeur."
+    },
+    "table": {
+      "label": "Libellé"
+    },
+    "columns": {
+      "delta": "Var. {to}/{from}",
+      "deltaCaption": "{to} vs {from}",
+      "deltaPct": "%",
+      "deltaPctCaption": "{to}/{from}",
+      "ratio": "% {indicator}"
+    },
+    "units": {
+      "percentage": "%",
+      "days": "j",
+      "points": "pts"
+    },
+    "balanceImage": {
+      "total": "Total {side} : {amount}"
+    },
+    "cards": {
+      "variation": "Variation",
+      "referenceValue": "Valeur année {exercise} ({date})"
+    },
+    "comment": {
+      "title": "COMMENTAIRE",
+      "wordmark": "Comment'",
+      "empty": "Aucun commentaire pour cette partie.",
+      "placeholder": "Saisissez votre commentaire",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "add": "Ajouter mon commentaire",
+      "delivered": "Livré",
+      "deliveredVersion": "Version {version}",
+      "unknownContributor": "Contributeur",
+      "saveError": "Votre commentaire n'a pas pu être enregistré.",
+      "retainError": "La version retenue n'a pas pu être enregistrée.",
+      "retain": "Retenir",
+      "discard": "Écarter",
+      "reintegrate": "Réintégrer",
+      "discarded": "Emplacement écarté : rien ne sera publié ici.",
+      "discardError": "L'emplacement n'a pas pu être écarté.",
+      "publishable": "Version retenue pour la publication",
+      "updatedAt": "modifié le {date}",
+      "tabsAriaLabel": "Versions du commentaire"
+    },
+    "visibility": {
+      "hiddenBadge": "Masqué",
+      "hide": "Masquer la sous-section",
+      "show": "Afficher la sous-section",
+      "error": "Impossible d'enregistrer les sous-sections publiées"
+    },
+    "preferences": {
+      "error": "Impossible d'enregistrer vos préférences de lecture"
+    },
+    "draft": {
+      "error": "Les données de l'exercice n'ont pas pu être chargées.",
+      "writeRefused": "Les données de l'exercice n'ont pas pu être chargées : rechargez la page avant de modifier vos choix."
+    },
+    "exerciceSelect": {
+      "ariaLabel": "Choisir l'exercice affiché",
+      "option": "Exercice {year}"
+    },
+    "customer": {
+      "error": "Votre Moment clé n'a pas pu être chargé.",
+      "empty": "Aucun Moment clé n'est disponible pour le moment.",
+      "caption": {
+        "exercice": "Exercice du {start} au {end}",
+        "publishedAt": "publié le {date}"
+      }
+    },
+    "closingSelect": {
+      "ariaLabel": "Choisir la clôture affichée",
+      "option": "Version {version} ({date})",
+      "orphan": "Version {version}"
+    },
+    "comparisonSelect": {
+      "option": "{exercise} ({date})"
+    },
+    "filters": {
+      "template": "Modèle",
+      "comparison": "Exercice de comparaison",
+      "comparisonLocked": "La clôture choisie n'offre qu'une seule comparaison, {exercise}.\nLe filtre s'ouvrira dès qu'un export livrera un exercice de plus.",
+      "templateError": "Le template n'a pas pu être chargé.",
+      "unit": "Unité d'affichage",
+      "units": {
+        "euro": "€",
+        "thousands": "k€"
+      }
+    },
+    "nav": {
+      "title": "Navigation",
+      "collapse": "Réduire la navigation",
+      "expand": "Afficher la navigation"
+    },
+    "waterfall": {
+      "balance": "Solde (total)",
+      "rise": "Mouvement positif",
+      "fall": "Mouvement négatif"
+    },
+    "balanceSheet": {
+      "assets": "Actif",
+      "liabilities": "Passif"
+    },
+    "narrative": {
+      "start": "Point de départ",
+      "end": "Reconstitution finale de la trésorerie"
+    },
+    "offers": {
+      "title": "Nos recommandations",
+      "subtitle": "Nos préconisations pour l'exercice à venir",
+      "add": "Rattacher une offre",
+      "capReached": "Vous ne pouvez pas rattacher plus de {count} offres à un exercice.",
+      "error": "Les recommandations n'ont pas pu être enregistrées.",
+      "readError": "Les recommandations de l'exercice n'ont pas pu être chargées : rechargez la page avant d'en modifier.",
+      "picker": {
+        "title": "Rattacher une offre à l'exercice {year}",
+        "search": "Rechercher une offre",
+        "allTags": "Toutes",
+        "choose": "Choisir cette offre",
+        "chosen": "Déjà rattachée",
+        "empty": "Aucune offre ne correspond à cette recherche."
+      },
+      "card": {
+        "commentPlaceholder": "Pourquoi cette offre, pour ce client",
+        "remove": "Retirer cette offre",
+        "hide": "Masquer l'offre",
+        "show": "Afficher l'offre",
+        "hiddenBadge": "Masquée",
+        "retired": "Offre retirée du catalogue",
+        "priorityLabel": "Priorité",
+        "priorityNone": "Aucune",
+        "priorityHidden": "Masquer la priorité au client",
+        "priorityHiddenHint": "Posez d'abord une priorité.",
+        "commentEmpty": "Aucune note sur cette offre.",
+        "commentTitle": "Pourquoi nous vous recommandons cette offre ?",
+        "benefitsCommentTitle": "Bénéfices pour votre entreprise",
+        "benefitsCommentPlaceholder": "Ce que cette offre apporte à votre entreprise",
+        "benefitsCommentEmpty": "Aucun bénéfice renseigné pour cette offre."
+      },
+      "priority": {
+        "primary": "Prioritaire",
+        "significant": "Significatif",
+        "informative": "Informatif"
+      }
+    },
+    "settings": {
+      "title": "Moments Clés",
+      "tabs": {
+        "templates": "Templates",
+        "indicators": "Indicateurs"
+      },
+      "templates": {
+        "new": "Nouveau template",
+        "open": "Ouvrir",
+        "duplicate": "Dupliquer et modifier",
+        "noVisibleVersion": "Aucune version visible",
+        "loadError": "Les templates n'ont pas pu être lus.",
+        "columns": {
+          "code": "Code",
+          "label": "Libellé",
+          "visibleVersion": "Version visible",
+          "actions": "Actions"
+        },
+        "createDrawer": {
+          "titleNew": "Nouveau template",
+          "titleDuplicate": "Dupliquer le template",
+          "code": "Code",
+          "codeHint": "ex. comptabilite-engagement",
+          "codeInvalid": "Le code doit contenir au moins une lettre ou un chiffre",
+          "label": "Libellé",
+          "copyLabel": "{label} (copie)",
+          "cancel": "Annuler",
+          "create": "Créer",
+          "error": "Le template n'a pas pu être créé."
+        },
+        "withdraw": "Retirer du catalogue",
+        "withdrawDialog": {
+          "title": "Retirer ce template du catalogue",
+          "text": "Plus aucune version ne sera visible : les dossiers ne pourront plus choisir ce template.",
+          "confirm": "Retirer"
+        },
+        "withdrawError": "Le template n'a pas pu être retiré du catalogue.",
+        "withdrawn": "Template retiré du catalogue."
+      },
+      "templateEditor": {
+        "title": "Éditeur de template"
+      },
+      "indicators": {
+        "create": "Créer un indicateur",
+        "search": "Rechercher un code ou un libellé",
+        "showDeprecated": "Afficher les dépréciés",
+        "count": "{count} indicateur(s)",
+        "empty": "Aucun indicateur ne correspond.",
+        "edit": "Modifier",
+        "deprecate": "Déprécier",
+        "restore": "Restaurer",
+        "confirm": "Confirmer",
+        "cancel": "Annuler",
+        "activeState": "Actif",
+        "deprecatedState": "Déprécié",
+        "confirmDeprecate": "Déprécier « {code} » ? Les templates qui le citent continueront de l'afficher, et {count} agrégat(s) le combinent.",
+        "confirmRestore": "Remettre « {code} » dans le vocabulaire ?",
+        "deprecated": "Indicateur déprécié.",
+        "restored": "Indicateur restauré.",
+        "alreadyInState": "Cet indicateur était déjà dans cet état ; la liste a été rechargée.",
+        "actionError": "L'action n'a pas pu être effectuée.",
+        "loadError": "Les indicateurs n'ont pas pu être lus.",
+        "columns": {
+          "code": "Code",
+          "label": "Libellé",
+          "shortLabel": "Libellé court",
+          "kind": "Unité",
+          "sign": "Sens",
+          "state": "État",
+          "actions": "Actions"
+        },
+        "kinds": {
+          "amount": "Montant",
+          "percentage": "Pourcentage",
+          "days": "Jours",
+          "headcount": "Effectif",
+          "points": "Points"
+        },
+        "signs": {
+          "income": "Produit",
+          "expense": "Charge"
+        }
+      },
+      "indicatorSelect": {
+        "placeholder": "Choisir un indicateur",
+        "noMatch": "Aucun indicateur ne correspond",
+        "option": "{label} · {code}",
+        "deprecatedOption": "{label} · {code} (déprécié)",
+        "create": "Créer un indicateur"
+      },
+      "renderers": {
+        "table": "Tableau",
+        "cards": "Cartes",
+        "chart": "Graphique",
+        "waterfall": "Cascade",
+        "balanceSheet": "Bilan",
+        "balanceImage": "Bilan en image",
+        "narrative": "Texte"
+      },
+      "colors": {
+        "seriesPrimary": "Série 1",
+        "seriesAccent": "Série 2",
+        "seriesMuted": "Série 3",
+        "seriesSoft": "Série 4",
+        "balanceWorkingCapital": "Fonds de roulement",
+        "balanceWorkingCapitalNeed": "Besoin en fonds de roulement",
+        "balanceCash": "Trésorerie"
+      },
+      "measures": {
+        "useDefaults": "Mesures par défaut du template",
+        "addNamed": "+ Ajouter une mesure",
+        "addRole": "+ Ajouter une variation",
+        "labelHint": "Libellé (optionnel)",
+        "hidden": "Masquée",
+        "remove": "Supprimer la mesure",
+        "roles": {
+          "variation": "Variation",
+          "variationPct": "Variation %"
+        },
+        "headers": {
+          "measure": "Mesure",
+          "label": "Libellé affiché",
+          "hidden": "Masquée"
+        },
+        "hints": {
+          "measure": "La colonne lue : une clé de la clôture (N, N-1…) ou un rôle qui suit la comparaison choisie par le lecteur.",
+          "label": "Remplace l'en-tête déduit de la mesure. Facultatif.",
+          "hidden": "Garde la colonne dans le template sans l'afficher. Masquer n'efface jamais."
+        }
+      },
+      "screenDrawer": {
+        "title": "Titre de l'écran",
+        "subtitle": "Sous-titre",
+        "id": "Identifiant"
+      },
+      "templateDrawer": {
+        "title": "Propriétés du template",
+        "label": "Libellé",
+        "code": "Code",
+        "defaultMeasures": "Mesures par défaut"
+      },
+      "widgetDrawer": {
+        "id": "Identifiant",
+        "title": "Titre",
+        "titleHint": "{'{N}'} écrit le mois de clôture, {'{N:key}'} sa clé",
+        "renderer": "Représentation",
+        "span": "Largeur",
+        "comment": "Emplacement de commentaire",
+        "commentHint": "Vide = pas de commentaire",
+        "spans": {
+          "4": "Tiers de largeur",
+          "6": "Demi-largeur",
+          "12": "Pleine largeur"
+        },
+        "sections": {
+          "general": "Général",
+          "lines": "Lignes",
+          "measures": "Mesures",
+          "cards": "Cartes",
+          "chart": "Graphique"
+        },
+        "lines": {
+          "add": "+ Ajouter une ligne",
+          "remove": "Supprimer la ligne",
+          "hideCard": "Masquer la carte",
+          "roles": {
+            "none": "Aucun rôle",
+            "subtotal": "Sous-total",
+            "total": "Total",
+            "memo": "Pour mémoire"
+          },
+          "sides": {
+            "assets": "Actif",
+            "liabilities": "Passif"
+          },
+          "headers": {
+            "indicator": "Indicateur",
+            "role": "Rôle",
+            "side": "Côté",
+            "reference": "Indicateur de référence",
+            "card": "Carte"
+          },
+          "hints": {
+            "indicator": "Le terme du vocabulaire que cette ligne affiche. Ses valeurs viennent de la clôture.",
+            "role": "Met la ligne en valeur : sous-total, total, ou « pour mémoire ». Sans rôle, la ligne est ordinaire.",
+            "side": "Côté du bilan où la ligne se range : actif ou passif. Lu par le rendu Bilan uniquement.",
+            "reference": "Indicateur dont cette ligne est un effet. La carte affiche alors l'historique de cet indicateur-là : un effet n'a pas d'histoire propre et ne se lit qu'à côté de ce qui l'a provoqué. Laisser vide dans le cas courant.",
+            "card": "Retire la carte de cette ligne du rendu Cartes. La ligne reste dans le tableau."
+          }
+        },
+        "cards": {
+          "heroFirst": "Première carte en vedette",
+          "signColored": "Colorer selon le signe de la valeur",
+          "colored": "Colorer selon la série du graphique"
+        },
+        "chart": {
+          "kind": "Type de graphique",
+          "addSeries": "+ Ajouter une série",
+          "removeSeries": "Supprimer la série",
+          "syncLines": "Aligner les lignes sur les séries",
+          "primaryAxisTitle": "Titre de l'axe principal",
+          "secondaryAxisTitle": "Titre de l'axe secondaire",
+          "periods": "Exercices affichés",
+          "allPeriods": "Tous les exercices",
+          "period": "Exercice lu",
+          "stacks": "Colonnes",
+          "groupLabel": "Libellé du groupe",
+          "newGroup": "Nouveau groupe",
+          "addGroup": "+ Ajouter un groupe",
+          "removeGroup": "Supprimer le groupe",
+          "kinds": {
+            "groupedBars": "Barres groupées",
+            "stackedBars": "Barres empilées",
+            "composition": "Composition"
+          },
+          "seriesTypes": {
+            "bar": "Barre",
+            "line": "Courbe"
+          },
+          "periodRoles": {
+            "current": "Exercice courant",
+            "reference": "Exercice comparé"
+          },
+          "headers": {
+            "indicator": "Indicateur",
+            "color": "Couleur",
+            "type": "Tracé",
+            "group": "Groupe"
+          },
+          "hints": {
+            "indicator": "Le terme tracé par cette série.",
+            "color": "Jeton de couleur du template. Le module choisit l'encre, le template choisit l'emplacement.",
+            "type": "Barre, ou courbe tracée sur l'axe secondaire.",
+            "group": "Libellé du groupe affiché sous les colonnes de la composition."
+          }
+        }
+      },
+      "editor": {
+        "commentPlaceholder": "Commentaire du collaborateur",
+        "versionSelect": "Version affichée",
+        "versionVisible": "{version} (visible)",
+        "properties": "Propriétés",
+        "duplicate": "Dupliquer et modifier",
+        "visible": "Version visible",
+        "makeVisible": "Rendre visible",
+        "addScreen": "+ Ajouter un écran",
+        "addWidget": "+ Ajouter un widget",
+        "newScreenTitle": "Nouvel écran",
+        "newWidgetTitle": "Nouveau widget",
+        "loadError": "Le template n'a pas pu être ouvert.",
+        "vocabularyError": "Le vocabulaire des indicateurs n'a pas pu être lu.",
+        "blocked": "Des éléments ne sont pas lus par le rendu : corrigez-les avant d'enregistrer.",
+        "idInvalid": "L'identifiant ne peut pas être vide.",
+        "idTaken": "Cet identifiant est déjà utilisé par un autre écran ou widget.",
+        "titleRequired": "Le titre ne peut pas être vide.",
+        "linesRequired": "Un widget doit citer au moins un indicateur.",
+        "widgetUnrendered": "Ce widget ne peut pas être affiché : aucune de ses lignes ne cite un indicateur connu, son titre nomme un exercice indisponible, ou sa configuration est illisible (type d'affichage inconnu, identifiant manquant…). Corrigez-le ou supprimez-le.",
+        "screenUnrendered": "Cette section ne peut pas être affichée : son titre ou son identifiant est illisible. Corrigez-la ou supprimez-la.",
+        "saved": "Version enregistrée.",
+        "saveError": "La version n'a pas pu être enregistrée.",
+        "madeVisible": "Cette version est désormais visible.",
+        "visibleError": "La version n'a pas pu être rendue visible.",
+        "saveDialog": {
+          "versionLabel": "Numéro de version",
+          "cancel": "Annuler"
+        },
+        "visibleDialog": {
+          "title": "Rendre cette version visible",
+          "text": "La version {version} deviendra celle que lisent les dossiers.",
+          "confirm": "Rendre visible"
+        },
+        "remove": {
+          "screenTitle": "Supprimer cet écran",
+          "widgetTitle": "Supprimer ce widget",
+          "text": "Cette suppression ne sera effective qu'après l'enregistrement d'une version.",
+          "confirm": "Supprimer"
+        },
+        "leave": {
+          "title": "Modifications non enregistrées",
+          "text": "Les modifications en cours seront perdues.",
+          "confirm": "Continuer sans enregistrer",
+          "cancel": "Rester"
+        },
+        "warnings": {
+          "title": "{count} élément(s) non lu(s) par le rendu",
+          "documentUnreadable": "Le template est illisible : rien n'a pu en être affiché.",
+          "measureDropped": "Une mesure illisible a été retirée du rendu.",
+          "lineDropped": "Une ligne illisible a été retirée du rendu.",
+          "widgetDropped": "Un widget illisible a été retiré du rendu.",
+          "screenDropped": "Un écran illisible a été retiré du rendu.",
+          "emptyScreenKept": "Un écran ne contient aucun widget : il n'apparaîtra pas dans le rapport.",
+          "unknownRole": "Un widget utilise un rôle de mesure que la clôture ne peut pas remplir.",
+          "unknownIndicators": "Un widget cite des indicateurs inconnus du vocabulaire.",
+          "unknownMeasures": "Un widget cite des mesures que la clôture ne déclare pas.",
+          "chartWithoutColors": "Un graphique de composition n'a pas de couleurs déclarées.",
+          "rendererUnavailable": "Un widget ne peut pas être affiché dans la représentation demandée — les données qu'il déclare ne la remplissent pas — et l'est autrement."
+        },
+        "toolbar": {
+          "edit": "Modifier",
+          "hide": "Masquer",
+          "show": "Afficher",
+          "remove": "Supprimer",
+          "move": "Déplacer"
+        },
+        "save": "Enregistrer",
+        "newVersion": "Nouvelle version",
+        "versionSaved": "Nouvelle version créée.",
+        "versionDeleted": "Version supprimée.",
+        "deleteVersionError": "La version n'a pas pu être supprimée.",
+        "newVersionDialog": {
+          "title": "Créer une nouvelle version",
+          "text": "Les modifications en cours seront portées par une nouvelle version, qui n'est visible par aucun dossier tant que vous ne la rendez pas visible.",
+          "confirm": "Créer la version"
+        },
+        "deleteVersion": {
+          "title": "Supprimer cette version",
+          "text": "La version {version} sera définitivement supprimée."
+        },
+        "refusals": {
+          "locked": "Cette version est figée par une publication : elle ne peut plus être modifiée.",
+          "schemaInvalid": "Le template ne respecte pas le schéma attendu.",
+          "unknownCitations": "Des indicateurs cités par le template sont inconnus du référentiel."
+        }
+      },
+      "indicatorDrawer": {
+        "titleCreate": "Créer un indicateur",
+        "titleEdit": "Modifier l'indicateur",
+        "code": "Code",
+        "codeHint": "ex. chiffre-d-affaires",
+        "codeTaken": "Ce code est déjà utilisé.",
+        "codeInvalid": "Le code doit contenir au moins une lettre ou un chiffre",
+        "label": "Libellé",
+        "shortLabel": "Libellé court",
+        "shortLabelHint": "Utilisé là où la place manque",
+        "kind": "Unité",
+        "sign": "Sens",
+        "components": "Composants",
+        "componentsHint": "Les termes que cet agrégat combine. Un agrégat ne se combine jamais lui-même.",
+        "addComponent": "+ Ajouter un composant",
+        "removeComponent": "Retirer le composant",
+        "componentsError": "La composition n'a pas pu être enregistrée.",
+        "usages": "Utilisations",
+        "noUsage": "Aucun template ne cite cet indicateur.",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "saved": "Indicateur enregistré.",
+        "error": "L'indicateur n'a pas pu être enregistré."
+      },
+      "drawerActions": {
+        "save": "Sauvegarder",
+        "cancel": "Annuler"
+      }
+    }
+  }
+}

@@ -1,0 +1,170 @@
+/**
+ * The report skeleton, shared by the two surfaces that render one: the editor
+ * the firm arbitrates in, and the page the customer reads.
+ *
+ * Both pages carry the `key-moments` block so that this file can be `@use`d as
+ * is. Scoped styles keep the two apart — each SFC compiles its own copy under
+ * its own `data-v` attribute — so sharing the name costs nothing and says the
+ * right thing: it is the same report.
+ *
+ * The custom properties are the reason this has to sit on the page root rather
+ * than in each component: a dozen children read `--key-moments-line`,
+ * `--key-moments-card-surface` and their siblings, and inherit them from here.
+ * They are neutrals of the Moment Clé report that the design system does not
+ * carry.
+ *
+ * What a section is announced by is not here: the heading is a component, and
+ * both pages render it. This file only lays the sections out and states how
+ * they enter.
+ *
+ * What belongs to one surface only stays in that page: the faded hidden
+ * sections are the editor's, the exercice select is the customer's.
+ */
+
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+/** Delay between two entering elements, the report cascading rather than popping */
+$enter-stagger: 45ms;
+
+/**
+ * Entrance of the report: a short rise out of transparency. Switching template
+ * or unit replaces every section at once, and the movement is what tells the
+ * reader the page answered them.
+ */
+@keyframes key-moments-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    /**
+     * The entrance ends on whatever opacity the element asked for rather than
+     * on a flat `1`: it fills forwards, and an animation wins over a normal
+     * declaration — a faded element would otherwise be brought back to full
+     * opacity by its own entrance, and stay there.
+     */
+    opacity: var(--key-moments-enter-opacity, 1);
+    transform: none;
+  }
+}
+
+.key-moments {
+  --key-moments-canvas: #F4F5FA;
+  --key-moments-line: #E6E7F0;
+  --key-moments-card-surface: #FBFBFE;
+  /* outline of the ghost numeral of a section — same blued family, fainter */
+  --key-moments-ghost-stroke: #D9DAEE;
+  --key-moments-emphasis-surface: #F2F3FB;
+  --key-moments-stripe-surface: #FAFAFE;
+  --key-moments-shadow: 0 1px 2px rgba(var(--p-black-rock-900-rgb), 0.05), 0 10px 30px rgba(var(--p-black-rock-900-rgb), 0.07);
+  --key-moments-shadow-hover: 0 2px 4px rgba(var(--p-black-rock-900-rgb), 0.06), 0 18px 44px rgba(var(--p-black-rock-900-rgb), 0.12);
+
+  /**
+   * The gutter of the report, held here rather than as the `padding--6` utility
+   * the pages used to carry: the utilities are declared `!important`, so a
+   * padding stated as one cannot be revised on a narrower screen by anything.
+   */
+  &__content {
+    flex: 1;
+    padding: 24px;
+    background-color: var(--key-moments-canvas);
+  }
+
+  &__body {
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+
+  /** Everything the report is: how it is read, then what it reads */
+  &__report {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /**
+   * The last section is at least as tall as the frame it scrolls in, so that
+   * it can be brought to the top of it like every section before it — the
+   * navigation would otherwise point at a place the scroll cannot reach.
+   */
+  &__screens > :last-child {
+    min-height: calc(100vh - var(--p-header-height, 0px) - 32px);
+  }
+
+  &__screen {
+    padding: 40px 0;
+    // the sticky navigation must not sit on top of what it scrolls to
+    scroll-margin-top: calc(16px + var(--key-moments-sticky-offset, 0px));
+    animation: key-moments-enter 320ms ease-out both;
+    animation-delay: calc(var(--key-moments-enter-rank, 0) * #{$enter-stagger});
+
+    & + & {
+      border-top: 1px solid var(--key-moments-line);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 22px 26px;
+
+    /**
+     * Narrowing a widget leaves a hole on its row; `dense` lets a later widget
+     * that fits climb into it, rather than keeping an empty half-row.
+     */
+    grid-auto-flow: row dense;
+
+    /**
+     * A block enters after the section that carries it, and after the blocks
+     * placed before it: the report is read in the order it is written.
+     */
+    > * {
+      scroll-margin-top: calc(16px + var(--key-moments-sticky-offset, 0px));
+      animation: key-moments-enter 320ms ease-out both;
+      animation-delay: calc((var(--key-moments-enter-rank, 0) + 1) * #{$enter-stagger});
+    }
+  }
+
+  /**
+   * On a phone, the gutter of the report narrows rather than goes: the canvas
+   * is what has to reach the edges of the screen, and the report is read inside
+   * it with room to breathe. One gutter, held here, instead of this one nested
+   * inside the layout's own.
+   *
+   * Stated here rather than in each page — the two surfaces are read on the
+   * same screens.
+   */
+  @include breakpoints.media(xs) {
+
+    &__content {
+      padding: 16px;
+    }
+
+    &__screen {
+      padding: 24px 0;
+    }
+
+  }
+}
+
+@media (width <= 1050px) {
+  .key-moments__grid > * {
+    grid-column: span 12 !important;
+  }
+
+  // the navigation stacks above the report rather than beside it
+  .key-moments__body {
+    flex-direction: column;
+  }
+}
+
+/**
+ * The entrance carries no information the page does not already state, so a
+ * reader who asked for no motion is simply served the report.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .key-moments__screen,
+  .key-moments__grid > * {
+    animation: none;
+  }
+}

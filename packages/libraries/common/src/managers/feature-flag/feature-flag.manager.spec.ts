@@ -168,6 +168,32 @@ describe('FeatureFlagManager', () => {
     })
   })
 
+  describe('isKeyMomentsActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
+
+      const result = FeatureFlagManager.isKeyMomentsActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.KEY_MOMENTS, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isKeyMomentsActivated()).toBe(false)
+    })
+
+    // The flag is served by ConfigCat, never by an env var: an env var saying
+    // "true" must not switch the page on behind the provider's back.
+    it('should ignore the env vars and stay false when OpenFeature says so', () => {
+      window.EnvVars[Feature.KEY_MOMENTS] = 'true'
+      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
+
+      expect(FeatureFlagManager.isKeyMomentsActivated()).toBe(false)
+    })
+  })
+
   describe('isWalletV2Activated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)

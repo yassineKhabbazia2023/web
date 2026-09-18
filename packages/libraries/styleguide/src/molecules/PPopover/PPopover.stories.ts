@@ -63,6 +63,14 @@ const meta: Meta<typeof PPopover> = {
         type: { summary: 'string' },
       },
     },
+    pWidth: {
+      control: 'text',
+      description: 'Width of the panel, in pixels as a number or as any CSS length',
+      table: {
+        type: { summary: 'string | number' },
+        defaultValue: { summary: '212' },
+      },
+    },
   },
   tags: ['autodocs'],
 }

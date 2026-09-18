@@ -249,6 +249,12 @@
       },
       "legalWarning": "Sans plateforme agréée, les garanties de conformité, de sécurité et de traçabilité des échanges ne sont plus assurées, exposant l’entreprise à des risques réglementaires et financiers.",
       "complyButton": "Me mettre en conformité"
+    },
+    "keyMoments": {
+      "label": "Moments clés",
+      "title": "Votre moment clé est disponible",
+      "description": "Vos chiffres commentés par votre expert-comptable.",
+      "consult": "Consulter"
     }
   }
 }

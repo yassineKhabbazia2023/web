@@ -249,6 +249,12 @@
       },
       "legalWarning": "Without an accredited platform, compliance, security and traceability of exchanges are no longer guaranteed, exposing the company to regulatory and financial risks.",
       "complyButton": "Get compliant"
+    },
+    "keyMoments": {
+      "label": "Key moments",
+      "title": "Your key moment is available",
+      "description": "Your figures, commented by your accountant.",
+      "consult": "View"
     }
   }
 }

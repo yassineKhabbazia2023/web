@@ -12,6 +12,7 @@ export const API_PREFIXES = {
   GED: 'ged/api',
   HISTORY: 'history/api',
   INVOICES: 'ventya/api',
+  KEY_MOMENTS: 'keymoments/api',
   OFFER: 'offer/api',
   PASSWORD: 'password-experience/api',
   PENNYLANE: 'pennylane/api/pennylane',

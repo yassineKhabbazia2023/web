@@ -1,0 +1,1288 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0.0",
+    "generatedAt": "2026-07-26T09:00:00+02:00",
+    "generator": "MomentCle-Export/1.0",
+    "entity": {
+      "name": "SAS TEST",
+      "legalForm": "SAS",
+      "siret": "12345678900015"
+    },
+    "currency": "EUR",
+    "locale": "fr-FR",
+    "exercice": {
+      "startDate": "2025-01-01",
+      "endDate": "2025-12-31"
+    },
+    "measures": [
+      {
+        "key": "N",
+        "nature": "period",
+        "closingDate": "2025-12-31"
+      },
+      {
+        "key": "N-1",
+        "nature": "period",
+        "closingDate": "2024-12-31"
+      },
+      {
+        "key": "N-2",
+        "nature": "period",
+        "closingDate": "2023-12-31"
+      },
+      {
+        "key": "variation.N-1",
+        "nature": "variation",
+        "from": "N-1",
+        "to": "N"
+      },
+      {
+        "key": "variationPct.N-1",
+        "nature": "variation",
+        "from": "N-1",
+        "to": "N",
+        "kind": "percentage"
+      },
+      {
+        "key": "variation.N-2",
+        "nature": "variation",
+        "from": "N-2",
+        "to": "N"
+      },
+      {
+        "key": "variationPct.N-2",
+        "nature": "variation",
+        "from": "N-2",
+        "to": "N",
+        "kind": "percentage"
+      },
+      {
+        "key": "poidsCaPct.N",
+        "nature": "ratio",
+        "of": "chiffre-d-affaires",
+        "period": "N",
+        "kind": "percentage"
+      }
+    ]
+  },
+  "values": {
+    "chiffre-d-affaires": {
+      "N": 2028653,
+      "N-1": 2037729,
+      "N-2": 1689253,
+      "variation.N-1": -9076,
+      "variationPct.N-1": -0.45,
+      "poidsCaPct.N": 100,
+      "variation.N-2": 339400,
+      "variationPct.N-2": 20.09
+    },
+    "marge": {
+      "N": 1477537,
+      "N-1": 1451037,
+      "N-2": 1192005,
+      "variation.N-1": 26500,
+      "variationPct.N-1": 1.83,
+      "variation.N-2": 285532,
+      "variationPct.N-2": 23.95,
+      "poidsCaPct.N": 72.83
+    },
+    "resultat": {
+      "N": 77153,
+      "N-1": 61500,
+      "N-2": 45500,
+      "variation.N-1": 15653,
+      "variationPct.N-1": 25.45,
+      "variation.N-2": 31653,
+      "variationPct.N-2": 69.57
+    },
+    "tresorerie": {
+      "N": 138332,
+      "N-1": 304265,
+      "N-2": 117027,
+      "variation.N-1": -165933,
+      "variationPct.N-1": -54.54,
+      "variation.N-2": 21305,
+      "variationPct.N-2": 18.21
+    },
+    "seuil-de-rentabilite-d-exploitation": {
+      "N": 1995017,
+      "N-1": 1930353,
+      "N-2": 1655958,
+      "variation.N-1": 64664,
+      "variationPct.N-1": 3.35,
+      "variation.N-2": 339059,
+      "variationPct.N-2": 20.48,
+      "poidsCaPct.N": 98.34
+    },
+    "point-mort": {
+      "N": 354,
+      "N-1": 341,
+      "variation.N-1": 13,
+      "variationPct.N-1": 3.81,
+      "N-2": 332,
+      "variation.N-2": 22,
+      "variationPct.N-2": 6.63
+    },
+    "capacite-d-autofinancement": {
+      "N": 136533,
+      "N-1": 118134,
+      "variation.N-1": 18399,
+      "variationPct.N-1": 15.57,
+      "N-2": 104762,
+      "variation.N-2": 31771,
+      "variationPct.N-2": 30.33
+    },
+    "credit-clients": {
+      "N": 55,
+      "N-1": 63,
+      "variation.N-1": -8,
+      "variationPct.N-1": -12.7,
+      "N-2": 58,
+      "variation.N-2": -3,
+      "variationPct.N-2": -5.17
+    },
+    "credit-fournisseurs": {
+      "N": 25,
+      "N-1": 45,
+      "variation.N-1": -20,
+      "variationPct.N-1": -44.44,
+      "N-2": 38,
+      "variation.N-2": -13,
+      "variationPct.N-2": -34.21
+    },
+    "achats-consommes": {
+      "N": 465632,
+      "N-1": 474675,
+      "N-2": 458914,
+      "variation.N-1": -9043,
+      "variationPct.N-1": -1.91,
+      "poidsCaPct.N": 22.95,
+      "variation.N-2": 6718,
+      "variationPct.N-2": 1.46
+    },
+    "synthese-sous-traitance": {
+      "N": 85484,
+      "N-1": 112018,
+      "N-2": 38334,
+      "variation.N-1": -26534,
+      "variationPct.N-1": -23.69,
+      "poidsCaPct.N": 4.21,
+      "variation.N-2": 47150,
+      "variationPct.N-2": 123
+    },
+    "marge-globale": {
+      "N": 1477537,
+      "N-1": 1451037,
+      "N-2": 1192005,
+      "variation.N-1": 26500,
+      "variationPct.N-1": 1.83,
+      "poidsCaPct.N": 72.83,
+      "variation.N-2": 285532,
+      "variationPct.N-2": 23.95
+    },
+    "autres-achats-et-charges-externes": {
+      "N": 602184,
+      "N-1": 608043,
+      "N-2": 570030,
+      "variation.N-1": -5859,
+      "variationPct.N-1": -0.96,
+      "poidsCaPct.N": 29.68,
+      "variation.N-2": 32154,
+      "variationPct.N-2": 5.64
+    },
+    "impots-et-taxes": {
+      "N": 10250,
+      "N-1": 8946,
+      "N-2": 11745,
+      "variation.N-1": 1304,
+      "variationPct.N-1": 14.58,
+      "poidsCaPct.N": 0.51,
+      "variation.N-2": -1495,
+      "variationPct.N-2": -12.73
+    },
+    "charges-de-personnel-participation": {
+      "N": 728741,
+      "N-1": 725197,
+      "N-2": 548266,
+      "variation.N-1": 3544,
+      "variationPct.N-1": 0.49,
+      "poidsCaPct.N": 35.92,
+      "variation.N-2": 180475,
+      "variationPct.N-2": 32.92
+    },
+    "autres-produits-autres-charges": {
+      "N": 15017,
+      "N-1": 30240,
+      "N-2": 23269,
+      "variation.N-1": -15223,
+      "variationPct.N-1": -50.34,
+      "poidsCaPct.N": 0.74,
+      "variation.N-2": -8252,
+      "variationPct.N-2": -35.46
+    },
+    "excedent-brut-d-exploitation-ebe": {
+      "N": 151379,
+      "N-1": 139091,
+      "N-2": 85233,
+      "variation.N-1": 12288,
+      "variationPct.N-1": 8.83,
+      "poidsCaPct.N": 7.46,
+      "variation.N-2": 66146,
+      "variationPct.N-2": 77.61
+    },
+    "dot-reprises-de-provisions-bfr": {
+      "N": -3344,
+      "N-1": 13935,
+      "N-2": -339,
+      "variation.N-1": -17279,
+      "variationPct.N-1": -124,
+      "poidsCaPct.N": -0.16,
+      "variation.N-2": -3005,
+      "variationPct.N-2": -886.43
+    },
+    "dotations-aux-amortissements": {
+      "N": 123537,
+      "N-1": 76565,
+      "N-2": 61399,
+      "variation.N-1": 46972,
+      "variationPct.N-1": 61.35,
+      "poidsCaPct.N": 6.09,
+      "variation.N-2": 62138,
+      "variationPct.N-2": 101.2
+    },
+    "resultat-financier": {
+      "N": -14462,
+      "N-1": -6957,
+      "N-2": -3764,
+      "variation.N-1": -7505,
+      "variationPct.N-1": -107.88,
+      "poidsCaPct.N": -0.71,
+      "variation.N-2": -10698,
+      "variationPct.N-2": -284.22
+    },
+    "resultat-exceptionnel": {
+      "N-1": 14383,
+      "N-2": -1623
+    },
+    "impots-sur-les-societes": {
+      "N": 385,
+      "N-1": 17382,
+      "N-2": 3664,
+      "variation.N-1": -16997,
+      "variationPct.N-1": -97.79,
+      "poidsCaPct.N": 0.02,
+      "variation.N-2": -3279,
+      "variationPct.N-2": -89.49
+    },
+    "resultat-net": {
+      "N": 9652,
+      "N-1": 66505,
+      "N-2": 14443,
+      "variation.N-1": -56853,
+      "variationPct.N-1": -85.49,
+      "poidsCaPct.N": 0.48,
+      "variation.N-2": -4791,
+      "variationPct.N-2": -33.17
+    },
+    "resultat-generant-un-flux-de-tresorerie": {
+      "N": 136533,
+      "N-1": 118134,
+      "N-2": 77755,
+      "variation.N-1": 18399,
+      "variationPct.N-1": 15.57,
+      "poidsCaPct.N": 6.73,
+      "variation.N-2": 58778,
+      "variationPct.N-2": 75.59
+    },
+    "taux-de-marge": {
+      "N": 72.5,
+      "N-1": 71.2,
+      "N-2": 70.6,
+      "variation.N-1": 1.3,
+      "variationPct.N-1": 1.83,
+      "variation.N-2": 1.9,
+      "variationPct.N-2": 2.69
+    },
+    "effet-evol-du-ca": {
+      "N": -6463
+    },
+    "effet-evol-du-taux-de-marge": {
+      "N": 32963
+    },
+    "achats-autres": {
+      "N": 70602,
+      "N-1": 64254,
+      "N-2": 57311,
+      "variation.N-1": 6348,
+      "variationPct.N-1": 9.88,
+      "variation.N-2": 13291,
+      "variationPct.N-2": 23.19,
+      "poidsCaPct.N": 3.48
+    },
+    "evolchargesext-sous-traitance": {
+      "N": 4265,
+      "poidsCaPct.N": 0.21
+    },
+    "location-et-charges-locatives": {
+      "N": 101874,
+      "N-1": 118067,
+      "N-2": 118776,
+      "variation.N-1": -16193,
+      "variationPct.N-1": -13.72,
+      "variation.N-2": -16902,
+      "variationPct.N-2": -14.23,
+      "poidsCaPct.N": 5.02
+    },
+    "entretien-et-reparation": {
+      "N": 59688,
+      "N-1": 67086,
+      "N-2": 65226,
+      "variation.N-1": -7398,
+      "variationPct.N-1": -11.03,
+      "variation.N-2": -5538,
+      "variationPct.N-2": -8.49,
+      "poidsCaPct.N": 2.94
+    },
+    "assurances": {
+      "N": 22532,
+      "N-1": 19011,
+      "N-2": 17144,
+      "variation.N-1": 3521,
+      "variationPct.N-1": 18.52,
+      "variation.N-2": 5388,
+      "variationPct.N-2": 31.43,
+      "poidsCaPct.N": 1.11
+    },
+    "honoraires-et-interimaires": {
+      "N": 34714,
+      "N-1": 77079,
+      "N-2": 69963,
+      "variation.N-1": -42365,
+      "variationPct.N-1": -54.96,
+      "variation.N-2": -35249,
+      "variationPct.N-2": -50.38,
+      "poidsCaPct.N": 1.71
+    },
+    "publicite-kdo-foire-expo-dons": {
+      "N": 20700,
+      "N-1": 25024,
+      "N-2": 9278,
+      "variation.N-1": -4324,
+      "variationPct.N-1": -17.28,
+      "variation.N-2": 11422,
+      "variationPct.N-2": 123.11,
+      "poidsCaPct.N": 1.02
+    },
+    "frais-de-transport": {
+      "N": 25350,
+      "N-1": 23544,
+      "N-2": 20727,
+      "variation.N-1": 1806,
+      "variationPct.N-1": 7.67,
+      "variation.N-2": 4623,
+      "variationPct.N-2": 22.3,
+      "poidsCaPct.N": 1.25
+    },
+    "deplacement-et-reception": {
+      "N": 26137,
+      "N-1": 18646,
+      "N-2": 20620,
+      "variation.N-1": 7491,
+      "variationPct.N-1": 40.17,
+      "variation.N-2": 5517,
+      "variationPct.N-2": 26.76,
+      "poidsCaPct.N": 1.29
+    },
+    "frais-postaux-et-telecom": {
+      "N": 13280,
+      "N-1": 16394,
+      "N-2": 15032,
+      "variation.N-1": -3114,
+      "variationPct.N-1": -18.99,
+      "variation.N-2": -1752,
+      "variationPct.N-2": -11.66,
+      "poidsCaPct.N": 0.65
+    },
+    "frais-bancaires": {
+      "N": 3792,
+      "N-1": 3681,
+      "N-2": 3148,
+      "variation.N-1": 111,
+      "variationPct.N-1": 3.02,
+      "variation.N-2": 644,
+      "variationPct.N-2": 20.46,
+      "poidsCaPct.N": 0.19
+    },
+    "autres": {
+      "N": 219249,
+      "N-1": 175257,
+      "N-2": 172805,
+      "variation.N-1": 43992,
+      "variationPct.N-1": 25.1,
+      "variation.N-2": 46444,
+      "variationPct.N-2": 26.88,
+      "poidsCaPct.N": 10.81
+    },
+    "masse-salariale": {
+      "N": 529011,
+      "N-1": 519577,
+      "N-2": 401882,
+      "variation.N-1": 9434,
+      "variationPct.N-1": 1.82,
+      "variation.N-2": 127129,
+      "variationPct.N-2": 31.63,
+      "poidsCaPct.N": 26.08
+    },
+    "charges-patronales-et-taxes-assises-sur-les-salaires": {
+      "N": 202018,
+      "N-1": 206067,
+      "N-2": 150489,
+      "variation.N-1": -4049,
+      "variationPct.N-1": -1.96,
+      "variation.N-2": 51529,
+      "variationPct.N-2": 34.24,
+      "poidsCaPct.N": 9.96
+    },
+    "taux-de-charges": {
+      "N": 38,
+      "N-1": 40,
+      "N-2": 37,
+      "variation.N-1": -2,
+      "variationPct.N-1": -5,
+      "variation.N-2": 1,
+      "variationPct.N-2": 2.7
+    },
+    "effectif-en-equivalent-temps-plein": {
+      "N": 14,
+      "N-1": 12,
+      "N-2": 10,
+      "variation.N-1": 2,
+      "variationPct.N-1": 16.67,
+      "variation.N-2": 4,
+      "variationPct.N-2": 40
+    },
+    "salaire-moyen": {
+      "N": 37787,
+      "N-1": 43298,
+      "N-2": 40188,
+      "variation.N-1": -5511,
+      "variationPct.N-1": -12.73,
+      "variation.N-2": -2401,
+      "variationPct.N-2": -5.97
+    },
+    "cout-total": {
+      "N": 731029,
+      "N-1": 725644,
+      "N-2": 552371,
+      "variation.N-1": 5385,
+      "variationPct.N-1": 0.74,
+      "variation.N-2": 178658,
+      "variationPct.N-2": 32.34,
+      "poidsCaPct.N": 36.04
+    },
+    "du-ca": {
+      "N": 36,
+      "N-1": 36,
+      "N-2": 33,
+      "variation.N-1": 0,
+      "variationPct.N-1": 0,
+      "variation.N-2": 3,
+      "variationPct.N-2": 9.09
+    },
+    "effet-evol-effectif": {
+      "N": 13175
+    },
+    "effet-evol-salaire-moyen": {
+      "N": 0
+    },
+    "effet-evol-du-taux-de-charges": {
+      "N": -7790
+    },
+    "impots-et-taxes-hors-taxes-liees-aux-salaires": {
+      "N": 9271,
+      "N-1": 8499,
+      "N-2": 7640,
+      "variation.N-1": 772,
+      "variationPct.N-1": 9.08,
+      "variation.N-2": 1631,
+      "variationPct.N-2": 21.35,
+      "poidsCaPct.N": 0.46
+    },
+    "seuilrenta-sous-traitance": {
+      "N": -85484,
+      "N-1": -112018,
+      "N-2": -38334,
+      "variation.N-1": 26534,
+      "variationPct.N-1": 23.69,
+      "variation.N-2": -47150,
+      "variationPct.N-2": -123,
+      "poidsCaPct.N": -4.21
+    },
+    "marge-sur-couts-variables": {
+      "N": 1477537,
+      "N-1": 1451037,
+      "N-2": 1192005,
+      "variation.N-1": 26500,
+      "variationPct.N-1": 1.83,
+      "variation.N-2": 285532,
+      "variationPct.N-2": 23.95,
+      "poidsCaPct.N": 72.83
+    },
+    "taux-de-marge-sur-couts-variables": {
+      "N": 73,
+      "N-1": 71,
+      "N-2": 71,
+      "variation.N-1": 2,
+      "variationPct.N-1": 2.82,
+      "variation.N-2": 2,
+      "variationPct.N-2": 2.82
+    },
+    "couts-fixes": {
+      "N": 1453038,
+      "N-1": 1374576,
+      "N-2": 1168511,
+      "variation.N-1": 78462,
+      "variationPct.N-1": 5.71,
+      "variation.N-2": 284527,
+      "variationPct.N-2": 24.35,
+      "poidsCaPct.N": 71.63
+    },
+    "ecart-du-seuil": {
+      "N": 33637,
+      "N-1": 107376,
+      "N-2": 33295,
+      "variation.N-1": -73739,
+      "variationPct.N-1": -68.67,
+      "variation.N-2": 342,
+      "variationPct.N-2": 1.03,
+      "poidsCaPct.N": 1.66
+    },
+    "point-mort-en-jours": {
+      "N": 354,
+      "N-1": 341,
+      "N-2": 353,
+      "variation.N-1": 13,
+      "variationPct.N-1": 3.81,
+      "variation.N-2": 1,
+      "variationPct.N-2": 0.28
+    },
+    "immobilisations-incorporelles": {
+      "N": 66891,
+      "N-1": 72803,
+      "N-2": 60980,
+      "variation.N-1": -5912,
+      "variationPct.N-1": -8.12,
+      "variation.N-2": 5911,
+      "variationPct.N-2": 9.69
+    },
+    "immobilisations-corporelles": {
+      "N": 378026,
+      "N-1": 467487,
+      "N-2": 198131,
+      "variation.N-1": -89461,
+      "variationPct.N-1": -19.14,
+      "variation.N-2": 179895,
+      "variationPct.N-2": 90.8
+    },
+    "immobilisations-financieres": {
+      "N": 1235,
+      "N-1": 1235,
+      "N-2": 1235,
+      "variation.N-1": 0,
+      "variationPct.N-1": 0,
+      "variation.N-2": 0,
+      "variationPct.N-2": 0
+    },
+    "bilan-stocks": {
+      "N": 48963,
+      "N-1": 54315,
+      "N-2": 55153,
+      "variation.N-1": -5352,
+      "variationPct.N-1": -9.85,
+      "variation.N-2": -6190,
+      "variationPct.N-2": -11.22
+    },
+    "clients-et-comptes-rattaches": {
+      "N": 364147,
+      "N-1": 356701,
+      "N-2": 441113,
+      "variation.N-1": 7446,
+      "variationPct.N-1": 2.09,
+      "variation.N-2": -76966,
+      "variationPct.N-2": -17.45
+    },
+    "bilan-autres-creances": {
+      "N": 50449,
+      "N-1": 40849,
+      "N-2": 35055,
+      "variation.N-1": 9600,
+      "variationPct.N-1": 23.5,
+      "variation.N-2": 15394,
+      "variationPct.N-2": 43.91
+    },
+    "disponibilites": {
+      "N": 138759,
+      "N-1": 304799,
+      "N-2": 117027,
+      "variation.N-1": -166040,
+      "variationPct.N-1": -54.48,
+      "variation.N-2": 21732,
+      "variationPct.N-2": 18.57
+    },
+    "total-actif": {
+      "N": 1048471,
+      "N-1": 1298189,
+      "N-2": 908694,
+      "variation.N-1": -249718,
+      "variationPct.N-1": -19.24,
+      "variation.N-2": 139777,
+      "variationPct.N-2": 15.38
+    },
+    "capitaux-propres-avt-resultat": {
+      "N": 568915,
+      "N-1": 551959,
+      "N-2": 492953,
+      "variation.N-1": 16956,
+      "variationPct.N-1": 3.07,
+      "variation.N-2": 75962,
+      "variationPct.N-2": 15.41
+    },
+    "resultat-de-l-exercice": {
+      "N": 9652,
+      "N-1": 66505,
+      "N-2": 14443,
+      "variation.N-1": -56853,
+      "variationPct.N-1": -85.49,
+      "variation.N-2": -4791,
+      "variationPct.N-2": -33.17
+    },
+    "dettes-financieres": {
+      "N": 269944,
+      "N-1": 326985,
+      "N-2": 32728,
+      "variation.N-1": -57041,
+      "variationPct.N-1": -17.44,
+      "variation.N-2": 237216,
+      "variationPct.N-2": 724.81
+    },
+    "bilan-fournisseurs": {
+      "N": 87958,
+      "N-1": 135320,
+      "N-2": 159824,
+      "variation.N-1": -47362,
+      "variationPct.N-1": -35,
+      "variation.N-2": -71866,
+      "variationPct.N-2": -44.97
+    },
+    "bilan-autres-dettes": {
+      "N": 112002,
+      "N-1": 217420,
+      "N-2": 208746,
+      "variation.N-1": -105418,
+      "variationPct.N-1": -48.49,
+      "variation.N-2": -96744,
+      "variationPct.N-2": -46.35
+    },
+    "total-passif": {
+      "N": 1048471,
+      "N-1": 1298189,
+      "N-2": 908694,
+      "variation.N-1": -249718,
+      "variationPct.N-1": -19.24,
+      "variation.N-2": 139777,
+      "variationPct.N-2": 15.38
+    },
+    "fonds-de-roulement": {
+      "N": 401931,
+      "N-1": 403389,
+      "variation.N-1": -1458,
+      "variationPct.N-1": -0.36,
+      "N-2": 388274,
+      "variation.N-2": 13657,
+      "variationPct.N-2": 3.52
+    },
+    "bfr": {
+      "N": 263599,
+      "N-1": 99125,
+      "variation.N-1": 164474,
+      "variationPct.N-1": 165.93,
+      "N-2": 271247,
+      "variation.N-2": -7648,
+      "variationPct.N-2": -2.82
+    },
+    "total-actif-immobilise-net": {
+      "N": 446153,
+      "N-1": 541525,
+      "N-2": 260346,
+      "variation.N-1": -95372,
+      "variationPct.N-1": -17.61,
+      "variation.N-2": 185807,
+      "variationPct.N-2": 71.37
+    },
+    "stocks-nets": {
+      "N": 48963,
+      "N-1": 54315,
+      "N-2": 55153,
+      "variation.N-1": -5352,
+      "variationPct.N-1": -9.85,
+      "variation.N-2": -6190,
+      "variationPct.N-2": -11.22
+    },
+    "clients-nets": {
+      "N": 364147,
+      "N-1": 356701,
+      "N-2": 441113,
+      "variation.N-1": 7446,
+      "variationPct.N-1": 2.09,
+      "variation.N-2": -76966,
+      "variationPct.N-2": -17.45
+    },
+    "fournisseurs-et-compte-rattaches": {
+      "N": -87958,
+      "N-1": -135320,
+      "N-2": -159824,
+      "variation.N-1": 47362,
+      "variationPct.N-1": 35,
+      "variation.N-2": 71866,
+      "variationPct.N-2": 44.97
+    },
+    "besoin-en-fonds-de-roulement-strict": {
+      "N": 325152,
+      "N-1": 275696,
+      "N-2": 336442,
+      "variation.N-1": 49456,
+      "variationPct.N-1": 17.94,
+      "variation.N-2": -11290,
+      "variationPct.N-2": -3.36
+    },
+    "creances-dettes-fisc-et-sociales": {
+      "N": -89104,
+      "N-1": -134040,
+      "N-2": -142249,
+      "variation.N-1": 44936,
+      "variationPct.N-1": 33.52,
+      "variation.N-2": 53145,
+      "variationPct.N-2": 37.36
+    },
+    "produits-et-charges-constates-d-avance": {
+      "N": 12826,
+      "N-1": -32589,
+      "N-2": -46947,
+      "variation.N-1": 45415,
+      "variationPct.N-1": 139.36,
+      "variation.N-2": 59773,
+      "variationPct.N-2": 127.32
+    },
+    "autres-creances-et-dettes": {
+      "N": 14727,
+      "N-1": -9942,
+      "N-2": 15505,
+      "variation.N-1": 24669,
+      "variationPct.N-1": 248.13,
+      "variation.N-2": -778,
+      "variationPct.N-2": -5.02
+    },
+    "autres-besoins-en-fonds-de-roulement": {
+      "N": -61552,
+      "N-1": -176571,
+      "N-2": -173691,
+      "variation.N-1": 115019,
+      "variationPct.N-1": 65.14,
+      "variation.N-2": 112139,
+      "variationPct.N-2": 64.56
+    },
+    "besoin-en-fonds-de-roulement": {
+      "N": 263599,
+      "N-1": 99125,
+      "N-2": 162751,
+      "variation.N-1": 164474,
+      "variationPct.N-1": 165.93,
+      "variation.N-2": 100848,
+      "variationPct.N-2": 61.96
+    },
+    "emprunts-bancaires": {
+      "N": -269517,
+      "N-1": -326451,
+      "N-2": -32350,
+      "variation.N-1": 56934,
+      "variationPct.N-1": 17.44,
+      "variation.N-2": -237167,
+      "variationPct.N-2": -733.13
+    },
+    "bilaneco-comptes-courants": {
+      "N": 727,
+      "N-1": 727,
+      "N-2": 727,
+      "variation.N-1": 0,
+      "variationPct.N-1": 0,
+      "variation.N-2": 0,
+      "variationPct.N-2": 0
+    },
+    "total-dettes": {
+      "N": -269944,
+      "N-1": -326985,
+      "N-2": -32728,
+      "variation.N-1": 57041,
+      "variationPct.N-1": 17.44,
+      "variation.N-2": -237216,
+      "variationPct.N-2": -724.81
+    },
+    "endettement-net": {
+      "N": -131185,
+      "N-1": -22186,
+      "N-2": 84299,
+      "variation.N-1": -108999,
+      "variationPct.N-1": -491.3,
+      "variation.N-2": -215484,
+      "variationPct.N-2": -255.62
+    },
+    "actif-net": {
+      "N": 578567,
+      "N-1": 618464,
+      "N-2": 507396,
+      "variation.N-1": -39897,
+      "variationPct.N-1": -6.45,
+      "variation.N-2": 71171,
+      "variationPct.N-2": 14.03
+    },
+    "capital-reserves": {
+      "N": 568915,
+      "N-1": 551959,
+      "N-2": 492953,
+      "variation.N-1": 16956,
+      "variationPct.N-1": 3.07,
+      "variation.N-2": 75962,
+      "variationPct.N-2": 15.41
+    },
+    "fonds-propres-equity": {
+      "N": 578567,
+      "N-1": 618464,
+      "N-2": 507396,
+      "variation.N-1": -39897,
+      "variationPct.N-1": -6.45,
+      "variation.N-2": 71171,
+      "variationPct.N-2": 14.03
+    },
+    "bfr-stocks": {
+      "N": 48963,
+      "N-1": 54315,
+      "N-2": 55153,
+      "variation.N-1": -5352,
+      "variationPct.N-1": -9.85,
+      "variation.N-2": -6190,
+      "variationPct.N-2": -11.22
+    },
+    "bfr-clients": {
+      "N": 364147,
+      "N-1": 356701,
+      "N-2": 441113,
+      "variation.N-1": 7446,
+      "variationPct.N-1": 2.09,
+      "variation.N-2": -76966,
+      "variationPct.N-2": -17.45
+    },
+    "bfr-fournisseurs": {
+      "N": 87958,
+      "N-1": 135320,
+      "N-2": 159824,
+      "variation.N-1": -47362,
+      "variationPct.N-1": -35,
+      "variation.N-2": -71866,
+      "variationPct.N-2": -44.97
+    },
+    "bfr-d-exploitation": {
+      "N": 325152,
+      "N-1": 275696,
+      "N-2": 336442,
+      "variation.N-1": 49456,
+      "variationPct.N-1": 17.94,
+      "variation.N-2": -11290,
+      "variationPct.N-2": -3.36
+    },
+    "bfr-autres-creances": {
+      "N": 50449,
+      "N-1": 40849,
+      "N-2": 35055,
+      "variation.N-1": 9600,
+      "variationPct.N-1": 23.5,
+      "variation.N-2": 15394,
+      "variationPct.N-2": 43.91
+    },
+    "dettes-soc-fisc": {
+      "N": 112002,
+      "N-1": 143364,
+      "N-2": 152896,
+      "variation.N-1": -31362,
+      "variationPct.N-1": -21.88,
+      "variation.N-2": -40894,
+      "variationPct.N-2": -26.75
+    },
+    "bfr-autres-dettes": {
+      "N-1": 74057,
+      "N-2": 55849
+    },
+    "bfr-hors-exploitation": {
+      "N": -61552,
+      "N-1": -176571,
+      "N-2": -173691,
+      "variation.N-1": 115019,
+      "variationPct.N-1": 65.14,
+      "variation.N-2": 112139,
+      "variationPct.N-2": 64.56
+    },
+    "evoltresonv-resultat": {
+      "N": 9652
+    },
+    "evoltresonv-charges-produits-sans-impact": {
+      "N": 126881
+    },
+    "evoltresonv-capacite-de-generation": {
+      "N": 136533
+    },
+    "evoltresonv-stocks": {
+      "N": 5352
+    },
+    "creances-clients": {
+      "N": -10789
+    },
+    "dettes-fournisseurs": {
+      "N": -47362
+    },
+    "evoltresonv-autres-creances": {
+      "N": -9600
+    },
+    "evoltresonv-autres-dettes": {
+      "N": -105538
+    },
+    "evoltresonv-total-decalages": {
+      "N": -167937
+    },
+    "investissements": {
+      "N": -41892
+    },
+    "remboursements-d-emprunts": {
+      "N": -78394
+    },
+    "dividendes-verses": {
+      "N": -40000
+    },
+    "evoltresonv-total-besoins-financiers": {
+      "N": -160286
+    },
+    "nouveaux-emprunts": {
+      "N": 22000
+    },
+    "nouvelles-subventions-d-investissements": {
+      "N": -9549
+    },
+    "produits-de-cession-d-immobilisations": {
+      "N": 13307
+    },
+    "evoltresonv-total-financements-externes": {
+      "N": 25758
+    },
+    "evoltresonv-mouvement-total": {
+      "N": -165933
+    },
+    "evoltresonv-solde-ouverture": {
+      "N": 304265
+    },
+    "evoltresonv-solde-cloture": {
+      "N": 138332
+    },
+    "amortissements-et-provisions": {
+      "N": 126881
+    },
+    "variation-des-creances-clients": {
+      "N": -10789
+    },
+    "variation-des-stocks": {
+      "N": 5352
+    },
+    "variation-des-dettes-fournisseurs-hors-frs-immo": {
+      "N": -47362
+    },
+    "flux-autres-creances": {
+      "N": -9600
+    },
+    "flux-autres-dettes": {
+      "N": -105419
+    },
+    "flux-net-de-tresorerie-genere-par-l-activite": {
+      "N": -31286
+    },
+    "acquisitions-immobilisations-incorp-corp": {
+      "N": -28165
+    },
+    "flux-net-de-tresorerie-lie-aux-operations-d-invest": {
+      "N": -28165
+    },
+    "dividendes-verses-aux-actionnaires": {
+      "N": -40000
+    },
+    "variation-du-capital-en-numeraire": {
+      "N": 0
+    },
+    "variation-des-subventions": {
+      "N": -9549
+    },
+    "variation-des-emprunts": {
+      "N": -56933
+    },
+    "flux-net-de-tresorerie-lie-aux-op-de-financement": {
+      "N": -106482
+    },
+    "variation-de-tresorerie": {
+      "N": -165933
+    },
+    "tresorerie-a-l-ouverture": {
+      "N": 304265
+    },
+    "tresorerie-nette-a-la-cloture": {
+      "N": 138332
+    },
+    "remboursements": {
+      "N": 78394
+    },
+    "investissement-exercice": {
+      "N": 41892
+    },
+    "tresorerie-ouverture": {
+      "N": 304265
+    },
+    "bridgetreso-stocks": {
+      "N": 5352
+    },
+    "bridgetreso-clients": {
+      "N": -10789
+    },
+    "bridgetreso-fournisseurs": {
+      "N": -47362
+    },
+    "autres-valeurs": {
+      "N": -115019
+    },
+    "invest-nets": {
+      "N": -28165
+    },
+    "var-des-emprunts-et-des-subv": {
+      "N": -66483
+    },
+    "mouvement-capital": {
+      "N": 0
+    },
+    "dividendes": {
+      "N": -40000
+    },
+    "comptes-courants": {
+      "N": 0
+    },
+    "tresorerie-cloture": {
+      "N": 138332
+    },
+    "total-actif-circulant": {
+      "N": 263599,
+      "N-1": 99125,
+      "N-2": 162751,
+      "variation.N-1": 164474,
+      "variationPct.N-1": 165.93,
+      "variation.N-2": 100848,
+      "variationPct.N-2": 61.96
+    },
+    "passif-net": {
+      "N": 308623,
+      "N-1": 291479,
+      "N-2": 474668,
+      "variation.N-1": 17144,
+      "variationPct.N-1": 5.88,
+      "variation.N-2": -166045,
+      "variationPct.N-2": -34.98
+    },
+    "remtns-remuneration-dirigeant": {
+      "N": 78000,
+      "N-1": 74000,
+      "N-2": 68000,
+      "variation.N-1": 4000,
+      "variationPct.N-1": 5.41,
+      "variation.N-2": 10000,
+      "variationPct.N-2": 14.71,
+      "poidsCaPct.N": 3.84
+    },
+    "remtns-charges-tns": {
+      "N": 23400,
+      "N-1": 22500,
+      "N-2": 20700,
+      "variation.N-1": 900,
+      "variationPct.N-1": 4.0,
+      "variation.N-2": 2700,
+      "variationPct.N-2": 13.04,
+      "poidsCaPct.N": 1.15
+    },
+    "remtns-csg-crds": {
+      "N": 7900,
+      "N-1": 7500,
+      "N-2": 6900,
+      "variation.N-1": 400,
+      "variationPct.N-1": 5.33,
+      "variation.N-2": 1000,
+      "variationPct.N-2": 14.49,
+      "poidsCaPct.N": 0.39
+    },
+    "remtns-total-charges-tns": {
+      "N": 31300,
+      "N-1": 30000,
+      "N-2": 27600,
+      "variation.N-1": 1300,
+      "variationPct.N-1": 4.33,
+      "variation.N-2": 3700,
+      "variationPct.N-2": 13.41,
+      "poidsCaPct.N": 1.54
+    },
+    "remtns-taux-de-charges": {
+      "N": 40.13,
+      "N-1": 40.54,
+      "N-2": 40.59,
+      "variation.N-1": -0.41,
+      "variationPct.N-1": -1.01,
+      "variation.N-2": -0.46,
+      "variationPct.N-2": -1.13
+    },
+    "bilan-provisions-r-c": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "bilaneco-provisions-pour-risques-et-charges": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "bilaneco-vmp": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "bilaneco-dividendes-a-payer": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "bilaneco-autres-dettes-financieres": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "seuilrenta-production-stockee-ou-immob": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0,
+      "poidsCaPct.N": 0
+    },
+    "seuilrenta-autres-charges-variables": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0,
+      "poidsCaPct.N": 0
+    },
+    "flux-plus-values-de-cession": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "flux-produits-de-cession": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "flux-variations-des-immobilisations-financieres-brutes": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "flux-variation-des-fournisseurs-d-immobilisations": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "flux-variation-des-comptes-courants": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "evoltresonv-apports-en-capital-ou-en-compte-courant": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "evoltresonv-retraits-sur-les-comptes-courants": {
+      "N": 0,
+      "N-1": 0,
+      "N-2": 0,
+      "variation.N-1": 0,
+      "variation.N-2": 0
+    },
+    "total-des-charges-externes": {
+      "N": 602183,
+      "N-1": 608043,
+      "N-2": 570030,
+      "variation.N-1": -5860,
+      "variationPct.N-1": -0.96,
+      "variation.N-2": 32153,
+      "variationPct.N-2": 5.64,
+      "poidsCaPct.N": 29.68
+    }
+  },
+  "comments": {
+    "tba": "Vue d'ensemble de l'exercice : l'activité se maintient, mais le résultat et la trésorerie se contractent nettement sous l'effet des investissements et de la reconstitution du besoin en fonds de roulement.",
+    "synthese": "Activité stable en valeur mais résultat net en fort retrait sous l'effet des dotations aux amortissements liées au programme d'investissement 2024.",
+    "margetab": "La progression du taux de marge compense intégralement la légère érosion du chiffre d'affaires.",
+    "evolmarged": "La marge progresse malgré un chiffre d'affaires en léger recul : c'est l'amélioration du taux de marge qui porte l'ensemble.",
+    "evolchargesext": "Forte baisse des honoraires et de l'intérim, partiellement absorbée par la hausse du poste Autres (contrat Prestataire A).",
+    "evolperso": "Effectif porté de 12 à 14 ETP ; le coût total reste stable grâce à la baisse du taux de charges.",
+    "detail": "La hausse du coût du personnel vient de la progression de l'effectif ; la baisse du taux de charges en compense une partie.",
+    "remtns": "Non applicable : votre dirigeant est assimilé salarié.",
+    "ebern": "Le doublement des dotations aux amortissements explique l'essentiel de la chute du résultat net.",
+    "seuilrenta": "La marge de sécurité se réduit fortement : le CA ne dépasse plus le point mort que de 33,6 k€, soit 11 jours d'activité.",
+    "bilan": "Le total de bilan se contracte de 250 k€, principalement sous l'effet du désendettement et de la consommation de trésorerie.",
+    "graphbilan": "Votre fonds de roulement couvre l'intégralité de vos immobilisations. En revanche, la forte hausse du besoin en fonds de roulement absorbe presque toute la trésorerie disponible.",
+    "bilaneco": "La dette financière nette redevient négative (-131 k€) : l'entreprise est structurellement endettée après le pic d'investissement.",
+    "bfr": "Le BFR bondit de 164 k€ : la ressource fournisseurs se contracte et les dettes fiscales et sociales sont apurées.",
+    "evoltresonv": "La trésorerie recule de 166 k€ : la CAF ne suffit pas à couvrir la reconstitution du BFR, les investissements et les remboursements d'emprunts.",
+    "flux": "Flux d'activité négatif malgré une CAF de 137 k€ : la variation de BFR absorbe 168 k€ de trésorerie.",
+    "emprunt": "Les remboursements d'emprunts de l'exercice dépassent largement les nouveaux financements obtenus.",
+    "dispo": "Les disponibilités reculent fortement sur l'exercice : c'est le point de vigilance principal de l'année.",
+    "invest": "L'effort d'investissement de l'exercice reste soutenu et pèse directement sur la trésorerie disponible.",
+    "bridgetreso": "Lecture de la variation de votre trésorerie, de l'ouverture à la clôture de l'exercice : la capacité d'autofinancement ne suffit pas à couvrir la reconstitution du besoin en fonds de roulement, les investissements et les remboursements d'emprunts.",
+    "chartmargeca": "Sur trois exercices, le chiffre d'affaires se stabilise tandis que le taux de marge progresse régulièrement : la rentabilité de l'activité s'améliore à volume constant.",
+    "chartperso": "La progression du coût total suit celle de l'effectif ; la part des charges patronales dans ce coût diminue légèrement.",
+    "chartpersoext": "Les charges de personnel deviennent le premier poste de charges de l'entreprise et dépassent désormais les charges externes, qui restent stables.",
+    "chartbilann": "Lecture visuelle du bilan de l'exercice : les immobilisations et le besoin en fonds de roulement absorbent l'essentiel des ressources.",
+    "chartbilann1": "À titre de comparaison, le bilan de l'exercice précédent présentait une trésorerie beaucoup plus confortable."
+  }
+}

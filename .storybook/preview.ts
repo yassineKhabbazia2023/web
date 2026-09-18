@@ -21,6 +21,7 @@ import feedCenterPlugin from '../packages/applets/feed-center/src/main'
 import offersCatalogPlugin from '../packages/applets/offers-catalog/src/main'
 import pennylanePlugin from '../packages/applets/pennylane/src/main'
 import entitiesPlugin from '../packages/applets/entities/src/main'
+import keyMomentsPlugin from '../packages/applets/key-moments/src/main'
 
 // Import shared plugin for i18n translations
 import sharedPlugin from '../packages/libraries/shared/src/main'
@@ -71,6 +72,7 @@ setup((app) => {
   app.use(offersCatalogPlugin, {})
   app.use(pennylanePlugin, {})
   app.use(entitiesPlugin, {})
+  app.use(keyMomentsPlugin, {})
 })
 
 const preview: Preview = {

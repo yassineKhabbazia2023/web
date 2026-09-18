@@ -2,7 +2,7 @@ import { computed, ref, toValue } from 'vue'
 import type { MaybeRefOrGetter } from 'vue'
 
 import { useRoute } from 'vue-router'
-import { useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
+import { useInvoicesAccessStore, useKeyMomentsAccessStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager, FeatureFlagManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
@@ -20,18 +20,23 @@ function hasPermission(permission: Permission[]): boolean {
  * Composable for building the NavigationContext used by NavigationManager
  *
  * @param entityId - The current entity ID (ref or getter)
- * @returns An object containing the navigationContext computed and refreshBIReports function
+ * @returns An object containing the navigationContext computed and the refresh function
+ *   of the entries whose visibility is read from the API
  *
  * @example
  * const { navigationContext, refreshBIReports } = useNavigationContext(() => props.currentEntityId)
  *
- * // Call refreshBIReports when you need to update BI reports permission
- * onMounted(() => refreshBIReports())
+ * // Call it when you need to update the entries read from the API
+ * onMounted(() => {
+ *   refreshBIReports()
+ * })
  */
 export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefined>) {
   const route = useRoute()
   const userStore = useUserStore()
   const invoicesAccessStore = useInvoicesAccessStore()
+  // Loaded once per dossier by CurrentEntityManager, read here
+  const keyMomentsAccessStore = useKeyMomentsAccessStore()
 
   const shouldShowBIReportsInternal = ref(false)
 
@@ -47,6 +52,7 @@ export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefin
       hasPermission,
       hasPennylanePermission: PennylanePermissionsManager.hasPermission,
       shouldShowBIReports: shouldShowBIReportsInternal.value,
+      shouldShowKeyMoments: keyMomentsAccessStore.canShowKeyMoments,
       shouldShowRydgeInvoicesTab:
         invoicesAccessStore.isTabVisible &&
         FeatureFlagManager.isFeatureActivated(Feature.RYDGE_INVOICES),

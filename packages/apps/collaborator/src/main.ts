@@ -15,6 +15,7 @@ import widgetsLibrary from '@pulse/widgets'
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
 import homepageApplet from '@pulse/homepage'
+import keyMomentsApplet from '@pulse/key-moments'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
@@ -75,6 +76,7 @@ async function bootstrap() {
     .use(feedCenterApplet, {})
     .use(gedApplet, {})
     .use(homepageApplet, {})
+    .use(keyMomentsApplet, {})
     .use(launcherApplet, {})
     .use(loginApplet, {})
     .use(mandateApplet, {})

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { FEATURE_FLAG_META, LAYOUT_NO_PADDING_META, PERMISSIONS_META, ACCOUNT_PERMISSIONS, GED_CONTEXT_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { FEATURE_FLAG_META, LAYOUT_MOBILE_NO_PADDING_META, LAYOUT_NO_PADDING_META, PERMISSIONS_META, ACCOUNT_PERMISSIONS, GED_CONTEXT_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { CUSTOMER_ROUTES } from '@customer/router/customer.routes'
 import { GedContext, CustomerPermission, Feature } from '@pulse/common/enums'
 import {
@@ -76,6 +76,18 @@ export const regularCustomerRoutes = [
         meta: {
           [LAYOUT_NO_PADDING_META]: true,
           [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.POWERBI_REPORT,
+        },
+      },
+      // KEY MOMENTS (PUBLISHED BY THE FIRM, READ ONLY)
+      {
+        path: CUSTOMER_ROUTES.entity.regular.keyMoments.path,
+        name: CUSTOMER_ROUTES.entity.regular.keyMoments.name,
+        component: () => import('@pulse/key-moments/customer-pages')
+          .then(pages => pages.CustomerKeyMoments),
+        meta: {
+          [LAYOUT_NO_PADDING_META]: true,
+          [LAYOUT_MOBILE_NO_PADDING_META]: true,
+          [FEATURE_FLAG_META]: Feature.KEY_MOMENTS,
         },
       },
       // GED LEGACY DIRECT ACCESS

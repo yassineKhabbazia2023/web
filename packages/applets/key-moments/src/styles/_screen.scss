@@ -1,0 +1,114 @@
+/**
+ * What the report is drawn with, as mixins rather than as rules.
+ *
+ * Scoped styles compile a copy of this under the `data-v` attribute of each SFC
+ * that includes it, so a look shared by several components can only be stated
+ * here — a rule written in one of them would never reach the others.
+ *
+ * Emitting no CSS of its own is the whole point. Nothing lands here for being
+ * pretty: a declaration block belongs in this file once at least two files need
+ * it, and goes back into its component the day it is down to one. What a
+ * section is announced by is a component of its own, not a mixin.
+ */
+
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+/**
+ * The slant of the RYDGE signature, as `PSkewedButton` in the styleguide draws
+ * it. One angle for every oblique of the brand: a bar and a button skewed two
+ * different ways would not sign the same thing.
+ */
+$oblique-skew: skewX(-30deg);
+
+/**
+ * The eyebrow of the report, in the one green the surface accents with: what a
+ * section is about above its title, what shelf a recommendation comes from
+ * above its own. Same scale wherever it is read — it announces, it never states.
+ */
+@mixin overline {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--p-jungle-400);
+}
+
+/**
+ * A block of the report: the surface every widget is drawn on. Square, like
+ * every card of the report — a rounded corner here would set the
+ * recommendations apart from the figures they close.
+ */
+@mixin block {
+  padding: 22px 24px 24px;
+  background-color: var(--p-surface-primary);
+  border: 1px solid var(--key-moments-line);
+  box-shadow: var(--key-moments-shadow);
+  transition: box-shadow 0.25s;
+
+  &:hover {
+    box-shadow: var(--key-moments-shadow-hover);
+  }
+
+  // On a phone, the margin of the block is width the figures inside it need
+  @include breakpoints.media(xs) {
+    padding: 16px 16px 18px;
+  }
+}
+
+/**
+ * The title of a card — a recommendation of the report, one offered by the
+ * catalogue. Read one step below the title of a section, and one above the
+ * sentence describing it.
+ */
+@mixin card-title {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/** What a card says of itself, under its title. */
+@mixin card-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/**
+ * What the firm keeps back from the client, worn by the thing that is kept
+ * back: a section, a sub-section, a recommendation. States what it is, never
+ * where it is posed — inline in a title or absolute in a corner is the business
+ * of the block wearing it.
+ */
+@mixin badge {
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-heading);
+  background-color: var(--key-moments-emphasis-surface);
+}
+
+/**
+ * The recommendations, three per row whatever the width left by the navigation:
+ * a note is a sentence about a client, and the auto-filled columns they used to
+ * sit in squeezed it into a ribbon of two words per line.
+ *
+ * Stated once for the two surfaces: they display the same list, and a list that
+ * broke at two different widths depending on who reads it would not be one.
+ */
+@mixin offers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px 26px;
+
+  @media (width <= 1400px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (width <= 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
