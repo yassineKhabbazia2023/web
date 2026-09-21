@@ -34,7 +34,7 @@
         />
       </PFormItem>
       <PFormItem
-        v-for="group in MULTI_SELECT_FILTER_GROUPS"
+        v-for="group in visibleFilterGroups"
         :key="group.field"
         :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.${group.labelKey}`)"
       >
@@ -139,6 +139,9 @@ const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
 const { isLastActivityFeatureActivated } = useWalletFeatureFlags()
+
+// Mission type and status filters are reserved for collaborators
+const visibleFilterGroups = computed(() => (isCollab.value ? MULTI_SELECT_FILTER_GROUPS : []))
 
 const internalFilters = ref<AccountFilters>(getDefaultAccountFilters())
 const hasActiveFilters = defineModel<boolean>('hasActiveFilters', {

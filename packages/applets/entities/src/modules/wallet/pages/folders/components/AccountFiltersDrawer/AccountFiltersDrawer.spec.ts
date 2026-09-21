@@ -38,8 +38,8 @@ const stubs = {
   },
 }
 
-function createWrapper(props: Partial<AccountFiltersDrawerProps> = {}) {
-  userStoreMock.isCollab = true
+function createWrapper(props: Partial<AccountFiltersDrawerProps> = {}, isCollab = true) {
+  userStoreMock.isCollab = isCollab
   const defaultProps: AccountFiltersDrawerProps = {
     modelValue: true,
     hasActiveFilters: false,
@@ -172,6 +172,30 @@ describe('AccountFiltersDrawer.vue', () => {
         && c.attributes('data-testid') !== 'filter-last-activity-period-all')
     childFilterOptions.forEach((option) => {
       expect(option.props('pSelected')).toBe(false)
+    })
+  })
+
+  describe('mission type and status filters visibility', () => {
+    it('renders mission type and status filters for collaborators', () => {
+      const wrapper = createWrapper({}, true)
+
+      expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.TENUE}`)).toBeDefined()
+      expect(findFilterOptionByTestId(wrapper, `filter-${EntityStatus.TO_DEPLOY.toString()}`)).toBeDefined()
+    })
+
+    it('hides mission type and status filters for customers', () => {
+      const wrapper = createWrapper({}, false)
+
+      expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.TENUE}`)).toBeUndefined()
+      expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.REVISION}`)).toBeUndefined()
+      expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.NOT_SPECIFIED}`)).toBeUndefined()
+      expect(findFilterOptionByTestId(wrapper, `filter-${EntityStatus.TO_DEPLOY.toString()}`)).toBeUndefined()
+    })
+
+    it('keeps the favorites filter visible for customers', () => {
+      const wrapper = createWrapper({}, false)
+
+      expect(findFilterOptionByTestId(wrapper, 'filter-Favorites')).toBeDefined()
     })
   })
 
