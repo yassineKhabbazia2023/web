@@ -163,7 +163,7 @@ import { type PatchValue } from '@entities/services/patch-record'
 import { OffersDrawerStep, ProviderName } from '@entities/enums'
 import { OFFERS_DRAWER_STEPS, RFINANCE_DRAWER_STEPS } from './OffersDrawer.const'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
-import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, ContactWithRoles } from '@entities/types'
+import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, ContactWithRoles, SubscriptionOfferProvider } from '@entities/types'
 import { fetchAccount, patchAccount, getAccountSignatories, type Account } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import {
@@ -604,9 +604,11 @@ const onCloseOffersDrawer = () => {
 }
 
 const providerName = computed(() => {
-  const firstProvider = currentSubscriptionOffer.value?.providers?.at(0)
+  const filteredProviders = currentSubscriptionOffer.value?.providers
+    .filter(({ providerName }: SubscriptionOfferProvider) => providerName !== ProviderName.RYDGE)
+  const firstFilteredProviders = filteredProviders?.at(0)
 
-  return firstProvider?.providerName
+  return firstFilteredProviders?.providerName
 })
 
 const isPennylaneOffer = computed(() => {
