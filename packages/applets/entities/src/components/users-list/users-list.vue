@@ -57,7 +57,7 @@
           :pSortOrders="SORT_ORDERS"
         >
           <template #default="scope">
-            {{ d(scope.row.creationDate, 'short') }}
+            {{ getFormattedCreationDate(scope.row.creationDate) }}
           </template>
         </PTableColumn>
         <PTableColumn
@@ -144,7 +144,7 @@
               v-if="isAccountManagement === false"
               class="text-color--gray-500 font-small"
             >
-              {{ t('dateAdded') }} : {{ d(row.creationDate, 'short') }}
+              {{ t('dateAdded') }} : {{ getFormattedCreationDate(row.creationDate) }}
             </p>
           </div>
         </div>
@@ -155,6 +155,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import {
   PAvatar,
   PButton,
@@ -227,6 +228,15 @@ const {
   removeUser,
   userInformation,
 } = MENU_ACTIONS_NAME
+
+const getFormattedCreationDate = (creationDate?: string | null) => {
+  if (isNullOrEmpty(creationDate)) {
+    return '-'
+  }
+
+  return d(creationDate, 'short')
+}
+
 const getMenuElements = (row: ExtendedUser): PToolboxItemProps[] =>
   [
     {

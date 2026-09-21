@@ -242,4 +242,14 @@ describe('users-list', () => {
       }]])
     })
   })
+
+  describe('getFormattedCreationDate', () => {
+    it('should display a default value when creation date is null', () => {
+      expect(wrapper.vm.getFormattedCreationDate(null)).toBe('-')
+    })
+
+    it('should display a formatted date when creation date is filled', () => {
+      expect(wrapper.vm.getFormattedCreationDate('2024-01-13')).toBe('2024-01-13')
+    })
+  })
 })

@@ -111,6 +111,7 @@ const createWrapper = (): VueWrapper<any> =>
         PTableColumn: {
           name: 'PTableColumn',
           template: '<div><slot :row="row" /></div>',
+          props: ['pAlign', 'pHeaderAlign'],
           data() {
             const row = MOCKED_USER
 
@@ -279,6 +280,28 @@ describe('usersCollab', () => {
 
     it('should initialize the signatory composable with a refreshUsers callback', () => {
       expect(useAccountSignatories).toHaveBeenCalledWith({ refreshUsers: expect.any(Function) })
+    })
+
+    it('should display a default date when creation date is null', async () => {
+      vi.mocked(fetchAccountCustomers).mockResolvedValue({
+        items: [{
+          ...mockedCustomersCollab[0],
+          creationDate: null,
+        }] as any,
+        totalItems: 1,
+        currentPage: 1,
+        totalPages: 1,
+      })
+
+      wrapper = createWrapper()
+      await flushPromises()
+
+      expect(wrapper.vm.state.data[0].firstDateAccess).toBe('-')
+
+      const creationDateColumn = wrapper.findAllComponents({ name: 'PTableColumn' })[3]
+
+      expect(creationDateColumn.props('pAlign')).toBe('center')
+      expect(creationDateColumn.props('pHeaderAlign')).toBe('left')
     })
 
     it('should load the account signatories on mount when assignment is allowed', async () => {

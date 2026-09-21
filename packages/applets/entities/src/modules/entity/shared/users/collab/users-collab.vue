@@ -131,6 +131,8 @@
             pSortable="custom"
             pProp="creationDate"
             :pSortOrders="SORT_ORDERS"
+            pAlign="center"
+            pHeaderAlign="left"
           >
             <template #default="scope">
               {{ scope.row.firstDateAccess }}
@@ -215,6 +217,7 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/toolbox'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -433,6 +436,14 @@ function handleToolboxClick(userRow: User) {
 
 const paginationLabel = computed(() => getPaginationLabel<User>(t('on'), state))
 
+const getFormattedFirstDateAccess = (creationDate?: string | null) => {
+  if (isNullOrEmpty(creationDate)) {
+    return '-'
+  }
+
+  return d(new Date(creationDate), 'short')
+}
+
 async function formatAndFillUsersCollabTable() {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
@@ -457,7 +468,7 @@ async function formatAndFillUsersCollabTable() {
         lastName: userFromApi.lastName?.toUpperCase() ?? '',
         fullName: getFullName(userFromApi.firstName, userFromApi.lastName),
         email: userFromApi.email,
-        firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
+        firstDateAccess: getFormattedFirstDateAccess(userFromApi.creationDate),
         isOwner: user.value?.id === userFromApi.contactId,
         isSignatory: userFromApi.isSignatory,
         contactFlagPortailFactures: userFromApi.contactFlagPortailFactures,
