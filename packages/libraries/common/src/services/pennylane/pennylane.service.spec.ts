@@ -134,6 +134,40 @@ describe('PennylaneService', () => {
     })
   })
 
+  describe('getDocumentsArchive', () => {
+    it('should call properly api.gateway.post and return the archive content with its content disposition', async () => {
+      const archiveContentMock = new ArrayBuffer(8)
+      const contentDispositionMock = 'attachment; filename="documents.zip"'
+      const accountNumberMock = '2025546345'
+      const accountIdMock = 26
+      const documentIdsMock = [34442317824, 7601833]
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/archive/currentuser`
+      const expectedPayload = {
+        ids: ['34442317824', '7601833'],
+      }
+      const expectedParams = {
+        params: {
+          accountNumber: accountNumberMock,
+        },
+        responseType: 'arraybuffer',
+      }
+      apiGatewayMock.post.mockResolvedValue({
+        data: archiveContentMock,
+        headers: {
+          'content-disposition': contentDispositionMock,
+        },
+      })
+
+      const archive = await PennylaneService.getDocumentsArchive(accountNumberMock, accountIdMock, documentIdsMock)
+
+      expect(archive).toStrictEqual({
+        content: archiveContentMock,
+        contentDisposition: contentDispositionMock,
+      })
+      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedPayload, expectedParams)
+    })
+  })
+
   describe('createRole', () => {
     it('should call properly api.gateway.post', async () => {
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/role`

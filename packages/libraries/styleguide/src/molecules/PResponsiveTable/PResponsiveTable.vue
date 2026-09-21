@@ -81,10 +81,12 @@ const shouldDisplayResponsiveCard = computed(() => props.pDisableResponsive === 
 
 const emit = defineEmits<{
   'row-click': [row: Record<string, any>]
+  'card-click': [row: Record<string, any>]
 }>()
 
 const onCardClick = (row: Record<string, any>) => {
   emit('row-click', row)
+  emit('card-click', row)
 }
 </script>
 

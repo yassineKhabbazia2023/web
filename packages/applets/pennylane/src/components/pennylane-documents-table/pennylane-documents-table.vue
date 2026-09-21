@@ -5,8 +5,31 @@
     pStripe
     pCardClickable
     @cell-click="onClickCell"
-    @row-click="onRowClick"
+    @card-click="onCardClick"
   >
+    <PTableColumn
+      :pColumnKey="SELECTION_COLUMN_KEY"
+      pWidth="46"
+      :pShowOverflowTooltip="false"
+    >
+      <template #header>
+        <PCheckbox
+          :model-value="areAllDocumentsSelected"
+          :pIndeterminate="isDocumentsSelectionIndeterminate"
+          pTestId="pennylane-documents-select-all-checkbox"
+          @update:model-value="toggleAllSelectedDocuments"
+        />
+      </template>
+      <template #default="{ row }">
+        <span @click.stop>
+          <PCheckbox
+            :model-value="isDocumentSelected(row.id)"
+            pTestId="pennylane-documents-select-checkbox"
+            @update:model-value="toggleSelectedDocument(row.id)"
+          />
+        </span>
+      </template>
+    </PTableColumn>
     <PTableColumn
       v-for="({ label, prop, sortable }, index) in columns"
       :key="index"
@@ -75,6 +98,16 @@
 
     <template #mobile-title="{ row }">
       <div class="flex flex--align-items-center overflow-hidden">
+        <span
+          class="margin-right--3"
+          @click.stop
+        >
+          <PCheckbox
+            :model-value="isDocumentSelected(row.id)"
+            pTestId="pennylane-documents-select-checkbox-mobile"
+            @update:model-value="toggleSelectedDocument(row.id)"
+          />
+        </span>
         <PIcon
           :pName="row.iconName"
           pSize="32"
@@ -119,14 +152,24 @@
 import { useI18n } from 'vue-i18n'
 import type { TableColumnCtx } from '@pulse/styleguide/types'
 import { logger } from '@pulse/toolbox'
-import { PResponsiveTable, PTableColumn, PIcon, PToolbox, PButton, PTooltip } from '@pulse/styleguide/components'
+import {
+  PResponsiveTable,
+  PTableColumn,
+  PIcon,
+  PToolbox,
+  PButton,
+  PTooltip,
+  PCheckbox,
+} from '@pulse/styleguide/components'
 import type {
   PennylaneDocumentsTableFieldKeys,
   PennylaneDocumentsTableProps,
   PennylaneDocumentsTableActionName,
 } from './pennylane-documents-table.type'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
+import type { PennylaneDocument } from '@pulse/common/types'
 import { getPennylaneDocumentsFieldsColumns, getToolboxElements } from './pennylane-documents-table.helper'
+import { usePennylaneDocumentsTableSelection } from './pennylane-documents-table.composable'
 import { downloadDocument } from '@pennylane/helpers/pennylane-documents.helper'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { PNotification, displayNotification } from '@pulse/styleguide'
@@ -170,7 +213,18 @@ const { t, d } = useI18n({
   },
 })
 
+const SELECTION_COLUMN_KEY = 'selection'
+
 const props = defineProps<PennylaneDocumentsTableProps>()
+const selectedDocumentIds = defineModel<PennylaneDocument['id'][]>('selectedDocumentIds', { default: () => [] })
+
+const {
+  areAllDocumentsSelected,
+  isDocumentsSelectionIndeterminate,
+  isDocumentSelected,
+  toggleSelectedDocument,
+  toggleAllSelectedDocuments,
+} = usePennylaneDocumentsTableSelection(() => props.pennylaneDocuments, selectedDocumentIds)
 
 const toolboxElements = getToolboxElements({
   downloadLabel: t('actions.download'),
@@ -188,7 +242,8 @@ const emit = defineEmits<{
   'open-document': [FormattedPennylaneDocument],
 }>()
 
-function onRowClick(row: Record<string, any>) {
+// Mobile cards have no columns, so they report the whole row: on desktop, cell-click handles it instead
+function onCardClick(row: Record<string, any>) {
   emit('open-document', row as FormattedPennylaneDocument)
 }
 
@@ -196,7 +251,7 @@ function onClickCell(
   pennylaneDocument: FormattedPennylaneDocument,
   column: TableColumnCtx<FormattedPennylaneDocument>,
 ) {
-  if (column.property === 'actions') {
+  if (column.property === 'actions' || column.columnKey === SELECTION_COLUMN_KEY) {
     return
   }
   emit('open-document', pennylaneDocument)

@@ -3,7 +3,15 @@ import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
 
 import { API_PREFIXES } from '../../constants/api-prefixes'
-import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole, PennylaneAccessResponse, PennylaneValidationPayload } from './pennylane.service.types'
+import type {
+  PennylaneRole,
+  PennylaneDocument,
+  PennylaneDocumentQueryResult,
+  PennylaneDocumentsArchive,
+  PennylaneAvailableRole,
+  PennylaneAccessResponse,
+  PennylaneValidationPayload,
+} from './pennylane.service.types'
 
 export class PennylaneService {
   static readonly availableRolesByCompanyId: Record<string, Promise<AxiosResponse<PennylaneAvailableRole[], any>>> = {}
@@ -78,6 +86,30 @@ export class PennylaneService {
     })
 
     return data
+  }
+
+  static async getDocumentsArchive(
+    accountNumber: string,
+    accountId: number,
+    documentIds: PennylaneDocument['id'][],
+  ): Promise<PennylaneDocumentsArchive> {
+    const queryParams = {
+      accountNumber,
+    }
+    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/archive/currentuser`
+    const payload = {
+      ids: documentIds.map((documentId) => documentId.toString()),
+    }
+
+    const { data, headers } = await api.gateway.post<ArrayBuffer>(url, payload, {
+      params: queryParams,
+      responseType: 'arraybuffer',
+    })
+
+    return {
+      content: data,
+      contentDisposition: headers['content-disposition'],
+    }
   }
 
   static async checkPennylaneAccess(accountId?: number): Promise<PennylaneAccessResponse> {

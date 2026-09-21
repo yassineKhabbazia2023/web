@@ -41,6 +41,7 @@
         />
         <PennylaneDocumentsTable
           v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_TABLE"
+          v-model:selected-document-ids="selectedDocumentIds"
           :pennylaneDocuments
           :accountNumber
           :accountId
@@ -64,6 +65,7 @@ import PennylaneDocumentsWithResult from '@pennylane/components/pennylane-docume
 import PennylaneDocumentsTable from '@pennylane/components/pennylane-documents-table/pennylane-documents-table.vue'
 import PennylaneDocumentsViewer from '@pennylane/components/pennylane-documents-viewer/pennylane-documents-viewer.vue'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
+import type { PennylaneDocument } from '@pulse/common/types'
 import { PLoader, POverlay } from '@pulse/styleguide/components'
 import { APICallStatus } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -73,6 +75,7 @@ import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-
 const props = withDefaults(defineProps<PennylaneDocumentWrapperProps>(), {
   isSearchActive: false,
 })
+const selectedDocumentIds = defineModel<PennylaneDocument['id'][]>('selectedDocumentIds', { default: () => [] })
 
 const pennylaneViewerDocument = ref<FormattedPennylaneDocument>()
 const hasOpenedPennylaneDocumentsViewer = ref<boolean>()

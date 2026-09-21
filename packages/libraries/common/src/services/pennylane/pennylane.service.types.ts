@@ -21,6 +21,11 @@ export interface PennylaneDocument {
   updatedAt: string
 }
 
+export interface PennylaneDocumentsArchive {
+  content: ArrayBuffer
+  contentDisposition?: string
+}
+
 export interface PennylaneDocumentQueryResult extends QueryResult<PennylaneDocument> {
   lastSynchroDate: string
 }

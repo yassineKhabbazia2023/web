@@ -115,6 +115,16 @@ describe('PResponsiveTable', () => {
       expect(wrapper.emitted('row-click')).toBeTruthy()
       expect(wrapper.emitted('row-click')?.[0]).toEqual([mockData[0]])
     })
+
+    it('emits card-click when card is clicked on mobile', async () => {
+      const wrapper = createWrapper({ pCardClickable: true }, false)
+
+      const firstCard = wrapper.findAllComponents(PResponsiveTableCard)[0]
+      await firstCard.vm.$emit('click', mockData[0])
+
+      expect(wrapper.emitted('card-click')).toBeTruthy()
+      expect(wrapper.emitted('card-click')?.[0]).toEqual([mockData[0]])
+    })
   })
 
   describe('mobile slots', () => {

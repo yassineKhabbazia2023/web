@@ -1,3 +1,37 @@
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+
+// RFC 6266: `filename*` holds the percent-encoded UTF-8 name and takes precedence over the plain `filename`
+const CONTENT_DISPOSITION_ENCODED_FILENAME_REGEXP = /filename\*\s*=\s*[^']*'[^']*'([^;\n]+)/i
+const CONTENT_DISPOSITION_FILENAME_REGEXP = /filename\s*=\s*(?:"([^"]*)"|([^;\n]*))/i
+
+const decodeFileName = (encodedFileName: string): string | undefined => {
+  try {
+    return decodeURIComponent(encodedFileName.trim())
+  } catch {
+    return undefined
+  }
+}
+
+export const getFileNameFromContentDisposition = (
+  contentDisposition: string | undefined,
+  defaultFileName: string,
+): string => {
+  if (contentDisposition === undefined) {
+    return defaultFileName
+  }
+
+  const encodedFileName = CONTENT_DISPOSITION_ENCODED_FILENAME_REGEXP.exec(contentDisposition)?.at(1)
+  const decodedFileName = encodedFileName === undefined ? undefined : decodeFileName(encodedFileName)
+  if (isNotNullNorEmpty(decodedFileName)) {
+    return decodedFileName
+  }
+
+  const fileNameMatches = CONTENT_DISPOSITION_FILENAME_REGEXP.exec(contentDisposition)
+  const fileName = (fileNameMatches?.at(1) ?? fileNameMatches?.at(2))?.trim()
+
+  return isNotNullNorEmpty(fileName) ? fileName : defaultFileName
+}
+
 export const downloadFile = (
   data:any,
   fileName:string,

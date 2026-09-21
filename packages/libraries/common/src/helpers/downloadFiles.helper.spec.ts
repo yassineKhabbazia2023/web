@@ -1,4 +1,4 @@
-import { downloadFile, openDocumentInNewTab } from './downloadFiles.helper'
+import { downloadFile, openDocumentInNewTab, getFileNameFromContentDisposition } from './downloadFiles.helper'
 
 const createObjectURLMock = vi.hoisted(() => vi.fn())
 const revokeObjectURLMock = vi.hoisted(() => vi.fn())
@@ -95,5 +95,31 @@ describe('openDocumentInNewTab', () => {
 
     await expect(openDocumentInNewTab(fetchDocument)).rejects.toThrow('boom')
     expect(tabMock.close).toHaveBeenCalledOnce()
+  })
+})
+
+describe('getFileNameFromContentDisposition', () => {
+  const defaultFileName = 'default.zip'
+
+  it.each([
+    ['attachment; filename="documents.zip"', 'documents.zip'],
+    ['attachment; filename=documents.zip', 'documents.zip'],
+    [
+      'attachment; filename=documents-rydge-conseil_17-09-2026.zip; filename*=UTF-8\'\'documents-rydge-conseil_17-09-2026.zip',
+      'documents-rydge-conseil_17-09-2026.zip',
+    ],
+    ['attachment; filename*=UTF-8\'\'d%C3%A9claration%20fiscale.zip', 'déclaration fiscale.zip'],
+    ['attachment; filename="fallback.zip"; filename*=UTF-8\'\'%E0%A4%A.zip', 'fallback.zip'],
+  ])('should extract the file name from "%s"', (contentDisposition, expectedFileName) => {
+    expect(getFileNameFromContentDisposition(contentDisposition, defaultFileName)).toBe(expectedFileName)
+  })
+
+  it.each([
+    undefined,
+    '',
+    'attachment',
+    'attachment; filename=""',
+  ])('should return the default file name when content disposition is "%s"', (contentDisposition) => {
+    expect(getFileNameFromContentDisposition(contentDisposition, defaultFileName)).toBe(defaultFileName)
   })
 })

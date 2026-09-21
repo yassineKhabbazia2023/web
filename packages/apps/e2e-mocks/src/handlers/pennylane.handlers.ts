@@ -15,4 +15,15 @@ export const pennylaneHandlers = [
       },
     })
   }),
+
+  http.post('*/pennylane/accounts/:accountId/documents/archive/currentuser', () => {
+    const blob = new Blob(['mock archive content'], { type: 'application/zip' })
+    return new HttpResponse(blob, {
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename=documents-rydge-conseil_17-09-2026.zip; '
+          + 'filename*=UTF-8\'\'documents-rydge-conseil_17-09-2026.zip',
+      },
+    })
+  }),
 ]
