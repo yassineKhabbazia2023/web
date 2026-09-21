@@ -102,6 +102,7 @@ import { PButton, PAlert, PForm, PDynamicFields, PLoader } from '@pulse/stylegui
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/types'
 import { getFormStructure, cleanRecordStructure } from '@entities/utils/referential'
+import { cleanNullPhoneNumber } from '@entities/utils/phone'
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import AddressingIdentificationTable from './addressing-identification-table.vue'
 import { cloneDeep, get, setWith } from 'lodash-es'
@@ -193,6 +194,7 @@ onMounted(async () => {
     informationFormStructure.value = filterHiddenFields(fetchedStructure, props.pHiddenFieldKeys)
     const account = await fetchAccount(accountId)
     if (account !== undefined) {
+      cleanNullPhoneNumber(account)
       cleanRecordStructure(informationFormStructure.value, account)
     }
     currentAccount.value = account

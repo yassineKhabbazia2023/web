@@ -226,6 +226,42 @@ describe('CompanyInformation', () => {
     })
   })
 
+  describe('phone number normalization', () => {
+    it.each([
+      { phoneNumber: null, expectedPhoneNumber: '' },
+      { phoneNumber: undefined, expectedPhoneNumber: undefined },
+      { phoneNumber: 'null', expectedPhoneNumber: '' },
+      { phoneNumber: ' Null ', expectedPhoneNumber: '' },
+      { phoneNumber: '+33 Null', expectedPhoneNumber: '' },
+    ])('should normalize phone number $phoneNumber to $expectedPhoneNumber', async ({ phoneNumber, expectedPhoneNumber }) => {
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          phone: [{
+            phoneNumber,
+          }],
+        } as Account,
+      })
+      await flushPromises()
+
+      expect(wrapper.vm.internalAccount.phone[0].phoneNumber).toBe(expectedPhoneNumber)
+    })
+
+    it('should keep a valid phone number', async () => {
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          phone: [{
+            phoneNumber: '0612345678',
+          }],
+        } as Account,
+      })
+      await flushPromises()
+
+      expect(wrapper.vm.internalAccount.phone[0].phoneNumber).toBe('0612345678')
+    })
+  })
+
   describe('hasNoSiren toggle', () => {
     const mockFormStructureWithSiren = [{
       title: 'Test Section',

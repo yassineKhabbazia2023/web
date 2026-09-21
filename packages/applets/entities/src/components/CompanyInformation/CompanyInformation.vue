@@ -112,6 +112,7 @@ import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith, get } from 'lodash-es'
 import { PAlert, PForm, PDynamicFields, PLoader, PSwitch } from '@pulse/styleguide/components'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
+import { cleanNullPhoneNumber } from '@entities/utils/phone'
 import { type Account } from '@entities/services/account'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { FormSection } from '@entities/types'
@@ -256,9 +257,18 @@ function manageMissionTypeForPlan() {
   }
 }
 
+function cleanEmptyPhoneNumber() {
+  if (internalAccount.value === undefined) {
+    return
+  }
+
+  cleanNullPhoneNumber(internalAccount.value)
+}
+
 async function loadCompanyInformation() {
   try {
     internalAccount.value = cloneDeep(props.modelValue)
+    cleanEmptyPhoneNumber()
     if (props.providerName) {
       formStructure.value = await getFormStructure(props.providerName)
       if (internalAccount.value !== undefined) {
@@ -360,4 +370,3 @@ defineExpose({
   }
 }
 </style>
-
