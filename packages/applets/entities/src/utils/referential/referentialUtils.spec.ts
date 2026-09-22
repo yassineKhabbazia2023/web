@@ -1,4 +1,5 @@
 import { loggerWarnSpy } from '@pulse/toolbox/mocks'
+import { i18n } from '@pulse/common/i18n'
 import {
   referentialOptionsToPDropdownOption,
   getReferentialDropdownOptions,
@@ -271,6 +272,10 @@ describe('referentialUtils', () => {
   })
 
   describe('cleanRecordStructure', () => {
+    beforeEach(() => {
+      vi.spyOn(i18n.global, 't').mockReturnValue('N/A')
+    })
+
     const staffSizeRangeDropdownOptions = [{
       pValue: '=0',
     }, {
@@ -297,10 +302,15 @@ describe('referentialUtils', () => {
       pDropdownOptions: fiscalExerciseDurationDropdownOptions,
       isStoredHasNumber: true,
     })
+    const legalNameFieldMock = getMockedFormField({
+      pFieldKey: 'legal.legalName',
+      pFieldType: 'input',
+    })
 
     const fieldsMock = [
       staffSizeRangeFieldMock,
       fiscalExerciseDurationFieldMock,
+      legalNameFieldMock,
     ]
     const formSectionMock = getMockedFormSection({
       fields: fieldsMock,
@@ -315,12 +325,16 @@ describe('referentialUtils', () => {
       expectedStaffSizeRange: undefined,
       fiscalExerciseDuration: '12',
       expectedFiscalExerciseDuration: undefined,
+      legalName: 'NO_VALUE',
+      expectedLegalName: 'N/A',
       descriptions: 'should set to undefined wrong values',
     }, {
       staffSizeRange: '=1',
       expectedStaffSizeRange: '=1',
       fiscalExerciseDuration: 12,
       expectedFiscalExerciseDuration: 12,
+      legalName: 'RYDGE Conseil',
+      expectedLegalName: 'RYDGE Conseil',
       descriptions: 'should keep correct values',
     }]
     it.each(tests)('$description', ({
@@ -328,9 +342,14 @@ describe('referentialUtils', () => {
       fiscalExerciseDuration,
       expectedStaffSizeRange,
       expectedFiscalExerciseDuration,
+      legalName,
+      expectedLegalName,
     }) => {
       const record = {
         label: 'Record Label',
+        legal: {
+          legalName,
+        },
         accounting: {
           staffSizeRange,
           fiscalExerciseDuration,
@@ -338,6 +357,10 @@ describe('referentialUtils', () => {
       }
       const expectedCleanRecord = {
         ...record,
+        legal: {
+          ...record.legal,
+          legalName: expectedLegalName,
+        },
         accounting: {
           ...record.accounting,
           staffSizeRange: expectedStaffSizeRange,

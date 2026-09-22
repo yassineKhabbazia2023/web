@@ -20,6 +20,9 @@
         "addressingIdentifier": "Addressing identifier"
       }
     },
+    "information": {
+      "notAvailable": "N/A"
+    },
     "addCustomerDrawer": {
       "errorMessage": "An error occurred while granting rights"
     },

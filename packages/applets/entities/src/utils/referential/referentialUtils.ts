@@ -1,4 +1,5 @@
 import { logger } from '@pulse/toolbox'
+import { i18n } from '@pulse/common/i18n'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import type {
   FormSection,
@@ -24,6 +25,8 @@ import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorForm
 import { ProviderName } from '@entities/enums'
 import type { FormStructureName } from './referentialUtilsTypes'
 import { get, setWith } from 'lodash-es'
+
+const API_NO_VALUE = 'NO_VALUE'
 
 export function referentialOptionsToPDropdownOption(
   referentialOptions: ReferentialOptions | undefined,
@@ -189,10 +192,28 @@ export function cleanRecordDropdownField<T extends Record<string, any>>(
   }
 }
 
+function cleanRecordNoValueField<T extends Record<string, any>>(
+  pFieldKey: string,
+  record: T,
+) {
+  const value = get(record, pFieldKey)
+  if (value !== API_NO_VALUE) {
+    return false
+  }
+
+  setWith(record, pFieldKey, i18n.global.t('entities.information.notAvailable'), Object)
+
+  return true
+}
+
 export function cleanRecordStructure<T extends Record<string, any>>(formStructure: FormSection[], record: T) {
   formStructure.forEach((formSection) => {
     formSection.fields.forEach((formField) => {
       const { pFieldKey, pDropdownOptions, isStoredHasNumber } = formField
+      const hasEmptyApiValue = cleanRecordNoValueField(pFieldKey, record)
+      if (hasEmptyApiValue) {
+        return
+      }
       if (pDropdownOptions !== undefined) {
         cleanRecordDropdownField(pFieldKey, pDropdownOptions, isStoredHasNumber, record)
       }

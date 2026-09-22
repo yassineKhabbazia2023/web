@@ -20,6 +20,9 @@
         "addressingIdentifier": "Identifiant d'adressage"
       }
     },
+    "information": {
+      "notAvailable": "N/A"
+    },
     "addCustomerDrawer": {
       "errorMessage": "Une erreur est survenue lors de l'attribution des droits"
     },
