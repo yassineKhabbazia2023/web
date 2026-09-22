@@ -99,8 +99,8 @@ describe('InvoicesService', () => {
   })
 
   describe('hasHubspotSubmission', () => {
-    it('should return true on a successful response', async () => {
-      apiGatewayMock.get.mockResolvedValueOnce({ data: undefined })
+    it('should return true when a submission exists', async () => {
+      apiGatewayMock.get.mockResolvedValueOnce({ data: { isSuccess: true } })
 
       const result = await InvoicesService.hasHubspotSubmission(ACCOUNT_ID)
 
@@ -109,23 +109,15 @@ describe('InvoicesService', () => {
         .toHaveBeenCalledExactlyOnceWith(`${API_PREFIXES.REGISTRY}/accounts/${ACCOUNT_ID}/hubspot/submissions`)
     })
 
-    it('should return false on a 404 error', async () => {
-      const error = new AxiosError('Not Found', '404', undefined, undefined, {
-        status: 404,
-        data: null,
-        headers: {},
-        statusText: 'Not Found',
-        config: {} as any,
-      })
-
-      apiGatewayMock.get.mockRejectedValueOnce(error)
+    it('should return false when no submission exists', async () => {
+      apiGatewayMock.get.mockResolvedValueOnce({ data: { isSuccess: false } })
 
       const result = await InvoicesService.hasHubspotSubmission(ACCOUNT_ID)
 
       expect(result).toBe(false)
     })
 
-    it('should rethrow non-404 errors', async () => {
+    it('should rethrow errors', async () => {
       const error = new AxiosError('Server Error', '500', undefined, undefined, {
         status: 500,
         data: null,

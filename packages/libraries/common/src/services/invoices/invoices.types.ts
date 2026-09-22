@@ -20,3 +20,7 @@ export interface DematMailSubmissionRequest {
   dematerializationEmail: string
   requesterEmail: string
 }
+
+export interface HubspotSubmissionApiResponse {
+  isSuccess: boolean
+}

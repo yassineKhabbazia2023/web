@@ -1,11 +1,11 @@
 import { api } from '@pulse/common/api'
-import { AxiosError } from 'axios'
 
 import { API_PREFIXES } from '../../constants/api-prefixes'
 import type {
   DematAccountApiResponse,
   DematAccountResponse,
   DematMailSubmissionRequest,
+  HubspotSubmissionApiResponse,
 } from './invoices.types'
 
 export class InvoicesService {
@@ -36,21 +36,13 @@ export class InvoicesService {
     await api.gateway.post(url)
   }
 
-  // 200 means a submission successfully dispatched to HubSpot exists for this account; 404
+  // true means a submission successfully dispatched to HubSpot exists for this account; false
   // covers both "no submission at all" and "a submission row exists but the dispatch failed",
-  // so a 404 here must keep soliciting the client, same as no submission at all.
+  // so false here must keep soliciting the client, same as no submission at all.
   static async hasHubspotSubmission(accountId: number): Promise<boolean> {
     const url = `${API_PREFIXES.REGISTRY}/accounts/${accountId}/hubspot/submissions`
+    const { data } = await api.gateway.get<HubspotSubmissionApiResponse>(url)
 
-    try {
-      await api.gateway.get(url)
-      return true
-    } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 404) {
-        return false
-      }
-
-      throw error
-    }
+    return data.isSuccess
   }
 }
