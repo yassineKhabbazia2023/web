@@ -140,23 +140,6 @@ export const entitiesHandlers = [
     return HttpResponse.json(getWalletPaginatedResponse())
   }),
 
-  http.get('*/wallet/api/currentuser', ({ request }) => {
-    const { searchParams } = new URL(request.url)
-    const currentPage = Math.max(1, Number(searchParams.get('pageNumber') ?? 1))
-    const pageSize = Number(searchParams.get('pageSize') ?? 90)
-    const items = getAllMockAccountRows()
-
-    return HttpResponse.json({
-      accounts: {
-        items: items.slice((currentPage - 1) * pageSize, currentPage * pageSize),
-        currentPage,
-        totalPage: Math.ceil(items.length / pageSize),
-        totalItems: items.length,
-      },
-      favorites: null,
-    })
-  }),
-
   http.get('*/account/api/accounts/all', () => {
     return HttpResponse.json(getWalletPaginatedResponse())
   }),

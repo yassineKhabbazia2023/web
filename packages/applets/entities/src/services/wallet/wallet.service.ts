@@ -2,20 +2,9 @@ import { logger } from '@pulse/toolbox'
 import type { Contact as userContact } from '@entities/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { api } from '@pulse/common/api'
-import type { Entity, SearchCriteria } from '@pulse/common/types'
+import type { Entity } from '@pulse/common/types'
 import { EntitiesStatistics } from './serviceWalletTypes'
 import type { GenericPageResponse } from '../collaborator/collaborator.type'
-import { getSearchParams } from '@pulse/common/utils'
-import type { WalletResponse } from './wallet.types'
-
-/** Reads one Wallet page without reloading the independently managed favorites. */
-export async function fetchWalletAccounts(searchCriteria: SearchCriteria) {
-  const searchParams = getSearchParams(searchCriteria)
-  const url = `${API_PREFIXES.WALLET}/${searchParams}&includeFavorites=false`
-  const { data } = await api.gateway.get<WalletResponse>(url)
-
-  return data.accounts
-}
 
 export async function fetchAccountCustomers(
   accountId: number,
