@@ -27,14 +27,9 @@
               </PAvatar>
             </div>
             <div>
-              <p
-                class="text-capitalize"
-                :class="{
-                  'font-bold': scope.row.isSignatory,
-                }"
-              >
-                <span v-if="scope.row.isLoggedUser">{{ t('you') }}</span>
-                <span v-if="scope.row.isLoggedUser === false">
+              <p class="text-capitalize">
+                <span v-if="scope.row.isLoggedUser" class="font-bold">{{ t('you') }}</span>
+                <span v-else>
                   {{ scope.row.firstName }}
                   <span class="text-uppercase"> {{ scope.row.lastName }}</span>
                 </span>
@@ -119,12 +114,9 @@
                 text-overflow--ellipsis
                 no-wrap
               "
-              :class="{
-                'font-bold': row.isSignatory,
-              }"
             >
-              <span v-if="row.isLoggedUser">{{ t('you') }}</span>
-              <span v-if="row.isLoggedUser === false">
+              <span v-if="row.isLoggedUser" class="font-bold">{{ t('you') }}</span>
+              <span v-else>
                 {{ row.firstName }}
                 <span class="text-uppercase"> {{ row.lastName }}</span>
               </span>

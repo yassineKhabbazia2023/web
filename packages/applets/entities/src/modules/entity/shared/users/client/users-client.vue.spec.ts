@@ -197,6 +197,7 @@ describe('test UsersClient', () => {
         pageNumber: '1',
         pageSize: '15',
         Type: ContactType.CUSTOMER,
+        sortCurrentUserFirst: 'true',
       })
 
       expect(fetchAccountContactsSpy).toHaveBeenCalledOnce()

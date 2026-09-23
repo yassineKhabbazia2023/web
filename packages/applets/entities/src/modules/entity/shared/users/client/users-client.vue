@@ -217,6 +217,7 @@ function getQueryParams(type: string | undefined) {
     'sorting.field': state.sorting.field,
     'sorting.descending': state.sorting.descending,
     Type: type,
+    sortCurrentUserFirst: true,
   }
 }
 
