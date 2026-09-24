@@ -25,6 +25,7 @@ export const getCollaborators = async (
   email: string | null = null,
   search: string | null | undefined = null,
   sort: string | undefined = undefined,
+  sortCurrentUserFirst: boolean = false,
 ): Promise<GenericPageResponse<Contact>> => {
   try {
     const response = await api.gateway.get(
@@ -37,6 +38,7 @@ export const getCollaborators = async (
           email,
           search,
           sort,
+          sortCurrentUserFirst,
         },
       },
     )

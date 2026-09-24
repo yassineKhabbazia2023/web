@@ -3,8 +3,9 @@ import type { MockInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
 import { MENU_ACTIONS_NAME } from './constants'
-import { apiGatewayGetMock } from '@pulse/common/mocks/vitest'
+import { apiGatewayGetMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
+import { useUserStore } from '@pulse/common/stores'
 import { getInitials } from '@entities/helpers'
 import { PTable } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -14,6 +15,7 @@ import CollaboratorsList from './collaborators-list.vue'
 let wrapper: VueWrapper<any>
 
 const mockGatewayGet = apiGatewayGetMock
+const userStoreMock = getStoreMock(useUserStore)
 let hasPermissionMock: MockInstance
 
 beforeEach(() => {
@@ -56,10 +58,9 @@ const createWrapper = (): VueWrapper<any> =>
         },
         PTableColumn: {
           name: 'PTableColumn',
-          template: '<div><slot :row="row" /></div>',
+          template: '<div><slot v-bind="{ row, $index: 0 }" /></div>',
           data: () => {
-            const row = {
-            }
+            const row = mockedCollaboratorsList2.items[0]
 
             return {
               row,
@@ -160,5 +161,23 @@ describe('tableData', () => {
 
     expect(wrapper.emitted('on-sort-change')).toBeTruthy()
     expect(wrapper.emitted('on-sort-change')).toStrictEqual([[{ 'descending': false, 'field': 'email' }]])
+  })
+
+  it('should display "Vous" in bold when the first collaborator is the connected user', () => {
+    userStoreMock.user = { email: mockedCollaboratorsList2.items[0].email } as typeof userStoreMock.user
+
+    wrapper = createWrapper()
+
+    const boldName = wrapper.find('.font-bold')
+    expect(boldName.exists()).toBe(true)
+    expect(boldName.text()).toBe('you')
+  })
+
+  it('should display the full name when the first collaborator is NOT the connected user', () => {
+    userStoreMock.user = { email: 'someone.else@example.com' } as typeof userStoreMock.user
+
+    wrapper = createWrapper()
+
+    expect(wrapper.find('.font-bold').exists()).toBe(false)
   })
 })

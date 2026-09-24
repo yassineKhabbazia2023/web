@@ -79,8 +79,14 @@
               </PAvatar>
               <div>
                 <p class="line-height--120">
-                  <span class="text-capitalize">{{ scope.row.firstName }}&nbsp;</span>
-                  <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+                  <span
+                    v-if="scope.$index === 0 && isFirstCollabCurrentUser"
+                    class="font-bold"
+                  >{{ t('you') }}</span>
+                  <template v-else>
+                    <span class="text-capitalize">{{ scope.row.firstName }}&nbsp;</span>
+                    <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+                  </template>
                 </p>
               </div>
               <PTooltip
@@ -221,7 +227,7 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import { getContactById } from '@entities/services/contact'
 import { getCollaboratorsByIdEntity } from '@entities/services/collaborator'
 import { deleteContactFromAccount } from '@entities/services/account'
-import { getInitials } from '@entities/helpers'
+import { getInitials, isFirstCollabCurrentUser as isFirstCollabCurrentUserHelper } from '@entities/helpers'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import { RouteParam, SortDirection } from '@pulse/common/enums'
 import NoResult from '@entities/components/NoResult'
@@ -252,6 +258,7 @@ const { t } = useI18n({
       collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity',
       collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error',
       customerRelationship: 'Customer relationship',
+      you: 'You',
     },
     'fr-FR': {
       actions: 'Actions',
@@ -267,12 +274,13 @@ const { t } = useI18n({
       collaboratorHasBeenRemoved: 'Le collaborateur a bien été retiré de l\'entité',
       collaboratorWasNotRemoved: 'Le collaborateur n\'a pas été retiré de l\'entité a cause d\'une erreur technique',
       customerRelationship: 'Relation client',
+      you: 'Vous',
     },
   },
 })
 
 const userStore = useUserStore()
-const { isCollab } = storeToRefs(userStore)
+const { isCollab, user } = storeToRefs(userStore)
 
 const isLoading = ref(false)
 const isMounted = ref(false)
@@ -449,6 +457,10 @@ const shouldShowPagination = computed(() =>
   !isLoading.value && state.totalItems,
 )
 
+const isFirstCollabCurrentUser = computed(() =>
+  isFirstCollabCurrentUserHelper(collabs.value, user.value?.email),
+)
+
 const isAddUserButtonVisible = computed(() =>
   currentEntityId !== undefined && isMounted.value && isCollab.value,
 )
@@ -459,6 +471,7 @@ const getQueryParams = () => ({
   search: state.search,
   'sorting.field': state.sorting.field,
   'sorting.descending': state.sorting.descending,
+  sortCurrentUserFirst: true,
 })
 
 const emit = defineEmits<{

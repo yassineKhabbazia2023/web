@@ -56,7 +56,7 @@ const createWrapper = (): ComponentWrapper<
         },
         PTableColumn: {
           name: 'PTableColumn',
-          template: '<div><slot :row="row" /></div>',
+          template: '<div><slot v-bind="{ row, $index: 0 }" /></div>',
           data() {
             const row = mockCollabsData[0]
 
@@ -123,5 +123,25 @@ describe('collaborators', () => {
 
     expect(collaboratorsAction.exists()).toBe(false)
     expect(addCollaboratorButton).toBeNull()
+  })
+
+  it('should display "Vous" in bold when the first collaborator is the connected user', async () => {
+    userStoreMock.user = { email: mockCollabsData[0].email } as typeof userStoreMock.user
+
+    wrapper = createWrapper()
+    await flushPromises()
+
+    const boldName = wrapper.find('.font-bold')
+    expect(boldName.exists()).toBe(true)
+    expect(boldName.text()).toBe('you')
+  })
+
+  it('should display the full name when the first collaborator is NOT the connected user', async () => {
+    userStoreMock.user = { email: 'someone.else@test.fr' } as typeof userStoreMock.user
+
+    wrapper = createWrapper()
+    await flushPromises()
+
+    expect(wrapper.find('.font-bold').exists()).toBe(false)
   })
 })

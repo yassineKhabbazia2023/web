@@ -11,6 +11,14 @@ export const getInitials = (firstName: string|undefined, lastName: string|undefi
   return `${firstInitial}${secondInitial}`
 }
 
+export const isFirstCollabCurrentUser = (
+  collabs: { email?: string }[],
+  userEmail: string | undefined,
+): boolean =>
+  collabs.length > 0
+  && userEmail !== undefined
+  && collabs[0].email?.toLowerCase() === userEmail.toLowerCase()
+
 /**
  * Simple function that extracts values from an object using dot-separate
  * keys and constructs a new object with these keys and values.

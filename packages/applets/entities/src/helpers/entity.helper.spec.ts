@@ -3,6 +3,7 @@ import {
   formatItemsFromApi,
   generateObject,
   getInitials,
+  isFirstCollabCurrentUser,
   returnSortQueryField,
 } from './entity.helper'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks'
@@ -21,6 +22,22 @@ describe('getInitials', () => {
     (firstName, lastName, expected) => {
       const initials = getInitials(firstName, lastName)
       expect(initials).toBe(expected)
+    },
+  )
+})
+
+describe('isFirstCollabCurrentUser', () => {
+  it.each([
+    [[{ email: 'gojo@jjk.com' }], 'gojo@jjk.com', true],
+    [[{ email: 'GOJO@jjk.com' }], 'gojo@jjk.com', true],
+    [[{ email: 'gojo@jjk.com' }], 'sukuna@jjk.com', false],
+    [[{ email: undefined }], 'gojo@jjk.com', false],
+    [[{ email: 'gojo@jjk.com' }], undefined, false],
+    [[], 'gojo@jjk.com', false],
+  ])(
+    'returns %s for collabs %o and userEmail %s',
+    (collabs, userEmail, expected) => {
+      expect(isFirstCollabCurrentUser(collabs, userEmail)).toBe(expected)
     },
   )
 })

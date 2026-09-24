@@ -48,6 +48,17 @@ describe('collaborator service', () => {
       expect(collaborators?.items).toStrictEqual(mockedCollaborators)
     })
 
+    it('should request the connected user sorted first', async () => {
+      await getCollaborators(1, 10, null, null, undefined, true)
+
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(
+        `${API_PREFIXES.WALLET}/contacts`,
+        expect.objectContaining({
+          params: expect.objectContaining({ sortCurrentUserFirst: true }),
+        }),
+      )
+    })
+
     it('should return list of roles', async () => {
       const roles = await fetchContactRoles(ContactType.COLLABORATOR)
 

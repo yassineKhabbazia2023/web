@@ -136,6 +136,7 @@ const fetch = async () => {
       null,
       state.search,
       params.sort,
+      true,
     )
     if (response) {
       state.data = response?.items.map<ExtendedCollab>(({

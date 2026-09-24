@@ -24,7 +24,13 @@
               {{ scope.row.initials }}
             </PAvatar>
             <div>
-              <p class="text-capitalize">
+              <p
+                v-if="scope.$index === 0 && isFirstCollabCurrentUser"
+                class="font-bold"
+              >
+                {{ t('you') }}
+              </p>
+              <p v-else class="text-capitalize">
                 {{ scope.row.firstName }}
                 <span class="text-uppercase"> {{ scope.row.lastName }}</span>
               </p>
@@ -119,11 +125,14 @@ import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import CollabDetailsDrawer from '@entities/components/CollabDetailsDrawer'
 import CollabRightsDrawer from './../CollabRightsDrawer'
+import { isFirstCollabCurrentUser as isFirstCollabCurrentUserHelper } from '@entities/helpers'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
 import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { SortingCriteria } from '@pulse/common/types'
 import { SortDirection } from '@pulse/common/enums'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -140,6 +149,7 @@ const { t } = useI18n({
       collaboratorInformation: 'Collaborator information',
       detailsOfDelegations: 'Details of delegations',
       manageAccessRights: 'Manage access rights',
+      you: 'You',
     },
     'fr-FR': {
       collaborators: 'Collaborateurs',
@@ -152,6 +162,7 @@ const { t } = useI18n({
       collaboratorInformation: 'Informations du collaborateur',
       detailsOfDelegations: 'Détails des délégations',
       manageAccessRights: 'Gérer les droits d’accès',
+      you: 'Vous',
     },
   },
 })
@@ -162,6 +173,13 @@ const emit = defineEmits<{
   'on-sort-change': [SortingCriteria]
 }>()
 const props = defineProps<Props>()
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
+const isFirstCollabCurrentUser = computed(() =>
+  isFirstCollabCurrentUserHelper(props.data, user.value?.email),
+)
 
 const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
