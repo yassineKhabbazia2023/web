@@ -19,7 +19,7 @@
         :disabled="isDisabled"
         class="margin-right--4"
         :data-testid="`collaborator-checkbox-${collaborator.contactId}`"
-        @change="handleToggle"
+        @update:model-value="handleToggle"
       />
     </PTooltip>
     <PCheckbox
@@ -28,7 +28,7 @@
       :disabled="isDisabled"
       class="margin-right--4"
       :data-testid="`collaborator-checkbox-${collaborator.contactId}`"
-      @change="handleToggle"
+      @update:model-value="handleToggle"
     />
     <div class="width--100 flex flex--justify-content-space-between">
       <PDoubleText

@@ -12,7 +12,7 @@
       </p>
       <PCheckboxGroup
         v-model="selectedDeleteOption"
-        @change="handleDeleteOptionUpdate"
+        @update:model-value="handleDeleteOptionUpdate"
       >
         <ul class="list-style-none">
           <li

@@ -81,7 +81,7 @@
           v-model="includeActivePrs"
           data-testid="pr-completion-time-include-active"
           :disabled="isLoading"
-          @change="load"
+          @update:model-value="load"
         >
           Inclure les PRs en cours (non-draft)
         </PCheckbox>

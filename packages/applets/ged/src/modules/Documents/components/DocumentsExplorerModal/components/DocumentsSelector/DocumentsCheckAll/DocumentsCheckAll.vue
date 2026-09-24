@@ -3,7 +3,7 @@
     <PCheckbox
       v-model="checked"
       :disabled="disabled"
-      @change="handleSelectAll"
+      @update:model-value="handleSelectAll"
     >
       {{ t('selectAllLabel') }}
     </PCheckbox>

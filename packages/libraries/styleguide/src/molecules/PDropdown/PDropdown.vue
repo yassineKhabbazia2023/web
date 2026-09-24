@@ -44,10 +44,7 @@
       v-if="pCheckAllLabel"
       #header
     >
-      <PCheckbox
-        v-model="internalIsCheckAll"
-        @change="internalIsCheckAll = $event"
-      >
+      <PCheckbox v-model="internalIsCheckAll">
         {{ pCheckAllLabel }}
       </PCheckbox>
     </template>

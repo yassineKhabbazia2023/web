@@ -47,7 +47,7 @@
       <template #header>
         <PCheckbox
           v-model="hasAllAutomaticDelegationSelected"
-          @change="handleToggleAllAutomaticDelegation"
+          @update:model-value="handleToggleAllAutomaticDelegation"
         >
           <span class="text-color--neutral-gray-300">{{ t('table.header.enableAutomaticDelegation') }}</span>
         </PCheckbox>
@@ -127,9 +127,9 @@ const hasAllAutomaticDelegationSelected = ref(false)
 // Behaviours
 const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
 
-const handleToggleAllAutomaticDelegation = () => {
+const handleToggleAllAutomaticDelegation = (isAllAutomaticDelegationSelected: boolean) => {
   delegationsList.value.forEach(delegationsListItem => {
-    delegationsListItem.isAutomaticDelegation = hasAllAutomaticDelegationSelected.value
+    delegationsListItem.isAutomaticDelegation = isAllAutomaticDelegationSelected
   })
 }
 </script>
