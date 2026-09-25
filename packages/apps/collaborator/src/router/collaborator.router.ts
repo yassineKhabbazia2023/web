@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { featureFlagGuard, currentEntityGuard, seoGuard } from '@pulse/shared/guards'
 import { COLLABORATOR_ROUTES } from './collaborator.routes'
 import { CollaboratorBootManager } from '@collaborator/managers/collaborator.boot.manager'
+import { NewVersionManager, newVersionReloadGuard } from '@pulse/toolbox'
 
 import { collaboratorAuthenticationGuard } from './guards/collaborator.authentication.guard'
 import { errorCollaboratorRoutes } from './routes/collaborator.error.routes'
@@ -45,6 +46,8 @@ const router = createRouter({
 })
 
 // Inject the guards
+NewVersionManager.startWatching()
+router.beforeEach(newVersionReloadGuard)
 router.beforeEach(collaboratorAuthenticationGuard)
 router.beforeEach(featureFlagGuard)
 // currentEntityGuard is added as global guard: cannot use beforeEnter because it doesn't re-trigger on param changes (e.g. switching entities)

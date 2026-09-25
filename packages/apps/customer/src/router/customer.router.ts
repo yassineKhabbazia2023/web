@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { CustomerBootManager } from '@customer/managers/customer.boot.manager'
+import { NewVersionManager, newVersionReloadGuard } from '@pulse/toolbox'
 import { featureFlagGuard, currentEntityGuard, seoGuard, scrollResetGuard } from '@pulse/shared/guards'
 import { customerAuthenticationGuard } from './guards/customer.authentication.guard'
 import { customerPermissionGuard } from './guards/customer.permission.guard'
@@ -46,6 +47,8 @@ const router = createRouter({
 })
 
 // Inject the guards
+NewVersionManager.startWatching()
+router.beforeEach(newVersionReloadGuard)
 router.beforeEach(customerSsoGuard)
 router.beforeEach(customerAuthenticationGuard)
 router.beforeEach(featureFlagGuard)

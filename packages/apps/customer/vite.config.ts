@@ -3,6 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { ConfigEnv, PreviewServer } from 'vite'
 import { createAppConfig } from '../../@config/vite.config.app.ts'
+import { appVersionPlugin } from '../../@config/vite.plugin.app-version.ts'
 import { canarytokenPlugin } from '../../@config/vite.plugin.canarytoken.ts'
 import { e2ePlugin } from '@pulse/e2e-mocks/vite-plugin'
 
@@ -31,6 +32,7 @@ export default ({ mode }: ConfigEnv) =>
           recordedDir: path.resolve(__dirname, '../e2e-mocks/recorded/customer'),
         },
       }),
+      appVersionPlugin(),
       canarytokenPlugin(),
       {
         name: 'collaborator-spa-fallback',

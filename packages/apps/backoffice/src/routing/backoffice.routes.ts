@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { BACKOFFICE_ROUTES } from '@backoffice/constants/backoffice.routes.const'
 import { authenticationGuard } from './guards/authentication.guard'
+import { NewVersionManager, newVersionReloadGuard } from '@pulse/toolbox'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -71,6 +72,8 @@ const router = createRouter({
   routes,
 })
 
+NewVersionManager.startWatching()
+router.beforeEach(newVersionReloadGuard)
 router.beforeEach(authenticationGuard)
 
 router.beforeEach((to) => {
