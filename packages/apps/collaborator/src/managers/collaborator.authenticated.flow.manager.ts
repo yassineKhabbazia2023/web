@@ -99,16 +99,14 @@ export class CollaboratorAuthenticatedFlowManager {
   }
   private static async setUserCurrentEntity(defaultEntity: Entity) {
     const currentEntityStore = useCurrentEntityStore()
-    // if there is no current entity, we try to fetch the one stored in local storage
-    // or set the default entity provided
+    // if there is no current entity, we try to fetch the one the user selected last
+    // (persisted server-side) or set the default entity provided
     if (currentEntityStore.currentEntityId === undefined) {
-      const localStorageEntityId = CurrentEntityManager.getLocalStorageEntityId()
+      const lastSelectedEntityId = await CurrentEntityManager.getLastSelectedEntityId()
 
-      // If the entity is not found in local storage or the user doesn't have permissions on it anymore,
-      // we default to the one provided
-      const entityToPersistId = (localStorageEntityId === undefined || localStorageEntityId === 0)
-        ? defaultEntity.accountId
-        : localStorageEntityId
+      // If there is no persisted selection, or the user doesn't have permissions on it anymore
+      // (the API then answers no content), we default to the one provided
+      const entityToPersistId = lastSelectedEntityId ?? defaultEntity.accountId
       const entityToPersist = await fetchEntityById(entityToPersistId)
 
       return CurrentEntityManager.initializeCurrentEntity(entityToPersist)

@@ -174,9 +174,9 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
   })
 
   describe('setUserCurrentEntity', () => {
-    it('should set the locally stored current entity if it exists', async () => {
+    it('should set the last selected entity persisted server-side if it exists', async () => {
       currentEntityStoreMock.currentEntityId = undefined
-      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(2)
+      vi.mocked(CurrentEntityManager.getLastSelectedEntityId).mockResolvedValue(2)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
@@ -189,7 +189,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
 
     it('should persist the first provided entity if there is no previously current entity', async () => {
       currentEntityStoreMock.currentEntityId = undefined
-      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(undefined)
+      vi.mocked(CurrentEntityManager.getLastSelectedEntityId).mockResolvedValue(undefined)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
@@ -201,7 +201,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
 
     it('should persist the first provided entity if the user has no rights to see the previously current entity', async () => {
       currentEntityStoreMock.currentEntityId = undefined
-      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(2)
+      vi.mocked(CurrentEntityManager.getLastSelectedEntityId).mockResolvedValue(2)
       vi.mocked(fetchEntityById).mockResolvedValue(defaultEntityMock as any)
       vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
@@ -218,7 +218,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       // @ts-ignore - accessing private method for testing
       await CollaboratorAuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
-      expect(CurrentEntityManager.getLocalStorageEntityId).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.getLastSelectedEntityId).not.toHaveBeenCalled()
       expect(fetchEntityById).not.toHaveBeenCalled()
       expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
     })

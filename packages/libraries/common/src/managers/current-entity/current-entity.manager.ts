@@ -8,10 +8,11 @@ import { useKeyMomentsAccessStore } from '../../stores/key-moments-access/key-mo
 import { fetchUserAccountPermissions } from '../../services/permissions/permissions.service'
 import { InvoicesAccessService } from '../../services/invoices-access/invoices-access.service'
 import { KeyMomentsManager } from '../key-moments/key-moments.manager'
-import { LocalStorageService } from '../../services/storage'
+import { ContactPreferencesService } from '../../services/contact-preferences/contact-preferences.service'
 
 interface InitializeCurrentEntityOptions {
   shouldFetchInvoicesAccess?: boolean
+  shouldSaveLastSelectedEntity?: boolean
 }
 
 export class CurrentEntityManager {
@@ -21,6 +22,7 @@ export class CurrentEntityManager {
   ) {
     const { accountId } = entity
     const shouldFetchInvoicesAccess = options.shouldFetchInvoicesAccess ?? false
+    const shouldSaveLastSelectedEntity = options.shouldSaveLastSelectedEntity ?? false
 
     const permissionsStore = usePermissionsStore()
     const userAccountPermissions = await fetchUserAccountPermissions(accountId)
@@ -28,7 +30,10 @@ export class CurrentEntityManager {
 
     const currentEntityStore = useCurrentEntityStore()
     currentEntityStore.setCurrentEntity(entity)
-    CurrentEntityManager.setLocalStorageEntityId(accountId)
+
+    if (shouldSaveLastSelectedEntity) {
+      CurrentEntityManager.saveLastSelectedEntity(entity)
+    }
 
     // Read here rather than by each surface that offers the entry — the sidebar
     // and the homepage widget — so the dossier is only asked once. Not awaited:
@@ -83,20 +88,33 @@ export class CurrentEntityManager {
     keyMomentsAccessStore.setCanShowKeyMoments(canShowKeyMoments)
   }
 
-  static setLocalStorageEntityId(entityId: number | null | undefined) {
-    if (entityId === null || entityId === undefined) {
-      CurrentEntityManager.clearLocalStorageEntityId()
-    } else {
-      LocalStorageService.setLastVisitedEntityId(entityId)
+  /**
+   * Returns the id of the entity the contact selected last, persisted server-side.
+   * Resolves undefined when there is no selection, when it is no longer accessible, or when
+   * it could not be read: the caller then falls back to the first entity of the wallet.
+   */
+  static async getLastSelectedEntityId(): Promise<number | undefined> {
+    try {
+      const lastSelectedEntity = await ContactPreferencesService.fetchLastSelectedEntity()
+
+      return lastSelectedEntity?.accountId
+    } catch (error) {
+      logger.error('Failed to fetch the last selected entity', error)
+      return undefined
     }
   }
 
-  static getLocalStorageEntityId() {
-    return LocalStorageService.getLastVisitedEntityId()
-  }
+  static async saveLastSelectedEntity(entity: EntitySummary): Promise<void> {
+    // The server-side preference only covers regular entities: a prospect is never selectable there
+    if (entity.accountType === AccountType.PROSPECT) {
+      return
+    }
 
-  static clearLocalStorageEntityId() {
-    LocalStorageService.removeLastVisitedEntityId()
+    try {
+      await ContactPreferencesService.saveLastSelectedEntity(entity.accountId)
+    } catch (error) {
+      logger.error(`Failed to save the last selected entity ${entity.accountId}`, error)
+    }
   }
 
   static clearCurrentEntity() {
@@ -112,7 +130,5 @@ export class CurrentEntityManager {
     // reset key moments access store
     const keyMomentsAccessStore = useKeyMomentsAccessStore()
     keyMomentsAccessStore.reset()
-    // clear local storage
-    CurrentEntityManager.clearLocalStorageEntityId()
   }
 }

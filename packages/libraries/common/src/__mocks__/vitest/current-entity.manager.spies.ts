@@ -27,9 +27,8 @@ export const stubCurrentEntityManager = async (): Promise<void> => {
   const { CurrentEntityManager } = await import('@pulse/common/managers')
   stubStaticMethods(CurrentEntityManager, [
     'initializeCurrentEntity',
-    'getLocalStorageEntityId',
-    'setLocalStorageEntityId',
-    'clearLocalStorageEntityId',
+    'getLastSelectedEntityId',
+    'saveLastSelectedEntity',
     'clearCurrentEntity',
     'fetchInvoicesAccess',
   ])

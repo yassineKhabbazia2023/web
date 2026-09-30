@@ -93,7 +93,7 @@ describe('verify entity change', () => {
     expect(fetchEntityByIdMock).toHaveBeenCalled()
     expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledExactlyOnceWith(
       entitiesServiceMocks.fetchEntityById,
-      { shouldFetchInvoicesAccess: false },
+      { shouldFetchInvoicesAccess: false, shouldSaveLastSelectedEntity: true },
     )
   })
 
@@ -107,7 +107,7 @@ describe('verify entity change', () => {
 
     expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledExactlyOnceWith(
       entitiesServiceMocks.fetchEntityById,
-      { shouldFetchInvoicesAccess: true },
+      { shouldFetchInvoicesAccess: true, shouldSaveLastSelectedEntity: true },
     )
     expect(CurrentEntityManager.fetchInvoicesAccess).not.toHaveBeenCalled()
   })

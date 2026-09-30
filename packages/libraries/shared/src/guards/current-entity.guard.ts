@@ -37,6 +37,7 @@ export async function currentEntityGuard(to: RouteLocationNormalized, from: Rout
 
       await CurrentEntityManager.initializeCurrentEntity(entity, {
         shouldFetchInvoicesAccess: expectedAccountType === AccountType.REGULAR,
+        shouldSaveLastSelectedEntity: true,
       })
 
     } catch (error) {

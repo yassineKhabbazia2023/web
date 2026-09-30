@@ -28,6 +28,7 @@
     "./services/invoices": "./src/services/invoices/index.ts",
     "./services/pennylane": "./src/services/pennylane/index.ts",
     "./services/storage": "./src/services/storage/index.ts",
+    "./services/contact-preferences": "./src/services/contact-preferences/index.ts",
     "./services/html": "./src/services/html/index.ts",
     "./services/open-feature": "./src/services/open-feature/index.ts",
     "./services/widgets": "./src/services/widgets/index.ts",

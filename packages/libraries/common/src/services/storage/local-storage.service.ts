@@ -1,7 +1,6 @@
 import { logger } from '@pulse/toolbox'
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token'
-const LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY = 'last-visited-entity'
 
 /**
  * Service to handle all localStorage operations
@@ -59,27 +58,6 @@ export class LocalStorageService {
 
   static removeToken(): void {
     this.removeItem(LOCAL_STORAGE_TOKEN_KEY)
-  }
-
-  // #endregion
-
-  // #region last visited entity
-
-  static setLastVisitedEntityId(entityId: number): void {
-    this.setItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY, JSON.stringify(entityId))
-  }
-
-  static getLastVisitedEntityId(): number | undefined {
-    const value = this.getItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY)
-    if (!value) {
-      return undefined
-    }
-    const parsed = Number(value)
-    return Number.isNaN(parsed) ? undefined : parsed
-  }
-
-  static removeLastVisitedEntityId(): void {
-    this.removeItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY)
   }
 
   // #endregion

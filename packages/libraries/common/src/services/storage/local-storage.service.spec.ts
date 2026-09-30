@@ -51,47 +51,6 @@ describe('LocalStorageService', () => {
     })
   })
 
-  describe('Last visited entity methods', () => {
-    it('should set last visited entity ID', () => {
-      const entityId = 123
-
-      LocalStorageService.setLastVisitedEntityId(entityId)
-
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('last-visited-entity', '123')
-    })
-
-    it('should get last visited entity ID', () => {
-      localStorageMock.getItem.mockReturnValue('456')
-
-      const result = LocalStorageService.getLastVisitedEntityId()
-
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('last-visited-entity')
-      expect(result).toBe(456)
-    })
-
-    it('should return undefined for invalid entity ID', () => {
-      localStorageMock.getItem.mockReturnValue('invalid')
-
-      const result = LocalStorageService.getLastVisitedEntityId()
-
-      expect(result).toBeUndefined()
-    })
-
-    it('should return undefined when no entity ID', () => {
-      localStorageMock.getItem.mockReturnValue(null)
-
-      const result = LocalStorageService.getLastVisitedEntityId()
-
-      expect(result).toBeUndefined()
-    })
-
-    it('should remove last visited entity ID', () => {
-      LocalStorageService.removeLastVisitedEntityId()
-
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith('last-visited-entity')
-    })
-  })
-
 
   describe('Error handling', () => {
 

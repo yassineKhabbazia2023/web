@@ -132,6 +132,15 @@ export const entitiesHandlers = [
     return HttpResponse.json(getEntitySummaryById(entityId))
   }),
 
+  // Last selected entity preference: no selection by default, so flows start on the first entity
+  http.get('*/account/api/preferences/selected-account', () => {
+    return new HttpResponse(null, { status: 204 })
+  }),
+
+  http.put('*/account/api/preferences/selected-account', () => {
+    return new HttpResponse(null, { status: 204 })
+  }),
+
   http.get('*/account/api/accounts/:accountId/currentuser', () => {
     return HttpResponse.json(getAccountData())
   }),

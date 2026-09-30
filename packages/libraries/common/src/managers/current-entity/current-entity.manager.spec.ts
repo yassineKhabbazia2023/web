@@ -1,17 +1,15 @@
 import { flushPromises } from '@vue/test-utils'
+import { logger } from '@pulse/toolbox'
 import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock } from '../../__mocks__'
 import { AccountType } from '../../enums/account-type.enum'
-import {
-  getStoreMock,
-  setLastVisitedEntityIdMock,
-  removeLastVisitedEntityIdMock,
-} from '@pulse/common/mocks/vitest'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useInvoicesAccessStore } from '../../stores/invoices-access/invoices-access.store'
 import { useKeyMomentsAccessStore } from '../../stores/key-moments-access/key-moments-access.store'
 import { fetchUserAccountPermissions } from '../../services/permissions/permissions.service'
 import { InvoicesAccessService } from '../../services/invoices-access/invoices-access.service'
+import { ContactPreferencesService } from '../../services/contact-preferences/contact-preferences.service'
 import { KeyMomentsManager } from '../key-moments/key-moments.manager'
 import { CurrentEntityManager } from './current-entity.manager'
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
@@ -21,12 +19,14 @@ const keyMomentsAccessStoreMock = getStoreMock(useKeyMomentsAccessStore)
 
 describe('test current-entity.manager', () => {
   beforeEach(() => {
-    // doctrine: static-classes — managers are stubbed with vi.spyOn per test
+    // doctrine: static-classes — managers and services are stubbed with vi.spyOn per test
     vi.spyOn(KeyMomentsManager, 'canShowKeyMoments').mockResolvedValue(false)
+    vi.spyOn(ContactPreferencesService, 'fetchLastSelectedEntity').mockResolvedValue(undefined)
+    vi.spyOn(ContactPreferencesService, 'saveLastSelectedEntity').mockResolvedValue(undefined)
   })
 
   describe('CurrentEntityManager', () => {
-    it('should set currentEntity properly without fetching invoices access by default', async () => {
+    it('should set currentEntity properly without fetching invoices access nor saving the selection by default', async () => {
       const permissionsMock = getPermissionsMock()
       const entityMock = getMockedEntitySummary()
       const { accountId: expectedAccountId } = entityMock
@@ -38,7 +38,7 @@ describe('test current-entity.manager', () => {
 
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledExactlyOnceWith(entityMock)
 
-      expect(setLastVisitedEntityIdMock).toHaveBeenCalledWith(expectedAccountId)
+      expect(ContactPreferencesService.saveLastSelectedEntity).not.toHaveBeenCalled()
 
       expect(fetchUserAccountPermissions).toHaveBeenCalledExactlyOnceWith(expectedAccountId)
 
@@ -46,6 +46,16 @@ describe('test current-entity.manager', () => {
 
       expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
       expect(invoicesAccessStoreMock.setAccessData).not.toHaveBeenCalled()
+    })
+
+    it('should save the last selected entity when the option is enabled', async () => {
+      const entityMock = getMockedEntitySummary()
+
+      vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(getPermissionsMock())
+
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldSaveLastSelectedEntity: true })
+
+      expect(ContactPreferencesService.saveLastSelectedEntity).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
     })
 
     it('should fetch invoices access when the option is enabled', async () => {
@@ -69,10 +79,14 @@ describe('test current-entity.manager', () => {
 
       vi.mocked(fetchUserAccountPermissions).mockResolvedValueOnce(permissionsMock)
 
-      await CurrentEntityManager.initializeCurrentEntity(entityMock, { shouldFetchInvoicesAccess: true })
+      await CurrentEntityManager.initializeCurrentEntity(entityMock, {
+        shouldFetchInvoicesAccess: true,
+        shouldSaveLastSelectedEntity: true,
+      })
 
       expect(fetchInvoicesAccessSpy).not.toHaveBeenCalled()
       expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
+      expect(ContactPreferencesService.saveLastSelectedEntity).not.toHaveBeenCalled()
     })
 
     it('should not fetch invoices access when the option is disabled', async () => {
@@ -148,15 +162,73 @@ describe('test current-entity.manager', () => {
     })
   })
 
+  describe('getLastSelectedEntityId', () => {
+    it('should return the id of the entity persisted server-side', async () => {
+      vi.spyOn(ContactPreferencesService, 'fetchLastSelectedEntity').mockResolvedValue({ accountId: 42 })
+
+      const result = await CurrentEntityManager.getLastSelectedEntityId()
+
+      expect(result).toBe(42)
+    })
+
+    it('should return undefined when no selection is persisted', async () => {
+      vi.spyOn(ContactPreferencesService, 'fetchLastSelectedEntity').mockResolvedValue(undefined)
+
+      const result = await CurrentEntityManager.getLastSelectedEntityId()
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined and log when the selection cannot be read', async () => {
+      const error = new Error('API error')
+      vi.spyOn(ContactPreferencesService, 'fetchLastSelectedEntity').mockRejectedValue(error)
+
+      const result = await CurrentEntityManager.getLastSelectedEntityId()
+
+      expect(result).toBeUndefined()
+      expect(vi.mocked(logger.error)).toHaveBeenCalledExactlyOnceWith('Failed to fetch the last selected entity', error)
+    })
+  })
+
+  describe('saveLastSelectedEntity', () => {
+    it('should persist a regular entity', async () => {
+      const entityMock = getMockedEntitySummary()
+
+      await CurrentEntityManager.saveLastSelectedEntity(entityMock)
+
+      expect(ContactPreferencesService.saveLastSelectedEntity).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
+    })
+
+    it('should not persist a prospect entity', async () => {
+      const entityMock = getMockedEntitySummary({ accountType: AccountType.PROSPECT })
+
+      await CurrentEntityManager.saveLastSelectedEntity(entityMock)
+
+      expect(ContactPreferencesService.saveLastSelectedEntity).not.toHaveBeenCalled()
+    })
+
+    it('should log and swallow the error when the selection cannot be persisted', async () => {
+      const entityMock = getMockedEntitySummary()
+      const error = new Error('API error')
+      vi.spyOn(ContactPreferencesService, 'saveLastSelectedEntity').mockRejectedValue(error)
+
+      await expect(CurrentEntityManager.saveLastSelectedEntity(entityMock)).resolves.toBeUndefined()
+
+      expect(vi.mocked(logger.error)).toHaveBeenCalledExactlyOnceWith(
+        `Failed to save the last selected entity ${entityMock.accountId}`,
+        error,
+      )
+    })
+  })
+
   describe('clearCurrentEntity', () => {
-    it('should reset all stores and clear local storage', () => {
+    it('should reset all stores', () => {
       CurrentEntityManager.clearCurrentEntity()
 
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledOnce()
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith([])
       expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
       expect(keyMomentsAccessStoreMock.reset).toHaveBeenCalledOnce()
-      expect(removeLastVisitedEntityIdMock).toHaveBeenCalledOnce()
     })
   })
 })
