@@ -128,7 +128,7 @@
         "pDisabled": true,
         "pFieldKey": "legal.creationDate",
         "pFieldType": "date",
-        "pLabel": "Date de création"
+        "pLabel": "Date de création du dossier"
       },
       {
         "modelValue": "",
