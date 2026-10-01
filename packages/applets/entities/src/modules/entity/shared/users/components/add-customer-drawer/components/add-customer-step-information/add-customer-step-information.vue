@@ -88,7 +88,6 @@
                   v-model="newContact.mobilePhone"
                   :pPlaceholder="t('mobilePhone.placeholder')"
                   pTestId="customer-drawer-mobile-phone-input"
-                  pCountryDisabled
                 />
               </PFormItem>
             </PFormLine>
