@@ -1,16 +1,14 @@
 <template>
   <KeyMomentsReader
-    :entity="entity"
+    :entityName="entityName"
     :caption="caption"
     :screens="screens"
-    :offers="offers"
+    :recommendations="recommendations"
     :isInThousands="isInThousands"
     :hasReport="hasReport"
-    :canExport="canExport"
     :hasUnitSelect="hasUnitSelect"
     :exerciceOptions="hasExerciceSelect ? exerciceOptions : undefined"
     :selectedExerciceId="selectedExerciceId"
-    :exerciceYear="exerciceYear"
     @select-exercice="selectExercice"
     @toggle-thousands="toggleThousands"
   >
@@ -68,27 +66,26 @@ import { formatCalendarDay, formatCalendarYear, formatInstant } from '../../util
 import { buildExerciceOptions } from '../../utils/format.utils'
 import KeyMomentsReader from './key-moments-reader.vue'
 import { useCustomerKeyMoments } from './customer-key-moments.composable'
+import { useExport } from '../../export/export.composable'
+import type { ExportFormat } from '../../enums/key-moments.enums'
 
 const { t } = useI18n()
 const route = useRoute()
 
 /**
- * Four flags say the page is being read through the preview rather than by its
+ * Three flags say the page is being read through the preview rather than by its
  * client, and the client app binds none of them: `isTracked` is off, since what
- * analytics count is a client displaying their key moment; `canExport` is on,
- * since handing the publication over as a file is a collaborator's gesture;
- * `hasExerciceSelect` is off, since the banner of the preview draws the selector
- * itself, above the page rather than inside it; and `hasUnitSelect` is off,
- * since the unit was settled before the report got there.
+ * analytics count is a client displaying their key moment; `hasExerciceSelect`
+ * is off, since the banner of the preview draws the selector itself, above the
+ * page rather than inside it; and `hasUnitSelect` is off, since the unit was
+ * settled before the report got there.
  */
 const {
   isTracked = true,
-  canExport = false,
   hasExerciceSelect = true,
   hasUnitSelect = true,
 } = defineProps<{
   isTracked?: boolean
-  canExport?: boolean
   hasExerciceSelect?: boolean
   hasUnitSelect?: boolean
 }>()
@@ -105,8 +102,9 @@ const {
   hasError,
   isEmpty,
   screens,
-  offers,
+  recommendations,
   entity,
+  entityName,
   exerciceCatalogue,
   selectedExerciceId,
   publishedAt,
@@ -167,11 +165,40 @@ const hasReport = computed(() => isLoading.value === false
   && hasError.value === false
   && isEmpty.value === false)
 
+const { isExportingDeck, isExportingPdf, exportReport } = useExport()
+
+// Exports what is on screen as is: an export never rebuilds the report
+function exportPublication(format: ExportFormat): void {
+  if (entity.value === undefined) {
+    return
+  }
+
+  exportReport(
+    format,
+    { entity: entity.value, screens: screens.value },
+    // A cover is never left unnamed: the closing's name stands in while the dossier has none
+    entityName.value ?? entity.value.name,
+    caption.value,
+    recommendations.value,
+    exerciceYear.value,
+  )
+}
+
 /**
- * The exercice selector, offered to whoever embeds this page rather than kept
- * inside it — the preview draws it in its banner, and both the choices and the
- * gesture must come from the page they command. Reading them from a second
- * source would be offering an exercice this page may not be able to open.
+ * The exercice selector and the export, offered to whoever embeds this page
+ * rather than kept inside it — the preview draws them in its banner, and both
+ * the choices and the gestures must come from the page they command. Reading
+ * them from a second source would be offering an exercice this page may not be
+ * able to open, or exporting a report it does not show. The client app never
+ * reaches them: handing the publication over as a file is a collaborator's gesture.
  */
-defineExpose({ exerciceOptions, selectedExerciceId, selectExercice })
+defineExpose({
+  exerciceOptions,
+  selectedExerciceId,
+  selectExercice,
+  hasReport,
+  isExportingDeck,
+  isExportingPdf,
+  exportPublication,
+})
 </script>

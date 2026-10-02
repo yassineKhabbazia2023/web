@@ -43,3 +43,8 @@ export function formatCalendarMonthYear(date: string, locale?: string): string {
 export function formatInstant(date: string, locale?: string): string {
   return new Intl.DateTimeFormat(locale).format(new Date(date))
 }
+
+/** An instant with its time of day — `21/08/2026 14:32`, when a comment was written. */
+export function formatInstantWithTime(date: string, locale?: string): string {
+  return new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(date))
+}

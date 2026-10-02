@@ -10,5 +10,7 @@ export interface PConfirmationPopupProps {
   pWidth?: string | number
   pNoCloseButton?: boolean
   pDestroyOnClose?: boolean
+  /** Mounts the popup on the body, so that it covers the whole app rather than the block it is declared in */
+  pAppendToBody?: boolean
   pTestId?: string
 }

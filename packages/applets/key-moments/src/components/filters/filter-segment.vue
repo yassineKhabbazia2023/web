@@ -3,6 +3,7 @@
     :label="label"
     :hint="hint"
     :testId="testId"
+    :isInline="isInline"
   >
     <template #default="{ labelId }">
       <PSegmentedControl
@@ -35,6 +36,8 @@ const props = defineProps<{
   hint?: string
   /** Shown but not offered: the options read, none of them is pickable */
   disabled?: boolean
+  /** Caption beside the control rather than above it */
+  isInline?: boolean
 }>()
 
 const emit = defineEmits<{

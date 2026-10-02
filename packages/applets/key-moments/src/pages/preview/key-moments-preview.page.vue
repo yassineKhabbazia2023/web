@@ -16,6 +16,12 @@
       "
     >
       <span
+        class="key-moments-preview__tag no-wrap"
+        data-testid="key-moments-preview-tag"
+      >
+        {{ t('keyMoments.preview.clientTag') }}
+      </span>
+      <span
         class="font-small"
         data-testid="key-moments-preview-caption"
       >
@@ -52,6 +58,28 @@
           testId="key-moments-preview-mode"
           @select="value => selectMode(value as PreviewMode)"
         />
+        <!-- Export only on the published side: a deck drawn from a draft would circulate as if the client had it -->
+        <PToolbox
+          v-if="mode === PreviewMode.PUBLISHED && publishedPage?.hasReport === true"
+          pTrigger="click"
+          pPlacement="bottom-end"
+          :pElements="exportItems"
+          pElementsTestId="key-moments-export-menu"
+          @p-toolbox-item-clicked="(format: ExportFormat) => publishedPage?.exportPublication(format)"
+        >
+          <PButton
+            pSize="small"
+            pType="primary"
+            :pLoading="publishedPage?.isExportingDeck === true || publishedPage?.isExportingPdf === true"
+            pTestId="key-moments-export-button"
+          >
+            {{ t('keyMoments.export.menu') }}
+            <PIcon
+              class="margin-left--1"
+              pName="chevronDown"
+            />
+          </PButton>
+        </PToolbox>
         <PButton
           pSize="small"
           pType="secondary"
@@ -85,13 +113,11 @@
       </div>
     </div>
 
-    <!-- Export only on the published side: a deck drawn from a draft would circulate as if the client had it -->
     <CustomerKeyMoments
       v-if="mode === PreviewMode.PUBLISHED"
       ref="publishedPage"
       v-model:exerciceId="exerciceId"
       :isTracked="false"
-      canExport
       :hasExerciceSelect="false"
       :hasUnitSelect="false"
       @update:exercice-id="replaceExerciceInRoute"
@@ -99,10 +125,11 @@
 
     <KeyMomentsReader
       v-else-if="mode === PreviewMode.DRAFT && draftReport !== undefined"
-      :entity="draftReport.entity"
+      :entityName="entityName"
       :caption="draftCaption"
       :screens="draftReport.screens"
-      :offers="draft?.offers ?? []"
+      :recommendations="draft?.recommendations ?? []"
+      isPreview
       :isInThousands="isInThousands"
       :hasReport="hasDraftContent"
       :hasUnitSelect="false"
@@ -132,55 +159,25 @@
       {{ t('keyMoments.preview.noDraft') }}
     </PAlert>
 
-    <PConfirmationPopup
-      v-model:pIsVisible="isPublishPopupVisible"
-      :pTitle="t('keyMoments.publish.popup.title')"
-      :pConfirmButtonContent="t('keyMoments.publish.popup.confirm')"
-      :pCancelButtonContent="t('keyMoments.publish.popup.cancel')"
-      :pConfirmButtonIsLoading="isPublishing"
-      :pWidth="popupWidth"
-      pTestId="key-moments-preview-publish-popup"
-      @on-confirm-button-click="onPublish"
-      @on-cancel-button-click="isPublishPopupVisible = false"
-    >
-      <p>{{ draft?.publishing.popupMessage }}</p>
-      <ul
-        v-if="draft !== undefined && draft.publishing.divergenceLabels.length > 0"
-        class="
-          list-style-none
-          margin-top--3
-          overflow-hidden
-        "
-        data-testid="key-moments-preview-publish-divergences"
-      >
-        <li
-          v-for="label in draft.publishing.divergenceLabels"
-          :key="label"
-          class="
-            key-moments-divergences__row
-            padding-y--2
-            padding-x--3
-            font-small
-            text-color--gray-500
-          "
-        >
-          {{ label }}
-        </li>
-      </ul>
-    </PConfirmationPopup>
+    <PublishPopup
+      v-model:isVisible="isPublishPopupVisible"
+      :message="draft?.publishing.popupMessage ?? ''"
+      :recommendationsLine="draft?.publishing.recommendationsLine"
+      :divergenceLabels="draft?.publishing.divergenceLabels ?? []"
+      :confirmLabel="draft?.publishing.confirmLabel ?? t('keyMoments.publish.popup.confirm')"
+      :isPublishing="isPublishing"
+      :width="popupWidth"
+      testIdPrefix="key-moments-preview-publish"
+      @confirm="onPublish"
+    />
 
-    <PConfirmationPopup
-      v-model:pIsVisible="isUnpublishPopupVisible"
-      :pTitle="t('keyMoments.unpublish.popup.title')"
-      :pConfirmButtonContent="t('keyMoments.unpublish.popup.confirm')"
-      :pCancelButtonContent="t('keyMoments.unpublish.popup.cancel')"
-      :pWidth="popupWidth"
-      pTestId="key-moments-unpublish-popup"
-      @on-confirm-button-click="onUnpublish"
-      @on-cancel-button-click="isUnpublishPopupVisible = false"
-    >
-      {{ unpublishPopupMessage }}
-    </PConfirmationPopup>
+    <UnpublishPopup
+      v-model:isVisible="isUnpublishPopupVisible"
+      :publication="publication"
+      :width="popupWidth"
+      testId="key-moments-unpublish-popup"
+      @confirm="onUnpublish"
+    />
   </div>
 </template>
 
@@ -192,16 +189,27 @@ import { useRoute, useRouter } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { useResponsive } from '@pulse/styleguide'
-import { PAlert, PButton, PConfirmationPopup, PDropdown } from '@pulse/styleguide/components'
+import {
+  PAlert,
+  PButton,
+  PDropdown,
+  PIcon,
+  PToolbox,
+} from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import CustomerKeyMoments from '../customer/customer-key-moments.page.vue'
 import KeyMomentsReader from '../customer/key-moments-reader.vue'
 import FilterSegment from '../../components/filters/filter-segment.vue'
+import PublishPopup from '../../components/publish-popup/publish-popup.vue'
+import UnpublishPopup from '../../components/unpublish-popup/unpublish-popup.vue'
 import { formatCalendarDay, formatInstant } from '../../utils/date.utils'
 import { usePublications } from '../key-moments/publication.composable'
 import { useComments } from '../key-moments/comments.composable'
+import { useEntityName } from '../../composables/use-entity-name.composable'
 import { useKeyMomentsDraftStore } from '../../stores/key-moments-draft.store'
 import { useKeyMomentsPreview } from './key-moments-preview.composable'
 import { PreviewMode } from './key-moments-preview.enums'
+import { ExportFormat } from '../../enums/key-moments.enums'
 import type { ReaderExerciceOption } from '../customer/key-moments-reader.types'
 import type { FilterOption } from '../../types/key-moments.types'
 
@@ -210,6 +218,7 @@ const route = useRoute()
 const router = useRouter()
 
 const { isMobile } = useResponsive()
+const { entityName } = useEntityName()
 
 const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
@@ -249,7 +258,16 @@ const publishedPage = useTemplateRef<{
   exerciceOptions: ReaderExerciceOption[]
   selectedExerciceId: number | undefined
   selectExercice: (exerciceId: number) => void
+  hasReport: boolean
+  isExportingDeck: boolean
+  isExportingPdf: boolean
+  exportPublication: (format: ExportFormat) => void
 }>('publishedPage')
+
+const exportItems = computed<PToolboxItemProps<ExportFormat>[]>(() => [
+  { pValue: t('keyMoments.export.button.pdf'), pIconName: 'filetypePdf', pActionName: ExportFormat.PDF },
+  { pValue: t('keyMoments.export.button.pptx'), pIconName: 'filetypePpt', pActionName: ExportFormat.PPTX },
+])
 
 const exerciceOptions = computed(() => publishedPage.value?.exerciceOptions ?? [])
 
@@ -283,7 +301,7 @@ const {
 } = useKeyMomentsPreview(exerciceId, publication)
 
 const hasDraftContent = computed(() => (draftReport.value?.screens.length ?? 0) > 0
-  || (draft.value?.offers.length ?? 0) > 0)
+  || (draft.value?.recommendations.length ?? 0) > 0)
 
 const modeOptions = computed<FilterOption[]>(() => [
   { value: PreviewMode.DRAFT, label: t('keyMoments.preview.mode.draft') },
@@ -318,15 +336,7 @@ const draftCaption = computed(() => {
   })]
 })
 
-const unpublishPopupMessage = computed(() => {
-  const current = publication.value
-
-  return current === undefined ? '' : t('keyMoments.unpublish.popup.message', {
-    date: formatInstant(current.publishedAt, locale.value),
-    author: current.publishedByName,
-  })
-})
-
+// The editor saved the recommendations before handing the draft over: what is published is what is stored
 async function onPublish(): Promise<void> {
   isPublishPopupVisible.value = false
 
@@ -336,13 +346,14 @@ async function onPublish(): Promise<void> {
     return
   }
 
-  if (await publish(current.publishing.context, current.publishing.snapshots)) {
+  if (await publish(current.publishing.context, current.publishing.offers)) {
     draftStore.clearDraft()
   }
 }
 
 function backToEditor(): void {
-  router.push({ name: RouteName.KEY_MOMENTS, params: { ...route.params } })
+  // The editor route only declares the entity: the exercice param of the preview must not leak into it
+  router.push({ name: RouteName.KEY_MOMENTS, params: { [RouteParam.ENTITY_ID]: route.params[RouteParam.ENTITY_ID] } })
 }
 
 async function onUnpublish(): Promise<void> {
@@ -366,6 +377,18 @@ async function onUnpublish(): Promise<void> {
 // Own stacking context below the navigation, so the banner z-index is not read against the sidebar's
 .key-moments-preview {
   z-index: 1;
+
+  // The skewed cartouche of the brand, saying whose eyes the page below is seen through
+  &__tag {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--p-white);
+    background-color: var(--p-jungle-400);
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
 
   // Read on the dark banner
   &__mode {
@@ -416,9 +439,5 @@ async function onUnpublish(): Promise<void> {
       width: 100%;
     }
   }
-}
-
-.key-moments-divergences__row:nth-child(odd) {
-  background-color: var(--p-surface-neutral-lighter);
 }
 </style>

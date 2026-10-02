@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import keyMomentsClosing from '../../__mocks__/json/key-moments.12345678900015.json'
 import keyMomentsIndicators from '../../__mocks__/json/key-moments.indicators.json'
 import keyMomentsEngagement from '../../templates/key-moments.engagement.template.json'
-import { OfferPriority } from '../../enums/key-moments.enums'
+import { RecommendationPriority, RecommendationRubric } from '../../enums/key-moments.enums'
 import { ReportManager } from '../../managers/report.manager'
 import { assembleDataset } from '../../utils/data.utils'
 import { validateTemplate } from '../../validation/key-moments.validation'
@@ -35,19 +35,21 @@ const meta: Meta<typeof KeyMomentsReader> = {
     setup() {
       const report = buildReport()
 
-      return { args: { ...args, entity: report.entity, screens: report.screens } }
+      return { args: { ...args, screens: report.screens } }
     },
     template: '<KeyMomentsReader v-bind="args" />',
   }),
   args: {
+    // The dossier's own name, which the title reads rather than the one the closing carries
+    entityName: 'Acme Corp',
     caption: ['Exercice du 1 janvier 2025 au 31 décembre 2025'],
-    offers: [{
-      offerId: 128,
-      title: 'Pack Prévoyance TNS',
-      shortDescription: 'Couverture des indépendants',
-      categoryName: 'Protection sociale',
-      comment: 'Adapté à votre passage en SASU',
-      priority: OfferPriority.PRIMARY,
+    recommendations: [{
+      rubric: RecommendationRubric.MANAGEMENT,
+      theme: 'Pilotage de l\'activité',
+      priority: RecommendationPriority.PRIMARY,
+      observations: 'Le suivi repose sur des tableurs mis à jour manuellement.',
+      recommendation: 'Mettre en place un tableau de bord mensuel.',
+      offers: [{ offerId: 128, title: 'Pack Prévoyance TNS', shortDescription: 'Couverture des indépendants', categoryName: 'Protection sociale' }],
     }],
     isInThousands: false,
     hasReport: true,

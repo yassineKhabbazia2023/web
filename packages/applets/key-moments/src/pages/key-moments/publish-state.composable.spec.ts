@@ -2,19 +2,18 @@ import { ref } from 'vue'
 import {
   CurrencyDisplay,
   DivergenceKind,
-  MeasureNature,
   PublicationState,
-  OfferPriority,
+  RecommendationPriority,
+  RecommendationRubric,
 } from '../../enums/key-moments.enums'
 import { usePublishState } from './publish-state.composable'
 import type { PublicationDetailPayload } from '../../services/key-moments.service.types'
 import type {
   ClosingSummary,
-  Comparison,
-  PublishableOffer,
   TemplateSummary,
 } from '../../types/key-moments.types'
-import type { ModificationRow, PublishStateActions } from './publish-state.types'
+import type { PublishedRecommendationPayload } from '../../types/recommendations.types'
+import type { ModificationRow } from './publish-state.types'
 
 const CATALOGUE: TemplateSummary[] = [
   { templateId: 1, id: 'engagement', version: '1.0.0', label: "Comptabilité d'engagement" },
@@ -39,19 +38,6 @@ const CLOSINGS: ClosingSummary[] = [
   },
 ]
 
-const COMPARISONS: Comparison[] = [
-  {
-    referenceKey: 'N-1',
-    current: { key: 'N', nature: MeasureNature.PERIOD, closingDate: '2025-12-31' },
-    reference: { key: 'N-1', nature: MeasureNature.PERIOD, closingDate: '2024-12-31' },
-  },
-  {
-    referenceKey: 'N-2',
-    current: { key: 'N', nature: MeasureNature.PERIOD, closingDate: '2025-12-31' },
-    reference: { key: 'N-2', nature: MeasureNature.PERIOD, closingDate: '2023-12-31' },
-  },
-]
-
 /**
  * What the client reads: the very reading the sources below describe, so that a
  * test only has to move the one thing it is about.
@@ -72,20 +58,20 @@ const PUBLISHED: PublicationDetailPayload = {
   comments: [{
     slotId: 'slot-1',
     text: 'the retained reading',
-    sourceContributorId: 'someone',
-    sourceContributorName: 'Someone',
-    sourceClosingVersion: null,
   }],
   hiddenWidgetIds: [],
-  offers: [{
-    offerId: 128,
-    title: 'Pack Prévoyance TNS',
-    comment: 'the published note',
-    benefitsComment: 'the published benefits',
-    priority: OfferPriority.PRIMARY,
-    isPriorityVisible: true,
-    isHidden: false,
+  recommendations: [{
+    rubric: RecommendationRubric.MANAGEMENT,
+    theme: 'Trésorerie',
+    priority: RecommendationPriority.PRIMARY,
+    recommendation: 'the published recommendation',
+    offers: [{ offerId: 128, title: 'Pack Prévoyance TNS' }],
   }],
+}
+
+/** The current projection, equal to what is published unless a test moves it. */
+function publishedRecommendations(): PublishedRecommendationPayload[] {
+  return structuredClone(PUBLISHED.recommendations)
 }
 
 /** The texts the client would read, as the microservice marks them: unchanged. */
@@ -97,7 +83,6 @@ function setup(overrides: {
   hasPublication?: boolean
   closingCatalogue?: ClosingSummary[]
   templateCatalogue?: TemplateSummary[]
-  comparisons?: Comparison[]
   selectedClosingId?: number
   selectedTemplateId?: number
   selectedReferenceKey?: string
@@ -106,8 +91,13 @@ function setup(overrides: {
   hasReport?: boolean
   hiddenWidgetIds?: string[]
   comments?: Record<string, string>
-  publishableSelection?: PublishableOffer[]
+  publishableRecommendations?: PublishedRecommendationPayload[]
   unresolvedOfferIds?: number[]
+  recommendationWithoutThemeCount?: number
+  areRecommendationThemesUnreadable?: boolean
+  hasRecommendationsSection?: boolean
+  hasRecommendationsCategory?: boolean
+  visibleRecommendationCount?: number
 } = {}) {
   // `in` rather than `??` for everything a test may deliberately blank out: an
   // absent closing and an absent comparison are two of the cases under test.
@@ -120,7 +110,6 @@ function setup(overrides: {
   const sources = {
     templateCatalogue: ref(overrides.templateCatalogue ?? CATALOGUE),
     closingCatalogue: ref(overrides.closingCatalogue ?? CLOSINGS),
-    comparisons: ref(overrides.comparisons ?? COMPARISONS),
     screens: ref([]),
     hiddenWidgetIds: ref(overrides.hiddenWidgetIds ?? []),
     selectedTemplateId: ref(overrides.selectedTemplateId ?? 1),
@@ -130,37 +119,24 @@ function setup(overrides: {
     isInThousands: ref(overrides.isInThousands ?? false),
     hasReport: ref(overrides.hasReport ?? true),
     unresolvedOfferIds: ref(overrides.unresolvedOfferIds ?? []),
+    recommendationWithoutThemeCount: ref(overrides.recommendationWithoutThemeCount ?? 0),
+    areRecommendationThemesUnreadable: ref(overrides.areRecommendationThemesUnreadable ?? false),
     publicationDetail: ref(detail),
     publicationOf: vi.fn(() => (overrides.hasPublication === false
       ? undefined
       : overrides.publication ?? PUBLISHED)),
     buildPublishedComments: vi.fn(() => overrides.comments ?? PUBLISHED_COMMENTS),
     formatInstant: vi.fn((date: string) => `day:${date}`),
-    publishableSelection: ref(overrides.publishableSelection ?? (PUBLISHED.offers ?? []).map(
-      ({ offerId, comment, benefitsComment, priority, isPriorityVisible }) => ({
-        offerId,
-        comment,
-        benefitsComment,
-        priority,
-        isPriorityVisible,
-      }),
-    )),
+    publishableRecommendations: ref(overrides.publishableRecommendations ?? publishedRecommendations()),
+    hasRecommendationsSection: ref(overrides.hasRecommendationsSection ?? true),
+    hasRecommendationsCategory: ref(overrides.hasRecommendationsCategory ?? true),
+    visibleRecommendationCount: ref(overrides.visibleRecommendationCount ?? 1),
   }
 
-  const actions: PublishStateActions = {
-    selectClosing: vi.fn(),
-    selectTemplate: vi.fn(),
-    selectComparison: vi.fn(),
-    toggleThousands: vi.fn(),
-    writeHiddenWidgets: vi.fn(),
-    restorePublishedArbitration: vi.fn(),
-    restoreOffers: vi.fn(),
-  }
-
-  return { ...usePublishState(sources, actions), sources, actions }
+  return { ...usePublishState(sources), sources }
 }
 
-/** The one modification a test moved, which every revert case reads back. */
+/** The one modification a test moved. */
 function only(modifications: ModificationRow[]): ModificationRow {
   expect(modifications).toHaveLength(1)
 
@@ -200,7 +176,7 @@ describe('usePublishState', () => {
 
   /** A first exercice compares against nothing, and is published all the same. */
   it('should publish a closing that offers no comparison', () => {
-    const { publishContext } = setup({ selectedReferenceKey: undefined, comparisons: [] })
+    const { publishContext } = setup({ selectedReferenceKey: undefined })
 
     expect(publishContext.value?.preferenceComparisonExercice).toBeUndefined()
   })
@@ -269,57 +245,14 @@ describe('usePublishState', () => {
   })
 
   describe('the rows the panel displays', () => {
-    it('should word a row by its kind and carry its hint', () => {
+    it('should word a row by its kind', () => {
       const { modifications } = setup({ comments: { 'slot-1': 'reworded' } })
       const row = only(modifications.value)
 
       expect(row.kind).toBe(DivergenceKind.COMMENTS)
       expect(row.label).toBe('keyMoments.publish.divergence.comments')
-      expect(row.hint).toBe('keyMoments.publish.revert.commentsHint')
-      expect(row.isRevertible).toBe(true)
     })
 
-    it('should leave a row without a hint when there is nothing to say', () => {
-      const { modifications } = setup({ isInThousands: true })
-      const row = only(modifications.value)
-
-      expect(row.kind).toBe(DivergenceKind.CURRENCY)
-      expect(row.hint).toBeUndefined()
-    })
-
-    /** A closing re-imported over cannot be brought back. */
-    it('should state a modification whose subject is gone as unavailable', () => {
-      const { modifications } = setup({
-        selectedClosingId: 89,
-        closingCatalogue: [CLOSINGS[1]!],
-      })
-      const row = only(modifications.value)
-
-      expect(row.isRevertible).toBe(false)
-      expect(row.hint).toBe('keyMoments.publish.revert.unavailableHint')
-    })
-
-    it('should state a template retired from the catalogue as unavailable', () => {
-      const { modifications } = setup({
-        selectedTemplateId: 2,
-        templateCatalogue: [CATALOGUE[1]!],
-      })
-      const row = only(modifications.value)
-
-      expect(row.kind).toBe(DivergenceKind.TEMPLATE)
-      expect(row.isRevertible).toBe(false)
-    })
-
-    it('should state a comparison the closing no longer offers as unavailable', () => {
-      const { modifications } = setup({
-        selectedReferenceKey: 'N-2',
-        comparisons: [COMPARISONS[1]!],
-      })
-      const row = only(modifications.value)
-
-      expect(row.kind).toBe(DivergenceKind.COMPARISON)
-      expect(row.isRevertible).toBe(false)
-    })
 
     /** A diff names a closing the way the selector the reader picked it from does. */
     it('should name a closing through the wording of the page', () => {
@@ -334,62 +267,57 @@ describe('usePublishState', () => {
 
   describe('the recommendations', () => {
 
-    it('should say nothing when the selection matches what is published', () => {
+    it('should say nothing when the projection matches what is published', () => {
       const { modifications } = setup({})
 
-      expect(modifications.value.map(row => row.kind)).not.toContain(DivergenceKind.OFFERS)
+      expect(modifications.value.map(row => row.kind)).not.toContain(DivergenceKind.RECOMMENDATIONS)
     })
 
-    it('should name a reworded note as a modification the firm may take back', () => {
-      const { modifications } = setup({
-        publishableSelection: [{
-          offerId: 128,
-          comment: 'reworded',
-          benefitsComment: 'the published benefits',
-          priority: OfferPriority.PRIMARY,
-          isPriorityVisible: true,
-        }],
-      })
+    it('should name a reworded recommendation as a modification', () => {
+      const [published] = publishedRecommendations()
+      const { modifications } = setup({ publishableRecommendations: [{ ...published, recommendation: 'reworded' }] })
 
       const row = only(modifications.value)
 
-      expect(row.kind).toBe(DivergenceKind.OFFERS)
-      expect(row.isRevertible).toBe(true)
+      expect(row.kind).toBe(DivergenceKind.RECOMMENDATIONS)
     })
 
-    it('should name a reworded benefits note as a modification too', () => {
+    it('should compare a publication older than the recommendations as having none', () => {
       const { modifications } = setup({
-        publishableSelection: [{
-          offerId: 128,
-          comment: 'the published note',
-          benefitsComment: 'reworded benefits',
-          priority: OfferPriority.PRIMARY,
-          isPriorityVisible: true,
-        }],
-      })
-
-      expect(only(modifications.value).kind).toBe(DivergenceKind.OFFERS)
-    })
-
-    /**
-     * The whole point of comparing projections: a hidden offer leaves the
-     * publishable selection, so hiding one is a modification rather than a
-     * silence.
-     */
-    it('should name hiding one, since it leaves the publishable selection', () => {
-      const { modifications } = setup({ publishableSelection: [] })
-
-      expect(only(modifications.value).kind).toBe(DivergenceKind.OFFERS)
-    })
-
-    /** A publication frozen before the field existed says nothing about them. */
-    it('should say nothing about recommendations the publication never froze', () => {
-      const { modifications } = setup({
-        publicationDetail: { ...PUBLISHED, offers: undefined },
-        publishableSelection: [],
+        publicationDetail: { ...PUBLISHED, recommendations: null } as unknown as PublicationDetailPayload,
+        publishableRecommendations: [],
       })
 
       expect(modifications.value).toEqual([])
+    })
+
+    /** Hiding one leaves the projection, so it is a modification rather than a silence. */
+    it('should name hiding the last visible one', () => {
+      const { modifications } = setup({ publishableRecommendations: [] })
+
+      expect(only(modifications.value).kind).toBe(DivergenceKind.RECOMMENDATIONS)
+    })
+  })
+
+  describe('the recommendations line of the publish popup', () => {
+    it('should say that no category was chosen', () => {
+      const { publishPopupRecommendationsLine, publishPopupConfirmLabel } = setup({ hasRecommendationsCategory: false })
+
+      expect(publishPopupRecommendationsLine.value).toBe('keyMoments.publish.popup.noCategory')
+      expect(publishPopupConfirmLabel.value).toBe('keyMoments.publish.popup.confirm')
+    })
+
+    it('should count what will be published', () => {
+      const { publishPopupRecommendationsLine } = setup({ visibleRecommendationCount: 3 })
+
+      expect(publishPopupRecommendationsLine.value).toBe('keyMoments.publish.popup.recommendations')
+    })
+
+    it('should warn and ask to confirm when nothing is visible', () => {
+      const { publishPopupRecommendationsLine, publishPopupConfirmLabel } = setup({ visibleRecommendationCount: 0 })
+
+      expect(publishPopupRecommendationsLine.value).toBe('keyMoments.publish.popup.noRecommendation')
+      expect(publishPopupConfirmLabel.value).toBe('keyMoments.publish.popup.confirmWithoutRecommendation')
     })
   })
 
@@ -472,6 +400,44 @@ describe('usePublishState', () => {
       expect(publishBlockedReason.value).toBe('keyMoments.publish.state.unresolvedOffers')
     })
 
+    /**
+     * Without the themes the projection is empty while the saved list is not:
+     * the preview and the diff would show none of what would be published.
+     */
+    it('should refuse to publish while the themes are unreadable, and announce no phantom modification', () => {
+      const { isPublishDisabled, publishBlockedReason, modifications } = setup({
+        areRecommendationThemesUnreadable: true,
+        publishableRecommendations: [],
+        recommendationWithoutThemeCount: 2,
+      })
+
+      expect(isPublishDisabled.value).toBe(true)
+      expect(publishBlockedReason.value).toBe('keyMoments.publish.state.themesUnreadable')
+      expect(modifications.value).toEqual([])
+    })
+
+    it('should refuse to publish a recommendation without a theme, and say why first', () => {
+      const { isPublishDisabled, publishBlockedReason } = setup({
+        isInThousands: true,
+        unresolvedOfferIds: [128],
+        recommendationWithoutThemeCount: 2,
+      })
+
+      expect(isPublishDisabled.value).toBe(true)
+      expect(publishBlockedReason.value).toBe('keyMoments.publish.state.recommendationsWithoutTheme')
+    })
+
+    it('should refuse to publish without access to the offers, and say why first', () => {
+      const { isPublishDisabled, publishBlockedReason } = setup({
+        isInThousands: true,
+        hasRecommendationsSection: false,
+        recommendationWithoutThemeCount: 2,
+      })
+
+      expect(isPublishDisabled.value).toBe(true)
+      expect(publishBlockedReason.value).toBe('keyMoments.publish.state.offersAccessRequired')
+    })
+
     it('should have no reason to give while nothing blocks', () => {
       const { publishBlockedReason } = setup()
 
@@ -498,152 +464,6 @@ describe('usePublishState', () => {
       const { publishButtonLabel } = setup(overrides)
 
       expect(publishButtonLabel.value).toBe(label)
-    })
-  })
-
-  describe('taking a modification back', () => {
-    it('should reopen the published closing, keeping the comparison in use', async () => {
-      const { modifications, revertDivergence, actions } = setup({ selectedClosingId: 89 })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.selectClosing).toHaveBeenCalledExactlyOnceWith(90, 'N-1')
-    })
-
-    it('should reapply the published template', async () => {
-      const { modifications, revertDivergence, actions } = setup({
-        selectedTemplateId: 2,
-      })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.selectTemplate).toHaveBeenCalledExactlyOnceWith(1)
-    })
-
-    it('should reapply the published comparison', async () => {
-      const { modifications, revertDivergence, actions } = setup({ selectedReferenceKey: 'N-2' })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.selectComparison).toHaveBeenCalledExactlyOnceWith('N-1')
-    })
-
-    it('should reapply the published unit', async () => {
-      const { modifications, revertDivergence, actions } = setup({ isInThousands: true })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.toggleThousands).toHaveBeenCalledExactlyOnceWith(false)
-    })
-
-    it('should restore the published arbitration of the texts', async () => {
-      const { modifications, revertDivergence, actions } = setup({
-        comments: { 'slot-1': 'reworded' },
-      })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.restorePublishedArbitration).toHaveBeenCalledOnce()
-    })
-
-    /** Written as a copy: the published list is read again after the write. */
-    it('should write back the published sub-sections without sharing the list', async () => {
-      const published = { ...PUBLISHED, hiddenWidgetIds: ['widget-1'] }
-      const { modifications, revertDivergence, actions } = setup({ publicationDetail: published })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.writeHiddenWidgets).toHaveBeenCalledExactlyOnceWith(['widget-1'])
-      expect(vi.mocked(actions.writeHiddenWidgets).mock.calls[0]![0])
-        .not.toBe(published.hiddenWidgetIds)
-    })
-
-    /**
-     * Restored from the detail rather than from the comparable state: the diff
-     * only ever carried the decisions, where putting the recommendations back
-     * has to put their snapshot back with them.
-     */
-    it('should write back the frozen recommendations whole, snapshot included', async () => {
-      const { modifications, revertDivergence, actions } = setup({
-        publishableSelection: [{ offerId: 128, comment: 'reworded', isPriorityVisible: false }],
-      })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.restoreOffers).toHaveBeenCalledExactlyOnceWith([{
-        offerId: 128,
-        title: 'Pack Prévoyance TNS',
-        comment: 'the published note',
-        benefitsComment: 'the published benefits',
-        priority: OfferPriority.PRIMARY,
-        isPriorityVisible: true,
-        isHidden: false,
-      }])
-    })
-
-    it('should not hand the published recommendations over as a shared list', async () => {
-      const { modifications, revertDivergence, actions } = setup({
-        publishableSelection: [],
-      })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(vi.mocked(actions.restoreOffers).mock.calls[0]![0]).not.toBe(PUBLISHED.offers)
-    })
-
-    it('should do nothing when what is published could not be read', async () => {
-      const { revertDivergence, actions } = setup({ publicationDetail: undefined })
-
-      await revertDivergence({
-        kind: DivergenceKind.CURRENCY,
-        family: 'modification',
-      } as ModificationRow)
-
-      expect(actions.toggleThousands).not.toHaveBeenCalled()
-    })
-
-    it('should do nothing for a template that left the catalogue', async () => {
-      const { modifications, revertDivergence, actions } = setup({
-        selectedTemplateId: 2,
-        templateCatalogue: [CATALOGUE[1]!],
-      })
-
-      await revertDivergence(only(modifications.value))
-
-      expect(actions.selectTemplate).not.toHaveBeenCalled()
-    })
-
-    /** The row being undone greys its own button alone, and only while it runs. */
-    it('should hold the row being reverted until the gesture ends', async () => {
-      const { modifications, revertDivergence, revertingKind, actions } = setup({
-        comments: { 'slot-1': 'reworded' },
-      })
-
-      let release = () => {}
-      vi.mocked(actions.restorePublishedArbitration)
-        .mockImplementation(() => new Promise((resolve) => {
-          release = resolve
-        }))
-
-      const pending = revertDivergence(only(modifications.value))
-
-      expect(revertingKind.value).toBe(DivergenceKind.COMMENTS)
-
-      release()
-      await pending
-
-      expect(revertingKind.value).toBeUndefined()
-    })
-
-    it('should release the row even when the gesture fails', async () => {
-      const { modifications, revertDivergence, revertingKind, actions } = setup({
-        selectedClosingId: 89,
-      })
-      vi.mocked(actions.selectClosing).mockRejectedValue(new Error('boom'))
-
-      await expect(revertDivergence(only(modifications.value))).rejects.toThrow('boom')
-
-      expect(revertingKind.value).toBeUndefined()
     })
   })
 })

@@ -232,20 +232,18 @@ export const LAYOUT_SETTLE_DELAY = CHART_RESIZE_DELAY + 150
 /* ------------------------------------------------------------------ *
  * Recommendations — the blocks closing the deck. Written as text like
  * everything that is not a drawing, so they are laid out rather than
- * captured.
+ * captured. One rubric per slide, its recommendations stacked.
  * ------------------------------------------------------------------ */
 
-/** Two columns, two rows. Beyond that a note stops being readable across a room. */
-export const OFFERS_PER_SLIDE = 4
-export const OFFER_COLUMNS = 2
+/** Beyond two, a recommendation with its three texts stops being readable across a room. */
+export const RECOMMENDATIONS_PER_SLIDE = 2
 
-export const OFFER_CATEGORY_FONT_SIZE = 8
-export const OFFER_CATEGORY_HEIGHT = 0.2
-export const OFFER_TITLE_FONT_SIZE = 12
-export const OFFER_TITLE_HEIGHT = 0.3
-export const OFFER_PRIORITY_FONT_SIZE = 9
-export const OFFER_PRIORITY_HEIGHT = 0.24
-export const OFFER_COMMENT_FONT_SIZE = 10
-/** Heading written over each note of an offer, when the firm wrote one */
-export const OFFER_COMMENT_LABEL_FONT_SIZE = 8
-export const OFFER_COMMENT_LABEL_HEIGHT = 0.2
+export const RUBRIC_TITLE_FONT_SIZE = 13
+export const RUBRIC_TITLE_HEIGHT = 0.32
+export const RECOMMENDATION_THEME_FONT_SIZE = 11
+export const RECOMMENDATION_THEME_HEIGHT = 0.28
+export const RECOMMENDATION_LABEL_FONT_SIZE = 7.5
+export const RECOMMENDATION_LABEL_HEIGHT = 0.18
+export const RECOMMENDATION_TEXT_FONT_SIZE = 9
+export const RECOMMENDATION_OFFERS_FONT_SIZE = 8.5
+export const RECOMMENDATION_OFFERS_HEIGHT = 0.22

@@ -4,6 +4,8 @@ export interface IndicatorRequest {
   code: string
   label: string
   shortLabel?: string
+  /** Null clears the definition, whatever the update route merges or replaces */
+  description: string | null
   kind: ValueKind
   sign: IndicatorSign
 }

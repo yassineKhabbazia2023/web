@@ -1,6 +1,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { displayNotification } from '@pulse/styleguide'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import { DEFAULT_TEMPLATE_CODE } from '../../const/key-moments.consts'
@@ -8,14 +9,15 @@ import { checkTemplateAgainstData } from '../../utils/data.utils'
 import { latestTemplateOf, resolveTemplateModels } from '../../utils/template.utils'
 import {
   formatCalendarMonthYear,
-  formatCalendarYear,
   formatInstant,
 } from '../../utils/date.utils'
 import { buildExerciceOptions } from '../../utils/format.utils'
-import { readApiError, readApiErrorDetail } from '../../utils/api-error.utils'
+import { apiErrorKey } from '../../utils/api-error.utils'
+import { useEntityName } from '../../composables/use-entity-name.composable'
 import { ReportManager } from '../../managers/report.manager'
 import { KeyMomentsService } from '../../services/key-moments.service'
 import { CurrencyDisplay, RejectionCode } from '../../enums/key-moments.enums'
+import type { ExerciceRecommendationsPayload } from '../../services/recommendations.service.types'
 import type {
   Closing,
   ClosingSummary,
@@ -34,6 +36,22 @@ import type {
   WidgetHidden,
 } from '../../types/key-moments.types'
 
+/**
+ * Reads two company names as a reader would: the same name written in another
+ * case, with or without its accents, or with doubled spaces, is the same name.
+ */
+function isSameCompanyName(left: string, right: string): boolean {
+  const normalize = (name: string) => name
+    // Decomposed first, so that an accented letter becomes its letter plus a mark to drop
+    .normalize('NFD')
+    .replaceAll(/\p{M}/gu, '')
+    .trim()
+    .replaceAll(/\s+/g, ' ')
+    .toLocaleUpperCase()
+
+  return normalize(left) === normalize(right)
+}
+
 /** `ambiguous-siret` is deliberately absent: this route already settles the account, so no import can trigger it. */
 const IMPORT_REJECTION_KEYS: Record<string, string> = {
   [RejectionCode.ACCOUNT_MISMATCH]: 'keyMoments.import.rejection.accountMismatch',
@@ -51,6 +69,7 @@ export function useKeyMoments(
   readPublishedPreferences?: (exerciceId: number) => Promise<PublishedPreferences | undefined>,
 ) {
   const { t } = useI18n()
+  const { entityName } = useEntityName()
 
   const accountId = entityId
 
@@ -75,6 +94,22 @@ export function useKeyMoments(
   const closingCatalogue = ref<ClosingSummary[]>([])
   const selectedClosingId = ref<number>()
 
+  /**
+   * The name the imported closing carries, when it is not the dossier's own.
+   * Reported and nothing more: a divergence is repaired where the file is
+   * produced, never patched here.
+   */
+  const mismatchedClosingName = computed(() => {
+    const closingName = entity.value?.name
+    const dossierName = entityName.value
+
+    if (isNotNullNorEmpty(closingName) === false || dossierName === undefined) {
+      return undefined
+    }
+
+    return isSameCompanyName(closingName, dossierName) ? undefined : closingName
+  })
+
   /** Distinct from an error: a dossier with no imported closing is a normal state. */
   const hasNoClosing = ref(false)
 
@@ -97,6 +132,8 @@ export function useKeyMoments(
    * never undoes the decision.
    */
   const hiddenWidgetIds = ref<string[]>([])
+  /** What the draft carries of the recommendations; undefined until an exercice is read, or when its draft could not be */
+  const draftRecommendations = ref<ExerciceRecommendationsPayload>()
 
   const isDraftUnreadable = ref(false)
 
@@ -272,11 +309,6 @@ export function useKeyMoments(
     })
   }
 
-  /** Writes the list as given — what undoing a modification puts back. */
-  async function writeHiddenWidgets(widgetIds: string[]) {
-    await composeHiddenWidgets(() => widgetIds)
-  }
-
   async function toggleWidgetVisibility(widgetId: string) {
     await composeHiddenWidgets(current => (current.includes(widgetId)
       ? current.filter(candidate => candidate !== widgetId)
@@ -296,8 +328,8 @@ export function useKeyMoments(
         preferenceCurrencyDisplay: null,
       },
       hiddenWidgetIds: [],
-      offers: [],
       closings: [],
+      recommendations: { recommendations: [] },
     }
 
     if (accountId === null) {
@@ -459,8 +491,12 @@ export function useKeyMoments(
     }
   }
 
-  /** An exercice with no closing yet is a normal pre-import state, not a failure. */
-  async function openExercice(exerciceId: number) {
+  /**
+   * Opens on the closing asked for while the exercice still carries it, else
+   * on its last import. An exercice with no closing yet is a normal pre-import
+   * state, not a failure.
+   */
+  async function openExercice(exerciceId: number, closingId?: number) {
     if (accountId === null) {
       return
     }
@@ -476,10 +512,16 @@ export function useKeyMoments(
     // Set before the template is applied, which writes it onto the document
     hiddenWidgetIds.value = draft.hiddenWidgetIds
     closingCatalogue.value = draft.closings
+    // Handed over as it was read: an unreadable draft hands nothing, so nothing is ever written over it
+    // An exercice the recommendations never reached has none, rather than nothing readable
+    draftRecommendations.value = isDraftUnreadable.value ? undefined : draft.recommendations ?? { recommendations: [] }
 
     const [lastImport] = closingCatalogue.value
+    const opened = closingCatalogue.value
+      .find(summary => summary.closingId === closingId)
+      ?? lastImport
 
-    if (lastImport === undefined) {
+    if (opened === undefined) {
       hasNoClosing.value = true
       resetReport()
 
@@ -487,15 +529,15 @@ export function useKeyMoments(
     }
 
     hasNoClosing.value = false
-    await openClosing(lastImport.closingId)
+    await openClosing(opened.closingId)
   }
 
-  async function selectExercice(exerciceId: number) {
+  async function selectExercice(exerciceId: number, closingId?: number) {
     isLoading.value = true
     hasError.value = false
 
     try {
-      await openExercice(exerciceId)
+      await openExercice(exerciceId, closingId)
     } catch (error) {
       hasError.value = true
       logger.error('[KeyMoments] unable to load the exercice', error)
@@ -504,18 +546,9 @@ export function useKeyMoments(
     }
   }
 
-  /**
-   * `keptReferenceKey` seeds the comparison the closing opens on, for callers
-   * that must not let it move on its own (e.g. undoing a closing change without
-   * also carrying the comparison along).
-   */
-  async function selectClosing(closingId: number, keptReferenceKey?: string) {
+  async function selectClosing(closingId: number) {
     isLoading.value = true
     hasError.value = false
-
-    if (keptReferenceKey !== undefined) {
-      preferredReferenceKey.value = keptReferenceKey
-    }
 
     try {
       await openClosing(closingId)
@@ -578,14 +611,7 @@ export function useKeyMoments(
     } catch (error) {
       logger.error('[KeyMoments] unable to import the closing', error)
 
-      const rejectionKey = IMPORT_REJECTION_KEYS[readApiError(error)?.code ?? '']
-
-      displayNotification(
-        'error',
-        rejectionKey === undefined
-          ? readApiErrorDetail(error) ?? t('keyMoments.import.error')
-          : t(rejectionKey),
-      )
+      displayNotification('error', t(apiErrorKey(error, 'keyMoments.import.error', IMPORT_REJECTION_KEYS)))
 
       return undefined
     }
@@ -644,13 +670,6 @@ export function useKeyMoments(
     () => buildExerciceOptions(exerciceCatalogue.value, t, locale.value),
   )
 
-  const selectedExerciceYear = computed(() => {
-    const summary = exerciceCatalogue.value
-      .find(candidate => candidate.exerciceId === selectedExerciceId.value)
-
-    return summary === undefined ? '' : formatCalendarYear(summary.exerciceEndDate, locale.value)
-  })
-
   /** Re-importing adds a version rather than replacing one. */
   const closingOptions = computed(() => closingCatalogue.value.map(summary => ({
     pValue: summary.closingId,
@@ -680,6 +699,8 @@ export function useKeyMoments(
     hasError,
     hasNoClosing,
     entity,
+    entityName,
+    mismatchedClosingName,
     screens,
     template,
     templateCatalogue,
@@ -696,15 +717,15 @@ export function useKeyMoments(
     templateModelOptions,
     selectedModelCode,
     exerciceOptions,
-    selectedExerciceYear,
     closingOptions,
     comparisonOptions,
     reportRevision,
     hiddenWidgetIds,
+    draftRecommendations,
+    isDraftUnreadable,
     snapshotSources,
     toggleThousands,
     toggleWidgetVisibility,
-    writeHiddenWidgets,
     selectComparison,
     selectTemplate,
     selectModel,

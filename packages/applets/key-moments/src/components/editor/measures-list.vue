@@ -48,7 +48,7 @@
       >
         <span class="key-moments-editor-list__cell key-moments-editor-list__cell--handle">
           <span class="key-moments-editor-handle">
-            <PIcon pName="arrowDownUp" />
+            <PIcon pName="gripVertical" />
           </span>
         </span>
 

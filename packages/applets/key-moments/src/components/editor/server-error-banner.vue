@@ -7,18 +7,17 @@
       {{ title }}
     </p>
 
+    <!-- The places the refusal points at, never its wording: that one is technical English -->
     <ul
-      v-if="error.entries.length > 0"
+      v-if="pointers.length > 0"
       class="margin-top--2"
     >
       <li
-        v-for="(entry, index) in error.entries"
-        :key="`${entry.pointer ?? ''}-${index}`"
+        v-for="pointer in pointers"
+        :key="pointer"
+        class="font-semibold"
       >
-        <span
-          v-if="entry.pointer !== undefined && entry.pointer !== ''"
-          class="font-semibold"
-        >{{ entry.pointer }} — </span>{{ entry.detail }}
+        {{ pointer }}
       </li>
     </ul>
 
@@ -42,6 +41,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { PAlert, PButton } from '@pulse/styleguide/components'
 import type { ApiError } from '../../utils/api-error.utils'
 
@@ -58,10 +58,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-/**
- * Worded on the code the microservice names its own refusals by, and on its own
- * title for everything it has no code for.
- */
+/** Worded on the code the microservice names its own refusals by, and on the page's own wording for the rest. */
 const title = computed(() => {
   if (props.isVersionLocked) {
     return t('keyMoments.settings.editor.refusals.locked')
@@ -75,6 +72,10 @@ const title = computed(() => {
     return t('keyMoments.settings.editor.refusals.unknownCitations')
   }
 
-  return props.error.detail ?? props.error.title ?? t('keyMoments.settings.editor.saveError')
+  return t('keyMoments.settings.editor.saveError')
 })
+
+const pointers = computed(() => [...new Set(props.error.entries
+  .map(entry => entry.pointer)
+  .filter((pointer): pointer is string => isNotNullNorEmpty(pointer)))])
 </script>

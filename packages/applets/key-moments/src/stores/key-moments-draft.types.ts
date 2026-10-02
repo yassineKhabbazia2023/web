@@ -1,7 +1,7 @@
 import type { PublicationState } from '../enums/key-moments.enums'
-import type { CustomerOfferPayload } from '../services/customer-key-moments.service.types'
 import type { PublishedOfferPayload } from '../services/offers.service.types'
 import type { Dataset, PublishContext, Template } from '../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 
 /**
  * What publishing the draft takes, and how the editor words it — carried along
@@ -10,13 +10,17 @@ import type { Dataset, PublishContext, Template } from '../types/key-moments.typ
  */
 export interface KeyMomentsDraftPublishing {
   context: PublishContext
-  /** The recommendations as the microservice is handed them, wording included */
-  snapshots: PublishedOfferPayload[]
+  /** The offers the publication is handed, each one cited by a visible recommendation, worded from the catalogue */
+  offers: PublishedOfferPayload[]
   buttonLabel: string
   popupMessage: string
+  /** What the popup says of the recommendations */
+  recommendationsLine: string
+  /** The confirm button, which warns when nothing is visible */
+  confirmLabel: string
   /** What publishing would change, worded, as the popup states it */
   divergenceLabels: string[]
-  /** Nothing to publish, or a recommendation the catalogue no longer describes */
+  /** Nothing to publish, a visible recommendation without a theme, or an offer the catalogue no longer describes */
   isDisabled: boolean
 }
 
@@ -35,9 +39,9 @@ export interface KeyMomentsDraft {
   /** The applied template, the decisions of the firm written onto it */
   template: Template
   referenceKey: string | undefined
+  /** What publishing would freeze of the recommendations, as the client would be served them */
+  recommendations: PublishedRecommendationPayload[]
   isInThousands: boolean
-  /** The recommendations the client would be served, already projected */
-  offers: CustomerOfferPayload[]
   /** What the exercice is to the client at the moment the draft was taken */
   publicationState: PublicationState
   publishing: KeyMomentsDraftPublishing

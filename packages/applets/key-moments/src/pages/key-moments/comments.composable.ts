@@ -6,7 +6,7 @@ import { displayNotification } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
 import { getFullName } from '@pulse/common/utils'
 import { KeyMomentsService } from '../../services/key-moments.service'
-import { readApiError } from '../../utils/api-error.utils'
+import { apiErrorKey } from '../../utils/api-error.utils'
 import { RejectionCode } from '../../enums/key-moments.enums'
 import type { usePublications } from './publication.composable'
 import type { CommentVariantPayload } from '../../services/key-moments.service.types'
@@ -393,63 +393,14 @@ export function useComments(
       return true
     } catch (error) {
       logger.error('[KeyMoments] unable to publish the key moment', error)
-      displayNotification(
-        'error',
-        readApiError(error)?.code === RejectionCode.MISSING_OFFER_DESCRIPTION
-          ? t('keyMoments.publish.missingOffersError')
-          : t('keyMoments.publish.error'),
-      )
+      displayNotification('error', t(apiErrorKey(error, 'keyMoments.publish.error', {
+        [RejectionCode.MISSING_OFFER_DESCRIPTION]: 'keyMoments.publish.missingOffersError',
+      })))
 
       return false
     } finally {
       isPublishing.value = false
     }
-  }
-
-  /**
-   * Only which reading is retained moves — texts are never rewritten, and a
-   * slot the publication says nothing about keeps its current arbitration (no
-   * un-retaining). Writes run via `allSettled` so one rejection doesn't stop
-   * the rest, and the state is re-read once after every write has settled.
-   */
-  async function restorePublishedArbitration(): Promise<void> {
-    const exerciceId = loadedExerciceId.value
-    const detail = publications.publicationDetail.value
-
-    if (accountId === null || exerciceId === undefined || detail === undefined) {
-      return
-    }
-
-    const outcomes = await Promise.allSettled([
-      ...detail.comments.map(comment => KeyMomentsService.retainComment(
-        accountId,
-        exerciceId,
-        comment.slotId,
-        {
-          sourceContributorId: comment.sourceContributorId,
-          sourceClosingVersion: comment.sourceClosingVersion,
-        },
-      )),
-      ...(detail.discardedSlotIds ?? []).map(slotId => KeyMomentsService.retainComment(
-        accountId,
-        exerciceId,
-        slotId,
-        {
-          sourceContributorId: null,
-          sourceClosingVersion: null,
-          retainNone: true,
-        },
-      )),
-    ])
-
-    const refused = outcomes.filter(outcome => outcome.status === 'rejected')
-
-    if (refused.length > 0) {
-      logger.error('[KeyMoments] some retained readings could not be brought back', refused)
-      displayNotification('error', t('keyMoments.comment.retainError'))
-    }
-
-    await readVariants()
   }
 
   return {
@@ -463,7 +414,6 @@ export function useComments(
     retainedKeyOf,
     buildCommentBoards,
     buildPublishedComments,
-    restorePublishedArbitration,
     publish,
   }
 }

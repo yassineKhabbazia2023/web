@@ -18,9 +18,11 @@ const REPORT: Report = {
 
 const PUBLISHING: KeyMomentsDraftPublishing = {
   context: {} as KeyMomentsDraftPublishing['context'],
-  snapshots: [],
+  offers: [],
   buttonLabel: 'Publier',
   popupMessage: '',
+  recommendationsLine: '',
+  confirmLabel: 'Publier',
   divergenceLabels: [],
   isDisabled: false,
 }
@@ -34,8 +36,8 @@ function draftOf(overrides: Partial<KeyMomentsDraft> = {}): KeyMomentsDraft {
     dataset: {} as KeyMomentsDraft['dataset'],
     template: {} as KeyMomentsDraft['template'],
     referenceKey: 'N-1',
+    recommendations: [],
     isInThousands: true,
-    offers: [],
     publicationState: PublicationState.MODIFIED,
     publishing: PUBLISHING,
     ...overrides,

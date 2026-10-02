@@ -58,7 +58,8 @@ $enter-stagger: 45ms;
   --key-moments-emphasis-surface: #F2F3FB;
   --key-moments-stripe-surface: #FAFAFE;
   --key-moments-shadow: 0 1px 2px rgba(var(--p-black-rock-900-rgb), 0.05), 0 10px 30px rgba(var(--p-black-rock-900-rgb), 0.07);
-  --key-moments-shadow-hover: 0 2px 4px rgba(var(--p-black-rock-900-rgb), 0.06), 0 18px 44px rgba(var(--p-black-rock-900-rgb), 0.12);
+  /* read by what bleeds over the gutter, such as the pinned toolbar */
+  --key-moments-gutter: 24px;
 
   /**
    * The gutter of the report, held here rather than as the `padding--6` utility
@@ -67,7 +68,7 @@ $enter-stagger: 45ms;
    */
   &__content {
     flex: 1;
-    padding: 24px;
+    padding: var(--key-moments-gutter);
     background-color: var(--key-moments-canvas);
   }
 
@@ -135,10 +136,7 @@ $enter-stagger: 45ms;
    * same screens.
    */
   @include breakpoints.media(xs) {
-
-    &__content {
-      padding: 16px;
-    }
+    --key-moments-gutter: 16px;
 
     &__screen {
       padding: 24px 0;

@@ -46,6 +46,18 @@
         />
       </PFormItem>
 
+      <PFormItem :pLabel="t('keyMoments.settings.indicatorDrawer.description')">
+        <PInput
+          v-model="form.description"
+          pType="textarea"
+          :pRows="3"
+          :pMaxlength="INDICATOR_DESCRIPTION_MAX_LENGTH"
+          pShowWordLimit
+          :pPlaceholder="t('keyMoments.settings.indicatorDrawer.descriptionHint')"
+          pTestId="key-moments-settings-indicator-description-input"
+        />
+      </PFormItem>
+
       <PFormItem :pLabel="t('keyMoments.settings.indicatorDrawer.kind')">
         <PDropdown
           v-model="form.kind"
@@ -88,7 +100,7 @@
           :data-item-id="index"
         >
           <span class="key-moments-editor-handle">
-            <PIcon pName="arrowDownUp" />
+            <PIcon pName="gripVertical" />
           </span>
 
           <IndicatorSelect
@@ -206,6 +218,7 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { IndicatorSign, ValueKind } from '@key-moments/enums/key-moments.enums'
+import { INDICATOR_DESCRIPTION_MAX_LENGTH } from '@key-moments/const/key-moments.consts'
 import IndicatorSelect from '../indicator-select.vue'
 import { useSortableList } from '@key-moments/composables/use-sortable-list.composable'
 import { useIndicatorDrawer } from './indicator-drawer.composable'

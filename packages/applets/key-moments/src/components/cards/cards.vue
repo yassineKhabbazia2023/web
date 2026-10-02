@@ -22,6 +22,11 @@
     >
       <header>
         <span class="key-moments-cards__label text-uppercase">{{ card.title }}</span>
+        <DefinitionHint
+          v-if="card.description !== undefined"
+          :definition="card.description"
+          :testId="`key-moments-${card.id}-card-definition`"
+        />
       </header>
 
       <p
@@ -131,6 +136,7 @@
 import { useI18n } from 'vue-i18n'
 import { TREND_CARD_MODIFIER } from '../../const/key-moments.consts'
 import { formatVariation, hasVariation } from '../../utils/variation.utils'
+import DefinitionHint from '../definition-hint/definition-hint.vue'
 import type { Card } from '../../types/key-moments.types'
 
 defineProps<{
@@ -161,12 +167,6 @@ function getCardClasses(card: Card): string[] {
     background-color: var(--key-moments-card-surface);
     border: 1px solid var(--key-moments-line);
     border-top: 3px solid var(--p-text-heading);
-    transition: transform 0.2s, box-shadow 0.2s;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--key-moments-shadow);
-    }
 
     &--positive {
       border-top-color: var(--p-jungle-400);
@@ -294,6 +294,11 @@ function getCardClasses(card: Card): string[] {
 
     .key-moments-cards__label,
     .key-moments-cards__compartment-label {
+      color: var(--p-mint-tulip-500);
+    }
+
+    // Read on the dark gradient, like the label it follows
+    :deep(.key-moments-definition-hint) {
       color: var(--p-mint-tulip-500);
     }
 

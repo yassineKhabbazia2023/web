@@ -1,5 +1,5 @@
-import { nextTick, reactive } from 'vue'
-import { useCommentTabs } from './comment.composable'
+import { reactive } from 'vue'
+import { useCommentList } from './comment.composable'
 import type { CommentVariant } from '../../types/key-moments.types'
 
 const DELIVERED_V1: CommentVariant = {
@@ -40,7 +40,7 @@ const MY_DRAFT: CommentVariant = {
   isMine: true,
 }
 
-function setupTabs(overrides: Partial<Parameters<typeof useCommentTabs>[0]> = {}) {
+function setupList(overrides: Partial<Parameters<typeof useCommentList>[0]> = {}) {
   const source = reactive({
     variants: [DELIVERED_V1, DELIVERED_V3, COLLEAGUE_READING],
     retainedKey: '',
@@ -50,170 +50,119 @@ function setupTabs(overrides: Partial<Parameters<typeof useCommentTabs>[0]> = {}
     ...overrides,
   })
 
-  return { source, ...useCommentTabs(source) }
+  return { source, ...useCommentList(source) }
 }
 
-describe('useCommentTabs', () => {
-  describe('active tab', () => {
-    it('should open on the publishable reading', () => {
-      const { activeVariant } = setupTabs()
+describe('useCommentList', () => {
+  describe('orderedVariants', () => {
+    it('should list every reading in the order it was written', () => {
+      const earlyReading = { ...COLLEAGUE_READING, key: '789', updatedAt: '2026-08-20T10:00:00Z' }
+      const lateReading = { ...COLLEAGUE_READING, updatedAt: '2026-08-21T10:00:00Z' }
 
-      expect(activeVariant.value?.key).toBe(DELIVERED_V3.key)
+      const { orderedVariants } = setupList({
+        variants: [lateReading, DELIVERED_V1, earlyReading, DELIVERED_V3],
+      })
+
+      expect(orderedVariants.value.map(variant => variant.key))
+        .toEqual([DELIVERED_V1.key, DELIVERED_V3.key, earlyReading.key, lateReading.key])
     })
 
-    it('should fall back on the most recent delivery when no tab matches', () => {
-      const { activeVariant } = setupTabs({ publishableKey: '' })
+    it('should follow the variants when a reading is added', () => {
+      const { source, orderedVariants } = setupList()
 
-      expect(activeVariant.value?.key).toBe(DELIVERED_V3.key)
+      source.variants = [...source.variants, { ...MY_DRAFT, text: 'Ma lecture.' }]
+
+      expect(orderedVariants.value).toHaveLength(4)
+    })
+  })
+
+  describe('isDisplayed', () => {
+    it('should show the reading that would go out as displayed, arbitrated or not', () => {
+      const { isDisplayed } = setupList()
+
+      expect(isDisplayed(DELIVERED_V3)).toBe(true)
+      expect(isDisplayed(DELIVERED_V1)).toBe(false)
     })
 
-    it('should follow the publishable reading until the reader picks a tab', async () => {
-      const { source, activeKey, readVariant } = setupTabs()
+    it('should display nothing once the slot is discarded', () => {
+      const { isDisplayed } = setupList({ isDiscarded: true })
 
-      source.publishableKey = DELIVERED_V1.key
-      await nextTick()
-
-      expect(activeKey.value).toBe(DELIVERED_V1.key)
-
-      readVariant(COLLEAGUE_READING.key)
-      source.publishableKey = DELIVERED_V3.key
-      await nextTick()
-
-      expect(activeKey.value).toBe(COLLEAGUE_READING.key)
-    })
-
-    it('should not follow the publishable reading while writing', async () => {
-      const { source, activeKey, isEditing } = setupTabs()
-
-      isEditing.value = true
-      source.publishableKey = DELIVERED_V1.key
-      await nextTick()
-
-      expect(activeKey.value).toBe(DELIVERED_V3.key)
-    })
-
-    it('should keep the tab being read when the slot is discarded', async () => {
-      const { source, activeKey } = setupTabs()
-
-      source.publishableKey = ''
-      await nextTick()
-
-      expect(activeKey.value).toBe(DELIVERED_V3.key)
-    })
-
-    it('should leave the edition behind when switching tab', () => {
-      const { activeKey, isEditing, readVariant } = setupTabs()
-
-      isEditing.value = true
-      readVariant(DELIVERED_V1.key)
-
-      expect(activeKey.value).toBe(DELIVERED_V1.key)
-      expect(isEditing.value).toBe(false)
-    })
-
-    it('should keep the edition when clicking the tab already read', () => {
-      const { isEditing, readVariant } = setupTabs()
-
-      isEditing.value = true
-      readVariant(DELIVERED_V3.key)
-
-      expect(isEditing.value).toBe(true)
+      expect(isDisplayed(DELIVERED_V3)).toBe(false)
     })
   })
 
   describe('canRetain', () => {
-    it('should offer to retain a reading that is not retained yet', () => {
-      const { canRetain } = setupTabs({ retainedKey: DELIVERED_V1.key })
+    it('should offer to retain any other written reading', () => {
+      const { canRetain } = setupList()
 
-      expect(canRetain.value).toBe(true)
+      expect(canRetain(DELIVERED_V1)).toBe(true)
+      expect(canRetain(COLLEAGUE_READING)).toBe(true)
     })
 
-    it('should not offer to retain the retained reading', () => {
-      const { canRetain } = setupTabs({ retainedKey: DELIVERED_V3.key })
+    it('should not offer to retain the displayed reading', () => {
+      const { canRetain } = setupList()
 
-      expect(canRetain.value).toBe(false)
+      expect(canRetain(DELIVERED_V3)).toBe(false)
     })
 
     it('should not offer to retain an empty reading', () => {
-      const { canRetain } = setupTabs({
-        variants: [{ ...DELIVERED_V3, text: '' }],
-      })
+      const { canRetain } = setupList()
 
-      expect(canRetain.value).toBe(false)
+      expect(canRetain({ ...DELIVERED_V1, text: '' })).toBe(false)
+    })
+
+    it('should offer to retain the fallback again once the slot is discarded', () => {
+      const { canRetain } = setupList({ isDiscarded: true })
+
+      expect(canRetain(DELIVERED_V3)).toBe(true)
     })
   })
 
-  describe('canDiscard', () => {
-    it('should offer to discard beside the publishable reading', () => {
-      const { canDiscard } = setupTabs()
+  describe('canFreeze', () => {
+    it('should offer to freeze the reading displayed by default', () => {
+      const { canFreeze } = setupList()
 
-      expect(canDiscard.value).toBe(true)
+      expect(canFreeze(DELIVERED_V3)).toBe(true)
     })
 
-    it('should not offer to discard beside another tab', () => {
-      const { canDiscard, readVariant } = setupTabs()
+    it('should not offer it once that reading is retained', () => {
+      const { canFreeze } = setupList({ retainedKey: DELIVERED_V3.key })
 
-      readVariant(DELIVERED_V1.key)
-
-      expect(canDiscard.value).toBe(false)
+      expect(canFreeze(DELIVERED_V3)).toBe(false)
     })
 
-    it('should not offer to discard a slot already discarded', () => {
-      const { canDiscard } = setupTabs({ isDiscarded: true })
+    it('should not offer it on a reading that is not displayed', () => {
+      const { canFreeze } = setupList()
 
-      expect(canDiscard.value).toBe(false)
+      expect(canFreeze(DELIVERED_V1)).toBe(false)
     })
 
-    it('should not offer to discard when nothing is publishable', () => {
-      const { canDiscard } = setupTabs({ publishableKey: '' })
+    it('should not offer it once the slot is discarded', () => {
+      const { canFreeze } = setupList({ isDiscarded: true })
 
-      expect(canDiscard.value).toBe(false)
+      expect(canFreeze(DELIVERED_V3)).toBe(false)
     })
   })
 
-  describe('writing', () => {
-    it('should offer to write when the reader has no reading of their own', () => {
-      const { canWrite } = setupTabs()
+  describe('canCompose', () => {
+    it('should open the writing while I have no reading of my own', () => {
+      const { canCompose } = setupList()
 
-      expect(canWrite.value).toBe(true)
+      expect(canCompose.value).toBe(true)
     })
 
-    it('should not offer to write without a draft', () => {
-      const { canWrite } = setupTabs({ draftVariant: undefined })
-
-      expect(canWrite.value).toBe(false)
-    })
-
-    it('should not offer to write when the reader already has a reading', () => {
-      const { canWrite } = setupTabs({
+    it('should close it once my reading exists', () => {
+      const { canCompose } = setupList({
         variants: [DELIVERED_V3, { ...MY_DRAFT, text: 'Ma lecture.' }],
       })
 
-      expect(canWrite.value).toBe(false)
+      expect(canCompose.value).toBe(false)
     })
 
-    it('should open the draft as a tab of its own when writing starts', () => {
-      const { tabs, activeVariant, isEditing, canWrite, startWriting } = setupTabs()
+    it('should close it when nothing may be written', () => {
+      const { canCompose } = setupList({ draftVariant: undefined })
 
-      expect(tabs.value.map(variant => variant.key)).not.toContain(MY_DRAFT.key)
-
-      startWriting()
-
-      expect(tabs.value.at(-1)?.key).toBe(MY_DRAFT.key)
-      expect(activeVariant.value?.key).toBe(MY_DRAFT.key)
-      expect(isEditing.value).toBe(true)
-      expect(canWrite.value).toBe(false)
-    })
-
-    it('should drop the draft tab once the saved reading arrives', () => {
-      const { source, tabs, activeVariant, startWriting } = setupTabs()
-      const savedReading = { ...MY_DRAFT, text: 'Ma lecture.' }
-
-      startWriting()
-      source.variants = [...source.variants, savedReading]
-
-      expect(tabs.value).toEqual(source.variants)
-      expect(activeVariant.value).toEqual(savedReading)
+      expect(canCompose.value).toBe(false)
     })
   })
 })

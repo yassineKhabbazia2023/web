@@ -1,25 +1,25 @@
 <template>
   <PDialog
     v-model="isOpen"
-    :pTitle="t('keyMoments.offers.picker.title', { year: exerciceYear })"
+    :pTitle="title"
     :pWidth="dialogWidth"
     pDestroyOnClose
     pAppendToBody
-    pTestId="key-moments-offers-picker"
+    pTestId="key-moments-recommendations-offers-picker"
     @close="forgetNarrowings"
   >
     <PInput
       v-model="searchTerm"
       pClearable
       pPrefixIconName="search"
-      :pPlaceholder="t('keyMoments.offers.picker.search')"
-      pTestId="key-moments-offers-picker-search-input"
+      :pPlaceholder="t('keyMoments.recommendations.picker.search')"
+      pTestId="key-moments-recommendations-offers-picker-search-input"
     />
 
     <!-- One tag at a time, each chip in its tag's colour: the active one is ringed, not recoloured -->
     <div
       class="
-        key-moments-offers-picker__tags
+        key-moments-recommendations-offers-picker__tags
         flex
         flex--wrap
         flex-gap--2
@@ -29,18 +29,18 @@
       <button
         type="button"
         class="
-          key-moments-offers-picker__chip
+          key-moments-recommendations-offers-picker__chip
           padding--0
           cursor-pointer
         "
         :class="{
-          'key-moments-offers-picker__chip--selected': selectedTag === undefined,
+          'key-moments-recommendations-offers-picker__chip--selected': selectedTag === undefined,
         }"
-        data-testid="key-moments-offers-picker-tag-all"
+        data-testid="key-moments-recommendations-offers-picker-tag-all"
         @click="selectedTag = undefined"
       >
         <PTag
-          :pContent="t('keyMoments.offers.picker.allTags')"
+          :pContent="t('keyMoments.recommendations.picker.allTags')"
           pColor="light-gray"
           pSize="small"
         />
@@ -50,12 +50,12 @@
         :key="tag"
         type="button"
         class="
-          key-moments-offers-picker__chip
+          key-moments-recommendations-offers-picker__chip
           padding--0
           cursor-pointer
         "
-        :class="{ 'key-moments-offers-picker__chip--selected': selectedTag === tag }"
-        :data-testid="`key-moments-offers-picker-tag-${offerTagTestId(tag)}`"
+        :class="{ 'key-moments-recommendations-offers-picker__chip--selected': selectedTag === tag }"
+        :data-testid="`key-moments-recommendations-offers-picker-tag-${offerTagTestId(tag)}`"
         @click="selectedTag = tag"
       >
         <PTag
@@ -70,15 +70,15 @@
       v-if="results.length === 0"
       class="margin-top--4"
       pType="info"
-      data-testid="key-moments-offers-picker-empty"
+      data-testid="key-moments-recommendations-offers-picker-empty"
     >
-      {{ t('keyMoments.offers.picker.empty') }}
+      {{ t('keyMoments.recommendations.picker.empty') }}
     </PAlert>
 
     <div
       v-else
       class="
-        key-moments-offers-picker__results
+        key-moments-recommendations-offers-picker__results
         grid
         grid-cols--3
         grid-gap--4
@@ -89,17 +89,18 @@
         v-for="offer in results"
         :key="offer.id"
         class="
-          key-moments-offers-picker__offer
+          key-moments-recommendations-offers-picker__offer
           flex
           flex--direction-column
           bg--surface-primary
         "
-        :data-testid="`key-moments-offers-picker-offer-${offer.id}`"
+        :class="{ 'key-moments-recommendations-offers-picker__offer--selected': isSelected(offer.id) }"
+        :data-testid="`key-moments-recommendations-offers-picker-offer-${offer.id}`"
       >
-        <h4 class="key-moments-offers-picker__title text-color--text-heading">
+        <h4 class="key-moments-recommendations-offers-picker__title text-color--text-heading">
           {{ offer.title }}
         </h4>
-        <p class="key-moments-offers-picker__description">
+        <p class="key-moments-recommendations-offers-picker__description">
           {{ offer.shortDescription }}
         </p>
 
@@ -107,7 +108,7 @@
         <div
           v-if="offer.tags !== undefined && offer.tags.length > 0"
           class="flex flex--wrap flex-gap--2"
-          :data-testid="`key-moments-offers-picker-offer-${offer.id}-tags`"
+          :data-testid="`key-moments-recommendations-offers-picker-offer-${offer.id}-tags`"
         >
           <PTag
             v-for="tag in offer.tags"
@@ -118,59 +119,78 @@
           />
         </div>
 
-        <!-- A duplicate is prevented here: the microservice would refuse it -->
-        <span
-          v-if="attachedIds.has(offer.id)"
-          class="
-            key-moments-offers-picker__chosen
-            font-size--13
-            font-italic
-          "
-          :data-testid="`key-moments-offers-picker-offer-${offer.id}-chosen`"
-        >
-          {{ t('keyMoments.offers.picker.chosen') }}
-        </span>
         <PButton
-          v-else
           pSize="small"
-          pType="primary"
-          :pDisabled="isAtCap || isSaving"
-          :pTestId="`key-moments-offers-picker-offer-${offer.id}-choose-button`"
-          @click="choose(offer)"
+          :pType="isSelected(offer.id) ? 'active' : 'primary'"
+          :pTestId="`key-moments-recommendations-offers-picker-offer-${offer.id}-toggle-button`"
+          @click="toggleOffer(offer.id)"
         >
-          {{ t('keyMoments.offers.picker.choose') }}
+          {{ isSelected(offer.id)
+            ? t('keyMoments.recommendations.picker.selected')
+            : t('keyMoments.recommendations.picker.choose') }}
         </PButton>
       </article>
     </div>
+
+    <template #footer>
+      <div
+        class="
+          flex
+          flex--align-items-center
+          flex--justify-content-space-between
+          flex-gap--4
+        "
+      >
+        <span
+          class="font-size--13"
+          data-testid="key-moments-recommendations-offers-picker-count"
+        >
+          {{ t('keyMoments.recommendations.picker.count', { count: selectedCount }, selectedCount) }}
+        </span>
+        <div class="flex flex-gap--2">
+          <PButton
+            pType="default"
+            pTestId="key-moments-recommendations-offers-picker-cancel-button"
+            @click="isOpen = false"
+          >
+            {{ t('keyMoments.recommendations.picker.cancel') }}
+          </PButton>
+          <PButton
+            pType="primary"
+            pTestId="key-moments-recommendations-offers-picker-validate-button"
+            @click="validateSelection"
+          >
+            {{ t('keyMoments.recommendations.picker.validate') }}
+          </PButton>
+        </div>
+      </div>
+    </template>
   </PDialog>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
 import { PAlert, PButton, PDialog, PInput, PTag } from '@pulse/styleguide/components'
+import { useRecommendationOffersSelection } from './recommendation-offers-picker.composable'
 import {
   catalogTags,
   filterCatalog,
   offerTagColor,
   offerTagTestId,
-} from '../../utils/offers.utils'
-import type { SearchableOffer } from '../../types/key-moments.types'
-import type { CatalogOfferPayload } from '../../services/offers.service.types'
+} from '../../../utils/offers.utils'
+import type { SearchableOffer } from '../../../types/key-moments.types'
 
 const props = defineProps<{
   catalog: SearchableOffer[]
-  attachedIds: Set<number>
-  isAtCap: boolean
-  /** A write of the list in flight: choosing waits for the microservice to answer */
-  isSaving: boolean
-  /** Year the exercice closes on, as every selector of the page names it */
-  exerciceYear: string
+  title: string
+  /** The offers already attached to the recommendation, preselected on opening */
+  initialSelection: number[]
 }>()
 
 const emit = defineEmits<{
-  choose: [offer: CatalogOfferPayload]
+  validate: [offerIds: number[]]
 }>()
 
 const isOpen = defineModel<boolean>({ required: true })
@@ -188,27 +208,47 @@ const selectedTag = ref<string>()
 /** Recomputed only when the catalogue lands, never on a keystroke. */
 const tags = computed(() => catalogTags(props.catalog))
 
+const results = computed(
+  () => filterCatalog(props.catalog, searchTerm.value, selectedTag.value),
+)
+
+const {
+  selectedCount,
+  isSelected,
+  toggleOffer,
+  reset,
+  validateSelection: validate,
+} = useRecommendationOffersSelection({
+  catalog: () => props.catalog,
+  initialSelection: () => props.initialSelection,
+  onValidate: offerIds => emit('validate', offerIds),
+})
+
+// The opening is decided by the parent through the model: the selection
+// restarts from what is attached each time it turns true
+watch(isOpen, (isNowOpen) => {
+  if (isNowOpen) {
+    reset()
+  }
+}, { immediate: true })
+
 // Closing forgets the search and the tag, so a reopened picker starts clean
 function forgetNarrowings(): void {
   searchTerm.value = ''
   selectedTag.value = undefined
 }
 
-const results = computed(
-  () => filterCatalog(props.catalog, searchTerm.value, selectedTag.value),
-)
-
-function choose(offer: CatalogOfferPayload) {
-  emit('choose', offer)
+function validateSelection(): void {
+  validate()
   isOpen.value = false
 }
 </script>
 
 <style lang="scss" scoped>
 @use '@pulse/styleguide/scss/breakpoints' as breakpoints;
-@use '../../styles/screen';
+@use '../../../styles/screen';
 
-.key-moments-offers-picker {
+.key-moments-recommendations-offers-picker {
   &__results {
     max-height: 26rem;
     overflow-y: auto;
@@ -227,6 +267,10 @@ function choose(offer: CatalogOfferPayload) {
     gap: 0.5rem;
     padding: 1rem;
     border: 1px solid var(--key-moments-line);
+
+    &--selected {
+      border-color: var(--p-black-rock-800);
+    }
   }
 
   // The tag draws the chip: the button is only a hit area, ringed when active
@@ -249,10 +293,6 @@ function choose(offer: CatalogOfferPayload) {
     @include screen.card-text;
 
     margin-bottom: auto;
-  }
-
-  &__chosen {
-    opacity: 0.7;
   }
 }
 </style>

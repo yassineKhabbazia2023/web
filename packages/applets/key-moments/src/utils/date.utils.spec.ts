@@ -3,6 +3,7 @@ import {
   formatCalendarMonthYear,
   formatCalendarYear,
   formatInstant,
+  formatInstantWithTime,
 } from './date.utils'
 
 /** The one an exercice closes on, which is the case the zone can break. */
@@ -68,6 +69,17 @@ describe('key-moments dates', () => {
     /** Omitting the locale is what an encart naming who wrote a text is read in. */
     it('should fall back on the locale of the reader', () => {
       expect(formatInstant(PUBLISHED_AT)).toBe(new Intl.DateTimeFormat().format(new Date(PUBLISHED_AT)))
+    })
+
+    it('should write an instant with its time of day, in the zone of the reader', () => {
+      const local = new Date(PUBLISHED_AT)
+      const day = String(local.getDate()).padStart(2, '0')
+      const month = String(local.getMonth() + 1).padStart(2, '0')
+      const hours = String(local.getHours()).padStart(2, '0')
+      const minutes = String(local.getMinutes()).padStart(2, '0')
+
+      expect(formatInstantWithTime(PUBLISHED_AT, 'fr-FR'))
+        .toBe(`${day}/${month}/${local.getFullYear()} ${hours}:${minutes}`)
     })
   })
 })

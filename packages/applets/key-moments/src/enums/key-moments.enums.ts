@@ -180,7 +180,7 @@ export enum DivergenceKind {
   CURRENCY = 'currency',
   COMMENTS = 'comments',
   HIDDEN_WIDGETS = 'hiddenWidgets',
-  OFFERS = 'offers',
+  RECOMMENDATIONS = 'recommendations',
 }
 
 /**
@@ -204,10 +204,23 @@ export enum PublicationState {
  * It never orders the section — the display order is carried by the position in
  * the list, and by it alone.
  */
-export enum OfferPriority {
+export enum RecommendationPriority {
   PRIMARY = 'primary',
   SIGNIFICANT = 'significant',
   INFORMATIVE = 'informative',
+}
+
+/**
+ * The closed list of rubrics a recommendation is filed under, in display
+ * order: the order of the enum is the order of the section. The labels are
+ * the front's, the microservice only ever carries the key.
+ */
+export enum RecommendationRubric {
+  MANAGEMENT = 'management',
+  ACCOUNTING = 'accounting',
+  SECTOR = 'sector',
+  SOCIAL = 'social',
+  WEALTH = 'wealth',
 }
 
 /**
@@ -226,6 +239,8 @@ export enum RejectionCode {
   UNKNOWN_SIRET = 'unknown-siret',
   /** A recommendation of the publication could not be resolved in the catalogue */
   MISSING_OFFER_DESCRIPTION = 'missing-offer-description',
+  /** The exercice has no active publication to restore the draft from */
+  NOT_PUBLISHED = 'not-published',
 }
 
 /**

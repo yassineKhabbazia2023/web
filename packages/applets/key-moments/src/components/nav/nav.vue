@@ -77,53 +77,16 @@
               flex-gap--1
             "
           >
-            <button
-              type="button"
-              class="
-                key-moments-nav__screen
-                flex
-                flex--align-items-center
-                flex--justify-content-space-between
-                flex-gap--2
-                width--100
-                padding--2
-                font-size--14
-                font-bold
-                text-left
-                cursor-pointer
-              "
-              :class="{
-                'key-moments-nav__screen--open': isExpanded(screen.id),
-                'key-moments-nav__screen--hidden': isScreenFullyHidden(screen),
-              }"
-              :aria-expanded="isExpanded(screen.id)"
+            <NavSectionButton
+              :label="screen.title"
+              :isCurrent="isCurrentScreen(screen)"
+              :isHidden="isScreenFullyHidden(screen)"
+              :count="countVisibleWidgets(screen)"
+              :isExpanded="isExpanded(screen.id)"
               :data-testid="`key-moments-nav-screen-${screen.id}`"
               @click="onScreenClick(screen.id)"
               @focus="alwaysExpanded === false && unfold(screen.id)"
-            >
-              <span class="key-moments-nav__screen-label">{{ screen.title }}</span>
-              <!-- The badge replaces the counter, so a fully hidden section reads as hidden without unfolding it -->
-              <span
-                v-if="isScreenFullyHidden(screen)"
-                class="
-                  key-moments-nav__screen-state
-                  font-size--11
-                  font-normal
-                "
-              >
-                {{ t('keyMoments.visibility.hiddenBadge') }}
-              </span>
-              <span
-                v-else
-                class="
-                  key-moments-nav__count
-                  font-size--12
-                  font-normal
-                "
-              >
-                {{ countVisibleWidgets(screen) }}
-              </span>
-            </button>
+            />
 
             <!-- Beside the entry: a button never nests in another one -->
             <slot
@@ -161,35 +124,14 @@
                   :screen="screen"
                 />
 
-                <button
-                  type="button"
-                  class="
-                    key-moments-nav__widget
-                    flex
-                    flex--align-items-center
-                    flex-gap--2
-                    width--100
-                    padding--2
-                    font-size--13
-                    text-left
-                    cursor-pointer
-                  "
-                  :class="{
-                    'key-moments-nav__widget--active': activeAnchorId === widgetAnchorId(widget.id),
-                    'key-moments-nav__widget--hidden': widget.isHidden,
-                  }"
-                  :aria-current="activeAnchorId === widgetAnchorId(widget.id)"
+                <NavEntryButton
+                  :label="widget.title"
+                  :isActive="activeAnchorId === widgetAnchorId(widget.id)"
+                  :isHidden="widget.isHidden"
+                  :state="widget.isHidden ? t('keyMoments.visibility.hiddenBadge') : undefined"
                   :data-testid="`key-moments-nav-widget-${widget.id}`"
                   @click="goTo(widgetAnchorId(widget.id))"
-                >
-                  <span class="key-moments-nav__widget-label">{{ widget.title }}</span>
-                  <span
-                    v-if="widget.isHidden"
-                    class="key-moments-nav__widget-state font-size--11"
-                  >
-                    {{ t('keyMoments.visibility.hiddenBadge') }}
-                  </span>
-                </button>
+                />
               </div>
             </div>
           </div>
@@ -198,32 +140,56 @@
 
       <slot name="after-screens" />
 
-      <!-- Driven by a flag, not pushed into `screens`: the offers section is not part of the template -->
+      <!-- Driven by a flag, not pushed into `screens`: the recommendations are not part of the template -->
       <div
-        v-if="hasOffers"
+        v-if="hasRecommendations"
         class="key-moments-nav__group"
+        @mouseenter="alwaysExpanded === false && scheduleUnfold(RECOMMENDATIONS_ANCHOR_ID)"
+        @mouseleave="cancelScheduledUnfold"
       >
-        <button
-          type="button"
-          class="
-            key-moments-nav__screen
-            flex
-            flex--align-items-center
-            flex--justify-content-space-between
-            flex-gap--2
-            width--100
-            padding--2
-            font-size--14
-            font-bold
-            text-left
-            cursor-pointer
-          "
-          :class="{ 'key-moments-nav__screen--open': activeAnchorId === OFFERS_ANCHOR_ID }"
-          data-testid="key-moments-nav-screen-offers"
-          @click="goTo(OFFERS_ANCHOR_ID)"
+        <!-- Without a category, or with every rubric empty, the reader gets no recommendation -->
+        <NavSectionButton
+          :label="t('keyMoments.recommendations.title')"
+          :isCurrent="isRecommendationsCurrent"
+          :isHidden="isRecommendationsHidden"
+          :count="filledRubricsCount"
+          :isExpanded="isExpanded(RECOMMENDATIONS_ANCHOR_ID)"
+          data-testid="key-moments-nav-screen-recommendations"
+          @click="onScreenClick(RECOMMENDATIONS_ANCHOR_ID)"
+          @focus="alwaysExpanded === false && unfold(RECOMMENDATIONS_ANCHOR_ID)"
+        />
+
+        <!-- One entry per rubric once a category exists; a single invitation before -->
+        <div
+          class="key-moments-nav__widgets grid"
+          :class="{ 'key-moments-nav__widgets--open': isExpanded(RECOMMENDATIONS_ANCHOR_ID) }"
+          :inert="isExpanded(RECOMMENDATIONS_ANCHOR_ID) === false"
+          data-testid="key-moments-nav-recommendations-rubrics"
         >
-          <span>{{ t('keyMoments.offers.title') }}</span>
-        </button>
+          <div class="overflow-hidden">
+            <NavEntryButton
+              v-if="recommendationRubrics === undefined"
+              :label="t('keyMoments.nav.chooseCategory')"
+              isInvitation
+              data-testid="key-moments-nav-recommendations-choose"
+              @click="goTo(RECOMMENDATIONS_ANCHOR_ID)"
+            />
+            <!-- Nothing of a rubric reaches the reader, so it reads as a hidden widget -->
+            <NavEntryButton
+              v-for="rubric in recommendationRubrics"
+              v-else
+              :key="rubric.rubric"
+              :label="t(`keyMoments.recommendations.rubrics.${rubric.rubric}`)"
+              :isActive="activeAnchorId === rubricAnchorId(rubric.rubric)"
+              :isHidden="rubric.visibleCount === 0"
+              :state="rubric.visibleCount === 0
+                ? t('keyMoments.visibility.hiddenBadge')
+                : t('keyMoments.nav.rubricCount', { visible: rubric.visibleCount, total: rubric.totalCount })"
+              :data-testid="`key-moments-nav-rubric-${rubric.rubric}`"
+              @click="goTo(rubricAnchorId(rubric.rubric))"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -233,17 +199,24 @@
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon } from '@pulse/styleguide/components'
-import { OFFERS_ANCHOR_ID, screenAnchorId, widgetAnchorId } from '../../utils/anchor.utils'
+import { RECOMMENDATIONS_ANCHOR_ID, rubricAnchorId, screenAnchorId, widgetAnchorId } from '../../utils/anchor.utils'
+import NavEntryButton from './nav-entry-button.vue'
+import NavSectionButton from './nav-section-button.vue'
 import { useAnchorScroll, useScrollSpy } from './nav.composable'
 import type { Screen } from '../../types/key-moments.types'
+import type { NavRubric } from './nav.types'
 
 const props = withDefaults(defineProps<{
   screens: Screen[]
-  hasOffers: boolean
+  /** The section exists for this reader: shown to the firm, or published to the client */
+  hasRecommendations: boolean
+  /** The rubrics to list under the section; undefined while no category is chosen */
+  recommendationRubrics?: NavRubric[]
   /** Every section unfolded: the editor cannot drag into a list folding under the cursor */
   alwaysExpanded?: boolean
 }>(), {
   alwaysExpanded: false,
+  recommendationRubrics: undefined,
 })
 
 const emit = defineEmits<{
@@ -265,13 +238,18 @@ const anchorIds = computed(() => [
     screenAnchorId(screen.id),
     ...screen.widgets.map(widget => widgetAnchorId(widget.id)),
   ]),
-  ...(props.hasOffers ? [OFFERS_ANCHOR_ID] : []),
+  ...(props.hasRecommendations ? [RECOMMENDATIONS_ANCHOR_ID] : []),
+  ...(props.recommendationRubrics ?? []).map(rubric => rubricAnchorId(rubric.rubric)),
 ])
 
 const { activeAnchorId } = useScrollSpy(() => anchorIds.value)
 
+const isRecommendationsCurrent = computed(() => activeAnchorId.value === RECOMMENDATIONS_ANCHOR_ID
+  || (props.recommendationRubrics ?? []).some(rubric => activeAnchorId.value === rubricAnchorId(rubric.rubric)))
+
 const { scrollToAnchor: goTo } = useAnchorScroll()
 
+// The recommendations fold in the same accordion as the sections, under their anchor id: a screen id never takes that shape
 const openScreenId = ref<string>()
 
 // Scrolling unfolds the section it enters, so the highlighted block is never folded away
@@ -286,6 +264,8 @@ watch(activeAnchorId, (anchorId) => {
 
   if (reachedScreen !== undefined) {
     openScreenId.value = reachedScreen.id
+  } else if (isRecommendationsCurrent.value) {
+    openScreenId.value = RECOMMENDATIONS_ANCHOR_ID
   }
 })
 
@@ -293,9 +273,16 @@ watch(activeAnchorId, (anchorId) => {
 const unfoldedScreenId = computed(() => {
   const isStillDisplayed = props.screens
     .some(screen => screen.id === openScreenId.value)
+    || (props.hasRecommendations && openScreenId.value === RECOMMENDATIONS_ANCHOR_ID)
 
   return isStillDisplayed ? openScreenId.value : props.screens[0]?.id
 })
+
+// The section being read, which alone is marked: an unfolded one may only be peeked at
+function isCurrentScreen(screen: Screen): boolean {
+  return activeAnchorId.value === screenAnchorId(screen.id)
+    || screen.widgets.some(widget => activeAnchorId.value === widgetAnchorId(widget.id))
+}
 
 function isExpanded(screenId: string): boolean {
   return props.alwaysExpanded || screenId === unfoldedScreenId.value
@@ -303,7 +290,7 @@ function isExpanded(screenId: string): boolean {
 
 function onScreenClick(screenId: string): void {
   unfold(screenId)
-  goTo(screenAnchorId(screenId))
+  goTo(screenId === RECOMMENDATIONS_ANCHOR_ID ? RECOMMENDATIONS_ANCHOR_ID : screenAnchorId(screenId))
 }
 
 // Keeps a cursor merely crossing the list from unfolding every section it passes over
@@ -332,6 +319,14 @@ function countVisibleWidgets(screen: Screen): number {
   return screen.widgets.filter(widget => widget.isHidden === false).length
 }
 
+// The pendant of the visible widgets: a rubric without any visible recommendation shows nothing to the reader
+const filledRubricsCount = computed(() => (props.recommendationRubrics ?? [])
+  .filter(rubric => rubric.visibleCount > 0).length)
+
+// Like a section: no rubric hides nothing, so only a chosen category left without any recommendation is hidden
+const isRecommendationsHidden = computed(() => props.recommendationRubrics === undefined
+  || (props.recommendationRubrics.length > 0 && filledRubricsCount.value === 0))
+
 // An empty section hides nothing, so it is not considered hidden
 function isScreenFullyHidden(screen: Screen): boolean {
   return screen.widgets.length > 0 && countVisibleWidgets(screen) === 0
@@ -349,8 +344,9 @@ $nav-collapsed-width: 40px;
   // under whatever the embedding page pins above the report — the preview banner
   top: calc(16px + var(--key-moments-sticky-offset, 0px));
   flex: 0 0 var(--key-moments-nav-width, #{$nav-width});
-  // bounded by the layout main container, not the viewport, or its scrollbar runs off screen
-  max-height: calc(100vh - var(--p-header-height, 0px) - 32px);
+  // bounded by the layout main container, not the viewport, or its scrollbar runs off screen;
+  // shortened by the sticky offset it is pushed down by, or its bottom falls below the fold
+  max-height: calc(100vh - var(--p-header-height, 0px) - 32px - var(--key-moments-sticky-offset, 0px));
   overflow-x: hidden;
   overflow-y: auto;
   padding-right: $nav-gutter;
@@ -412,32 +408,6 @@ $nav-collapsed-width: 40px;
     min-width: 0;
   }
 
-  &__screen {
-    color: var(--p-text-heading);
-    background-color: var(--key-moments-emphasis-surface);
-    border: none;
-    border-left: 3px solid transparent;
-
-    &--open {
-      border-left-color: var(--p-jungle-400);
-    }
-
-    &--hidden .key-moments-nav__screen-label {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--p-text-neutral);
-    }
-  }
-
-  &__screen-label {
-    flex: 1;
-  }
-
-  &__screen-state,
-  &__count {
-    color: var(--p-text-neutral);
-  }
-
   // `grid-template-rows` interpolates where `height: auto` does not
   &__widgets {
     grid-template-rows: 0fr;
@@ -450,36 +420,6 @@ $nav-collapsed-width: 40px;
     }
   }
 
-  &__widget {
-    color: var(--p-text-body);
-    background: none;
-    border: none;
-    border-bottom: 1px solid var(--key-moments-line);
-    border-left: 3px solid transparent;
-
-    &:hover {
-      background-color: var(--key-moments-stripe-surface);
-    }
-
-    &--active {
-      font-weight: 700;
-      background-color: var(--key-moments-emphasis-surface);
-      border-left-color: var(--p-mint-tulip-500);
-    }
-
-    &--hidden .key-moments-nav__widget-label {
-      font-style: italic;
-      color: var(--p-text-neutral);
-    }
-  }
-
-  &__widget-label {
-    flex: 1;
-  }
-
-  &__widget-state {
-    color: var(--p-text-neutral);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,12 +1,13 @@
 import { divergencesBetween } from './divergence.utils'
-import { publishableOffers } from './offers.utils'
 import {
   CurrencyDisplay,
   DivergenceFamily,
   DivergenceKind,
-  OfferPriority,
+  RecommendationPriority,
+  RecommendationRubric,
 } from '../enums/key-moments.enums'
 import type { PublishableState } from '../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 
 /** What the client reads today, and what the page would publish if unchanged. */
 const PUBLISHED: PublishableState = {
@@ -21,10 +22,14 @@ const PUBLISHED: PublishableState = {
   preferenceCurrencyDisplay: CurrencyDisplay.EURO,
   comments: { synthese: 'Trésorerie stabilisée.', bilan: 'Structure saine.' },
   hiddenWidgets: ['effectifs'],
-  offers: [
-    { offerId: 128, comment: 'Adapté à votre passage en SASU', priority: OfferPriority.PRIMARY, isPriorityVisible: true },
-    { offerId: 300, isPriorityVisible: false },
+  recommendations: [
+    { rubric: RecommendationRubric.MANAGEMENT, theme: 'Trésorerie', priority: RecommendationPriority.PRIMARY, recommendation: 'Un tableau de bord.', offers: [{ offerId: 128, title: 'Pilotage' }] },
+    { rubric: RecommendationRubric.MANAGEMENT, theme: 'Achats', recommendation: 'Renégocier.', offers: [] },
   ],
+}
+
+function withRecommendations(...recommendations: PublishedRecommendationPayload[]): PublishableState {
+  return withChange({ recommendations })
 }
 
 function withChange(change: Partial<PublishableState>): PublishableState {
@@ -217,140 +222,57 @@ describe('key-moments publication divergences', () => {
   })
 
   /**
-   * Both sides are projections that already leave the hidden offers out, which
-   * is what makes hiding one report here instead of passing for a detachment.
+   * Both sides are the published projection — visible recommendations only —
+   * which is what makes hiding one report here instead of passing as silence.
    */
   describe('the recommendations', () => {
+    const [first, second] = PUBLISHED.recommendations
 
-    it('should report nothing when the same offers are decided the same way', () => {
-      expect(divergencesBetween(withChange({ offers: [...PUBLISHED.offers] }), PUBLISHED))
-        .toEqual([])
+    it('should report nothing when the same recommendations are decided the same way', () => {
+      expect(divergencesBetween(withRecommendations(first, second), PUBLISHED)).toEqual([])
     })
 
-    it('should report attaching one, as a decision of the firm', () => {
+    it('should report adding one, as a decision of the firm', () => {
       const [divergence] = divergencesBetween(
-        withChange({ offers: [...PUBLISHED.offers, { offerId: 512, isPriorityVisible: false }] }),
+        withRecommendations(first, second, { rubric: RecommendationRubric.SOCIAL, theme: 'Paie', recommendation: 'Externaliser.', offers: [] }),
         PUBLISHED,
       )
 
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
+      expect(divergence.kind).toBe(DivergenceKind.RECOMMENDATIONS)
       expect(divergence.family).toBe(DivergenceFamily.MODIFICATION)
       expect(divergence.values).toEqual({ count: 1 })
     })
 
-    it('should report detaching one', () => {
-      const [divergence] = divergencesBetween(
-        withChange({ offers: [PUBLISHED.offers[0]] }),
-        PUBLISHED,
-      )
+    it('should report hiding one, which leaves the projection', () => {
+      const [divergence] = divergencesBetween(withRecommendations(first), PUBLISHED)
 
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
+      expect(divergence.kind).toBe(DivergenceKind.RECOMMENDATIONS)
       expect(divergence.values).toEqual({ count: 1 })
     })
 
-    /**
-     * The chain that makes hiding report: the stored list keeps the offer,
-     * `publishableOffers` drops it, and the comparison then differs from what
-     * is published. Written through the projection rather than around it —
-     * comparing the stored list itself would read a hidden offer as a detached
-     * one, which is the mistake this test exists to catch.
-     */
-    it('should report hiding one, through the publishable projection', () => {
-      const stored = [
-        {
-          offerId: 128,
-          title: 'Pack Prévoyance TNS',
-          comment: 'Adapté à votre passage en SASU',
-          priority: OfferPriority.PRIMARY,
-          isPriorityVisible: true,
-          isHidden: false,
-        },
-        { offerId: 300, title: 'Épargne salariale', isPriorityVisible: false, isHidden: true },
-      ]
+    it('should report a reworded text, a changed priority and a changed offer list', () => {
+      expect(divergencesBetween(withRecommendations({ ...first, recommendation: 'Autre.' }, second), PUBLISHED)[0].kind)
+        .toBe(DivergenceKind.RECOMMENDATIONS)
+      expect(divergencesBetween(withRecommendations({ ...first, priority: undefined }, second), PUBLISHED)[0].kind)
+        .toBe(DivergenceKind.RECOMMENDATIONS)
+      expect(divergencesBetween(withRecommendations({ ...first, offers: [] }, second), PUBLISHED)[0].kind)
+        .toBe(DivergenceKind.RECOMMENDATIONS)
+    })
 
-      const [divergence] = divergencesBetween(
-        withChange({ offers: publishableOffers(stored) }),
-        PUBLISHED,
-      )
+    /** The order is the reading order, so swapping two is a modification: one line moved. */
+    it('should report a swap as the one line that moved', () => {
+      const [divergence] = divergencesBetween(withRecommendations(second, first), PUBLISHED)
 
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
       expect(divergence.values).toEqual({ count: 1 })
-    })
-
-    it('should report a reworded comment', () => {
-      const [divergence] = divergencesBetween(
-        withChange({
-          offers: [{ ...PUBLISHED.offers[0], comment: 'Une autre accroche' }, PUBLISHED.offers[1]],
-        }),
-        PUBLISHED,
-      )
-
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
-      expect(divergence.values).toEqual({ count: 1 })
-    })
-
-    it('should report a reworded benefits note', () => {
-      const [divergence] = divergencesBetween(
-        withChange({
-          offers: [{ ...PUBLISHED.offers[0], benefitsComment: 'Un autre bénéfice' }, PUBLISHED.offers[1]],
-        }),
-        PUBLISHED,
-      )
-
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
-      expect(divergence.values).toEqual({ count: 1 })
-    })
-
-    it('should report a degree that changed', () => {
-      const [divergence] = divergencesBetween(
-        withChange({
-          offers: [
-            { ...PUBLISHED.offers[0], priority: OfferPriority.INFORMATIVE },
-            PUBLISHED.offers[1],
-          ],
-        }),
-        PUBLISHED,
-      )
-
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
-    })
-
-    /** Telling a degree that used to be shown changes what the client reads. */
-    it('should report a degree that stopped being shown', () => {
-      const [divergence] = divergencesBetween(
-        withChange({
-          offers: [{ ...PUBLISHED.offers[0], isPriorityVisible: false }, PUBLISHED.offers[1]],
-        }),
-        PUBLISHED,
-      )
-
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
-    })
-
-    /** The order is the reading order, so swapping two is a modification. */
-    it('should report a swap, counting both positions that moved', () => {
-      const [divergence] = divergencesBetween(
-        withChange({ offers: [PUBLISHED.offers[1], PUBLISHED.offers[0]] }),
-        PUBLISHED,
-      )
-
-      expect(divergence.kind).toBe(DivergenceKind.OFFERS)
-      expect(divergence.values).toEqual({ count: 2 })
     })
 
     /** An absent text and an empty one say the same thing to the reader. */
-    it('should not report a comment emptied on one side and absent on the other', () => {
-      expect(divergencesBetween(
-        withChange({ offers: [PUBLISHED.offers[0], { ...PUBLISHED.offers[1], comment: '' }] }),
-        PUBLISHED,
-      )).toEqual([])
+    it('should not report a text emptied on one side and absent on the other', () => {
+      expect(divergencesBetween(withRecommendations(first, { ...second, observations: '' }), PUBLISHED)).toEqual([])
     })
 
     it('should report nothing at all when neither side carries a recommendation', () => {
-      expect(divergencesBetween(
-        withChange({ offers: [] }),
-        { ...PUBLISHED, offers: [] },
-      )).toEqual([])
+      expect(divergencesBetween(withChange({ recommendations: [] }), { ...PUBLISHED, recommendations: [] })).toEqual([])
     })
   })
 })

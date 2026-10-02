@@ -1,3 +1,5 @@
+import { HTTP_RESPONSES } from '@pulse/common/constants'
+
 /** One violation a refusal points at, by JSON pointer into the document sent. */
 export interface ApiErrorEntry {
   pointer?: string
@@ -7,8 +9,8 @@ export interface ApiErrorEntry {
 /**
  * A refusal as the microservice words it (RFC 7807). `code` is the extension it
  * names its own refusals by — `schema-invalid`, `unknown-citations` — and is
- * what a page keys its wording on; `title` and `detail` are the fallback for
- * everything it has no code for.
+ * what a page keys its wording on, beside the pointers of `entries`. `title`
+ * and `detail` are technical English: read, never displayed.
  */
 export interface ApiError {
   status?: number
@@ -50,22 +52,14 @@ export function readApiError(error: unknown): ApiError | undefined {
 }
 
 /**
- * The same refusal as one readable text: what a notification or a field error
- * says. Undefined when the failure carries no readable body, the caller then
- * wording it itself.
+ * The i18n key a refusal is worded by: its code when the caller knows it, a
+ * body too large for the gateway, else the caller's own wording. Never the
+ * text of the microservice, which is technical and in English.
  */
-export function readApiErrorDetail(error: unknown): string | undefined {
-  const apiError = readApiError(error)
-
-  if (apiError === undefined) {
-    return undefined
+export function apiErrorKey(error: unknown, fallbackKey: string, codeKeys: Record<string, string> = {}): string {
+  if (readApiStatus(error) === HTTP_RESPONSES.PAYLOAD_TOO_LARGE) {
+    return 'keyMoments.errors.payloadTooLarge'
   }
 
-  if (apiError.entries.length > 0) {
-    return apiError.entries
-      .map(({ pointer, detail }) => (pointer !== undefined && pointer.length > 0 ? `${pointer} — ${detail}` : detail))
-      .join('\n')
-  }
-
-  return apiError.detail ?? apiError.title
+  return codeKeys[readApiError(error)?.code ?? ''] ?? fallbackKey
 }

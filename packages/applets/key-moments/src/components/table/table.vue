@@ -15,6 +15,11 @@
     >
       <template #default="{ row }">
         <span :class="getRowClasses(row)">{{ row.label }}</span>
+        <DefinitionHint
+          v-if="row.description !== undefined"
+          :definition="row.description"
+          :testId="`key-moments-${widgetId}-${row.id}-definition`"
+        />
       </template>
     </PTableColumn>
     <PTableColumn
@@ -72,6 +77,7 @@ import { useResponsive } from '@pulse/styleguide'
 import { PTable, PTableColumn } from '@pulse/styleguide/components'
 import { LineRole } from '../../enums/key-moments.enums'
 import { ROLE_CELL_STYLE, TREND_TEXT_COLOR_CLASS } from '../../const/key-moments.consts'
+import DefinitionHint from '../definition-hint/definition-hint.vue'
 import type { Cell, Row, TableView } from '../../types/key-moments.types'
 
 const DEFAULT_LABEL_MIN_WIDTH = 260

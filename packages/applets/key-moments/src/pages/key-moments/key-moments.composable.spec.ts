@@ -2,6 +2,8 @@ import { flushPromises } from '@vue/test-utils'
 import { logger } from '@pulse/toolbox'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { displayNotification } from '@pulse/styleguide'
+import { useCurrentEntityStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useKeyMoments } from './key-moments.composable'
 import { ReportManager } from '../../managers/report.manager'
 import { KeyMomentsService } from '../../services/key-moments.service'
@@ -12,6 +14,7 @@ import {
   ValueKind,
   IndicatorSign,
 } from '../../enums/key-moments.enums'
+import type { EntitySummary } from '@pulse/common/types'
 import type {
   ClosingSummary,
   Dataset,
@@ -176,8 +179,8 @@ function buildDraft(overrides: Partial<ExerciceDraft> = {}): ExerciceDraft {
   return {
     preferences: NO_PREFERENCES,
     hiddenWidgetIds: [],
-    offers: [],
     closings: [],
+    recommendations: { recommendations: [] },
     ...overrides,
   }
 }
@@ -189,7 +192,10 @@ function mockDraft(overrides: Partial<ExerciceDraft> = {}) {
       buildDraft({ closings: CLOSINGS[exerciceId] ?? [], ...overrides }))
 }
 
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+
 function mockSources() {
+  currentEntityStoreMock.currentEntity = { legalName: 'SAS TEST' } as EntitySummary
   vi.spyOn(KeyMomentsService, 'getTemplateCatalogue').mockResolvedValue(TEMPLATE_CATALOGUE)
   vi.spyOn(KeyMomentsService, 'getTemplate').mockImplementation(async templateId =>
     structuredClone(templateId === 2 ? TRESORERIE : template))
@@ -220,6 +226,84 @@ function closingFile(endDate: string): File {
 }
 
 describe('useKeyMoments', () => {
+  /**
+   * Whose key moment is read is settled by the route, never by the file: the
+   * closing names the firm's client too, and the two can disagree.
+   */
+  describe('the name displayed', () => {
+    it('should name the dossier before any closing is loaded', () => {
+      mockSources()
+
+      const [{ entityName }] = withSetup(() => useKeyMoments(42))
+
+      expect(entityName.value).toBe('SAS TEST')
+    })
+
+    it('should report the name of a closing that names another company', async () => {
+      mockSources()
+      currentEntityStoreMock.currentEntity = { legalName: 'SARL DEMO' } as EntitySummary
+
+      const [{ entityName, mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+      await flushPromises()
+
+      expect(entityName.value).toBe('SARL DEMO')
+      expect(mismatchedClosingName.value).toBe('SAS TEST')
+    })
+
+    it('should report nothing while no closing is loaded', () => {
+      mockSources()
+
+      const [{ mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+
+      expect(mismatchedClosingName.value).toBeUndefined()
+    })
+
+    it('should report nothing when both name the same company', async () => {
+      mockSources()
+
+      const [{ mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+      await flushPromises()
+
+      expect(mismatchedClosingName.value).toBeUndefined()
+    })
+
+    /** The same name written in another case, or spaced out, is the same name. */
+    it('should read a name written differently as the same name', async () => {
+      mockSources()
+      currentEntityStoreMock.currentEntity = { legalName: '  Sas   Test  ' } as EntitySummary
+
+      const [{ mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+      await flushPromises()
+
+      expect(mismatchedClosingName.value).toBeUndefined()
+    })
+
+    /** The export and the dossier do not always agree on accents: that is not another company. */
+    it('should read a name written with or without its accents as the same name', async () => {
+      mockSources()
+      vi.spyOn(ReportManager, 'buildReport').mockReturnValue({
+        ...structuredClone(report),
+        entity: { name: 'SOCIETE GENERALE DES EAUX', legalForm: 'SAS', siret: '12345678900015' },
+      })
+      currentEntityStoreMock.currentEntity = { legalName: 'Société Générale des Eaux' } as EntitySummary
+
+      const [{ mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+      await flushPromises()
+
+      expect(mismatchedClosingName.value).toBeUndefined()
+    })
+
+    it('should still report a name that differs by more than its accents', async () => {
+      mockSources()
+      currentEntityStoreMock.currentEntity = { legalName: 'SAS TÉST ET FILS' } as EntitySummary
+
+      const [{ mismatchedClosingName }] = withSetup(() => useKeyMoments(42))
+      await flushPromises()
+
+      expect(mismatchedClosingName.value).toBe('SAS TEST')
+    })
+  })
+
   it('should open the most recent exercice on its last import', async () => {
     mockSources()
 
@@ -264,6 +348,16 @@ describe('useKeyMoments', () => {
 
     expect(periods.value.map(period => period.key)).toEqual(['N', 'N-1'])
     expect(loaded.value).toEqual(template)
+  })
+
+  it('should hand over a draft the recommendations never reached as an empty list', async () => {
+    mockSources()
+    mockDraft({ recommendations: null } as unknown as Partial<ExerciceDraft>)
+
+    const [{ draftRecommendations }] = withSetup(() => useKeyMoments(42))
+    await flushPromises()
+
+    expect(draftRecommendations.value).toEqual({ recommendations: [] })
   })
 
   it('should flag an error when the figures cannot be loaded', async () => {
@@ -421,6 +515,30 @@ describe('useKeyMoments', () => {
     expect(selectedClosingId.value).toBe(89)
     expect(vi.mocked(KeyMomentsService.getKeyMomentsData)).toHaveBeenLastCalledWith(42, 89)
     expect(vi.mocked(KeyMomentsService.getDraft)).toHaveBeenCalledOnce()
+  })
+
+  it('should open an exercice again on the import asked for, reading its draft again', async () => {
+    mockSources()
+
+    const [{ selectExercice, selectedClosingId }] = withSetup(() => useKeyMoments(42))
+    await flushPromises()
+
+    await selectExercice(9, 89)
+
+    expect(vi.mocked(KeyMomentsService.getDraft)).toHaveBeenCalledTimes(2)
+    expect(selectedClosingId.value).toBe(89)
+    expect(vi.mocked(KeyMomentsService.getKeyMomentsData)).toHaveBeenLastCalledWith(42, 89)
+  })
+
+  it('should open the last import when the one asked for is not among the imports of the exercice', async () => {
+    mockSources()
+
+    const [{ selectExercice, selectedClosingId }] = withSetup(() => useKeyMoments(42))
+    await flushPromises()
+
+    await selectExercice(9, 80)
+
+    expect(selectedClosingId.value).toBe(90)
   })
 
   it('should expose the exercices and the imports of the one being read', async () => {
@@ -602,7 +720,7 @@ describe('useKeyMoments', () => {
       expect(vi.mocked(KeyMomentsService.getKeyMomentsData)).toHaveBeenCalledWith(42, 90)
     })
 
-    it('should report what the microservice refused without loading anything', async () => {
+    it('should word what the microservice refused, never its own text, without loading anything', async () => {
       mockSources()
       vi.spyOn(KeyMomentsService, 'importClosing').mockRejectedValue({
         response: { data: { errors: [{ code: 'schema-invalid', pointer: '', detail: 'nope' }] } },
@@ -614,7 +732,7 @@ describe('useKeyMoments', () => {
 
       await importClosing(closingFile('2025-12-31'))
 
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', 'nope')
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', 'keyMoments.import.error')
       expect(vi.mocked(KeyMomentsService.getExercices)).not.toHaveBeenCalled()
       expect(vi.mocked(logger.error)).toHaveBeenCalled()
     })
@@ -642,8 +760,8 @@ describe('useKeyMoments', () => {
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', message)
     })
 
-    /** Every other refusal still falls back on the report of the schema. */
-    it('should keep reporting the schema on a refusal it does not word', async () => {
+    /** Every other refusal falls back on the page's own wording. */
+    it('should fall back on its own wording for a refusal it does not know', async () => {
       mockSources()
       vi.spyOn(KeyMomentsService, 'importClosing').mockRejectedValue({
         response: { data: { code: 'ambiguous-siret', errors: [{ pointer: '', detail: 'nope' }] } },
@@ -654,7 +772,7 @@ describe('useKeyMoments', () => {
 
       await importClosing(closingFile('2025-12-31'))
 
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', 'nope')
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', 'keyMoments.import.error')
     })
 
     it('should word an unreadable file itself', async () => {
@@ -833,29 +951,6 @@ describe('useKeyMoments', () => {
       expect(hiddenFlags(loaded.value)).toEqual([
         undefined,
         { comment: true, cards: ['effectif'] },
-      ])
-    })
-
-    /**
-     * Undoing a decision states the whole list at once rather than replaying
-     * the gestures that led to it, one write for one decision.
-     */
-    it('should write down the list a publication froze, as one decision', async () => {
-      mockSources()
-      mockSectionedTemplate()
-      mockDraft({ hiddenWidgetIds: ['charges-externes', 'perso'] })
-
-      const [{ hiddenWidgetIds, template: loaded, writeHiddenWidgets }] =
-        withSetup(() => useKeyMoments(42))
-      await flushPromises()
-
-      await writeHiddenWidgets(['perso'])
-
-      expect(vi.mocked(KeyMomentsService.saveHiddenWidgets)).toHaveBeenCalledWith(42, 9, ['perso'])
-      expect(hiddenWidgetIds.value).toEqual(['perso'])
-      expect(hiddenFlags(loaded.value)).toEqual([
-        undefined,
-        { widget: true, comment: true, cards: ['effectif'] },
       ])
     })
 
@@ -1065,23 +1160,6 @@ describe('useKeyMoments', () => {
 
       expect(selectedReferenceKey.value).toBe('N-1')
     })
-
-    /**
-     * Undoing a change of closing restores that one alone: the comparison in
-     * use is a reading of its own, and nothing may move along with it.
-     */
-    it('should carry a comparison over when the caller keeps it', async () => {
-      mockComparableSources()
-
-      const [{ selectedReferenceKey, selectComparison, selectClosing }] =
-        withSetup(() => useKeyMoments(42))
-      await flushPromises()
-      selectComparison('N-2')
-
-      await selectClosing(89, 'N-2')
-
-      expect(selectedReferenceKey.value).toBe('N-2')
-    })
   })
 
   /**
@@ -1259,7 +1337,6 @@ describe('useKeyMoments', () => {
         templateModelOptions,
         exerciceOptions,
         closingOptions,
-        selectedExerciceYear,
       }] =
         withSetup(() => useKeyMoments(42))
       await flushPromises()
@@ -1276,7 +1353,6 @@ describe('useKeyMoments', () => {
         pValue: 90,
         pLabel: 'keyMoments.closingSelect.option',
       })
-      expect(selectedExerciceYear.value).toBe('2025')
     })
   })
 })

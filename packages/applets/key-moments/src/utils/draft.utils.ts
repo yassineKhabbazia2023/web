@@ -1,7 +1,6 @@
 import { ReportManager } from '../managers/report.manager'
-import type { CustomerOfferPayload } from '../services/customer-key-moments.service.types'
 import type { KeyMomentsDraft } from '../stores/key-moments-draft.types'
-import type { Dataset, LinkedOffer, Report } from '../types/key-moments.types'
+import type { Dataset, Report } from '../types/key-moments.types'
 
 /**
  * The figures under the texts the client would read: slot id to publishable
@@ -14,25 +13,6 @@ export function projectDraftDataset(
   publishedComments: Record<string, string>,
 ): Dataset {
   return { ...dataset, comments: publishedComments }
-}
-
-/**
- * The recommendations as the client would be served them: the ones attached,
- * not hidden and still described by the catalogue, in order. A degree the firm
- * chose not to show is simply absent, as the microservice serves it.
- */
-export function customerOffersOf(linkedOffers: LinkedOffer[]): CustomerOfferPayload[] {
-  return linkedOffers
-    .filter(offer => offer.isHidden === false && offer.isRetired === false)
-    .map(offer => ({
-      offerId: offer.offerId,
-      title: offer.title,
-      shortDescription: offer.shortDescription,
-      categoryName: offer.categoryName,
-      comment: offer.comment,
-      benefitsComment: offer.benefitsComment,
-      priority: offer.isPriorityVisible ? offer.priority : undefined,
-    }))
 }
 
 /**

@@ -3,9 +3,9 @@
     class="
       key-moments-filter-field
       flex
-      flex--direction-column
       flex-gap--2
     "
+    :class="isInline ? 'flex--align-items-center' : 'flex--direction-column'"
   >
     <span
       class="
@@ -52,6 +52,8 @@ const props = defineProps<{
   testId: string
   /** Why the field reads the way it does; absent leaves the caption bare */
   hint?: string
+  /** Caption beside the control rather than above it, for a one-line bar */
+  isInline?: boolean
 }>()
 
 // The control is labelled by the visible caption, so a screen reader announces it once

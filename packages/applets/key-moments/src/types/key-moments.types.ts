@@ -9,13 +9,14 @@ import type {
   LineRole,
   MeasureNature,
   MeasureRole,
-  OfferPriority,
   Renderer,
   Trend,
   ValueKind,
   WaterfallStepKind,
 } from '../enums/key-moments.enums'
-import type { CatalogOfferPayload, LinkedOfferPayload } from '../services/offers.service.types'
+import type { CatalogOfferPayload } from '../services/offers.service.types'
+import type { ExerciceRecommendationsPayload } from '../services/recommendations.service.types'
+import type { PublishedRecommendationPayload } from './recommendations.types'
 
 /* ------------------------------------------------------------------ *
  * Indicators — the accounting vocabulary. A indicator is declared once,
@@ -36,6 +37,8 @@ export interface Indicator {
    * one is only worth it for the indicators a full label would not fit.
    */
   shortLabel?: string
+  /** What the indicator means, offered beside its name; null when the firm wrote none */
+  description?: string | null
   kind: ValueKind
   /** Drives the reading of a delta, never the way values are stored */
   sign: IndicatorSign
@@ -459,6 +462,8 @@ export interface Cell {
 export interface Row {
   id: string
   label: string
+  /** Definition of the indicator the line reads, absent when none was written */
+  description?: string
   role?: LineRole
   cells: Record<string, Cell>
 }
@@ -471,6 +476,8 @@ export interface CardDetail {
 export interface Card {
   id: string
   title: string
+  /** Definition of the indicator the card reads, absent when none was written */
+  description?: string
   value?: string
   /** Same indicator on the previous period, shown in the card footer */
   previous?: CardDetail
@@ -740,12 +747,12 @@ export interface CommentVariant {
 /**
  * Everything the encart of one widget needs, assembled by the comments
  * composable: which slot
- * it writes to, the readings it offers, and the one retained.
+ * it writes to, the readings it offers, and the one the client would read.
  */
 export interface CommentBoard {
   slotId: string
   variants: CommentVariant[]
-  /** Key of the retained variant; empty while nothing is retained */
+  /** Key of the variant the firm retained; empty while it falls back on the default */
   retainedKey: string
   /**
    * Key of the reading that would be published — the retained one when the firm
@@ -833,15 +840,12 @@ export interface PublishableState {
    */
   hiddenWidgets: string[]
   /**
-   * What publishing would freeze of the recommendations: the ones not hidden,
-   * in order, reduced to what the firm decided about them.
-   *
-   * A projection rather than the stored list, because the published side reads
-   * `PublicationDetail.offers`, which no longer carries the hidden ones —
-   * comparing the whole stored list against it would read a hidden offer as a
-   * detached one.
+   * What publishing would freeze of the recommendations: the visible ones, in
+   * order, flat. A projection rather than the working copy, because the
+   * published side reads `PublicationDetail.recommendations`, which carries
+   * the visible ones only.
    */
-  offers: PublishableOffer[]
+  recommendations: PublishedRecommendationPayload[]
 }
 
 /**
@@ -879,8 +883,9 @@ export interface EditorPreferences {
 export interface ExerciceDraft {
   preferences: EditorPreferences
   hiddenWidgetIds: string[]
-  offers: LinkedOfferPayload[]
   closings: ClosingSummary[]
+  /** The recommendations of the exercice, read with the rest and written on their own route */
+  recommendations: ExerciceRecommendationsPayload
 }
 
 /** The published preferences an exercice reopens on. */
@@ -966,61 +971,8 @@ export interface FilterOption {
 }
 
 /* ------------------------------------------------------------------ *
- * Recommendations — the offers of the catalogue the firm attaches to an
- * exercice, and what it decides about each of them.
+ * The offers catalogue, as the recommendations pick from it.
  * ------------------------------------------------------------------ */
-
-/**
- * A recommendation as the screen reads it: the stored snapshot overlaid with
- * the catalogue wherever it still carries the offer.
- *
- * Every decision is read off the attached row and never off the catalogue,
- * which is what lets an offer retired from the catalogue keep the words the
- * firm wrote about it.
- */
-export interface LinkedOffer {
-  offerId: number
-  title: string
-  shortDescription?: string
-  /**
-   * What the offer is named by, both in the picker that chooses it and on the
-   * card that keeps it — resolved in the catalogue on every read, like the
-   * title, since the microservice stores none of it.
-   */
-  tags?: string[]
-  /**
-   * Read by nobody on the editing surface, which names an offer by its tags.
-   * Kept all the same: the mirror preview composes a `CustomerOfferPayload`
-   * itself, and it has to be the one the back serves for a real publication —
-   * which still names a category.
-   */
-  categoryName?: string
-  /** What the firm wrote about the offer, which the client ends up reading */
-  comment?: string
-  /** What the offer brings the client's business, in the firm's words */
-  benefitsComment?: string
-  priority?: OfferPriority
-  isPriorityVisible: boolean
-  isHidden: boolean
-  /**
-   * Gone from the catalogue. Kept in the list all the same: dropping it would
-   * be an editorial arbitration, and that one belongs to the firm.
-   */
-  isRetired: boolean
-}
-
-/**
- * What a recommendation decides, and nothing of what the catalogue says about
- * it. The only shape the publication diff compares — rewording an offer in the
- * catalogue is nobody's gesture, and must never light the publish button.
- */
-export interface PublishableOffer {
-  offerId: number
-  comment?: string
-  benefitsComment?: string
-  priority?: OfferPriority
-  isPriorityVisible: boolean
-}
 
 /**
  * A catalogue offer and the single string it is searched on, indexed once when

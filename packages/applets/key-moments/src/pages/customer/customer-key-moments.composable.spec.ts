@@ -10,7 +10,8 @@ import { KeyMomentsTracking } from '../../services/key-moments.tracking'
 import {
   IndicatorSign,
   MeasureNature,
-  OfferPriority,
+  RecommendationPriority,
+  RecommendationRubric,
   Renderer,
   ValueKind,
 } from '../../enums/key-moments.enums'
@@ -49,6 +50,7 @@ const KEY_MOMENT: CustomerKeyMomentPayload = {
   preferenceCurrencyDisplay: 'thousands',
   publishedAt: '2026-03-14T09:12:00Z',
   comments: { synthese: 'Le texte que le cabinet a retenu.' },
+  recommendations: [],
 }
 
 const INDICATORS: Indicators = {
@@ -157,14 +159,31 @@ describe('useCustomerKeyMoments', () => {
     expect(screens.value.length).toBeGreaterThan(0)
   })
 
-  /** Whose figures are read, which the page puts in its own title. */
-  it('should name the firm the closing was produced for', async () => {
+  /** The closing the report was built from, which names the exported file. */
+  it('should keep the entity the closing was produced for', async () => {
     mockSources()
 
     const [{ entity }] = withSetup(() => useCustomerKeyMoments(42))
     await flushPromises()
 
     expect(entity.value?.name).toBe('SAS TEST')
+  })
+
+  /**
+   * What the page puts in its title: the dossier being read, never the name the
+   * closing carries — the two can disagree, and only one of them is authoritative.
+   */
+  it('should name the dossier being read', async () => {
+    mockSources()
+    currentEntityStoreMock.currentEntity = {
+      legalName: 'SAS TEST ET FILS',
+      office: { name: 'Office Lyon' },
+    } as EntitySummary
+
+    const [{ entityName }] = withSetup(() => useCustomerKeyMoments(42))
+    await flushPromises()
+
+    expect(entityName.value).toBe('SAS TEST ET FILS')
   })
 
   /**
@@ -416,34 +435,35 @@ describe('useCustomerKeyMoments', () => {
    */
   describe('the recommendations', () => {
 
-    const OFFER = {
-      offerId: 128,
-      title: 'Pack Prévoyance TNS',
-      shortDescription: 'Couverture des indépendants',
-      categoryName: 'Protection sociale',
-      comment: 'Adapté à votre passage en SASU',
-      priority: OfferPriority.PRIMARY,
+    const RUBRIC = {
+      rubric: RecommendationRubric.MANAGEMENT,
+      theme: 'Trésorerie',
+      priority: RecommendationPriority.PRIMARY,
+      recommendation: 'Mettre en place un tableau de bord.',
+      offers: [{ offerId: 128, title: 'Pack Prévoyance TNS' }],
     }
 
     it('should read what the publication froze', async () => {
       mockSources()
       vi.spyOn(CustomerKeyMomentsService, 'getKeyMoment')
-        .mockResolvedValue({ ...KEY_MOMENT, offers: [OFFER] })
+        .mockResolvedValue({ ...KEY_MOMENT, recommendations: [RUBRIC] })
 
-      const [{ offers }] = withSetup(() => useCustomerKeyMoments(42))
+      const [{ recommendations }] = withSetup(() => useCustomerKeyMoments(42))
       await flushPromises()
 
-      expect(offers.value).toEqual([OFFER])
+      expect(recommendations.value).toEqual([RUBRIC])
     })
 
-    /** A key moment published before the field existed reads as none. */
-    it('should read a payload without the field as no recommendation at all', async () => {
+    it('should read a key moment published before the recommendations as having none', async () => {
       mockSources()
+      vi.spyOn(CustomerKeyMomentsService, 'getKeyMoment')
+        .mockResolvedValue({ ...KEY_MOMENT, recommendations: null } as unknown as typeof KEY_MOMENT)
 
-      const [{ offers }] = withSetup(() => useCustomerKeyMoments(42))
+      const [{ recommendations, isEmpty }] = withSetup(() => useCustomerKeyMoments(42))
       await flushPromises()
 
-      expect(offers.value).toEqual([])
+      expect(recommendations.value).toEqual([])
+      expect(isEmpty.value).toBe(false)
     })
 
     /**
@@ -455,7 +475,7 @@ describe('useCustomerKeyMoments', () => {
       vi.spyOn(CustomerKeyMomentsService, 'getKeyMomentTemplate')
         .mockResolvedValue({ ...structuredClone(TEMPLATE), screens: [] })
       vi.spyOn(CustomerKeyMomentsService, 'getKeyMoment')
-        .mockResolvedValue({ ...KEY_MOMENT, offers: [OFFER] })
+        .mockResolvedValue({ ...KEY_MOMENT, recommendations: [RUBRIC] })
 
       const [{ isEmpty, screens }] = withSetup(() => useCustomerKeyMoments(42))
       await flushPromises()

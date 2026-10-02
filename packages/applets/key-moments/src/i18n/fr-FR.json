@@ -4,6 +4,7 @@
     "titleOf": "Moments clés de {name}",
     "error": "Les moments clés de ce dossier n'ont pas pu être chargés.",
     "empty": "Aucune clôture n'a encore été importée pour ce dossier.",
+    "entityNameMismatch": "La clôture importée nomme l'entité « {closingName} », alors que le dossier s'appelle « {entityName} ».",
     "import": {
       "button": "Importer une clôture",
       "success": "La clôture a été importée.",
@@ -23,7 +24,8 @@
         "pptx": "L'export PowerPoint n'a pas abouti.",
         "pdf": "L'export PDF n'a pas abouti."
       },
-      "continued": "(suite)"
+      "continued": "(suite)",
+      "menu": "Exporter"
     },
     "publish": {
       "button": {
@@ -39,7 +41,10 @@
         "delivery": "le client ne lit pas la dernière livraison",
         "unreadable": "L'état publié n'a pas pu être lu : rechargez la page pour publier.",
         "modified": "{count} modification non publiée | {count} modifications non publiées",
-        "unresolvedOffers": "{count} recommandation introuvable au catalogue : détachez-la pour publier. | {count} recommandations introuvables au catalogue : détachez-les pour publier."
+        "unresolvedOffers": "{count} recommandation introuvable au catalogue : détachez-la pour publier. | {count} recommandations introuvables au catalogue : détachez-les pour publier.",
+        "recommendationsWithoutTheme": "{count} recommandation sans thème : choisissez-en un ou supprimez-la pour publier. | {count} recommandations sans thème : choisissez-en un ou supprimez-les pour publier.",
+        "offersAccessRequired": "Il faut avoir l'accès aux offres pour publier.",
+        "themesUnreadable": "Les thèmes des recommandations n'ont pas pu être lus : rechargez la page pour publier."
       },
       "divergence": {
         "closing": "Clôture changée : {to}",
@@ -50,14 +55,20 @@
         "currency": "Lecture en {unit}",
         "comments": "{count} commentaire modifié | {count} commentaires modifiés",
         "hiddenWidgets": "{hidden} sous-section masquée, {shown} réaffichée | {hidden} sous-sections masquées, {shown} réaffichées",
-        "offers": "{count} recommandation modifiée | {count} recommandations modifiées"
+        "recommendations": "{count} recommandation modifiée | {count} recommandations modifiées"
       },
-      "revert": {
+      "restore": {
         "title": "Modifications non publiées",
-        "button": "Annuler",
-        "unavailable": "Non annulable",
-        "unavailableHint": "Ce choix n'est plus au catalogue : il ne peut plus être rétabli.",
-        "commentsHint": "Rétablit les commentaires retenus lors de la publication. Aucun texte n'est modifié."
+        "button": "Revenir à la dernière version publiée",
+        "popup": {
+          "title": "Revenir à la version publiée ?",
+          "message": "Le Moment clé reprendra la dernière version publiée. Toutes les modifications faites depuis seront perdues, y compris les textes réécrits par les contributeurs et les recommandations masquées.",
+          "confirm": "Revenir à la version publiée",
+          "cancel": "Annuler"
+        },
+        "success": "Le Moment clé a repris sa dernière version publiée.",
+        "error": "Le retour à la version publiée a échoué.",
+        "notPublished": "Ce Moment clé n'est plus publié : il n'y a plus de version à laquelle revenir."
       },
       "success": "Le Moment clé est publié.",
       "error": "La publication a échoué.",
@@ -66,7 +77,11 @@
         "message": "Le rapport sera publié tel qu'il s'affiche, avec les commentaires retenus.",
         "replace": "Une publication du {date} par {author} existe déjà pour cet exercice : elle sera remplacée par ce qui suit.",
         "confirm": "Publier",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "noCategory": "Aucune catégorie de recommandations n'a été choisie pour cet exercice.",
+        "recommendations": "{count} recommandation sera publiée et deviendra consultable par le client. | {count} recommandations seront publiées et deviendront consultables par le client.",
+        "noRecommendation": "Attention vous tentez de publier alors qu'il n'y a pas de recommandation, confirmez-vous ?",
+        "confirmWithoutRecommendation": "Confirmer la publication"
       },
       "missingOffersError": "La publication a été refusée : une recommandation n'est plus décrite au catalogue."
     },
@@ -94,7 +109,8 @@
         "draft": "Brouillon",
         "published": "Publiée"
       },
-      "noDraft": "Aucun brouillon à afficher — revenez à l'éditeur."
+      "noDraft": "Aucun brouillon à afficher — revenez à l'éditeur.",
+      "clientTag": "Vue client"
     },
     "table": {
       "label": "Libellé"
@@ -121,29 +137,35 @@
     "comment": {
       "title": "COMMENTAIRE",
       "wordmark": "Comment'",
-      "empty": "Aucun commentaire pour cette partie.",
       "placeholder": "Saisissez votre commentaire",
       "edit": "Modifier",
       "save": "Enregistrer",
-      "add": "Ajouter mon commentaire",
       "delivered": "Livré",
       "deliveredVersion": "Version {version}",
       "unknownContributor": "Contributeur",
       "saveError": "Votre commentaire n'a pas pu être enregistré.",
       "retainError": "La version retenue n'a pas pu être enregistrée.",
-      "retain": "Retenir",
-      "discard": "Écarter",
-      "reintegrate": "Réintégrer",
+      "retain": "Retenir ce commentaire",
       "discarded": "Emplacement écarté : rien ne sera publié ici.",
       "discardError": "L'emplacement n'a pas pu être écarté.",
-      "publishable": "Version retenue pour la publication",
-      "updatedAt": "modifié le {date}",
-      "tabsAriaLabel": "Versions du commentaire"
+      "composerPlaceholder": "Ajouter un commentaire…",
+      "cancel": "Annuler",
+      "hide": "Ne plus afficher",
+      "retainedBadge": "COMMENTAIRE RETENU",
+      "delete": "Supprimer",
+      "deletePopup": {
+        "title": "Supprimer votre commentaire ?",
+        "message": "Le commentaire suivant sera définitivement supprimé : {comment}",
+        "displayedWarning": "Ce commentaire est celui affiché au client : le supprimer peut écarter l'emplacement, et plus rien ne sera publié ici.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      },
+      "freeze": "Figer ce commentaire",
+      "freezeHint": "Affiché par défaut, ce commentaire suit la dernière version livrée : un prochain import pourrait le remplacer. Le figer le garde tel quel."
     },
     "visibility": {
       "hiddenBadge": "Masqué",
-      "hide": "Masquer la sous-section",
-      "show": "Afficher la sous-section",
+      "switchLabel": "Visible pour le client",
       "error": "Impossible d'enregistrer les sous-sections publiées"
     },
     "preferences": {
@@ -187,7 +209,9 @@
     "nav": {
       "title": "Navigation",
       "collapse": "Réduire la navigation",
-      "expand": "Afficher la navigation"
+      "expand": "Afficher la navigation",
+      "chooseCategory": "Choisir une catégorie",
+      "rubricCount": "{visible}/{total}"
     },
     "waterfall": {
       "balance": "Solde (total)",
@@ -202,49 +226,12 @@
       "start": "Point de départ",
       "end": "Reconstitution finale de la trésorerie"
     },
-    "offers": {
-      "title": "Nos recommandations",
-      "subtitle": "Nos préconisations pour l'exercice à venir",
-      "add": "Rattacher une offre",
-      "capReached": "Vous ne pouvez pas rattacher plus de {count} offres à un exercice.",
-      "error": "Les recommandations n'ont pas pu être enregistrées.",
-      "readError": "Les recommandations de l'exercice n'ont pas pu être chargées : rechargez la page avant d'en modifier.",
-      "picker": {
-        "title": "Rattacher une offre à l'exercice {year}",
-        "search": "Rechercher une offre",
-        "allTags": "Toutes",
-        "choose": "Choisir cette offre",
-        "chosen": "Déjà rattachée",
-        "empty": "Aucune offre ne correspond à cette recherche."
-      },
-      "card": {
-        "commentPlaceholder": "Pourquoi cette offre, pour ce client",
-        "remove": "Retirer cette offre",
-        "hide": "Masquer l'offre",
-        "show": "Afficher l'offre",
-        "hiddenBadge": "Masquée",
-        "retired": "Offre retirée du catalogue",
-        "priorityLabel": "Priorité",
-        "priorityNone": "Aucune",
-        "priorityHidden": "Masquer la priorité au client",
-        "priorityHiddenHint": "Posez d'abord une priorité.",
-        "commentEmpty": "Aucune note sur cette offre.",
-        "commentTitle": "Pourquoi nous vous recommandons cette offre ?",
-        "benefitsCommentTitle": "Bénéfices pour votre entreprise",
-        "benefitsCommentPlaceholder": "Ce que cette offre apporte à votre entreprise",
-        "benefitsCommentEmpty": "Aucun bénéfice renseigné pour cette offre."
-      },
-      "priority": {
-        "primary": "Prioritaire",
-        "significant": "Significatif",
-        "informative": "Informatif"
-      }
-    },
     "settings": {
       "title": "Moments Clés",
       "tabs": {
         "templates": "Templates",
-        "indicators": "Indicateurs"
+        "indicators": "Indicateurs",
+        "recommendations": "Recommandations"
       },
       "templates": {
         "new": "Nouveau template",
@@ -268,7 +255,8 @@
           "copyLabel": "{label} (copie)",
           "cancel": "Annuler",
           "create": "Créer",
-          "error": "Le template n'a pas pu être créé."
+          "error": "Le template n'a pas pu être créé.",
+          "codeTaken": "Ce code est déjà utilisé."
         },
         "withdraw": "Retirer du catalogue",
         "withdrawDialog": {
@@ -586,12 +574,145 @@
         "cancel": "Annuler",
         "save": "Enregistrer",
         "saved": "Indicateur enregistré.",
-        "error": "L'indicateur n'a pas pu être enregistré."
+        "error": "L'indicateur n'a pas pu être enregistré.",
+        "description": "Définition",
+        "descriptionHint": "Affichée en infobulle à côté du nom de l'indicateur. Ex. : Chiffre d'affaires minimum à réaliser pour couvrir l'ensemble des charges."
       },
       "drawerActions": {
         "save": "Sauvegarder",
         "cancel": "Annuler"
+      },
+      "recommendations": {
+        "categories": {
+          "create": "Créer une catégorie",
+          "count": "{count} catégorie | {count} catégories",
+          "hint": "Le collaborateur choisit une catégorie et en reçoit une copie dans son exercice ; modifier une catégorie ne change pas les exercices déjà servis.",
+          "empty": "Aucune catégorie.",
+          "edit": "Modifier",
+          "remove": "Supprimer la catégorie",
+          "confirmRemove": "Supprimer",
+          "cancel": "Annuler",
+          "removeText": "Supprimer « {label} » et ses recommandations ? Les exercices qui l'ont copiée gardent leur copie.",
+          "removed": "Catégorie supprimée.",
+          "removeError": "La catégorie n'a pas pu être supprimée.",
+          "loadError": "Les catégories n'ont pas pu être lues."
+        },
+        "categoryDrawer": {
+          "titleCreate": "Nouvelle catégorie",
+          "titleEdit": "Catégorie « {label} »",
+          "label": "Libellé",
+          "pitch": "Pitch",
+          "pitchHint": "Une phrase qui présente le secteur sur l'écran de choix.",
+          "recommendations": "Recommandations de base",
+          "recommendationsHint": "Regroupées par rubrique, dans l'ordre où le collaborateur les recevra. Glissez-les pour les réordonner au sein d'une rubrique.",
+          "readError": "Les recommandations n'ont pas pu être lues.",
+          "incompleteHint": "Une recommandation sans thème empêche l'enregistrement.",
+          "unreadableHint": "Recommandations non lues : fermez puis rouvrez la catégorie pour réessayer.",
+          "save": "Enregistrer",
+          "cancel": "Annuler",
+          "saved": "Catégorie enregistrée.",
+          "saveError": "La catégorie n'a pas pu être enregistrée."
+        }
       }
+    },
+    "recommendations": {
+      "picker": {
+        "search": "Rechercher une offre",
+        "allTags": "Toutes",
+        "choose": "Choisir cette offre",
+        "selected": "Offre sélectionnée",
+        "empty": "Aucune offre ne correspond à cette recherche.",
+        "count": "{count} offre sélectionnée | {count} offres sélectionnées",
+        "cancel": "Annuler",
+        "validate": "Valider la sélection"
+      },
+      "priority": {
+        "primary": "Prioritaire",
+        "significant": "Significatif",
+        "informative": "Informatif"
+      },
+      "saveError": "Les recommandations n'ont pas pu être enregistrées. Vos saisies sont conservées et seront renvoyées à la prochaine modification.",
+      "unknownThemeError": "Certains thèmes ne sont plus proposés : rien n'a été enregistré. Choisissez un autre thème sur les recommandations signalées.",
+      "themesError": "La liste des thèmes n'a pas pu être lue : les recommandations ne peuvent pas être affichées. Rechargez la page pour réessayer.",
+      "categoryPicker": {
+        "title": "Choisissez la catégorie du dossier",
+        "text": "Les recommandations de la catégorie seront copiées dans l'exercice ; vous pourrez ensuite les ajuster.",
+        "cancel": "Annuler",
+        "empty": "Aucune catégorie n'est disponible."
+      },
+      "header": {
+        "overline": "Catégorie retenue",
+        "count": "{total} recommandation · {visible} visible pour le client | {total} recommandations · {visible} visibles pour le client",
+        "change": "Changer de catégorie",
+        "unknownCategory": "Catégorie retirée du référentiel",
+        "saving": "Enregistrement…",
+        "saveFailed": "Dernier enregistrement refusé"
+      },
+      "card": {
+        "move": "Déplacer la recommandation",
+        "themeMissing": "Thème à renseigner",
+        "priorityMissing": "Priorité à définir",
+        "offerCount": "{count} offre(s)",
+        "visible": "Visible pour le client",
+        "priority": "Priorité",
+        "theme": "Thème",
+        "observations": "Observations",
+        "observationsHint": "Ce que vous avez observé dans le dossier",
+        "risk": "Risque",
+        "riskHint": "Ce que le client risque à ne rien faire",
+        "recommendation": "Recommandation",
+        "recommendationHint": "Ce que vous recommandez",
+        "remove": "Supprimer",
+        "removeText": "Cette recommandation sera retirée de la rubrique.",
+        "confirmRemove": "Supprimer",
+        "cancel": "Annuler",
+        "themeHint": "Choisir un thème",
+        "themeRequired": "Thème obligatoire : la recommandation n'est pas enregistrée tant qu'il manque.",
+        "themeRefused": "Ce thème n'est plus proposé : choisissez-en un autre."
+      },
+      "rubric": {
+        "count": "{visible} visible(s) / {total}",
+        "add": "+ Ajouter une recommandation",
+        "empty": "Aucune recommandation dans cette rubrique. Vous pouvez en ajouter une.",
+        "total": "{count} recommandation | {count} recommandations"
+      },
+      "offers": {
+        "title": "Offres rattachées ({count})",
+        "retired": "Offre retirée du catalogue",
+        "learnMore": "En savoir +",
+        "detach": "Retirer cette offre",
+        "attach": "+ Rattacher des offres",
+        "pickerTitle": "Rattacher des offres à la recommandation"
+      },
+      "title": "Nos recommandations",
+      "subtitle": "Nos préconisations pour l'exercice à venir",
+      "customer": {
+        "empty": "Aucune recommandation n'est visible pour le client.",
+        "count": "{count} recommandation | {count} recommandations",
+        "observations": "Observations",
+        "risk": "Risque",
+        "recommendation": "Recommandation"
+      },
+      "replace": {
+        "title": "Changer de catégorie",
+        "text": "Remplacer les recommandations actuelles par celles de « {label} » ? Les saisies en cours seront perdues.",
+        "confirm": "Remplacer",
+        "cancel": "Annuler"
+      },
+      "export": {
+        "offers": "Offres"
+      },
+      "chooseError": "La catégorie n'a pas pu être lue.",
+      "rubrics": {
+        "management": "Gestion",
+        "accounting": "Comptables, fiscales et financières",
+        "sector": "Propres à votre secteur",
+        "social": "Gestion sociale",
+        "wealth": "Patrimoniales"
+      }
+    },
+    "errors": {
+      "payloadTooLarge": "Le contenu envoyé est trop volumineux pour être enregistré."
     }
   }
 }

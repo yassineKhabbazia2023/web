@@ -20,14 +20,14 @@
         <div>
           <PTitle>
             <i18n-t
-              v-if="entity !== undefined"
+              v-if="entityName !== undefined"
               keypath="keyMoments.titleOf"
               scope="global"
               tag="span"
             >
               <template #name>
                 <span class="key-moments__entity-name text-color--jungle-400">
-                  {{ entity.name }}
+                  {{ entityName }}
                 </span>
               </template>
             </i18n-t>
@@ -78,34 +78,6 @@
             testId="customer-key-moments-filter-unit"
             @select="value => emit('toggle-thousands', value === true)"
           />
-
-          <!-- Exports the report on screen as the client reads it; collaborator only -->
-          <div
-            v-if="canExport === true && hasReport"
-            class="flex flex-gap--2"
-          >
-            <PButton
-              pSize="small"
-              pType="tertiary"
-              :pLoading="isExportingDeck"
-              pTestId="key-moments-export-button"
-              @click="onExport(ExportFormat.PPTX)"
-            >
-              <PIcon pName="filetypePpt" />
-              <span class="padding-left--2">{{ t('keyMoments.export.button.pptx') }}</span>
-            </PButton>
-
-            <PButton
-              pSize="small"
-              pType="tertiary"
-              :pLoading="isExportingPdf"
-              pTestId="key-moments-export-pdf-button"
-              @click="onExport(ExportFormat.PDF)"
-            >
-              <PIcon pName="filetypePdf" />
-              <span class="padding-left--2">{{ t('keyMoments.export.button.pdf') }}</span>
-            </PButton>
-          </div>
         </div>
       </div>
 
@@ -119,7 +91,8 @@
         <Nav
           v-if="hasNav"
           :screens="screens"
-          :hasOffers="offers.length > 0"
+          :hasRecommendations="recommendations.length > 0"
+          :recommendationRubrics="navRubrics"
         />
 
         <div class="key-moments__report">
@@ -155,11 +128,11 @@
                 </div>
               </section>
 
-              <!-- Omitted when empty: an empty section would announce a silence -->
-              <CustomerOffersSection
-                v-if="offers.length > 0"
-                :offers="offers"
+              <!-- Omitted for the client when empty; the preview states the silence -->
+              <CustomerRecommendationsSection
+                :recommendations="recommendations"
                 :rank="formatScreenRank(screens.length)"
+                :isPreview="isPreview === true"
                 :style="{ '--key-moments-enter-rank': screens.length }"
               />
             </div>
@@ -174,17 +147,17 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
-import { PButton, PDropdown, PIcon, PTitle } from '@pulse/styleguide/components'
+import { PDropdown, PTitle } from '@pulse/styleguide/components'
 import FilterSegment from '../../components/filters/filter-segment.vue'
 import Nav from '../../components/nav/nav.vue'
-import CustomerOffersSection from '../../components/offers/customer-offers-section.vue'
+import CustomerRecommendationsSection from '../../components/recommendations/customer-recommendations-section.vue'
 import SectionHead from '../../components/section-head/section-head.vue'
 import Widget from '../../components/widget/widget.vue'
 import { screenAnchorId, widgetAnchorId } from '../../utils/anchor.utils'
 import { formatScreenRank } from '../../utils/rank.utils'
-import { useExport } from '../../export/export.composable'
-import { ExportFormat } from '../../enums/key-moments.enums'
+import { groupedByRubric } from '../../utils/recommendations.utils'
 import { CAPTION_SEPARATOR } from '../../const/key-moments.consts'
+import type { NavRubric } from '../../components/nav/nav.types'
 import type { FilterOption } from '../../types/key-moments.types'
 import type { KeyMomentsReaderProps } from './key-moments-reader.types'
 
@@ -203,27 +176,17 @@ const { isMobile } = useResponsive()
 // No navigation on a phone: stacked above the report, it only delays the figures
 const hasNav = computed(() => props.hasReport && isMobile.value === false)
 
+// Every published recommendation is visible by construction, so the counter reads N / N
+const navRubrics = computed<NavRubric[]>(() => groupedByRubric(props.recommendations).map(rubric => ({
+  rubric: rubric.rubric,
+  visibleCount: rubric.recommendations.length,
+  totalCount: rubric.recommendations.length,
+})))
+
 const unitOptions = computed<FilterOption[]>(() => [
   { value: false, label: t('keyMoments.filters.units.euro') },
   { value: true, label: t('keyMoments.filters.units.thousands') },
 ])
-
-const { isExportingDeck, isExportingPdf, exportReport } = useExport()
-
-// Exports what is on screen as is: an export never rebuilds the report
-function onExport(format: ExportFormat): void {
-  if (props.entity === undefined) {
-    return
-  }
-
-  exportReport(
-    format,
-    { entity: props.entity, screens: props.screens },
-    props.caption,
-    props.offers,
-    props.exerciceYear,
-  )
-}
 </script>
 
 <style scoped lang="scss">

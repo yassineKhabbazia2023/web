@@ -1,9 +1,10 @@
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { FIRST_TEMPLATE_VERSION } from '@key-moments/const/key-moments.consts'
 import { TemplateEditorService } from '@key-moments/services/template-editor.service'
-import { readApiErrorDetail } from '@key-moments/utils/api-error.utils'
+import { apiErrorKey, readApiStatus } from '@key-moments/utils/api-error.utils'
 import { slugify } from '@key-moments/utils/slug.utils'
 import type { TemplateCatalogueItem, RawTemplateDocument } from '@key-moments/services/template-editor.service.types'
 import type { TemplateDuplicationSource } from './template-create-drawer.types'
@@ -90,7 +91,9 @@ export function useTemplateCreateDrawer(options: { onCreated: (item: TemplateCat
       logger.error('[KeyMoments] settings: creating the template failed', error)
       // a refused code is said on the field, never in a notification that
       // leaves the reader looking for what to correct
-      codeError.value = readApiErrorDetail(error) ?? t('keyMoments.settings.templates.createDrawer.error')
+      codeError.value = readApiStatus(error) === HTTP_RESPONSES.CONFLICT
+        ? t('keyMoments.settings.templates.createDrawer.codeTaken')
+        : t(apiErrorKey(error, 'keyMoments.settings.templates.createDrawer.error'))
     } finally {
       isSaving.value = false
     }

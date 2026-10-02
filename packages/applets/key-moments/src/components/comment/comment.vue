@@ -1,116 +1,69 @@
 <template>
-  <CommentBox
-    v-model:isEditing="isEditing"
-    :testIdPrefix="`key-moments-${widgetId}-comment`"
-    :text="activeVariant?.text"
-    :placeholder="t('keyMoments.comment.placeholder')"
-    :emptyLabel="t('keyMoments.comment.empty')"
-    :isEditable="isEditing || activeVariant?.isMine === true"
-    @save="(text, settle) => emit('save', text, settle)"
+  <section
+    class="key-moments-comment"
+    :data-testid="`key-moments-${widgetId}-comment`"
   >
-    <template #header>
-      <div
-        class="
-          flex
-          flex--align-items-center
-          flex-gap--1
-        "
-        role="tablist"
-        :aria-label="t('keyMoments.comment.tabsAriaLabel')"
-      >
-        <PButton
-          v-for="variant in tabs"
-          :key="variant.key"
-          pSize="small"
-          :pType="variant.key === activeKey ? 'active' : 'white'"
-          role="tab"
-          :aria-selected="variant.key === activeKey"
-          :title="variant.label"
-          :pTestId="`key-moments-${widgetId}-comment-tab-${variant.key}`"
-          @click="readVariant(variant.key)"
-        >
-          {{ variant.tabLabel }}
-          <!-- Marks the reading that would go out, arbitrated or fallen back on -->
-          <PIcon
-            v-if="variant.key === publishableKey"
-            class="key-moments-comment__retained-icon"
-            pName="check"
-            :aria-label="t('keyMoments.comment.publishable')"
-          />
-        </PButton>
-      </div>
+    <h4 class="key-moments-comment__title margin--0">
+      <CommentWordmark />
+    </h4>
 
-      <PButton
-        v-if="canWrite"
-        pSize="small"
-        pType="tertiary"
-        :title="t('keyMoments.comment.add')"
-        :aria-label="t('keyMoments.comment.add')"
-        :pTestId="`key-moments-${widgetId}-comment-add-button`"
-        @click="startWriting"
-      >
-        <PIcon pName="plusLg" />
-      </PButton>
-    </template>
+    <p
+      v-if="isDiscarded"
+      class="
+        margin--0
+        font-size--12
+        font-bold
+        text-color--text-neutral
+      "
+      :data-testid="`key-moments-${widgetId}-comment-discarded`"
+    >
+      {{ t('keyMoments.comment.discarded') }}
+    </p>
 
-    <template #caption>
-      <span
-        v-if="isDiscarded"
-        class="font-bold"
-        :data-testid="`key-moments-${widgetId}-comment-discarded`"
-      >
-        {{ t('keyMoments.comment.discarded') }}
-      </span>
-      <template v-else>
-        {{ authorCaption }}
-      </template>
-    </template>
+    <!-- Every reading at once, so the firm arbitrates between them without leafing through -->
+    <CommentItem
+      v-for="variant in orderedVariants"
+      :key="variant.key"
+      :variant="variant"
+      :testIdPrefix="`key-moments-${widgetId}-comment-${variant.key}`"
+      :isDisplayed="isDisplayed(variant)"
+      :canRetain="canRetain(variant)"
+      :canFreeze="canFreeze(variant)"
+      @retain="emit('retain', variant)"
+      @freeze="emit('retain', variant)"
+      @hide="emit('discard')"
+      @delete="emit('delete', variant.text, isDisplayed(variant))"
+      @save="(text, settle) => emit('save', text, settle)"
+    />
 
-    <template #actions>
-      <PButton
-        v-if="canDiscard"
-        pType="tertiary"
-        pSize="small"
-        :pTestId="`key-moments-${widgetId}-comment-discard-button`"
-        @click="emit('discard')"
-      >
-        {{ t('keyMoments.comment.discard') }}
-      </PButton>
-
-      <!-- Reintegrating a discarded slot is retaining a reading again -->
-      <PButton
-        v-if="canRetain && activeVariant !== undefined"
-        pType="tertiary"
-        pSize="small"
-        :pTestId="`key-moments-${widgetId}-comment-retain-button`"
-        @click="emit('retain', activeVariant)"
-      >
-        {{ isDiscarded ? t('keyMoments.comment.reintegrate') : t('keyMoments.comment.retain') }}
-      </PButton>
-    </template>
-  </CommentBox>
+    <CommentComposer
+      v-if="canCompose === true && draftVariant !== undefined"
+      :author="draftVariant"
+      :testIdPrefix="`key-moments-${widgetId}-comment-composer`"
+      @save="(text, settle) => emit('save', text, settle)"
+    />
+  </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton, PIcon } from '@pulse/styleguide/components'
-import CommentBox from './comment-box.vue'
-import { useCommentTabs } from './comment.composable'
-import { formatInstant } from '../../utils/date.utils'
+import CommentComposer from './comment-composer.vue'
+import CommentWordmark from './comment-wordmark.vue'
+import CommentItem from './comment-item.vue'
+import { useCommentList } from './comment.composable'
 import type { CommentVariant, SaveSettlement } from '../../types/key-moments.types'
 
 const props = defineProps<{
   widgetId: string
-  /** Delivered texts, oldest version first, then the readings written */
+  /** Delivered texts and the readings written, in any order */
   variants: CommentVariant[]
-  /** Key of the retained variant; empty while nothing is retained */
+  /** Key of the variant the firm retained; empty while it falls back on the default */
   retainedKey: string
-  /** Falls back on its own when nobody arbitrated, unlike `retainedKey` */
+  /** Key of the reading that would be published, retained or fallen back on */
   publishableKey: string
   /** The readings stay readable, but none of them goes out */
   isDiscarded: boolean
-  /** The tab writing opens on, absent when nothing may be written */
+  /** Who a first comment is written as, absent when nothing may be written */
   draftVariant?: CommentVariant
 }>()
 
@@ -118,44 +71,32 @@ const emit = defineEmits<{
   save: [text: string, settle: SaveSettlement]
   retain: [variant: CommentVariant]
   discard: []
+  /** Displayed: emptying the reading the client reads may discard the slot with it */
+  delete: [text: string, isDisplayed: boolean]
 }>()
 
 const { t } = useI18n()
 
 const {
-  activeKey,
-  isEditing,
-  tabs,
-  activeVariant,
+  orderedVariants,
+  canCompose,
+  isDisplayed,
   canRetain,
-  canDiscard,
-  canWrite,
-  readVariant,
-  startWriting,
-} = useCommentTabs(props)
-
-const authorCaption = computed(() => {
-  const variant = activeVariant.value
-
-  if (variant === undefined) {
-    return ''
-  }
-
-  if (variant.updatedAt === undefined) {
-    return variant.label
-  }
-
-  // An instant, unlike a closing date, is read in the locale of the reader
-  return `${variant.label} · ${t('keyMoments.comment.updatedAt', {
-    date: formatInstant(variant.updatedAt),
-  })}`
-})
+  canFreeze,
+} = useCommentList(props)
 </script>
 
 <style scoped lang="scss">
 .key-moments-comment {
-  &__retained-icon {
-    margin-left: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--p-jungle-500);
   }
 }
 </style>

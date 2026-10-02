@@ -1,11 +1,12 @@
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { displayNotification } from '@pulse/styleguide'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { IndicatorSign, ValueKind } from '@key-moments/enums/key-moments.enums'
 import { IndicatorsService } from '@key-moments/services/indicators.service'
-import { readApiErrorDetail, readApiStatus } from '@key-moments/utils/api-error.utils'
+import { apiErrorKey, readApiStatus } from '@key-moments/utils/api-error.utils'
 import { movedInList } from '@key-moments/utils/patch.utils'
 import { slugify } from '@key-moments/utils/slug.utils'
 import type { Indicator } from '@key-moments/types/key-moments.types'
@@ -13,7 +14,14 @@ import type { IndicatorUsageItem } from '@key-moments/services/indicators.servic
 import type { IndicatorDrawerMode, IndicatorForm } from './indicator-drawer.types'
 
 function emptyForm(): IndicatorForm {
-  return { code: '', label: '', shortLabel: '', kind: ValueKind.AMOUNT, sign: IndicatorSign.INCOME }
+  return {
+    code: '',
+    label: '',
+    shortLabel: '',
+    description: '',
+    kind: ValueKind.AMOUNT,
+    sign: IndicatorSign.INCOME,
+  }
 }
 
 /** The composition is written by its own call, after the term itself: an aggregate has to exist before it can combine anything. */
@@ -54,6 +62,7 @@ export function useIndicatorDrawer(options: { onSaved: (code: string) => void })
       code: indicator.id,
       label: indicator.label,
       shortLabel: indicator.shortLabel ?? '',
+      description: indicator.description ?? '',
       kind: indicator.kind,
       sign: indicator.sign,
     })
@@ -123,6 +132,8 @@ export function useIndicatorDrawer(options: { onSaved: (code: string) => void })
     const payload = {
       label: form.label,
       shortLabel: form.shortLabel === '' ? undefined : form.shortLabel,
+      // Sent even when empty, so that clearing the field clears the definition
+      description: isNullOrEmpty(form.description.trim()) ? null : form.description.trim(),
       kind: form.kind,
       sign: form.sign,
     }
@@ -141,12 +152,12 @@ export function useIndicatorDrawer(options: { onSaved: (code: string) => void })
       isSaving.value = false
 
       if (readApiStatus(error) === HTTP_RESPONSES.CONFLICT) {
-        codeError.value = readApiErrorDetail(error) ?? t('keyMoments.settings.indicatorDrawer.codeTaken')
+        codeError.value = t('keyMoments.settings.indicatorDrawer.codeTaken')
 
         return
       }
 
-      displayNotification('error', readApiErrorDetail(error) ?? t('keyMoments.settings.indicatorDrawer.error'))
+      displayNotification('error', t(apiErrorKey(error, 'keyMoments.settings.indicatorDrawer.error')))
 
       return
     }
@@ -158,8 +169,7 @@ export function useIndicatorDrawer(options: { onSaved: (code: string) => void })
         await IndicatorsService.setComponents(code, componentCodes.value.filter(component => component !== ''))
       } catch (error) {
         logger.error('[KeyMoments] indicators: saving the composition failed', error)
-        componentsError.value = readApiErrorDetail(error)
-          ?? t('keyMoments.settings.indicatorDrawer.componentsError')
+        componentsError.value = t(apiErrorKey(error, 'keyMoments.settings.indicatorDrawer.componentsError'))
         isSaving.value = false
 
         return

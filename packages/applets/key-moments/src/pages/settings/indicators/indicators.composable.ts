@@ -5,7 +5,7 @@ import { removeDiacritics } from '@pulse/toolbox/utils/string'
 import { displayNotification } from '@pulse/styleguide'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { IndicatorsService } from '@key-moments/services/indicators.service'
-import { readApiErrorDetail, readApiStatus } from '@key-moments/utils/api-error.utils'
+import { apiErrorKey, readApiStatus } from '@key-moments/utils/api-error.utils'
 import type { Indicator } from '@key-moments/types/key-moments.types'
 
 /** Accent- and case-insensitive, so that « resultat » finds « Résultat ». */
@@ -62,10 +62,7 @@ export function useIndicators() {
         displayNotification('warning', t('keyMoments.settings.indicators.alreadyInState'))
       } else {
         logger.error('[KeyMoments] indicators: the transition failed', error)
-        displayNotification(
-          'error',
-          readApiErrorDetail(error) ?? t('keyMoments.settings.indicators.actionError'),
-        )
+        displayNotification('error', t(apiErrorKey(error, 'keyMoments.settings.indicators.actionError')))
       }
     }
 

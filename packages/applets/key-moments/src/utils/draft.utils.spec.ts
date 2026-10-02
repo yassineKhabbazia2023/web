@@ -1,9 +1,8 @@
-import { buildDraftReport, customerOffersOf, projectDraftDataset } from './draft.utils'
+import { buildDraftReport, projectDraftDataset } from './draft.utils'
 import { assembleDataset } from './data.utils'
 import {
   IndicatorSign,
   MeasureNature,
-  OfferPriority,
   PublicationState,
   Renderer,
   ValueKind,
@@ -12,7 +11,6 @@ import type { KeyMomentsDraft, KeyMomentsDraftPublishing } from '../stores/key-m
 import type {
   Closing,
   Indicators,
-  LinkedOffer,
   Template,
 } from '../types/key-moments.types'
 
@@ -100,9 +98,11 @@ const TEMPLATE = {
 
 const PUBLISHING: KeyMomentsDraftPublishing = {
   context: {} as KeyMomentsDraftPublishing['context'],
-  snapshots: [],
+  offers: [],
   buttonLabel: 'Publier',
   popupMessage: '',
+  recommendationsLine: '',
+  confirmLabel: 'Publier',
   divergenceLabels: [],
   isDisabled: false,
 }
@@ -116,26 +116,10 @@ function draftOf(comments: Record<string, string>): KeyMomentsDraft {
     dataset: projectDraftDataset(assembleDataset(INDICATORS, structuredClone(CLOSING)), comments),
     template: structuredClone(TEMPLATE),
     referenceKey: 'N-1',
+    recommendations: [],
     isInThousands: false,
-    offers: [],
     publicationState: PublicationState.NEVER,
     publishing: PUBLISHING,
-  }
-}
-
-function linkedOffer(overrides: Partial<LinkedOffer> = {}): LinkedOffer {
-  return {
-    offerId: 128,
-    title: 'Pack Prévoyance TNS',
-    shortDescription: 'Couverture des indépendants',
-    categoryName: 'Protection sociale',
-    comment: 'Adapté à votre passage en SASU',
-    benefitsComment: 'Une couverture sans reste à charge',
-    priority: OfferPriority.PRIMARY,
-    isPriorityVisible: true,
-    isHidden: false,
-    isRetired: false,
-    ...overrides,
   }
 }
 
@@ -170,42 +154,6 @@ describe('draft.utils', () => {
 
       expect(report.entity.name).toBe('SAS TEST')
       expect(report.screens).toHaveLength(1)
-    })
-  })
-
-  describe('customerOffersOf', () => {
-    it('should serve the attached offers in order, reduced to what the client reads', () => {
-      const offers = customerOffersOf([
-        linkedOffer({ offerId: 2, title: 'Deux' }),
-        linkedOffer({ offerId: 1, title: 'Un' }),
-      ])
-
-      expect(offers.map(offer => offer.offerId)).toEqual([2, 1])
-      expect(offers[0]).toEqual({
-        offerId: 2,
-        title: 'Deux',
-        shortDescription: 'Couverture des indépendants',
-        categoryName: 'Protection sociale',
-        comment: 'Adapté à votre passage en SASU',
-        benefitsComment: 'Une couverture sans reste à charge',
-        priority: OfferPriority.PRIMARY,
-      })
-    })
-
-    it('should leave out the hidden and the retired ones', () => {
-      const offers = customerOffersOf([
-        linkedOffer({ offerId: 1, isHidden: true }),
-        linkedOffer({ offerId: 2, isRetired: true }),
-        linkedOffer({ offerId: 3 }),
-      ])
-
-      expect(offers.map(offer => offer.offerId)).toEqual([3])
-    })
-
-    it('should omit the degree the firm chose not to show', () => {
-      const [offer] = customerOffersOf([linkedOffer({ isPriorityVisible: false })])
-
-      expect(offer.priority).toBeUndefined()
     })
   })
 })

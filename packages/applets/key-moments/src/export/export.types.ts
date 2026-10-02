@@ -1,5 +1,6 @@
-import type { OfferPriority } from '../enums/key-moments.enums'
+import type { RecommendationPriority, RecommendationRubric } from '../enums/key-moments.enums'
 import type { Card, Widget } from '../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 
 /**
  * One widget of the report, ready to be laid on a slide. The widget itself is
@@ -66,6 +67,8 @@ export interface WidgetPlacement {
 export interface DeckLabels {
   /** Title of the page, written as an overline above the entity */
   title: string
+  /** Whose key moment the cover names: the dossier, as every surface names it */
+  entityName: string
   /**
    * How the report is read — whose figures, on which exercise, against which
    * one, in which unit. Taken from the caption of the page rather than rebuilt,
@@ -83,13 +86,28 @@ export interface DeckLabels {
   /** Marks the slides a widget too long for one of them continues on */
   continued: string
   /** Heading of the recommendations, which close the deck, and its overline */
-  offersTitle: string
-  offersSubtitle: string
-  /** How each degree is named, since the deck writes it as a word */
-  offerPriorities: Record<OfferPriority, string>
-  /** Headings of the two notes the firm writes about an offer */
-  offerComment: string
-  offerBenefitsComment: string
+  recommendationsTitle: string
+  recommendationsSubtitle: string
+  /** How each priority is named, since the deck writes it as a word */
+  priorities: Record<RecommendationPriority, string>
+  /** How each rubric is named: the microservice carries the key alone */
+  rubrics: Record<RecommendationRubric, string>
+  /** Headings of the three texts of a recommendation, and of its offers line */
+  observations: string
+  risk: string
+  recommendation: string
+  offers: string
+}
+
+/**
+ * One slide of the recommendations: a rubric, or the part of it that fits. A
+ * rubric never shares a slide; one too long continues on the next, its title
+ * repeated and marked as a continuation.
+ */
+export interface RecommendationSlide {
+  label: string
+  recommendations: PublishedRecommendationPayload[]
+  isContinued: boolean
 }
 
 /* ------------------------------------------------------------------ *

@@ -52,16 +52,10 @@ const PUBLISHED_COMMENTS = [
   {
     slotId: 'synthese',
     text: 'Ma lecture.',
-    sourceContributorId: '123',
-    sourceContributorName: 'Jean Dupont',
-    sourceClosingVersion: null,
   },
   {
     slotId: 'bilan',
     text: 'Texte livré par la v2.',
-    sourceContributorId: null,
-    sourceContributorName: null,
-    sourceClosingVersion: 2,
   },
 ]
 
@@ -406,6 +400,15 @@ describe('KeyMomentsService', () => {
 
       expect(vi.mocked(api.gateway.post))
         .toHaveBeenCalledWith('keymoments/api/accounts/42/published/99/unpublish')
+    })
+
+    it('should restore the draft of an exercice to its active publication', async () => {
+      vi.mocked(api.gateway.post).mockResolvedValueOnce({ status: 204 })
+
+      await KeyMomentsService.restorePublished(42, 9)
+
+      expect(vi.mocked(api.gateway.post))
+        .toHaveBeenCalledWith('keymoments/api/accounts/42/exercices/9/restore-published')
     })
 
     it('should read the publications of an account', async () => {

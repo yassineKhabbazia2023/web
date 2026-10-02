@@ -11,7 +11,7 @@ import { SyntheticClosingManager } from '../managers/synthetic-closing.manager'
 import { TemplateEditorManager } from '../managers/template-editor.manager'
 import { IndicatorsService } from '../services/indicators.service'
 import { TemplateEditorService } from '../services/template-editor.service'
-import { readApiError, readApiErrorDetail } from '../utils/api-error.utils'
+import { apiErrorKey, readApiError } from '../utils/api-error.utils'
 import { slugify } from '../utils/slug.utils'
 import { emptyTemplate, validateTemplate } from '../validation/key-moments.validation'
 import type { EditorPlaceholder, EditorSelection, EditorWarning } from './template-editor.store.types'
@@ -541,7 +541,7 @@ export const useTemplateEditorStore = defineStore('key-moments-template-editor',
   function readRefusal(error: unknown, fallbackKey: string): void {
     logger.error('[KeyMoments] settings: writing the template failed', error)
     serverError.value = readApiError(error)
-    displayNotification('error', readApiErrorDetail(error) ?? i18n.global.t(fallbackKey))
+    displayNotification('error', i18n.global.t(apiErrorKey(error, fallbackKey)))
   }
 
   /**

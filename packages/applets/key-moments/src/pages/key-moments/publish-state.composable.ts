@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import {
@@ -8,23 +8,16 @@ import {
   PublicationState,
 } from '../../enums/key-moments.enums'
 import { divergencesBetween } from '../../utils/divergence.utils'
-import { latestTemplateOf } from '../../utils/template.utils'
 import type { Divergence, PublishableState, PublishContext } from '../../types/key-moments.types'
-import type {
-  ModificationRow,
-  PublishStateActions,
-  PublishStateSources,
-} from './publish-state.types'
+import type { ModificationRow, PublishStateSources } from './publish-state.types'
 
 /**
- * Reverting a row delegates to the same action the reader would have
- * triggered manually, so it never drifts from the normal path.
+ * Derived only: what publishing would change, and how the page words it.
+ * Nothing here writes — going back to the published version is one call of
+ * the microservice, not a replay of the reader's gestures.
  */
-export function usePublishState(sources: PublishStateSources, actions: PublishStateActions) {
+export function usePublishState(sources: PublishStateSources) {
   const { t } = useI18n()
-
-  /** The divergence being undone, which greys its own row alone. */
-  const revertingKind = ref<DivergenceKind>()
 
   /** The publication of the exercice on screen; absent means never published. */
   const currentPublication = computed(() => (sources.selectedExerciceId.value === undefined
@@ -57,18 +50,12 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
     }
   })
 
-  /** The model a template is a version of, absent once it left the catalogue. */
-  function templateCodeOf(templateId: number): string | undefined {
-    return sources.templateCatalogue.value
-      .find(summary => summary.templateId === templateId)
-      ?.id
-  }
+  /** The template as the catalogue names it: its model (`id`) and label, absent once it left the catalogue. */
+  function templateNamingOf(templateId: number): { templateName: string, templateCode: string | undefined } {
+    const summary = sources.templateCatalogue.value
+      .find(candidate => candidate.templateId === templateId)
 
-  function templateNameOf(templateId: number): string {
-    return sources.templateCatalogue.value
-      .find(summary => summary.templateId === templateId)
-      ?.label
-      ?? ''
+    return { templateName: summary?.label ?? '', templateCode: summary?.id }
   }
 
   /**
@@ -94,8 +81,7 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
 
     return detail === undefined ? undefined : {
       templateId: detail.templateId,
-      templateName: templateNameOf(detail.templateId),
-      templateCode: templateCodeOf(detail.templateId),
+      ...templateNamingOf(detail.templateId),
       templateVersion: detail.templateVersion,
       closingId: detail.closingId,
       closingName: closingNameOf(detail.closingId, detail.closingVersion),
@@ -104,28 +90,27 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
       preferenceCurrencyDisplay: detail.preferenceCurrencyDisplay,
       comments: Object.fromEntries(detail.comments.map(comment => [comment.slotId, comment.text])),
       hiddenWidgets: detail.hiddenWidgetIds,
-      // Already excludes hidden offers, so it maps directly to the comparison shape
-      offers: (detail.offers ?? []).map(({ offerId, comment, benefitsComment, priority, isPriorityVisible }) => ({
-        offerId,
-        comment,
-        benefitsComment,
-        priority,
-        isPriorityVisible,
-      })),
+      // Already the visible ones only, the very shape the comparison reads; a publication older than them has none
+      recommendations: detail.recommendations ?? [],
     }
   })
+
+  // Its own computed: editing a recommendation must not walk every comment slot again
+  const publishedComments = computed(() => sources.buildPublishedComments(sources.screens.value))
 
   const currentState = computed<PublishableState | undefined>(() => {
     const context = publishContext.value
 
     return context === undefined ? undefined : {
       ...context,
-      templateName: templateNameOf(context.templateId),
-      templateCode: templateCodeOf(context.templateId),
+      ...templateNamingOf(context.templateId),
       closingName: closingNameOf(context.closingId, context.closingVersion),
-      comments: sources.buildPublishedComments(sources.screens.value),
+      comments: publishedComments.value,
       hiddenWidgets: sources.hiddenWidgetIds.value,
-      offers: sources.publishableSelection.value,
+      // Unknown without the themes: taken as published rather than announced as all gone
+      recommendations: sources.areRecommendationThemesUnreadable.value
+        ? publishedState.value?.recommendations ?? []
+        : sources.publishableRecommendations.value,
     }
   })
 
@@ -142,52 +127,8 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
       return []
     }
 
-    const all = divergencesBetween(current, published)
-
-    // A publication frozen before recommendations existed has nothing to compare or revert
-    return sources.publicationDetail.value?.offers === undefined
-      ? all.filter(divergence => divergence.kind !== DivergenceKind.OFFERS)
-      : all
+    return divergencesBetween(current, published)
   })
-
-  /** Latest version of the published template's model; absent if the model left the catalogue. */
-  const publishedTemplateKey = computed(() => {
-    const code = publishedState.value === undefined ? undefined : templateCodeOf(publishedState.value.templateId)
-
-    return code === undefined ? undefined : latestTemplateOf(sources.templateCatalogue.value, code)?.templateId
-  })
-
-  /**
-   * Whether a modification can be reverted to exactly what is published. False
-   * when its subject is gone (closing re-imported over, template retired).
-   */
-  function isRevertible(divergence: Divergence): boolean {
-    const published = publishedState.value
-
-    if (published === undefined) {
-      return false
-    }
-
-    switch (divergence.kind) {
-      case DivergenceKind.CLOSING:
-        return sources.closingCatalogue.value
-          .some(summary => summary.closingId === published.closingId)
-      case DivergenceKind.TEMPLATE:
-        return publishedTemplateKey.value !== undefined
-      case DivergenceKind.COMPARISON:
-        return published.preferenceComparisonExercice !== undefined
-          && sources.comparisons.value
-            .some(comparison => comparison.referenceKey === published.preferenceComparisonExercice)
-      // Offers are always revertible: the publication kept the full row, snapshot included
-      case DivergenceKind.CURRENCY:
-      case DivergenceKind.COMMENTS:
-      case DivergenceKind.HIDDEN_WIDGETS:
-      case DivergenceKind.OFFERS:
-        return true
-      default:
-        return false
-    }
-  }
 
   /** The currency unit label deliberately reuses the filter bar's own i18n key. */
   function wordDivergence(divergence: Divergence): string {
@@ -200,81 +141,12 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
     return t(`keyMoments.publish.divergence.${divergence.kind}`, named, count)
   }
 
-  function wordHint(divergence: Divergence, canBeReverted: boolean): string | undefined {
-    if (canBeReverted === false) {
-      return t('keyMoments.publish.revert.unavailableHint')
-    }
-
-    return divergence.kind === DivergenceKind.COMMENTS
-      ? t('keyMoments.publish.revert.commentsHint')
-      : undefined
-  }
-
   const divergenceLabels = computed(() => divergences.value.map(wordDivergence))
 
   /** Only the firm's own changes — other divergence families are excluded. */
   const modifications = computed<ModificationRow[]>(() => divergences.value
-    .filter(divergence => divergence.family === DivergenceFamily.MODIFICATION)
-    .map((divergence) => {
-      const canBeReverted = isRevertible(divergence)
-
-      return {
-        ...divergence,
-        isRevertible: canBeReverted,
-        label: wordDivergence(divergence),
-        hint: wordHint(divergence, canBeReverted),
-      }
-    }))
-
-  const modificationCount = computed(() => modifications.value.length)
-
-  async function revertDivergence(divergence: Divergence): Promise<void> {
-    const published = publishedState.value
-
-    if (published === undefined) {
-      return
-    }
-
-    revertingKind.value = divergence.kind
-
-    try {
-      switch (divergence.kind) {
-        case DivergenceKind.CLOSING:
-          // Keeps the current comparison: opening a closing would otherwise pick its own
-          await actions.selectClosing(published.closingId, sources.selectedReferenceKey.value)
-          break
-        case DivergenceKind.TEMPLATE:
-          if (publishedTemplateKey.value !== undefined) {
-            await actions.selectTemplate(publishedTemplateKey.value)
-          }
-
-          break
-        case DivergenceKind.COMPARISON:
-          if (published.preferenceComparisonExercice !== undefined) {
-            actions.selectComparison(published.preferenceComparisonExercice)
-          }
-
-          break
-        case DivergenceKind.CURRENCY:
-          actions.toggleThousands(published.preferenceCurrencyDisplay === CurrencyDisplay.THOUSANDS)
-          break
-        case DivergenceKind.COMMENTS:
-          await actions.restorePublishedArbitration()
-          break
-        case DivergenceKind.HIDDEN_WIDGETS:
-          await actions.writeHiddenWidgets([...published.hiddenWidgets])
-          break
-        case DivergenceKind.OFFERS:
-          // Read from the detail, not `published`, to restore the full snapshot including hidden offers
-          await actions.restoreOffers([...(sources.publicationDetail.value?.offers ?? [])])
-          break
-        default:
-          break
-      }
-    } finally {
-      revertingKind.value = undefined
-    }
-  }
+    .map((divergence, index) => ({ ...divergence, label: divergenceLabels.value[index] }))
+    .filter(divergence => divergence.family === DivergenceFamily.MODIFICATION))
 
   /** `UNKNOWN` when the published content couldn't be read — never counted as up to date. */
   const publicationState = computed(() => {
@@ -290,7 +162,7 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
       return PublicationState.UP_TO_DATE
     }
 
-    return modificationCount.value > 0 ? PublicationState.MODIFIED : PublicationState.DELIVERY
+    return modifications.value.length > 0 ? PublicationState.MODIFIED : PublicationState.DELIVERY
   })
 
   /** Total view count across republications; "never viewed" is stated rather than shown as 0. */
@@ -311,7 +183,7 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
 
   /**
    * Being up to date says nothing extra. Modifications are shown separately,
-   * by the panel that lets the firm undo them.
+   * by the panel that lists them.
    */
   const publishedStateLines = computed(() => {
     const publication = currentPublication.value
@@ -334,28 +206,47 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
   })
 
   /**
-   * Disabled while loading (nothing final to freeze yet), if the published
-   * state couldn't be read (a reload is needed to know what would change), or
-   * if already up to date.
+   * Why publishing is blocked despite pending changes: themes that could not be
+   * read, a recommendation still without a theme, which is never saved, or an offer of a
+   * visible recommendation the catalogue no longer describes, which the API
+   * would refuse outright. Choosing a theme, or detaching the offer (already
+   * marked retired), is the way out.
+   */
+  const publishBlockedReason = computed(() => {
+    // the recommendations and their offers are one right: without it the page
+    // cannot hand the publication the offers the saved list cites
+    if (sources.hasRecommendationsSection.value === false) {
+      return t('keyMoments.publish.state.offersAccessRequired')
+    }
+
+    // The saved list would be published while the preview and the diff show none of it
+    if (sources.areRecommendationThemesUnreadable.value) {
+      return t('keyMoments.publish.state.themesUnreadable')
+    }
+
+    const withoutThemeCount = sources.recommendationWithoutThemeCount.value
+
+    if (withoutThemeCount > 0) {
+      return t('keyMoments.publish.state.recommendationsWithoutTheme', { count: withoutThemeCount }, withoutThemeCount)
+    }
+
+    const unresolvedCount = sources.unresolvedOfferIds.value.length
+
+    return unresolvedCount === 0
+      ? undefined
+      : t('keyMoments.publish.state.unresolvedOffers', { count: unresolvedCount }, unresolvedCount)
+  })
+
+  /**
+   * Disabled while loading (nothing final to freeze yet), while a recommendation
+   * blocks it, if the published state couldn't be read (a reload is needed to
+   * know what would change), or if already up to date.
    */
   const isPublishDisabled = computed(() => sources.hasReport.value === false
     || publishContext.value === undefined
-    || sources.unresolvedOfferIds.value.length > 0
+    || publishBlockedReason.value !== undefined
     || publicationState.value === PublicationState.UP_TO_DATE
     || publicationState.value === PublicationState.UNKNOWN)
-
-  /**
-   * The one reason publishing is blocked despite pending changes: an attached
-   * recommendation the catalogue no longer describes, which the API would
-   * refuse outright. Detaching it (already marked retired) is the way out.
-   */
-  const publishBlockedReason = computed(() => (sources.unresolvedOfferIds.value.length === 0
-    ? undefined
-    : t(
-      'keyMoments.publish.state.unresolvedOffers',
-      { count: sources.unresolvedOfferIds.value.length },
-      sources.unresolvedOfferIds.value.length,
-    )))
 
   const publishButtonLabel = computed(() => {
     if (publicationState.value === PublicationState.MODIFIED) {
@@ -380,7 +271,32 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
     })
   })
 
+  /**
+   * What the popup says of the recommendations: that no category was chosen,
+   * how many will be published, or a warning when none is visible. Never asked
+   * without the section, which blocks publishing.
+   */
+  const publishPopupRecommendationsLine = computed(() => {
+    if (sources.hasRecommendationsCategory.value === false) {
+      return t('keyMoments.publish.popup.noCategory')
+    }
+
+    const count = sources.visibleRecommendationCount.value
+
+    return count === 0
+      ? t('keyMoments.publish.popup.noRecommendation')
+      : t('keyMoments.publish.popup.recommendations', { count }, count)
+  })
+
+  const isPublishingWithoutRecommendation = computed(() => sources.hasRecommendationsCategory.value
+    && sources.visibleRecommendationCount.value === 0)
+
+  const publishPopupConfirmLabel = computed(() => (isPublishingWithoutRecommendation.value
+    ? t('keyMoments.publish.popup.confirmWithoutRecommendation')
+    : t('keyMoments.publish.popup.confirm')))
+
   return {
+    currentPublication,
     publishContext,
     divergenceLabels,
     modifications,
@@ -390,7 +306,7 @@ export function usePublishState(sources: PublishStateSources, actions: PublishSt
     publishBlockedReason,
     publishButtonLabel,
     publishPopupMessage,
-    revertingKind,
-    revertDivergence,
+    publishPopupRecommendationsLine,
+    publishPopupConfirmLabel,
   }
 }

@@ -27,6 +27,15 @@
       >
         <Indicators />
       </PTabPane>
+
+      <PTabPane
+        :pLabel="t('keyMoments.settings.tabs.recommendations')"
+        :pName="SettingsTab.RECOMMENDATIONS"
+        pLazy
+        pTestId="key-moments-settings-recommendations-tab"
+      >
+        <RecommendationsSettings />
+      </PTabPane>
     </PTabs>
   </div>
 </template>
@@ -36,6 +45,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane, PTitle } from '@pulse/styleguide/components'
 import Indicators from '../indicators/indicators.page.vue'
+import RecommendationsSettings from '../recommendations/recommendations-settings.page.vue'
 import TemplatesList from '../templates-list/templates-list.page.vue'
 import { SettingsTab } from './key-moments-settings.enums'
 

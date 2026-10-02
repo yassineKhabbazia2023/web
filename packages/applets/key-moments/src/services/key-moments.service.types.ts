@@ -1,4 +1,5 @@
-import type { LinkedOfferPayload, PublishedOfferPayload } from './offers.service.types'
+import type { PublishedOfferPayload } from './offers.service.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 
 /** What the microservice puts on the wire; these shapes stop at the service. */
 
@@ -119,9 +120,9 @@ export interface RetainedCommentPayload {
  * pins the version on display, and naming one here would offer a second way of
  * saying what `closingId` and `templateId` already settle.
  *
- * The recommendations are the one exception, and for the one reason: the
- * microservice never reads the catalogue, so the wording of what the client
- * will be served has to be handed to it. Their arbitrations are not here —
+ * The offers are the one exception, and for the one reason: the microservice
+ * never reads the catalogue, so the wording of the offers the client will be
+ * served has to be handed to it. The recommendations citing them are not here —
  * those it stores.
  */
 export interface PublishPayload {
@@ -131,26 +132,21 @@ export interface PublishPayload {
   preferenceComparisonExercice?: string
   preferenceCurrencyDisplay: string
   /**
-   * Every recommendation attached and not hidden, resolved in the catalogue.
-   * One missing has the whole publication refused — `missing-offer-description`
-   * — which the page makes unreachable rather than catches: it takes the publish
-   * button away and names the offer to detach.
+   * Every offer cited by a visible recommendation, once, resolved in the
+   * catalogue. One missing has the whole publication refused —
+   * `missing-offer-description` — which the page makes unreachable rather than
+   * catches: it takes the publish button away and names the offer to detach.
    */
   offers: PublishedOfferPayload[]
 }
 
 /**
- * One arbitration a publication froze, as it is read back. Carries the name
- * beside the id, which the microservice resolved at publication: a publication
- * stays readable once its contributor has been renamed or has left.
+ * One text a publication froze, as it is read back: what the diff compares. The
+ * source it came from stays with the microservice, which alone restores it.
  */
 export interface PublishedCommentEntryPayload {
   slotId: string
   text: string
-  sourceContributorId: string | null
-  sourceContributorName: string | null
-  /** Set when the retained text came from a closing rather than from a person */
-  sourceClosingVersion: number | null
 }
 
 /**
@@ -167,40 +163,11 @@ export interface PublicationDetailPayload extends PublicationPayload {
    */
   hiddenWidgetIds: string[]
   /**
-   * Slots the publication froze as going out with nothing, which no comment of
-   * the list above can state: a discarded slot writes no arbitration at all.
-   * Read only, as the sub-sections beside it are.
-   *
-   * Optional for the same reason as `offers` below — a publication frozen
-   * before the field existed carries none, and the front is deployed against
-   * microservices that do not all know it yet. An absent list reads as no slot
-   * discarded, never as a failure.
+   * The recommendations the publication froze: the visible ones, flat, in the
+   * published order — what the diff compares. Empty on a publication frozen
+   * before they existed.
    */
-  discardedSlotIds?: string[]
-  /**
-   * Recommendations the publication froze, in the order they were published.
-   * Read only, like the sub-sections above and for the same reason: publishing
-   * freezes what is stored, so `PublishPayload` carries none of them.
-   *
-   * The hidden ones are **not here** — the microservice does not copy them at
-   * all. Which is why the draft side of the diff has to be projected the same
-   * way before the two are compared: reading the stored list against this one
-   * would take a hidden offer for a detached one.
-   *
-   * `isPriorityVisible` is kept even though the client never sees it: the firm
-   * must be able to read back the arbitration it made, not only its effect.
-   *
-   * A frozen row carries the wording the publication resolved on top of this
-   * shape, which nothing reads: the page renders the catalogue, and restoring
-   * hands the row straight back to the route it came from — see
-   * `restoredOffers`.
-   *
-   * Optional because a publication frozen before the field existed carries
-   * none, and because the front is deployed against microservices that do not
-   * all know it yet — an absent list reads as no recommendation, never as a
-   * failure.
-   */
-  offers?: LinkedOfferPayload[]
+  recommendations: PublishedRecommendationPayload[]
 }
 
 /** An exercice already published, and by whom. */

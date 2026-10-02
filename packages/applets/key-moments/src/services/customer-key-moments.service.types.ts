@@ -1,4 +1,4 @@
-import type { OfferPriority } from '../enums/key-moments.enums'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 
 /**
  * What the microservice serves the client; these shapes stop at the service.
@@ -45,37 +45,10 @@ export interface CustomerKeyMomentPayload {
   publishedAt: string
   comments: Record<string, string>
   /**
-   * The recommendations the publication froze, in the order the firm settled.
-   * Absent on a key moment published before the field existed, which reads as
-   * none.
+   * The recommendations, flat and in the published order, visible ones only;
+   * the reader groups them by rubric. Empty on a key moment published before
+   * they existed.
    */
-  offers?: CustomerOfferPayload[]
+  recommendations: PublishedRecommendationPayload[]
 }
 
-/**
- * One recommendation as the client is served it.
- *
- * Two fields are **absent by construction**: `isPriorityVisible` and
- * `isHidden`. A degree the firm chose not to show simply arrives without its
- * `priority`, indistinguishable from an offer that never carried one — no flag
- * ever teaches the client that something is being kept from them.
- */
-export interface CustomerOfferPayload {
-  offerId: number
-  title: string
-  shortDescription?: string
-  categoryName?: string
-  subCategoryName?: string
-  /**
-   * Served, and deliberately not rendered: it names a file of
-   * `/gtw/offer/api/catalog/{fileName}`, which is closed to a client token.
-   */
-  imageUrl?: string
-  /** Served and not rendered either, for the same reason as `imageUrl` */
-  pdfUrl?: string
-  /** What the firm wrote about the offer, for this client */
-  comment?: string
-  /** What the offer brings the client's business, in the firm's words */
-  benefitsComment?: string
-  priority?: OfferPriority
-}

@@ -617,6 +617,23 @@ describe('ReportManager.buildReport', () => {
       .toEqual([['N', '12/2025'], ['N-1', '12/2024']])
   })
 
+  it('should carry the definition of an indicator onto its row and its card', () => {
+    const base = buildReportData()
+    const data = {
+      ...base,
+      indicators: base.indicators.map(indicator => (indicator.id === 'chiffre-affaires'
+        ? { ...indicator, description: 'Ventes de la période.' }
+        : { ...indicator, description: null })),
+    }
+
+    const table = ReportManager.buildReport(data, buildTemplate([TABLE_WIDGET])).screens[0].widgets[0].table
+    const cards = ReportManager.buildReport(data, buildTemplate([asRenderer(Renderer.CARDS)])).screens[0].widgets[0].cards
+
+    expect(table?.rows.find(row => row.id === 'chiffre-affaires')?.description).toBe('Ventes de la période.')
+    expect(table?.rows.find(row => row.id === 'achats-consommes')?.description).toBeUndefined()
+    expect(cards?.find(card => card.id === 'chiffre-affaires')?.description).toBe('Ventes de la période.')
+  })
+
   it('should drop a line carrying no value at all', () => {
     const report = ReportManager.buildReport(buildReportData(), buildTemplate([TABLE_WIDGET]))
 

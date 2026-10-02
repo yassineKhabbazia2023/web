@@ -2,10 +2,12 @@ import { AppColors } from '@pulse/styleguide'
 import {
   ColorToken,
   LineRole,
+  RecommendationPriority,
   Trend,
   WaterfallStepKind,
 } from '../enums/key-moments.enums'
 import type { CSSProperties } from 'vue'
+import type { PTagProps } from '@pulse/styleguide/types'
 
 /** Shown for a missing value, kept empty so it's never mistaken for a zero amount. */
 export const EMPTY_VALUE = ''
@@ -18,14 +20,6 @@ export const FIRST_TEMPLATE_VERSION = '1.0.0'
 
 /** Model laid out — in its most recent version — until the reader picks another one. */
 export const DEFAULT_TEMPLATE_CODE = 'engagement'
-
-/**
- * Recommendations an exercice may carry, the hidden ones included: the cap
- * bounds what is stored, and the microservice refuses a twenty-first with a
- * 400. Never written on screen — nobody attaches twenty offers to a balance
- * sheet, and a counter would answer a question no reader is asking.
- */
-export const OFFERS_CAP = 20
 
 /** Bounds of the width slider: every column count the 12-column grid allows. */
 export const MIN_WIDGET_SPAN = 1
@@ -109,3 +103,23 @@ export const ROLE_CELL_STYLE: Partial<Record<LineRole, CSSProperties>> = {
  * export writes carries the same parts, one per line.
  */
 export const CAPTION_SEPARATOR = ' · '
+
+/** Longest definition the API keeps for an indicator, a sentence or two for a tooltip */
+export const INDICATOR_DESCRIPTION_MAX_LENGTH = 500
+
+/** Most recommendations the microservice accepts in one list */
+export const RECOMMENDATIONS_MAX_COUNT = 100
+
+/** What the microservice accepts of each text of a recommendation */
+export const RECOMMENDATION_TEXT_MAX_LENGTH = 2000
+
+/** What the microservice accepts of a recommendation category: a hundred characters of label, a thousand of pitch */
+export const CATEGORY_LABEL_MAX_LENGTH = 100
+export const CATEGORY_PITCH_MAX_LENGTH = 1000
+
+/** One colour per priority, the same for the firm editing it and the client reading it */
+export const RECOMMENDATION_PRIORITY_COLORS: Record<RecommendationPriority, PTagProps['pColor']> = {
+  [RecommendationPriority.PRIMARY]: 'warning',
+  [RecommendationPriority.SIGNIFICANT]: 'blue',
+  [RecommendationPriority.INFORMATIVE]: 'tranquil',
+}

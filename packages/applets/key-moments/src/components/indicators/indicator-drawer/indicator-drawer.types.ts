@@ -6,6 +6,7 @@ export interface IndicatorForm {
   code: string
   label: string
   shortLabel: string
+  description: string
   kind: ValueKind
   sign: IndicatorSign
 }

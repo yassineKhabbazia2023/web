@@ -121,6 +121,7 @@ export type IconName =
 'gear' |
 'gem' |
 'grid' |
+'gripVertical' |
 'handbag' |
 'headWithGear' |
 'headset' |

@@ -3,9 +3,9 @@ import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
 import { downloadFile } from '@pulse/common/helpers'
 import { displayNotification } from '@pulse/styleguide'
-import { ExportFormat, OfferPriority } from '../enums/key-moments.enums'
-import type { CustomerOfferPayload } from '../services/customer-key-moments.service.types'
-import type { LinkedOffer, Report } from '../types/key-moments.types'
+import { ExportFormat, RecommendationPriority, RecommendationRubric } from '../enums/key-moments.enums'
+import type { Report } from '../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 import type { DeckLabels } from './export.types'
 
 /** Named after the entity and the exercice, so two exports never collide in the same folder. */
@@ -13,31 +13,6 @@ function exportFileName(siret: string, exerciceYear: string | undefined, format:
   const year = exerciceYear === undefined ? '' : `-${exerciceYear}`
 
   return `moments-cles-${siret}${year}.${format}`
-}
-
-/**
- * The recommendations in the shape the export writes them, read from the ones
- * the client was served.
- *
- * Three fields the served payload does not carry are stated here rather than
- * guessed: it holds only what the client may see, so an offer that reached them
- * is by construction neither hidden nor withdrawn, and a degree that reached
- * them is one the firm chose to show. Nothing is inferred — the microservice
- * already made all three arbitrations before serving the page.
- */
-function offersOf(offers: CustomerOfferPayload[]): LinkedOffer[] {
-  return offers.map(offer => ({
-    offerId: offer.offerId,
-    title: offer.title,
-    shortDescription: offer.shortDescription,
-    categoryName: offer.categoryName,
-    comment: offer.comment,
-    benefitsComment: offer.benefitsComment,
-    priority: offer.priority,
-    isPriorityVisible: true,
-    isHidden: false,
-    isRetired: false,
-  }))
 }
 
 /**
@@ -66,9 +41,10 @@ export function useExport() {
   const isExportingPdf = computed(() => exportingFormat.value === ExportFormat.PDF)
 
   /** Everything the pages write and only the page can translate. */
-  function deckLabels(caption: string[]): DeckLabels {
+  function deckLabels(entityName: string, caption: string[]): DeckLabels {
     return {
       title: t('keyMoments.title'),
+      entityName,
       caption,
       lineLabel: t('keyMoments.table.label'),
       assets: t('keyMoments.balanceSheet.assets'),
@@ -78,24 +54,28 @@ export function useExport() {
       variation: t('keyMoments.cards.variation'),
       comment: t('keyMoments.comment.title'),
       continued: t('keyMoments.export.continued'),
-      offersTitle: t('keyMoments.offers.title'),
-      offersSubtitle: t('keyMoments.offers.subtitle'),
-      offerPriorities: {
-        [OfferPriority.PRIMARY]: t('keyMoments.offers.priority.primary'),
-        [OfferPriority.SIGNIFICANT]: t('keyMoments.offers.priority.significant'),
-        [OfferPriority.INFORMATIVE]: t('keyMoments.offers.priority.informative'),
+      recommendationsTitle: t('keyMoments.recommendations.title'),
+      recommendationsSubtitle: t('keyMoments.recommendations.subtitle'),
+      priorities: {
+        [RecommendationPriority.PRIMARY]: t('keyMoments.recommendations.priority.primary'),
+        [RecommendationPriority.SIGNIFICANT]: t('keyMoments.recommendations.priority.significant'),
+        [RecommendationPriority.INFORMATIVE]: t('keyMoments.recommendations.priority.informative'),
       },
-      offerComment: t('keyMoments.offers.card.commentTitle'),
-      offerBenefitsComment: t('keyMoments.offers.card.benefitsCommentTitle'),
+      rubrics: Object.fromEntries(Object.values(RecommendationRubric)
+        .map(rubric => [rubric, t(`keyMoments.recommendations.rubrics.${rubric}`)])) as Record<RecommendationRubric, string>,
+      observations: t('keyMoments.recommendations.customer.observations'),
+      risk: t('keyMoments.recommendations.customer.risk'),
+      recommendation: t('keyMoments.recommendations.customer.recommendation'),
+      offers: t('keyMoments.recommendations.export.offers'),
     }
   }
 
-  /** `offers` defaults to none, matching a report served without that section. */
   async function exportReport(
     format: ExportFormat,
     report: Report,
+    entityName: string,
     caption: string[],
-    offers: CustomerOfferPayload[] = [],
+    recommendations: PublishedRecommendationPayload[],
     exerciceYear?: string,
   ): Promise<void> {
     if (exportingFormat.value !== undefined) {
@@ -111,12 +91,11 @@ export function useExport() {
       ])
 
       const rows = await readReport(report)
-      const labels = deckLabels(caption)
-      const written = offersOf(offers)
+      const labels = deckLabels(entityName, caption)
 
       const file = format === ExportFormat.PDF
-        ? await ExportManager.buildPdf(report, labels, rows, written)
-        : await ExportManager.buildDeck(report, labels, rows, written)
+        ? await ExportManager.buildPdf(labels, rows, recommendations)
+        : await ExportManager.buildDeck(labels, rows, recommendations)
 
       downloadFile(file, exportFileName(report.entity.siret, exerciceYear, format))
     } catch (error) {

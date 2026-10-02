@@ -130,7 +130,7 @@
           v-if="report !== undefined"
           ref="nav"
           :screens="report.screens"
-          :hasOffers="false"
+          :hasRecommendations="false"
           alwaysExpanded
           @register-widgets-list="registerWidgetsList"
         >
@@ -151,7 +151,7 @@
               :title="t('keyMoments.settings.editor.toolbar.move')"
               :data-testid="`key-moments-settings-nav-widget-${widget.id}-handle`"
             >
-              <PIcon pName="arrowDownUp" />
+              <PIcon pName="gripVertical" />
             </span>
           </template>
 
@@ -212,6 +212,7 @@
                   :widget="widget"
                   :style="{ gridColumn: `span ${widget.span}` }"
                   isReadOnly
+                  hasHiddenBadge
                 >
                   <template #toolbar>
                     <EditorToolbar
@@ -316,6 +317,7 @@
 
     <PConfirmationPopup
       v-model:pIsVisible="isNewVersionDialogOpen"
+      pAppendToBody
       :pTitle="t('keyMoments.settings.editor.newVersionDialog.title')"
       :pConfirmButtonContent="t('keyMoments.settings.editor.newVersionDialog.confirm')"
       :pCancelButtonContent="t('keyMoments.settings.editor.saveDialog.cancel')"
@@ -338,6 +340,7 @@
     </PConfirmationPopup>
 
     <PConfirmationPopup
+      pAppendToBody
       :pIsVisible="pendingVersionDeletion !== undefined"
       :pTitle="t('keyMoments.settings.editor.deleteVersion.title')"
       :pConfirmButtonContent="t('keyMoments.settings.editor.remove.confirm')"
@@ -352,6 +355,7 @@
 
     <PConfirmationPopup
       v-model:pIsVisible="isVisibleDialogOpen"
+      pAppendToBody
       :pTitle="t('keyMoments.settings.editor.visibleDialog.title')"
       :pConfirmButtonContent="t('keyMoments.settings.editor.visibleDialog.confirm')"
       :pCancelButtonContent="t('keyMoments.settings.editor.saveDialog.cancel')"
@@ -364,6 +368,7 @@
     </PConfirmationPopup>
 
     <PConfirmationPopup
+      pAppendToBody
       :pIsVisible="pendingRemoval !== undefined"
       :pTitle="removalTitle"
       :pConfirmButtonContent="t('keyMoments.settings.editor.remove.confirm')"
@@ -377,6 +382,7 @@
 
     <PConfirmationPopup
       v-model:pIsVisible="isSwitchDialogOpen"
+      pAppendToBody
       :pTitle="t('keyMoments.settings.editor.leave.title')"
       :pConfirmButtonContent="t('keyMoments.settings.editor.leave.confirm')"
       :pCancelButtonContent="t('keyMoments.settings.editor.leave.cancel')"
@@ -388,6 +394,7 @@
     </PConfirmationPopup>
 
     <PConfirmationPopup
+      pAppendToBody
       :pIsVisible="isLeaveDialogOpen"
       :pTitle="t('keyMoments.settings.editor.leave.title')"
       :pConfirmButtonContent="t('keyMoments.settings.editor.leave.confirm')"

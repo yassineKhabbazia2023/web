@@ -1,16 +1,16 @@
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import {
   GHOST_STROKE_COLOR,
-  OFFER_CATEGORY_FONT_SIZE,
-  OFFER_CATEGORY_HEIGHT,
-  OFFER_COLUMNS,
-  OFFER_COMMENT_FONT_SIZE,
-  OFFER_COMMENT_LABEL_FONT_SIZE,
-  OFFER_COMMENT_LABEL_HEIGHT,
-  OFFER_PRIORITY_FONT_SIZE,
-  OFFER_PRIORITY_HEIGHT,
-  OFFER_TITLE_FONT_SIZE,
-  OFFER_TITLE_HEIGHT,
-  OFFERS_PER_SLIDE,
+  RECOMMENDATION_LABEL_FONT_SIZE,
+  RECOMMENDATION_LABEL_HEIGHT,
+  RECOMMENDATION_OFFERS_FONT_SIZE,
+  RECOMMENDATION_OFFERS_HEIGHT,
+  RECOMMENDATION_TEXT_FONT_SIZE,
+  RECOMMENDATION_THEME_FONT_SIZE,
+  RECOMMENDATION_THEME_HEIGHT,
+  RECOMMENDATIONS_PER_SLIDE,
+  RUBRIC_TITLE_FONT_SIZE,
+  RUBRIC_TITLE_HEIGHT,
   SECTION_RANK_FONT_SIZE,
   SECTION_RANK_HEIGHT,
   SECTION_RANK_OUTLINE,
@@ -36,11 +36,14 @@ import { layoutRow, splitRow } from './export.layout'
 import { drawWidget } from './export.render'
 import { PdfDeck } from './export.pdf'
 import { PptxDeck } from './export.pptx'
-import type { LinkedOffer, Report } from '../types/key-moments.types'
 import { formatScreenRank } from '../utils/rank.utils'
+import { groupedByRubric } from '../utils/recommendations.utils'
+import type { RecommendationRubric } from '../enums/key-moments.enums'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 import type {
   DeckDocument,
   DeckLabels,
+  RecommendationSlide,
   SectionHead,
   SlideArea,
   SlideRow,
@@ -65,12 +68,11 @@ export class ExportManager {
    * it lays out can be checked without a browser.
    */
   static async buildDeck(
-    report: Report,
     labels: DeckLabels,
     rows: SlideRow[],
-    offers: LinkedOffer[] = [],
+    recommendations: PublishedRecommendationPayload[],
   ): Promise<Blob> {
-    return await ExportManager.compose(await PptxDeck.create(), report, labels, rows, offers)
+    return await ExportManager.compose(await PptxDeck.create(), labels, rows, recommendations)
   }
 
   /**
@@ -78,22 +80,20 @@ export class ExportManager {
    * is decided twice: only the document the pages are drawn into changes.
    */
   static async buildPdf(
-    report: Report,
     labels: DeckLabels,
     rows: SlideRow[],
-    offers: LinkedOffer[] = [],
+    recommendations: PublishedRecommendationPayload[],
   ): Promise<Blob> {
-    return await ExportManager.compose(await PdfDeck.create(), report, labels, rows, offers)
+    return await ExportManager.compose(await PdfDeck.create(), labels, rows, recommendations)
   }
 
   private static async compose(
     document: DeckDocument,
-    report: Report,
     labels: DeckLabels,
     rows: SlideRow[],
-    offers: LinkedOffer[],
+    recommendations: PublishedRecommendationPayload[],
   ): Promise<Blob> {
-    ExportManager.addCover(document.addPage(), report, labels)
+    ExportManager.addCover(document.addPage(), labels)
 
     /**
      * A row the slide could only show by shrinking it past legibility is split
@@ -103,14 +103,15 @@ export class ExportManager {
     const slides = rows.flatMap(row => splitRow(row, CONTENT_AREA, labels.continued))
 
     /**
-     * Only what would be published. The rows were already read that way —
-     * `collectTargets` leaves the hidden sub-sections out — so the
-     * recommendations are filtered here on the same rule rather than on one of
-     * their own: the deck states what the client would get, never the working
-     * screen with its badges.
+     * The recommendations arrive as the client reads them — visible ones only,
+     * in order — so nothing is filtered here: one rubric per slide, a long one
+     * continued on the next.
      */
-    const published = offers.filter(offer => offer.isHidden === false)
-    const offerPages = ExportManager.paginate(published, OFFERS_PER_SLIDE)
+    const recommendationSlides = ExportManager.paginateRecommendations(
+      recommendations,
+      RECOMMENDATIONS_PER_SLIDE,
+      labels.rubrics,
+    )
 
     /**
      * The recommendations close the report, so they are numbered after the
@@ -119,11 +120,11 @@ export class ExportManager {
      * section whose every widget is hidden draws no slide, and counting the
      * slides would hand the recommendations a number a section already carries.
      */
-    const offersRank = formatScreenRank(
+    const recommendationsRank = formatScreenRank(
       slides.reduce((last, row) => Math.max(last, Number(row.head.rank)), 0),
     )
 
-    const total = slides.length + offerPages.length
+    const total = slides.length + recommendationSlides.length
 
     slides.forEach((row, index) => {
       const slide = document.addPage()
@@ -137,149 +138,182 @@ export class ExportManager {
       ExportManager.addPagination(slide, index + 1, total)
     })
 
-    offerPages.forEach((page, index) => {
+    recommendationSlides.forEach((page, index) => {
       const slide = document.addPage()
 
       ExportManager.addSectionHead(slide, {
-        rank: offersRank,
-        subtitle: labels.offersSubtitle,
-        title: index === 0
-          ? labels.offersTitle
-          : `${labels.offersTitle} ${labels.continued}`,
+        rank: recommendationsRank,
+        subtitle: labels.recommendationsSubtitle,
+        title: page.isContinued
+          ? `${labels.recommendationsTitle} ${labels.continued}`
+          : labels.recommendationsTitle,
       })
 
-      page.forEach((offer, rank) => {
-        ExportManager.addOffer(slide, offer, rank, labels)
-      })
-
+      ExportManager.addRubric(slide, page, labels)
       ExportManager.addPagination(slide, slides.length + index + 1, total)
     })
 
     return await document.toBlob()
   }
 
-  /** Cut into pages of at most `size`, keeping the order it was given. */
-  private static paginate<Item>(items: Item[], size: number): Item[][] {
-    return Array.from(
-      { length: Math.ceil(items.length / size) },
-      (_, page) => items.slice(page * size, page * size + size),
-    )
+  /**
+   * One slide per rubric, and a rubric too long for one continued on the next
+   * slides, in order — a rubric never shares a slide with another, and a
+   * rubric with nothing draws none.
+   */
+  static paginateRecommendations(
+    recommendations: PublishedRecommendationPayload[],
+    capacity: number,
+    rubricLabels: Record<RecommendationRubric, string>,
+  ): RecommendationSlide[] {
+    return groupedByRubric(recommendations).flatMap((rubric) => {
+      const pageCount = Math.ceil(rubric.recommendations.length / capacity)
+
+      return Array.from({ length: pageCount }, (_, page): RecommendationSlide => ({
+        label: rubricLabels[rubric.rubric],
+        recommendations: rubric.recommendations.slice(page * capacity, page * capacity + capacity),
+        isContinued: page > 0,
+      }))
+    })
   }
 
-  /**
-   * One recommendation, **written** rather than captured: a card is text, and
-   * the reader of the deck must be able to select it, search it and correct it
-   * in PowerPoint — only a drawing has nothing to hand over.
-   *
-   * The degree is written whatever `isPriorityVisible` says. The deck is an
-   * internal document: hiding from the firm the arbitration it made itself
-   * would say nothing to anybody — the flag settles what the *client* reads.
-   */
-  private static addOffer(
-    slide: SlideSurface,
-    offer: LinkedOffer,
-    rank: number,
-    labels: DeckLabels,
-  ): void {
-    const columnWidth = (CONTENT_AREA.width - SLIDE_GUTTER * (OFFER_COLUMNS - 1)) / OFFER_COLUMNS
-    const rowCount = OFFERS_PER_SLIDE / OFFER_COLUMNS
-    const rowHeight = (CONTENT_AREA.height - SLIDE_GUTTER * (rowCount - 1)) / rowCount
-
-    const x = CONTENT_AREA.x + (rank % OFFER_COLUMNS) * (columnWidth + SLIDE_GUTTER)
-    const y = CONTENT_AREA.y
-      + Math.floor(rank / OFFER_COLUMNS) * (rowHeight + SLIDE_GUTTER)
-
-    let cursor = y
-
-    if (offer.categoryName !== undefined) {
-      slide.addText(offer.categoryName.toUpperCase(), {
-        x,
-        y: cursor,
-        w: columnWidth,
-        h: OFFER_CATEGORY_HEIGHT,
-        fontSize: OFFER_CATEGORY_FONT_SIZE,
-        charSpacing: 1,
-        color: SLIDE_MUTED_COLOR,
-      })
-      cursor += OFFER_CATEGORY_HEIGHT
-    }
-
-    slide.addText(offer.title, {
-      x,
-      y: cursor,
-      w: columnWidth,
-      h: OFFER_TITLE_HEIGHT,
-      fontSize: OFFER_TITLE_FONT_SIZE,
+  /** The rubric named once, then its recommendations stacked in the room left. */
+  private static addRubric(slide: SlideSurface, page: RecommendationSlide, labels: DeckLabels): void {
+    slide.addText(page.label, {
+      x: CONTENT_AREA.x,
+      y: CONTENT_AREA.y,
+      w: CONTENT_AREA.width,
+      h: RUBRIC_TITLE_HEIGHT,
+      fontSize: RUBRIC_TITLE_FONT_SIZE,
       bold: true,
       color: SLIDE_HEADING_COLOR,
     })
-    cursor += OFFER_TITLE_HEIGHT
 
-    if (offer.priority !== undefined) {
-      slide.addText(labels.offerPriorities[offer.priority], {
-        x,
-        y: cursor,
-        w: columnWidth,
-        h: OFFER_PRIORITY_HEIGHT,
-        fontSize: OFFER_PRIORITY_FONT_SIZE,
-        bold: true,
-        color: SLIDE_ACCENT_COLOR,
-      })
-      cursor += OFFER_PRIORITY_HEIGHT
-    }
+    const top = CONTENT_AREA.y + RUBRIC_TITLE_HEIGHT
+    const count = page.recommendations.length
+    const blockHeight = (CONTENT_AREA.height - RUBRIC_TITLE_HEIGHT - SLIDE_GUTTER * (count - 1)) / count
 
-    // the two notes of the firm, each under its heading, and the catalogue's
-    // own words only when the firm wrote neither
-    const notes: { label?: string, text: string }[] = [
-      { label: labels.offerComment, text: offer.comment ?? '' },
-      { label: labels.offerBenefitsComment, text: offer.benefitsComment ?? '' },
-    ].filter(note => note.text.length > 0)
-
-    if (notes.length === 0) {
-      if (offer.shortDescription === undefined || offer.shortDescription.length === 0) {
-        return
-      }
-
-      notes.push({ text: offer.shortDescription })
-    }
-
-    const noteHeight = Math.max(rowHeight - (cursor - y), OFFER_PRIORITY_HEIGHT * notes.length)
-      / notes.length
-
-    notes.forEach((note) => {
-      let textY = cursor
-      let textHeight = noteHeight
-
-      if (note.label !== undefined) {
-        slide.addText(note.label, {
-          x,
-          y: cursor,
-          w: columnWidth,
-          h: OFFER_COMMENT_LABEL_HEIGHT,
-          fontSize: OFFER_COMMENT_LABEL_FONT_SIZE,
-          bold: true,
-          color: SLIDE_HEADING_COLOR,
-        })
-        textY += OFFER_COMMENT_LABEL_HEIGHT
-        textHeight -= OFFER_COMMENT_LABEL_HEIGHT
-      }
-
-      // a long note shrinks inside its box rather than overflowing it or being
-      // cut: nothing the firm wrote is dropped on the way to the deck
-      slide.addText(note.text, {
-        x,
-        y: textY,
-        w: columnWidth,
-        h: Math.max(textHeight, OFFER_PRIORITY_HEIGHT),
-        fontSize: OFFER_COMMENT_FONT_SIZE,
-        color: SLIDE_MUTED_COLOR,
-        valign: 'top',
-      })
-      cursor += noteHeight
+    page.recommendations.forEach((recommendation, rank) => {
+      ExportManager.addRecommendation(
+        slide,
+        recommendation,
+        {
+          x: CONTENT_AREA.x,
+          y: top + rank * (blockHeight + SLIDE_GUTTER),
+          width: CONTENT_AREA.width,
+          height: blockHeight,
+        },
+        labels,
+      )
     })
   }
 
-  private static addCover(slide: SlideSurface, report: Report, labels: DeckLabels): void {
+  /**
+   * One recommendation, **written** rather than captured: theme and priority
+   * on one line, observations and risk side by side — a block left empty is
+   * omitted and the other takes the row — the recommendation under them, and
+   * the titles of the offers on a last line.
+   */
+  private static addRecommendation(
+    slide: SlideSurface,
+    recommendation: PublishedRecommendationPayload,
+    area: SlideArea,
+    labels: DeckLabels,
+  ): void {
+    let cursor = area.y
+
+    const heading = recommendation.priority === undefined
+      ? recommendation.theme
+      : `${recommendation.theme} · ${labels.priorities[recommendation.priority]}`
+
+    slide.addText(heading, {
+      x: area.x,
+      y: cursor,
+      w: area.width,
+      h: RECOMMENDATION_THEME_HEIGHT,
+      fontSize: RECOMMENDATION_THEME_FONT_SIZE,
+      bold: true,
+      color: SLIDE_ACCENT_COLOR,
+    })
+    cursor += RECOMMENDATION_THEME_HEIGHT
+
+    const offersLine = recommendation.offers.length === 0
+      ? undefined
+      : `${labels.offers} : ${recommendation.offers.map(offer => offer.title).join(' · ')}`
+    const offersHeight = offersLine === undefined ? 0 : RECOMMENDATION_OFFERS_HEIGHT
+
+    const pair = [
+      { label: labels.observations, text: recommendation.observations },
+      { label: labels.risk, text: recommendation.risk },
+    ].filter((block): block is { label: string, text: string } => isNotNullNorEmpty(block.text))
+    const advice = recommendation.recommendation
+    const hasAdvice = isNotNullNorEmpty(advice)
+
+    // The room left, shared between the pair row and the advice row
+    const roomLeft = area.height - RECOMMENDATION_THEME_HEIGHT - offersHeight
+    const rowCount = (pair.length > 0 ? 1 : 0) + (hasAdvice ? 1 : 0)
+    const rowHeight = rowCount === 0 ? 0 : (roomLeft - SLIDE_GUTTER * (rowCount - 1)) / rowCount
+
+    if (pair.length > 0) {
+      const columnWidth = (area.width - SLIDE_GUTTER * (pair.length - 1)) / pair.length
+
+      pair.forEach((block, column) => {
+        ExportManager.addLabelledText(
+          slide,
+          block.label,
+          block.text,
+          { x: area.x + column * (columnWidth + SLIDE_GUTTER), y: cursor, width: columnWidth, height: rowHeight },
+        )
+      })
+      cursor += rowHeight + SLIDE_GUTTER
+    }
+
+    if (hasAdvice) {
+      ExportManager.addLabelledText(
+        slide,
+        labels.recommendation,
+        advice,
+        { x: area.x, y: cursor, width: area.width, height: rowHeight },
+      )
+    }
+
+    if (offersLine !== undefined) {
+      slide.addText(offersLine, {
+        x: area.x,
+        y: area.y + area.height - offersHeight,
+        w: area.width,
+        h: offersHeight,
+        fontSize: RECOMMENDATION_OFFERS_FONT_SIZE,
+        italic: true,
+        color: SLIDE_MUTED_COLOR,
+      })
+    }
+  }
+
+  /** A heading over a text; a long text shrinks inside its box rather than being cut. */
+  private static addLabelledText(slide: SlideSurface, label: string, text: string, area: SlideArea): void {
+    slide.addText(label, {
+      x: area.x,
+      y: area.y,
+      w: area.width,
+      h: RECOMMENDATION_LABEL_HEIGHT,
+      fontSize: RECOMMENDATION_LABEL_FONT_SIZE,
+      bold: true,
+      charSpacing: 1,
+      color: SLIDE_MUTED_COLOR,
+    })
+    slide.addText(text, {
+      x: area.x,
+      y: area.y + RECOMMENDATION_LABEL_HEIGHT,
+      w: area.width,
+      h: Math.max(area.height - RECOMMENDATION_LABEL_HEIGHT, RECOMMENDATION_LABEL_HEIGHT),
+      fontSize: RECOMMENDATION_TEXT_FONT_SIZE,
+      color: SLIDE_HEADING_COLOR,
+      valign: 'top',
+    })
+  }
+
+  private static addCover(slide: SlideSurface, labels: DeckLabels): void {
     slide.addText(labels.title.toUpperCase(), {
       x: SLIDE_MARGIN_X,
       y: 1.9,
@@ -291,7 +325,7 @@ export class ExportManager {
       color: SLIDE_ACCENT_COLOR,
     })
 
-    slide.addText(report.entity.name, {
+    slide.addText(labels.entityName, {
       x: SLIDE_MARGIN_X,
       y: 2.2,
       w: SLIDE_WIDTH - SLIDE_MARGIN_X * 2,

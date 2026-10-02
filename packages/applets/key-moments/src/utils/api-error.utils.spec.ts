@@ -1,36 +1,27 @@
-import { readApiError, readApiErrorDetail, readApiStatus } from './api-error.utils'
+import { apiErrorKey, readApiError, readApiStatus } from './api-error.utils'
 
-describe('readApiErrorDetail', () => {
-  it('should read the detail of a validation error', () => {
-    const error = { response: { status: 422, data: { detail: 'Composant inconnu : foo' } } }
+describe('apiErrorKey', () => {
+  it('should word a refusal by the code the caller knows', () => {
+    const error = { response: { status: 409, data: { code: 'not-published', title: 'Nothing is published.' } } }
 
-    expect(readApiErrorDetail(error)).toBe('Composant inconnu : foo')
+    expect(apiErrorKey(error, 'fallback', { 'not-published': 'notPublished' })).toBe('notPublished')
   })
 
-  it('should join the errors of a validation report', () => {
-    const error = {
-      response: {
-        status: 422,
-        data: {
-          errors: [
-            { pointer: '/components/0', detail: 'inconnu' },
-            { pointer: '', detail: 'cycle' },
-          ],
-        },
-      },
-    }
+  it('should fall back on the caller\'s wording, never on the text of the microservice', () => {
+    const error = { response: { status: 422, data: { detail: 'Provide the identifier of a theme.', errors: [{ pointer: '/x', detail: 'raw' }] } } }
 
-    expect(readApiErrorDetail(error)).toBe('/components/0 — inconnu\ncycle')
+    expect(apiErrorKey(error, 'fallback')).toBe('fallback')
   })
 
-  it('should read the title of a conflict', () => {
-    expect(readApiErrorDetail({ response: { status: 409, data: { title: 'Code déjà utilisé' } } }))
-      .toBe('Code déjà utilisé')
+  it('should word a body too large whatever the caller knows', () => {
+    const error = { response: { status: 413, data: { code: 'not-published' } } }
+
+    expect(apiErrorKey(error, 'fallback', { 'not-published': 'notPublished' })).toBe('keyMoments.errors.payloadTooLarge')
   })
 
-  it('should give nothing on a failure without a body', () => {
-    expect(readApiErrorDetail(new Error('network'))).toBeUndefined()
-    expect(readApiErrorDetail(null)).toBeUndefined()
+  it('should fall back on a failure without a body', () => {
+    expect(apiErrorKey(new Error('network'), 'fallback')).toBe('fallback')
+    expect(apiErrorKey(null, 'fallback')).toBe('fallback')
   })
 })
 

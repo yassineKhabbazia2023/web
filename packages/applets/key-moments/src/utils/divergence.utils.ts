@@ -1,5 +1,6 @@
 import { DivergenceFamily, DivergenceKind } from '../enums/key-moments.enums'
-import type { Divergence, PublishableOffer, PublishableState } from '../types/key-moments.types'
+import { compareRecommendations } from './recommendations.utils'
+import type { Divergence, PublishableState } from '../types/key-moments.types'
 
 /**
  * Why the report on screen differs from what the client reads.
@@ -24,7 +25,7 @@ export function divergencesBetween(
     ...comparePreferences(current, published),
     ...compareComments(current, published),
     ...compareHiddenWidgets(current, published),
-    ...compareOffers(current, published),
+    ...compareRecommendationsSection(current, published),
   ]
 }
 
@@ -151,44 +152,19 @@ function compareHiddenWidgets(
 }
 
 /**
- * Compared **position by position**: the order of the list is what the client
- * reads, so swapping two recommendations is a modification like any other.
- *
- * What is compared are the decisions — which offer, what was written about it,
- * what degree it carries and whether that degree is shown. Never the wording of
- * the catalogue: rewording an offer there is nobody's gesture, and lighting the
- * publish button on it would offer to undo something nobody could undo.
- *
- * Both sides are already projections leaving the hidden offers out, which is
- * what makes hiding one report here rather than pass for a detachment.
+ * Compared on what both lists keep in order: the order is what the client
+ * reads, so moving a recommendation is a modification like any other, while
+ * hiding one does not count every line after it. Offers
+ * compare on their ids, never on the wording of the catalogue: rewording an
+ * offer there is nobody's gesture. Both sides are the published projection,
+ * visible ones only, which is what makes hiding one report here.
  */
-function compareOffers(current: PublishableState, published: PublishableState): Divergence[] {
-  const size = Math.max(current.offers.length, published.offers.length)
-
-  const count = Array.from({ length: size })
-    .filter((_, rank) => sameOffer(current.offers[rank], published.offers[rank]) === false)
-    .length
+function compareRecommendationsSection(current: PublishableState, published: PublishableState): Divergence[] {
+  const count = compareRecommendations(published.recommendations, current.recommendations)
 
   return count === 0 ? [] : [{
-    kind: DivergenceKind.OFFERS,
+    kind: DivergenceKind.RECOMMENDATIONS,
     family: DivergenceFamily.MODIFICATION,
     values: { count },
   }]
-}
-
-/**
- * A position filled on one side and empty on the other is a difference. An
- * absent text and an empty one say the same thing to the reader, so they are
- * read as one.
- */
-function sameOffer(left?: PublishableOffer, right?: PublishableOffer): boolean {
-  if (left === undefined || right === undefined) {
-    return left === right
-  }
-
-  return left.offerId === right.offerId
-    && (left.comment ?? '') === (right.comment ?? '')
-    && (left.benefitsComment ?? '') === (right.benefitsComment ?? '')
-    && left.priority === right.priority
-    && left.isPriorityVisible === right.isPriorityVisible
 }

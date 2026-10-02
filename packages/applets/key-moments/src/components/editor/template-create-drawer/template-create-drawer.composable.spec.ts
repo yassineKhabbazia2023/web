@@ -80,7 +80,7 @@ describe('useTemplateCreateDrawer', () => {
     form.label = 'Engagement'
     await save()
 
-    expect(codeError.value).toBe('Code déjà utilisé')
+    expect(codeError.value).toBe('keyMoments.settings.templates.createDrawer.codeTaken')
     expect(isOpen.value).toBe(true)
   })
 

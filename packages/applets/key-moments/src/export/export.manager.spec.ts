@@ -1,13 +1,9 @@
 import PptxGenJS from 'pptxgenjs'
 import { ExportManager } from './export.manager'
 import { PdfDeck } from './export.pdf'
-import { OfferPriority, Renderer, Trend } from '../enums/key-moments.enums'
-import type {
-  Card,
-  LinkedOffer,
-  Report,
-  Widget,
-} from '../types/key-moments.types'
+import { RecommendationPriority, RecommendationRubric, Renderer, Trend } from '../enums/key-moments.enums'
+import type { Card, Widget } from '../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../types/recommendations.types'
 import type { DeckDocument, DeckLabels, SlideRow, SlideSurface } from './export.types'
 
 /** What one slide was asked to draw, the only thing the manager produces. */
@@ -127,13 +123,9 @@ const TABLE_WIDGET = makeWidget('ca', 12, Renderer.TABLE, { table: TABLE_VIEW })
 const CARDS_WIDGET = makeWidget('cards', 6, Renderer.CARDS, { cards: [CARD] })
 const CHART_WIDGET = makeWidget('chart', 6, Renderer.CHART)
 
-const REPORT: Report = {
-  entity: { name: 'Boulangerie Martin', legalForm: 'SARL', siret: '12345678900015' },
-  screens: [],
-}
-
 const LABELS: DeckLabels = {
   title: 'Moments clés',
+  entityName: 'Boulangerie Martin',
   caption: ['Boulangerie Martin (SIRET 123 456 789 00015)', 'affichage en k€'],
   lineLabel: 'Indicateur',
   assets: 'Actif',
@@ -143,15 +135,24 @@ const LABELS: DeckLabels = {
   variation: 'Variation',
   comment: 'Commentaire',
   continued: '(suite)',
-  offersTitle: 'Nos recommandations',
-  offersSubtitle: 'Nos préconisations pour l\'exercice à venir',
-  offerPriorities: {
-    [OfferPriority.PRIMARY]: 'Prioritaire',
-    [OfferPriority.SIGNIFICANT]: 'Significatif',
-    [OfferPriority.INFORMATIVE]: 'Informatif',
+  recommendationsTitle: 'Nos recommandations',
+  recommendationsSubtitle: 'Nos préconisations pour l\'exercice à venir',
+  priorities: {
+    [RecommendationPriority.PRIMARY]: 'Prioritaire',
+    [RecommendationPriority.SIGNIFICANT]: 'Significatif',
+    [RecommendationPriority.INFORMATIVE]: 'Informatif',
   },
-  offerComment: 'Pourquoi nous vous recommandons cette offre ?',
-  offerBenefitsComment: 'Bénéfices pour votre entreprise',
+  rubrics: {
+    [RecommendationRubric.MANAGEMENT]: 'Gestion',
+    [RecommendationRubric.ACCOUNTING]: 'Comptables, fiscales et financières',
+    [RecommendationRubric.SECTOR]: 'Propres à votre secteur',
+    [RecommendationRubric.SOCIAL]: 'Gestion sociale',
+    [RecommendationRubric.WEALTH]: 'Patrimoniales',
+  },
+  observations: 'Observations',
+  risk: 'Risque',
+  recommendation: 'Recommandation',
+  offers: 'Offres',
 }
 
 const ROWS: SlideRow[] = [
@@ -170,7 +171,7 @@ const ROWS: SlideRow[] = [
 
 describe('ExportManager.buildDeck', () => {
   it('should open the deck on a cover stating how the report is read', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     const [cover] = recorded
 
@@ -184,7 +185,7 @@ describe('ExportManager.buildDeck', () => {
   })
 
   it('should add one slide per grid row after the cover', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded).toHaveLength(3)
   })
@@ -194,7 +195,7 @@ describe('ExportManager.buildDeck', () => {
    * then its title — written, never uppercased, since the page is not.
    */
   it('should announce the section a slide belongs to, and its rank', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded[1].texts).toContain('01')
     expect(recorded[1].texts).toContain('VOS CHIFFRES CLÉS')
@@ -207,13 +208,13 @@ describe('ExportManager.buildDeck', () => {
 
   /** A section without an overline is announced by its title alone. */
   it('should write no overline for a section the template names none for', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded[2].texts).not.toContain('VOS CHIFFRES CLÉS')
   })
 
   it('should write a table widget as a table, never as a picture', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     const [table] = recorded[1].tables
 
@@ -227,7 +228,7 @@ describe('ExportManager.buildDeck', () => {
   })
 
   it('should size the columns of a table so that no figure has to wrap', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     const [table] = recorded[1].tables
     const widths = table.options.colW as number[]
@@ -240,7 +241,7 @@ describe('ExportManager.buildDeck', () => {
   })
 
   it('should write the title of every widget as text', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded[1].texts).toContain('Widget ca')
     expect(recorded[2].texts).toContain('Widget cards')
@@ -248,14 +249,14 @@ describe('ExportManager.buildDeck', () => {
   })
 
   it('should write the figures of a card as text', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded[2].texts).toContain('TRÉSORERIE')
     expect(recorded[2].texts).toContain('154 453 €')
   })
 
   it('should hand a drawing over as the picture it is', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     const [image] = recorded[2].images
 
@@ -265,7 +266,7 @@ describe('ExportManager.buildDeck', () => {
   })
 
   it('should write the editorial slot of a widget that shows one', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, [{
+    await ExportManager.buildDeck(LABELS, [{
       head: { rank: '01', title: 'Santé financière' },
       widgets: [{
         widget: makeWidget('ca', 12, Renderer.TABLE, {
@@ -274,173 +275,146 @@ describe('ExportManager.buildDeck', () => {
           isCommentHidden: false,
         }),
       }],
-    }])
+    }], [])
 
     expect(recorded[1].texts).toContain('COMMENTAIRE\nLa marge se tient.')
   })
 
   it('should paint every slide on the canvas of the report', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS)
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded.every(slide => slide.background !== undefined)).toBe(true)
   })
 
   it('should produce a cover alone when the report has no row', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, [])
+    await ExportManager.buildDeck(LABELS, [], [])
 
     expect(recorded).toHaveLength(1)
   })
 
   it('should return the written deck', async () => {
-    await expect(ExportManager.buildDeck(REPORT, LABELS, ROWS)).resolves.toBe(DECK_BLOB)
+    await expect(ExportManager.buildDeck(LABELS, ROWS, [])).resolves.toBe(DECK_BLOB)
   })
 })
 
 /**
- * The recommendations close the deck. Written rather than captured, and read
- * off the same rule the widgets are: only what would be published.
+ * The recommendations close the deck. Written rather than captured, one rubric
+ * per slide, and only what the client would read: the projection handed in is
+ * the visible one already.
  */
 describe('ExportManager.buildDeck — the recommendations', () => {
-  const OFFER: LinkedOffer = {
-    offerId: 128,
-    title: 'Pack Prévoyance TNS',
-    shortDescription: 'Couverture des indépendants',
-    categoryName: 'Protection sociale',
-    comment: 'Adapté à votre passage en SASU',
-    benefitsComment: 'Une couverture sans reste à charge',
-    priority: OfferPriority.PRIMARY,
-    isPriorityVisible: true,
-    isHidden: false,
-    isRetired: false,
+  const RECOMMENDATION: PublishedRecommendationPayload = {
+    rubric: RecommendationRubric.MANAGEMENT,
+    theme: 'Trésorerie',
+    priority: RecommendationPriority.PRIMARY,
+    observations: 'Aucun plan de trésorerie formalisé.',
+    risk: 'Une tension de trésorerie non anticipée.',
+    recommendation: 'Bâtir un plan de trésorerie glissant à 12 mois.',
+    offers: [{ offerId: 128, title: 'Pack Prévoyance TNS' }, { offerId: 129, title: 'Tableau de bord' }],
   }
+  const RUBRIC: PublishedRecommendationPayload[] = [RECOMMENDATION]
 
-  it('should add no slide at all when nothing is attached', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [])
+  it('should add no slide at all when nothing is visible', async () => {
+    await ExportManager.buildDeck(LABELS, ROWS, [])
 
     expect(recorded).toHaveLength(3)
   })
 
   /** They close the report, so they are numbered after the sections it carries. */
   it('should number the recommendations after the last section', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
+    await ExportManager.buildDeck(LABELS, ROWS, RUBRIC)
 
     expect(recorded.at(-1)!.texts).toContain('03')
-    expect(recorded.at(-1)!.texts).toContain(LABELS.offersSubtitle.toUpperCase())
+    expect(recorded.at(-1)!.texts).toContain(LABELS.recommendationsSubtitle.toUpperCase())
   })
 
-  /**
-   * A section whose every widget is hidden draws no slide, but the sections
-   * after it keep the ordinal the client will read them by: numbering the
-   * recommendations off how many slides were drawn would hand them a number a
-   * section already carries.
-   */
   it('should number the recommendations after the last ordinal written, never off the count', async () => {
     const rows: SlideRow[] = [
       { head: { rank: '01', title: 'Santé financière' }, widgets: [{ widget: TABLE_WIDGET }] },
       { head: { rank: '03', title: 'Trésorerie' }, widgets: [{ widget: CARDS_WIDGET }] },
     ]
 
-    await ExportManager.buildDeck(REPORT, LABELS, rows, [OFFER])
+    await ExportManager.buildDeck(LABELS, rows, RUBRIC)
 
     expect(recorded.at(-1)!.texts).toContain('04')
   })
 
-  it('should close the deck on a recommendations slide', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
+  it('should write the rubric, the theme with its priority, the three texts and the offers on one line', async () => {
+    await ExportManager.buildDeck(LABELS, ROWS, RUBRIC)
 
-    expect(recorded).toHaveLength(4)
-    expect(recorded.at(-1)!.texts).toContain('Nos recommandations')
+    const { texts, images } = recorded.at(-1)!
+
+    expect(images).toEqual([])
+    expect(texts).toContain('Nos recommandations')
+    expect(texts).toContain('Gestion')
+    expect(texts).toContain('Trésorerie · Prioritaire')
+    expect(texts).toContain(LABELS.observations)
+    expect(texts).toContain('Aucun plan de trésorerie formalisé.')
+    expect(texts).toContain(LABELS.risk)
+    expect(texts).toContain(LABELS.recommendation)
+    expect(texts).toContain('Bâtir un plan de trésorerie glissant à 12 mois.')
+    expect(texts).toContain('Offres : Pack Prévoyance TNS · Tableau de bord')
   })
 
-  /** The note is text the reader can select and correct, never a picture. */
-  it('should write the note rather than capture it', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
-
-    const slide = recorded.at(-1)!
-
-    expect(slide.texts).toContain('Adapté à votre passage en SASU')
-    expect(slide.images).toEqual([])
-  })
-
-  it('should write the title and the category of each recommendation', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
-
-    const slide = recorded.at(-1)!
-
-    expect(slide.texts).toContain('Pack Prévoyance TNS')
-    expect(slide.texts).toContain('PROTECTION SOCIALE')
-  })
-
-  /**
-   * The deck is internal: telling the firm what it decided is never the same
-   * question as telling the client.
-   */
-  it('should write the degree even when it is kept from the client', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [
-      { ...OFFER, isPriorityVisible: false },
-    ])
-
-    expect(recorded.at(-1)!.texts).toContain('Prioritaire')
-  })
-
-  it('should leave the hidden ones out, as it leaves out a hidden sub-section', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [
-      { ...OFFER, isHidden: true },
-    ])
-
-    expect(recorded).toHaveLength(3)
-  })
-
-  it('should write both notes under their headings, and not the short description', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
+  it('should leave an empty block out, its heading with it, and write no priority when there is none', async () => {
+    await ExportManager.buildDeck(LABELS, ROWS, [{ ...RECOMMENDATION, priority: undefined, observations: undefined, offers: [] }])
 
     const { texts } = recorded.at(-1)!
 
-    expect(texts).toContain(LABELS.offerComment)
-    expect(texts).toContain('Adapté à votre passage en SASU')
-    expect(texts).toContain(LABELS.offerBenefitsComment)
-    expect(texts).toContain('Une couverture sans reste à charge')
-    expect(texts).not.toContain('Couverture des indépendants')
+    expect(texts).toContain('Trésorerie')
+    expect(texts).not.toContain(LABELS.observations)
+    expect(texts).toContain(LABELS.risk)
+    expect(texts.some(text => text.startsWith('Offres'))).toBe(false)
   })
 
-  it('should write the one note written, without the heading of the other', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [
-      { ...OFFER, comment: undefined },
-    ])
+  it('should give every rubric its own slide, and continue an overflowing one under the same title', async () => {
+    const long: PublishedRecommendationPayload[] = Array.from({ length: 5 }, (_, rank) => ({
+      ...RECOMMENDATION,
+      rubric: RecommendationRubric.SOCIAL,
+      theme: `Thème ${rank}`,
+    }))
 
-    const { texts } = recorded.at(-1)!
+    await ExportManager.buildDeck(LABELS, ROWS, [...RUBRIC, ...long])
 
-    expect(texts).toContain(LABELS.offerBenefitsComment)
-    expect(texts).toContain('Une couverture sans reste à charge')
-    expect(texts).not.toContain(LABELS.offerComment)
+    expect(recorded).toHaveLength(3 + 1 + 3)
+    expect(recorded[4].texts).toContain('Gestion sociale')
+    expect(recorded[5].texts).toContain('Nos recommandations (suite)')
+    expect(recorded[5].texts).toContain('Gestion sociale')
   })
 
-  it('should fall back on the short description when nothing was written', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [
-      { ...OFFER, comment: undefined, benefitsComment: undefined },
-    ])
-
-    const { texts } = recorded.at(-1)!
-
-    expect(texts).toContain('Couverture des indépendants')
-    expect(texts).not.toContain(LABELS.offerComment)
-  })
-
-  it('should spread five recommendations over two slides, the second marked as a continuation', async () => {
-    const offers = Array.from({ length: 5 }, (_, rank) => ({ ...OFFER, offerId: rank + 1 }))
-
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, offers)
-
-    expect(recorded).toHaveLength(5)
-    expect(recorded.at(-1)!.texts).toContain('Nos recommandations (suite)')
-  })
-
-  /** A deck whose last page says 3/3 while carrying five would be lying. */
   it('should count the recommendation slides in the pagination', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
+    await ExportManager.buildDeck(LABELS, ROWS, RUBRIC)
 
     expect(recorded[1].texts).toContain('1/3')
     expect(recorded.at(-1)!.texts).toContain('3/3')
+  })
+})
+
+describe('ExportManager.paginateRecommendations', () => {
+  const recommendation = (theme: string, rubric = RecommendationRubric.MANAGEMENT): PublishedRecommendationPayload => (
+    { rubric, theme, offers: [] }
+  )
+
+  it('should put a short rubric on one slide, named by its label', () => {
+    const slides = ExportManager.paginateRecommendations([recommendation('1')], 2, LABELS.rubrics)
+
+    expect(slides).toEqual([{ label: 'Gestion', recommendations: [recommendation('1')], isContinued: false }])
+  })
+
+  it('should continue an overflowing rubric on the next slides, in order', () => {
+    const slides = ExportManager.paginateRecommendations(['1', '2', '3', '4', '5'].map(theme => recommendation(theme)), 2, LABELS.rubrics)
+
+    expect(slides.map(slide => slide.recommendations.map(item => item.theme))).toEqual([['1', '2'], ['3', '4'], ['5']])
+    expect(slides.map(slide => slide.isContinued)).toEqual([false, true, true])
+  })
+
+  it('should never share a slide between two rubrics, and draw none for an empty one', () => {
+    const slides = ExportManager.paginateRecommendations([
+      recommendation('2', RecommendationRubric.WEALTH),
+      recommendation('1'),
+    ], 2, LABELS.rubrics)
+
+    expect(slides.map(slide => slide.label)).toEqual(['Gestion', 'Patrimoniales'])
   })
 })
 
@@ -451,14 +425,9 @@ describe('ExportManager.buildDeck — the recommendations', () => {
 describe('ExportManager.buildPdf', () => {
   const PDF_BLOB = new Blob(['pdf'])
 
-  const OFFER: LinkedOffer = {
-    offerId: 128,
-    title: 'Pack Prévoyance TNS',
-    priority: OfferPriority.PRIMARY,
-    isPriorityVisible: true,
-    isHidden: false,
-    isRetired: false,
-  }
+  const RUBRICS: PublishedRecommendationPayload[] = [
+    { rubric: RecommendationRubric.MANAGEMENT, theme: 'Trésorerie', priority: RecommendationPriority.PRIMARY, recommendation: 'Un plan.', offers: [] },
+  ]
 
   const PDF_DOCUMENT: DeckDocument = {
     addPage: () => recordSlide() as SlideSurface,
@@ -472,25 +441,25 @@ describe('ExportManager.buildPdf', () => {
   })
 
   it('should write page for page what the deck writes', async () => {
-    await ExportManager.buildDeck(REPORT, LABELS, ROWS, [OFFER])
+    await ExportManager.buildDeck(LABELS, ROWS, RUBRICS)
 
     const deckPages = recorded.map(slide => slide.texts)
 
     recorded = []
 
-    await ExportManager.buildPdf(REPORT, LABELS, ROWS, [OFFER])
+    await ExportManager.buildPdf(LABELS, ROWS, RUBRICS)
 
     expect(recorded.map(slide => slide.texts)).toEqual(deckPages)
   })
 
   it('should draw a table as a table and a chart as the picture it is', async () => {
-    await ExportManager.buildPdf(REPORT, LABELS, ROWS)
+    await ExportManager.buildPdf(LABELS, ROWS, [])
 
     expect(recorded[1].tables).toHaveLength(1)
     expect(recorded[2].images).toHaveLength(1)
   })
 
   it('should return the written PDF', async () => {
-    await expect(ExportManager.buildPdf(REPORT, LABELS, ROWS)).resolves.toBe(PDF_BLOB)
+    await expect(ExportManager.buildPdf(LABELS, ROWS, [])).resolves.toBe(PDF_BLOB)
   })
 })

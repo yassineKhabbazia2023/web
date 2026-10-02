@@ -3,7 +3,7 @@
     <div
       class="
         flex
-        flex--justify-content-end
+        flex--justify-content-flex-end
       "
     >
       <PButton

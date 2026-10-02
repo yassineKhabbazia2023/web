@@ -1,9 +1,8 @@
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
-import { mostRecentDeliveredVariant } from '../../utils/comment.utils'
 import type { CommentVariant } from '../../types/key-moments.types'
 
-interface CommentTabsSource {
+interface CommentListSource {
   variants: CommentVariant[]
   retainedKey: string
   publishableKey: string
@@ -11,79 +10,43 @@ interface CommentTabsSource {
   draftVariant?: CommentVariant
 }
 
-export function useCommentTabs(source: CommentTabsSource) {
-  const activeKey = ref(source.publishableKey)
-  const isEditing = ref(false)
+export function useCommentList(source: CommentListSource) {
+  // Read in the order they were written; an undated delivery opens the list, versions in order
+  const orderedVariants = computed(() => [...source.variants]
+    .sort((left, right) => (left.updatedAt ?? '').localeCompare(right.updatedAt ?? '')))
 
-  const hasReaderPickedTab = ref(false)
-
-  watch(() => source.publishableKey, (key) => {
-    // A discarded slot names no tab: what was read stays read
-    if (key === '') {
-      return
-    }
-
-    if (hasReaderPickedTab.value === false && isEditing.value === false) {
-      activeKey.value = key
-    }
-  })
-
-  function readVariant(key: string) {
-    if (key === activeKey.value) {
-      return
-    }
-
-    // A draft belongs to one variant: switching tab leaves the edition behind
-    isEditing.value = false
-    hasReaderPickedTab.value = true
-    activeKey.value = key
-  }
+  // A default the firm never arbitrated is shown as retained: it is what the client would read
+  const displayedKey = computed(() => (source.isDiscarded ? '' : source.publishableKey))
 
   const hasMyVariant = computed(() => source.variants.some(variant => variant.isMine))
 
-  // Ends by itself once the saved variant appears under the key the draft carried
-  const isWritingFirstText = computed(() => source.draftVariant !== undefined
-    && activeKey.value === source.draftVariant.key
+  // One comment per person: once mine exists it is edited in place, never written again
+  const canCompose = computed(() => source.draftVariant !== undefined
     && hasMyVariant.value === false)
 
-  // An empty draft is offered as the `+` button, not as a tab, until writing starts
-  const tabs = computed(() => (isWritingFirstText.value && source.draftVariant !== undefined
-    ? [...source.variants, source.draftVariant]
-    : source.variants))
+  function isDisplayed(variant: CommentVariant): boolean {
+    return variant.key === displayedKey.value
+  }
 
-  const activeVariant = computed(() => tabs.value
-    .find(variant => variant.key === activeKey.value)
-    ?? mostRecentDeliveredVariant(tabs.value))
+  function canRetain(variant: CommentVariant): boolean {
+    return isDisplayed(variant) === false && isNotNullNorEmpty(variant.text)
+  }
 
-  // A fallback reading is still worth retaining: it keeps the next import from rewording it
-  const canRetain = computed(() => activeVariant.value !== undefined
-    && activeVariant.value.key !== source.retainedKey
-    && isNotNullNorEmpty(activeVariant.value.text))
-
-  // Only shown beside the published reading, or it would read as discarding another tab
-  const canDiscard = computed(() => source.isDiscarded === false
-    && source.publishableKey !== ''
-    && activeVariant.value?.key === source.publishableKey)
-
-  const canWrite = computed(() => isEditing.value === false
-    && source.draftVariant !== undefined
-    && hasMyVariant.value === false)
-
-  function startWriting() {
-    hasReaderPickedTab.value = true
-    activeKey.value = source.draftVariant?.key ?? activeKey.value
-    isEditing.value = true
+  /**
+   * The default follows the latest delivered version: retaining it explicitly
+   * freezes it, so that the next import does not reword what the client reads.
+   */
+  function canFreeze(variant: CommentVariant): boolean {
+    return isDisplayed(variant)
+      && variant.key !== source.retainedKey
+      && isNotNullNorEmpty(variant.text)
   }
 
   return {
-    activeKey,
-    isEditing,
-    tabs,
-    activeVariant,
+    orderedVariants,
+    canCompose,
+    isDisplayed,
     canRetain,
-    canDiscard,
-    canWrite,
-    readVariant,
-    startWriting,
+    canFreeze,
   }
 }

@@ -3,7 +3,8 @@ import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
 import { displayNotification } from '@pulse/styleguide'
 import { KeyMomentsService } from '../../services/key-moments.service'
-import { CurrencyDisplay } from '../../enums/key-moments.enums'
+import { readApiError } from '../../utils/api-error.utils'
+import { CurrencyDisplay, RejectionCode } from '../../enums/key-moments.enums'
 import type {
   PublicationDetailPayload,
   PublicationPayload,
@@ -36,6 +37,7 @@ export function usePublications(entityId: number | null) {
   const publicationDetail = ref<PublicationDetailPayload>()
 
   const isUnpublishing = ref(false)
+  const isRestoring = ref(false)
 
   /** Whether the publications are being read, so a view says nothing before they are. */
   const isLoading = ref(false)
@@ -139,15 +141,55 @@ export function usePublications(entityId: number | null) {
     }
   }
 
+  /**
+   * Puts the draft of the exercice back as its active publication left it, and
+   * says whether it worked so that the caller reads the draft again. A failure
+   * leaves the draft untouched: the microservice restores all of it or nothing.
+   * A publication withdrawn meanwhile is read again, which takes the gesture away.
+   */
+  async function restorePublished(exerciceId: number): Promise<boolean> {
+    if (accountId === null) {
+      return false
+    }
+
+    isRestoring.value = true
+
+    try {
+      await KeyMomentsService.restorePublished(accountId, exerciceId)
+      displayNotification('success', t('keyMoments.publish.restore.success'))
+
+      return true
+    } catch (error) {
+      logger.error('[KeyMoments] unable to restore the published version', error)
+
+      const isNotPublished = readApiError(error)?.code === RejectionCode.NOT_PUBLISHED
+
+      displayNotification('error', t(isNotPublished
+        ? 'keyMoments.publish.restore.notPublished'
+        : 'keyMoments.publish.restore.error'))
+
+      if (isNotPublished) {
+        await loadPublications()
+        await openExercice(exerciceId)
+      }
+
+      return false
+    } finally {
+      isRestoring.value = false
+    }
+  }
+
   return {
     publications,
     publicationDetail,
     isLoading,
     isUnpublishing,
+    isRestoring,
     loadPublications,
     publicationOf,
     resolvePublishedPreferences,
     openExercice,
     unpublish,
+    restorePublished,
   }
 }

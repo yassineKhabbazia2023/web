@@ -72,6 +72,7 @@
     />
 
     <PConfirmationPopup
+      pAppendToBody
       :pIsVisible="pendingTransition !== undefined"
       :pTitle="transitionTitle"
       :pConfirmButtonContent="t('keyMoments.settings.indicators.confirm')"

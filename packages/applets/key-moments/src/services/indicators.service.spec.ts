@@ -22,7 +22,13 @@ describe('IndicatorsService', () => {
 
   it('should create an indicator', async () => {
     vi.mocked(api.gateway.post).mockResolvedValueOnce({ data: undefined })
-    const payload = { code: 'ca', label: 'CA', kind: ValueKind.AMOUNT, sign: IndicatorSign.INCOME }
+    const payload = {
+      code: 'ca',
+      label: 'CA',
+      description: 'Ventes de la période.',
+      kind: ValueKind.AMOUNT,
+      sign: IndicatorSign.INCOME,
+    }
 
     await IndicatorsService.createIndicator(payload)
 
@@ -31,7 +37,7 @@ describe('IndicatorsService', () => {
 
   it('should update an indicator, its code staying out of the body', async () => {
     vi.mocked(api.gateway.put).mockResolvedValueOnce({ data: undefined })
-    const payload = { label: 'CA', kind: ValueKind.AMOUNT, sign: IndicatorSign.INCOME }
+    const payload = { label: 'CA', description: null, kind: ValueKind.AMOUNT, sign: IndicatorSign.INCOME }
 
     await IndicatorsService.updateIndicator('ca', payload)
 

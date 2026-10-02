@@ -2,22 +2,21 @@ import { onMounted, ref } from 'vue'
 import { logger } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useEntityName } from '../../composables/use-entity-name.composable'
 import { CurrencyDisplay } from '../../enums/key-moments.enums'
 import { assembleDataset } from '../../utils/data.utils'
 import { ReportManager } from '../../managers/report.manager'
 import { CustomerKeyMomentsService } from '../../services/customer-key-moments.service'
 import { KeyMomentsTracking } from '../../services/key-moments.tracking'
 import { readApiStatus } from '../../utils/api-error.utils'
-import type {
-  CustomerKeyMomentSummaryPayload,
-  CustomerOfferPayload,
-} from '../../services/customer-key-moments.service.types'
+import type { CustomerKeyMomentSummaryPayload } from '../../services/customer-key-moments.service.types'
 import type {
   ClosingEntity,
   Dataset,
   Screen,
   Template,
 } from '../../types/key-moments.types'
+import type { PublishedRecommendationPayload } from '../../types/recommendations.types'
 
 /**
  * Nothing that amounts to an absence becomes an error.
@@ -51,6 +50,7 @@ export function useCustomerKeyMoments(
   options: { isTracked?: boolean } = {},
 ) {
   const currentEntityStore = useCurrentEntityStore()
+  const { entityName } = useEntityName()
   const isTracked = options.isTracked ?? true
 
   /** Bound to a const so that the null guard narrows inside the loaders. */
@@ -69,8 +69,8 @@ export function useCustomerKeyMoments(
   /** Whose figures are read, as the closing named the firm's client */
   const entity = ref<ClosingEntity>()
   const publishedAt = ref<string>()
-  /** What the firm recommends, frozen by the publication */
-  const offers = ref<CustomerOfferPayload[]>([])
+  /** What the firm recommends, in order, frozen by the publication */
+  const recommendations = ref<PublishedRecommendationPayload[]>([])
 
   /** Locale the closing was produced in, which every date of the page reads */
   const locale = ref('fr-FR')
@@ -146,7 +146,8 @@ export function useCustomerKeyMoments(
 
     publishedAt.value = keyMoment.publishedAt
     locale.value = dataset.metadata.locale
-    offers.value = keyMoment.offers ?? []
+    // A key moment published before the recommendations has none
+    recommendations.value = keyMoment.recommendations ?? []
     isInThousands.value = keyMoment.preferenceCurrencyDisplay === CurrencyDisplay.THOUSANDS
 
     openedSources = {
@@ -165,7 +166,7 @@ export function useCustomerKeyMoments(
      * the firm advises is unusual, but it is published, and answering it with
      * "nothing to read" would hide a page that exists.
      */
-    isEmpty.value = screens.value.length === 0 && offers.value.length === 0
+    isEmpty.value = screens.value.length === 0 && recommendations.value.length === 0
 
     // Tracks one successful, non-empty display; a unit change redraws without re-tracking
     if (isTracked && isEmpty.value === false) {
@@ -182,7 +183,7 @@ export function useCustomerKeyMoments(
       logger.warn(`${message} — read as an absence`, error)
       openedSources = undefined
       screens.value = []
-      offers.value = []
+      recommendations.value = []
       entity.value = undefined
       isEmpty.value = true
 
@@ -253,11 +254,12 @@ export function useCustomerKeyMoments(
   })
 
   return {
+    entityName,
     isLoading,
     hasError,
     isEmpty,
     screens,
-    offers,
+    recommendations,
     entity,
     exerciceCatalogue,
     selectedExerciceId,

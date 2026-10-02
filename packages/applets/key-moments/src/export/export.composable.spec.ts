@@ -6,7 +6,7 @@ import { displayNotification } from '@pulse/styleguide'
 import { useExport } from './export.composable'
 import { ExportManager } from './export.manager'
 import { readReport } from './export.utils'
-import { ExportFormat, OfferPriority, Renderer } from '../enums/key-moments.enums'
+import { ExportFormat, RecommendationPriority, RecommendationRubric, Renderer } from '../enums/key-moments.enums'
 import type { Report } from '../types/key-moments.types'
 import type { SlideRow } from './export.types'
 
@@ -14,6 +14,9 @@ const REPORT: Report = {
   entity: { name: 'Boulangerie Martin', legalForm: 'SARL', siret: '12345678900015' },
   screens: [],
 }
+
+/** Deliberately not the name the closing carries: the cover names the dossier. */
+const ENTITY_NAME = 'BOULANGERIE MARTIN SARL'
 
 const CAPTION = ['Boulangerie Martin (SIRET 123 456 789 00015)']
 
@@ -49,12 +52,11 @@ describe('useExport', () => {
   it('should download the deck built from what the page displays', async () => {
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PPTX, REPORT, CAPTION)
+    await exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
 
     expect(vi.mocked(readReport)).toHaveBeenCalledWith(REPORT)
     expect(ExportManager.buildDeck).toHaveBeenCalledWith(
-      REPORT,
-      expect.objectContaining({ title: 'keyMoments.title', caption: CAPTION }),
+      expect.objectContaining({ title: 'keyMoments.title', entityName: ENTITY_NAME, caption: CAPTION }),
       ROWS,
       [],
     )
@@ -65,7 +67,7 @@ describe('useExport', () => {
   it('should name the file after the exercice when it is given one', async () => {
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PDF, REPORT, CAPTION, [], '2025')
+    await exportReport(ExportFormat.PDF, REPORT, ENTITY_NAME, CAPTION, [], '2025')
 
     expect(vi.mocked(downloadFile))
       .toHaveBeenCalledWith(PDF_BLOB, 'moments-cles-12345678900015-2025.pdf')
@@ -75,12 +77,11 @@ describe('useExport', () => {
   it('should download the PDF built from the very same reading', async () => {
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PDF, REPORT, CAPTION)
+    await exportReport(ExportFormat.PDF, REPORT, ENTITY_NAME, CAPTION, [])
 
     expect(ExportManager.buildDeck).not.toHaveBeenCalled()
     expect(ExportManager.buildPdf).toHaveBeenCalledWith(
-      REPORT,
-      expect.objectContaining({ title: 'keyMoments.title', caption: CAPTION }),
+      expect.objectContaining({ title: 'keyMoments.title', entityName: ENTITY_NAME, caption: CAPTION }),
       ROWS,
       [],
     )
@@ -90,11 +91,12 @@ describe('useExport', () => {
   it('should hand the deck every word only the page can translate', async () => {
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PPTX, REPORT, CAPTION)
+    await exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
 
     // The identity `t` of the test setup hands the keys back untranslated
-    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][1]).toEqual({
+    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][0]).toEqual({
       title: 'keyMoments.title',
+      entityName: ENTITY_NAME,
       caption: CAPTION,
       lineLabel: 'keyMoments.table.label',
       assets: 'keyMoments.balanceSheet.assets',
@@ -104,55 +106,46 @@ describe('useExport', () => {
       variation: 'keyMoments.cards.variation',
       comment: 'keyMoments.comment.title',
       continued: 'keyMoments.export.continued',
-      offersTitle: 'keyMoments.offers.title',
-      offersSubtitle: 'keyMoments.offers.subtitle',
-      offerPriorities: {
-        [OfferPriority.PRIMARY]: 'keyMoments.offers.priority.primary',
-        [OfferPriority.SIGNIFICANT]: 'keyMoments.offers.priority.significant',
-        [OfferPriority.INFORMATIVE]: 'keyMoments.offers.priority.informative',
+      recommendationsTitle: 'keyMoments.recommendations.title',
+      recommendationsSubtitle: 'keyMoments.recommendations.subtitle',
+      priorities: {
+        [RecommendationPriority.PRIMARY]: 'keyMoments.recommendations.priority.primary',
+        [RecommendationPriority.SIGNIFICANT]: 'keyMoments.recommendations.priority.significant',
+        [RecommendationPriority.INFORMATIVE]: 'keyMoments.recommendations.priority.informative',
       },
-      offerComment: 'keyMoments.offers.card.commentTitle',
-      offerBenefitsComment: 'keyMoments.offers.card.benefitsCommentTitle',
+      rubrics: {
+        [RecommendationRubric.MANAGEMENT]: 'keyMoments.recommendations.rubrics.management',
+        [RecommendationRubric.ACCOUNTING]: 'keyMoments.recommendations.rubrics.accounting',
+        [RecommendationRubric.SECTOR]: 'keyMoments.recommendations.rubrics.sector',
+        [RecommendationRubric.SOCIAL]: 'keyMoments.recommendations.rubrics.social',
+        [RecommendationRubric.WEALTH]: 'keyMoments.recommendations.rubrics.wealth',
+      },
+      observations: 'keyMoments.recommendations.customer.observations',
+      risk: 'keyMoments.recommendations.customer.risk',
+      recommendation: 'keyMoments.recommendations.customer.recommendation',
+      offers: 'keyMoments.recommendations.export.offers',
     })
   })
 
-  /**
-   * The recommendations are read off what the client was served, which carries
-   * neither `isHidden`, `isPriorityVisible` nor `isRetired`: an offer that
-   * reached the client is by construction none of the three, and the export is
-   * handed that rather than a default the manager would have to guess.
-   */
+  /** The rubrics travel as the client was served them: visible ones only, already projected. */
   it('should hand the recommendations over as the client was served them', async () => {
     const { exportReport } = useExport()
+    const rubrics = [
+      { rubric: RecommendationRubric.MANAGEMENT, theme: 'Trésorerie', priority: RecommendationPriority.PRIMARY, recommendation: 'Un plan.', offers: [] },
+    ]
 
-    await exportReport(ExportFormat.PPTX, REPORT, CAPTION, [{
-      offerId: 128,
-      title: 'Pack Prévoyance TNS',
-      comment: 'Adapté à votre passage en SASU',
-      priority: OfferPriority.PRIMARY,
-    }])
+    await exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, rubrics)
 
-    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][3]).toEqual([{
-      offerId: 128,
-      title: 'Pack Prévoyance TNS',
-      shortDescription: undefined,
-      categoryName: undefined,
-      comment: 'Adapté à votre passage en SASU',
-      benefitsComment: undefined,
-      priority: OfferPriority.PRIMARY,
-      isPriorityVisible: true,
-      isHidden: false,
-      isRetired: false,
-    }])
+    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][2]).toBe(rubrics)
   })
 
   /** A report served without the section produces a file without one. */
   it('should write no recommendation when the client was served none', async () => {
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PPTX, REPORT, CAPTION)
+    await exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
 
-    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][3]).toEqual([])
+    expect(vi.mocked(ExportManager.buildDeck).mock.calls[0][2]).toEqual([])
   })
 
   it('should report which format is being exported until it is downloaded', async () => {
@@ -160,7 +153,7 @@ describe('useExport', () => {
 
     expect(isExportingDeck.value).toBe(false)
 
-    const done = exportReport(ExportFormat.PPTX, REPORT, CAPTION)
+    const done = exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
     await nextTick()
 
     expect(isExportingDeck.value).toBe(true)
@@ -175,8 +168,8 @@ describe('useExport', () => {
   it('should ignore an export asked for while one is running', async () => {
     const { exportReport } = useExport()
 
-    const done = exportReport(ExportFormat.PPTX, REPORT, CAPTION)
-    await exportReport(ExportFormat.PDF, REPORT, CAPTION)
+    const done = exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
+    await exportReport(ExportFormat.PDF, REPORT, ENTITY_NAME, CAPTION, [])
     await done
 
     expect(vi.mocked(readReport)).toHaveBeenCalledOnce()
@@ -189,7 +182,7 @@ describe('useExport', () => {
 
     const { isExportingDeck, exportReport } = useExport()
 
-    await exportReport(ExportFormat.PPTX, REPORT, CAPTION)
+    await exportReport(ExportFormat.PPTX, REPORT, ENTITY_NAME, CAPTION, [])
     await flushPromises()
 
     expect(vi.mocked(logger.error)).toHaveBeenCalledWith(
@@ -207,7 +200,7 @@ describe('useExport', () => {
 
     const { exportReport } = useExport()
 
-    await exportReport(ExportFormat.PDF, REPORT, CAPTION)
+    await exportReport(ExportFormat.PDF, REPORT, ENTITY_NAME, CAPTION, [])
     await flushPromises()
 
     expect(vi.mocked(displayNotification))

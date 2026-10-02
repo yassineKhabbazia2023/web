@@ -6,6 +6,7 @@
     :pShowClose="!pNoCloseButton"
     :pAlignCenter="pAlignCenter"
     :pDestroyOnClose="pDestroyOnClose"
+    :pAppendToBody="pAppendToBody"
     :data-testid="pTestId"
     @close="onClickClose"
   >
@@ -48,6 +49,7 @@ const props = withDefaults(defineProps<PConfirmationPopupProps>(), {
   pConfirmButtonIsLoading: false,
   pConfirmButtonIsDisabled: false,
   pDestroyOnClose: false,
+  pAppendToBody: false,
 })
 
 const emit = defineEmits<{

@@ -405,6 +405,12 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'gripVertical',
+    componentName: 'PIGripVertical',
+    fileName: 'grip-vertical.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'hourglass',
     componentName: 'PIHourglass',
     fileName: 'hourglass.svg',

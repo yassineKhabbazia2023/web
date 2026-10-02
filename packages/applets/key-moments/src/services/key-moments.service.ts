@@ -230,6 +230,18 @@ export class KeyMomentsService {
     )
   }
 
+  /**
+   * Puts the draft of the exercice back as its active publication left it, all
+   * at once or not at all, and answers `204` with no body: the draft and the
+   * readings are read again from their own routes. The closing on display is
+   * not stored, so it is for the caller to open the published one again.
+   */
+  static async restorePublished(entityId: number, exerciceId: number): Promise<void> {
+    await api.gateway.post(
+      `${API_PREFIXES.KEY_MOMENTS}/accounts/${entityId}/exercices/${exerciceId}/restore-published`,
+    )
+  }
+
   static async getPublications(entityId: number): Promise<PublicationPayload[]> {
     const { data } = await api.gateway.get<PublicationPayload[]>(
       `${API_PREFIXES.KEY_MOMENTS}/accounts/${entityId}/published`,

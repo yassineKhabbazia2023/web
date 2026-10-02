@@ -13,7 +13,7 @@
       :title="t('keyMoments.settings.editor.toolbar.move')"
       :data-testid="`${testIdPrefix}-handle`"
     >
-      <PIcon pName="arrowDownUp" />
+      <PIcon pName="gripVertical" />
     </span>
 
     <PButton

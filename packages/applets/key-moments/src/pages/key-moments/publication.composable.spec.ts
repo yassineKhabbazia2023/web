@@ -40,13 +40,10 @@ const PUBLICATIONS: PublicationPayload[] = [
 const DETAIL: PublicationDetailPayload = {
   ...PUBLICATIONS[0],
   isActive: true,
-  offers: [],
+  recommendations: [],
   comments: [{
     slotId: 'synthese',
     text: 'À nuancer.',
-    sourceContributorId: '456',
-    sourceContributorName: 'Marie Leroy',
-    sourceClosingVersion: null,
   }],
   hiddenWidgetIds: ['effectifs'],
 }
@@ -55,6 +52,7 @@ beforeEach(() => {
   vi.spyOn(KeyMomentsService, 'getPublications').mockResolvedValue(PUBLICATIONS)
   vi.spyOn(KeyMomentsService, 'getPublication').mockResolvedValue(DETAIL)
   vi.spyOn(KeyMomentsService, 'unpublish').mockResolvedValue()
+  vi.spyOn(KeyMomentsService, 'restorePublished').mockResolvedValue()
 })
 
 describe('usePublications', () => {
@@ -190,6 +188,52 @@ describe('usePublications', () => {
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', expect.any(String))
       expect(vi.mocked(KeyMomentsService.getPublications)).toHaveBeenCalledOnce()
       expect(publicationOf(7)?.id).toBe(99)
+    })
+  })
+
+  describe('restoring the published version', () => {
+
+    it('should restore the draft of the exercice and say it worked', async () => {
+      const { restorePublished, isRestoring } = usePublications(42)
+
+      const restoring = restorePublished(7)
+
+      expect(isRestoring.value).toBe(true)
+      expect(await restoring).toBe(true)
+      expect(isRestoring.value).toBe(false)
+      expect(vi.mocked(KeyMomentsService.restorePublished)).toHaveBeenCalledWith(42, 7)
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', expect.any(String))
+    })
+
+    it('should notify the failure and say it failed', async () => {
+      vi.mocked(KeyMomentsService.restorePublished).mockRejectedValue(new Error('boom'))
+      const { restorePublished, isRestoring } = usePublications(42)
+
+      expect(await restorePublished(7)).toBe(false)
+      expect(isRestoring.value).toBe(false)
+      expect(vi.mocked(logger.error)).toHaveBeenCalled()
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', expect.any(String))
+    })
+
+    it('should read the publications again when the exercice is no longer published', async () => {
+      vi.mocked(KeyMomentsService.restorePublished).mockRejectedValue({
+        response: { status: 409, data: { code: 'not-published' } },
+      })
+      vi.mocked(KeyMomentsService.getPublications).mockResolvedValue([])
+      const { restorePublished, publicationOf, publicationDetail } = usePublications(42)
+
+      expect(await restorePublished(7)).toBe(false)
+      expect(vi.mocked(displayNotification))
+        .toHaveBeenCalledWith('error', 'keyMoments.publish.restore.notPublished')
+      expect(publicationOf(7)).toBeUndefined()
+      expect(publicationDetail.value).toBeUndefined()
+    })
+
+    it('should restore nothing without an account', async () => {
+      const { restorePublished } = usePublications(null)
+
+      expect(await restorePublished(7)).toBe(false)
+      expect(vi.mocked(KeyMomentsService.restorePublished)).not.toHaveBeenCalled()
     })
   })
 })

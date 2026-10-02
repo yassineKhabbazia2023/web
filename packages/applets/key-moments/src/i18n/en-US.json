@@ -4,6 +4,7 @@
     "titleOf": "Key moments of {name}",
     "error": "The key moments of this folder could not be loaded.",
     "empty": "No closing has been imported for this folder yet.",
+    "entityNameMismatch": "The imported closing names the entity “{closingName}”, while the folder is named “{entityName}”.",
     "import": {
       "button": "Import a closing",
       "success": "The closing has been imported.",
@@ -23,7 +24,8 @@
         "pptx": "The PowerPoint export did not complete.",
         "pdf": "The PDF export did not complete."
       },
-      "continued": "(continued)"
+      "continued": "(continued)",
+      "menu": "Export"
     },
     "publish": {
       "button": {
@@ -39,7 +41,10 @@
         "delivery": "the client is not reading the latest delivery",
         "unreadable": "The published state could not be read: reload the page to publish.",
         "modified": "{count} unpublished change | {count} unpublished changes",
-        "unresolvedOffers": "{count} recommendation is no longer in the catalogue: detach it to publish. | {count} recommendations are no longer in the catalogue: detach them to publish."
+        "unresolvedOffers": "{count} recommendation is no longer in the catalogue: detach it to publish. | {count} recommendations are no longer in the catalogue: detach them to publish.",
+        "recommendationsWithoutTheme": "{count} recommendation has no theme: pick one or remove it to publish. | {count} recommendations have no theme: pick one or remove them to publish.",
+        "offersAccessRequired": "Access to the offers is required to publish.",
+        "themesUnreadable": "The recommendation themes could not be read: reload the page to publish."
       },
       "divergence": {
         "closing": "Closing changed: {to}",
@@ -50,14 +55,20 @@
         "currency": "Read in {unit}",
         "comments": "{count} comment changed | {count} comments changed",
         "hiddenWidgets": "{hidden} sub-section hidden, {shown} brought back | {hidden} sub-sections hidden, {shown} brought back",
-        "offers": "{count} recommendation changed | {count} recommendations changed"
+        "recommendations": "{count} recommendation modified | {count} recommendations modified"
       },
-      "revert": {
+      "restore": {
         "title": "Unpublished changes",
-        "button": "Undo",
-        "unavailable": "Cannot be undone",
-        "unavailableHint": "This choice is no longer in the catalogue and cannot be brought back.",
-        "commentsHint": "Brings back the comments retained at publication. No text is changed."
+        "button": "Back to the last published version",
+        "popup": {
+          "title": "Go back to the published version?",
+          "message": "The key moment will return to its last published version. Every change made since will be lost, including texts rewritten by contributors and hidden recommendations.",
+          "confirm": "Go back to the published version",
+          "cancel": "Cancel"
+        },
+        "success": "The key moment is back to its last published version.",
+        "error": "Going back to the published version failed.",
+        "notPublished": "This key moment is no longer published: there is no version left to go back to."
       },
       "success": "The key moment is published.",
       "error": "Publishing failed.",
@@ -66,7 +77,11 @@
         "message": "The report will be published as displayed, with the retained comments.",
         "replace": "A publication from {date} by {author} already exists for this exercise: it will be replaced by the following.",
         "confirm": "Publish",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "noCategory": "No recommendation category was chosen for this exercice.",
+        "recommendations": "{count} recommendation will be published and become readable by the client. | {count} recommendations will be published and become readable by the client.",
+        "noRecommendation": "Warning: you are about to publish without any recommendation, do you confirm?",
+        "confirmWithoutRecommendation": "Confirm the publication"
       },
       "missingOffersError": "The publication was refused: a recommendation is no longer described in the catalogue."
     },
@@ -94,7 +109,8 @@
         "draft": "Draft",
         "published": "Published"
       },
-      "noDraft": "No draft to display — go back to the editor."
+      "noDraft": "No draft to display — go back to the editor.",
+      "clientTag": "Client view"
     },
     "table": {
       "label": "Label"
@@ -121,29 +137,35 @@
     "comment": {
       "title": "COMMENT",
       "wordmark": "Comment'",
-      "empty": "No comment for this part.",
       "placeholder": "Type your comment",
       "edit": "Edit",
       "save": "Save",
-      "add": "Add my comment",
       "delivered": "Delivered",
       "deliveredVersion": "Version {version}",
       "unknownContributor": "Contributor",
       "saveError": "Your comment could not be saved.",
       "retainError": "The retained version could not be saved.",
-      "retain": "Retain",
-      "discard": "Discard",
-      "reintegrate": "Reintegrate",
+      "retain": "Retain this comment",
       "discarded": "Discarded slot: nothing will be published here.",
       "discardError": "The slot could not be discarded.",
-      "publishable": "Reading retained for publication",
-      "updatedAt": "edited on {date}",
-      "tabsAriaLabel": "Comment versions"
+      "composerPlaceholder": "Add a comment…",
+      "cancel": "Cancel",
+      "hide": "Stop displaying",
+      "retainedBadge": "RETAINED COMMENT",
+      "delete": "Delete",
+      "deletePopup": {
+        "title": "Delete your comment?",
+        "message": "The following comment will be permanently deleted: {comment}",
+        "displayedWarning": "This comment is the one shown to the client: deleting it may discard the slot, and nothing will be published here anymore.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "freeze": "Freeze this comment",
+      "freezeHint": "Displayed by default, this comment follows the latest delivered version: a later import could replace it. Freezing it keeps it as is."
     },
     "visibility": {
       "hiddenBadge": "Hidden",
-      "hide": "Hide the sub-section",
-      "show": "Show the sub-section",
+      "switchLabel": "Visible to the client",
       "error": "Unable to save which sub-sections are published"
     },
     "preferences": {
@@ -187,7 +209,9 @@
     "nav": {
       "title": "Navigation",
       "collapse": "Collapse the navigation",
-      "expand": "Expand the navigation"
+      "expand": "Expand the navigation",
+      "chooseCategory": "Choose a category",
+      "rubricCount": "{visible}/{total}"
     },
     "waterfall": {
       "balance": "Balance (total)",
@@ -202,49 +226,12 @@
       "start": "Starting point",
       "end": "Final cash reconciliation"
     },
-    "offers": {
-      "title": "Our recommendations",
-      "subtitle": "Our recommendations for the coming exercice",
-      "add": "Attach an offer",
-      "capReached": "You cannot attach more than {count} offers to an exercice.",
-      "error": "The recommendations could not be saved.",
-      "readError": "The recommendations of the exercice could not be loaded: reload the page before changing them.",
-      "picker": {
-        "title": "Attach an offer to the {year} exercice",
-        "search": "Search for an offer",
-        "allTags": "All",
-        "choose": "Choose this offer",
-        "chosen": "Already attached",
-        "empty": "No offer matches this search."
-      },
-      "card": {
-        "commentPlaceholder": "Why this offer, for this client",
-        "remove": "Remove this offer",
-        "hide": "Hide the offer",
-        "show": "Show the offer",
-        "hiddenBadge": "Hidden",
-        "retired": "Offer removed from the catalogue",
-        "priorityLabel": "Priority",
-        "priorityNone": "None",
-        "priorityHidden": "Hide the priority from the client",
-        "priorityHiddenHint": "Set a priority first.",
-        "commentEmpty": "No note on this offer.",
-        "commentTitle": "Why we recommend this offer",
-        "benefitsCommentTitle": "Benefits for your business",
-        "benefitsCommentPlaceholder": "What this offer brings to your business",
-        "benefitsCommentEmpty": "No benefits stated for this offer."
-      },
-      "priority": {
-        "primary": "Primary",
-        "significant": "Significant",
-        "informative": "Informative"
-      }
-    },
     "settings": {
       "title": "Key moments",
       "tabs": {
         "templates": "Templates",
-        "indicators": "Indicators"
+        "indicators": "Indicators",
+        "recommendations": "Recommendations"
       },
       "templates": {
         "new": "New template",
@@ -268,7 +255,8 @@
           "copyLabel": "{label} (copy)",
           "cancel": "Cancel",
           "create": "Create",
-          "error": "The template could not be created."
+          "error": "The template could not be created.",
+          "codeTaken": "This code is already in use."
         },
         "withdraw": "Withdraw from the catalogue",
         "withdrawDialog": {
@@ -586,12 +574,145 @@
         "cancel": "Cancel",
         "save": "Save",
         "saved": "Indicator saved.",
-        "error": "The indicator could not be saved."
+        "error": "The indicator could not be saved.",
+        "description": "Definition",
+        "descriptionHint": "Shown as a tooltip beside the indicator name. E.g.: minimum revenue needed to cover all expenses."
       },
       "drawerActions": {
         "save": "Save",
         "cancel": "Cancel"
+      },
+      "recommendations": {
+        "categories": {
+          "create": "Create a category",
+          "count": "{count} category | {count} categories",
+          "hint": "The collaborator picks a category and receives a copy of it in the exercice; editing a category does not change the exercices already served.",
+          "empty": "No category.",
+          "edit": "Edit",
+          "remove": "Delete the category",
+          "confirmRemove": "Delete",
+          "cancel": "Cancel",
+          "removeText": "Delete \"{label}\" and its recommendations? The exercices that copied it keep their copy.",
+          "removed": "Category deleted.",
+          "removeError": "The category could not be deleted.",
+          "loadError": "The categories could not be read."
+        },
+        "categoryDrawer": {
+          "titleCreate": "New category",
+          "titleEdit": "Category \"{label}\"",
+          "label": "Label",
+          "pitch": "Pitch",
+          "pitchHint": "One sentence presenting the sector on the choice screen.",
+          "recommendations": "Base recommendations",
+          "recommendationsHint": "Grouped by rubric, in the order the collaborator will receive them. Drag them to reorder within a rubric.",
+          "readError": "The recommendations could not be read.",
+          "incompleteHint": "A recommendation without a theme prevents saving.",
+          "unreadableHint": "Recommendations not read: close and reopen the category to try again.",
+          "save": "Save",
+          "cancel": "Cancel",
+          "saved": "Category saved.",
+          "saveError": "The category could not be saved."
+        }
       }
+    },
+    "recommendations": {
+      "picker": {
+        "search": "Search for an offer",
+        "allTags": "All",
+        "choose": "Choose this offer",
+        "selected": "Offer selected",
+        "empty": "No offer matches this search.",
+        "count": "{count} offer selected | {count} offers selected",
+        "cancel": "Cancel",
+        "validate": "Validate the selection"
+      },
+      "priority": {
+        "primary": "Priority",
+        "significant": "Significant",
+        "informative": "Informative"
+      },
+      "saveError": "The recommendations could not be saved. Your entries are kept and will be sent again on the next change.",
+      "unknownThemeError": "Some themes are no longer offered: nothing was saved. Pick another theme on the flagged recommendations.",
+      "themesError": "The list of themes could not be read: the recommendations cannot be shown. Reload the page to try again.",
+      "categoryPicker": {
+        "title": "Choose the category of the file",
+        "text": "The recommendations of the category will be copied into the exercice; you can then adjust them.",
+        "cancel": "Cancel",
+        "empty": "No category is available."
+      },
+      "header": {
+        "overline": "Chosen category",
+        "count": "{total} recommendation · {visible} visible to the client | {total} recommendations · {visible} visible to the client",
+        "change": "Change category",
+        "unknownCategory": "Category removed from the referential",
+        "saving": "Saving…",
+        "saveFailed": "Last save refused"
+      },
+      "card": {
+        "move": "Move the recommendation",
+        "themeMissing": "Theme to fill in",
+        "priorityMissing": "Priority to set",
+        "offerCount": "{count} offer(s)",
+        "visible": "Visible to the client",
+        "priority": "Priority",
+        "theme": "Theme",
+        "observations": "Observations",
+        "observationsHint": "What you observed in the file",
+        "risk": "Risk",
+        "riskHint": "What the client risks by doing nothing",
+        "recommendation": "Recommendation",
+        "recommendationHint": "What you recommend",
+        "remove": "Delete",
+        "removeText": "This recommendation will be removed from the rubric.",
+        "confirmRemove": "Delete",
+        "cancel": "Cancel",
+        "themeHint": "Pick a theme",
+        "themeRequired": "Theme required: the recommendation is not saved until it has one.",
+        "themeRefused": "This theme is no longer offered: pick another one."
+      },
+      "rubric": {
+        "count": "{visible} visible / {total}",
+        "add": "+ Add a recommendation",
+        "empty": "No recommendation in this rubric. You can add one.",
+        "total": "{count} recommendation | {count} recommendations"
+      },
+      "offers": {
+        "title": "Attached offers ({count})",
+        "retired": "Offer retired from the catalogue",
+        "learnMore": "Learn more",
+        "detach": "Detach this offer",
+        "attach": "+ Attach offers",
+        "pickerTitle": "Attach offers to the recommendation"
+      },
+      "title": "Our recommendations",
+      "subtitle": "Our advice for the coming exercice",
+      "customer": {
+        "empty": "No recommendation is visible to the client.",
+        "count": "{count} recommendation | {count} recommendations",
+        "observations": "Observations",
+        "risk": "Risk",
+        "recommendation": "Recommendation"
+      },
+      "replace": {
+        "title": "Change category",
+        "text": "Replace the current recommendations with those of “{label}”? The entries in progress will be lost.",
+        "confirm": "Replace",
+        "cancel": "Cancel"
+      },
+      "export": {
+        "offers": "Offers"
+      },
+      "chooseError": "The category could not be read.",
+      "rubrics": {
+        "management": "Management",
+        "accounting": "Accounting, tax and financial",
+        "sector": "Specific to your sector",
+        "social": "Social management",
+        "wealth": "Wealth"
+      }
+    },
+    "errors": {
+      "payloadTooLarge": "The content sent is too large to be saved."
     }
   }
 }

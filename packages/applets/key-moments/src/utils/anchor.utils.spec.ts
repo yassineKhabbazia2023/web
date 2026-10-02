@@ -1,4 +1,5 @@
-import { screenAnchorId, widgetAnchorId } from './anchor.utils'
+import { RecommendationRubric } from '../enums/key-moments.enums'
+import { screenAnchorId, widgetAnchorId, RECOMMENDATIONS_ANCHOR_ID, rubricAnchorId } from './anchor.utils'
 
 describe('key-moments anchors', () => {
 
@@ -16,5 +17,12 @@ describe('key-moments anchors', () => {
    */
   it('should keep a screen and a widget sharing an id apart', () => {
     expect(screenAnchorId('bilan')).not.toBe(widgetAnchorId('bilan'))
+  })
+})
+
+describe('recommendation anchors', () => {
+  it('should name a rubric section from its key', () => {
+    expect(rubricAnchorId(RecommendationRubric.SOCIAL)).toBe('key-moments-recommendations-rubric-social')
+    expect(RECOMMENDATIONS_ANCHOR_ID).toBe('key-moments-recommendations')
   })
 })

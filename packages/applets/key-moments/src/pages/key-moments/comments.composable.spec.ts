@@ -151,15 +151,12 @@ function buildScreens(): Screen[] {
 const PUBLICATION_DETAIL: PublicationDetailPayload = {
   ...PUBLICATIONS[0],
   isActive: true,
+  recommendations: [],
   comments: [{
     slotId: 'synthese',
     text: 'À nuancer.',
-    sourceContributorId: '456',
-    sourceContributorName: 'Marie Leroy',
-    sourceClosingVersion: null,
   }],
   hiddenWidgetIds: [],
-  offers: [],
 }
 
 /**
@@ -488,13 +485,12 @@ describe('useComments', () => {
         .toContain('Texte livré du dernier closing.')
     })
 
-    it('should offer my draft tab and no arbitration by default', async () => {
+    it('should offer my draft by default', async () => {
       const { openExercice, buildCommentBoards } = buildComments()
       await openExercice(7)
 
       const boards = buildCommentBoards(buildScreens(), 3)
 
-      expect(boards.synthese.retainedKey).toBe('')
       expect(boards.synthese.draftVariant?.isMine).toBe(true)
     })
 
@@ -1021,156 +1017,6 @@ describe('useComments', () => {
 
       expect(vi.mocked(KeyMomentsService.getPublication)).toHaveBeenCalledWith(42, 99)
       expect(retainedKeyOf('synthese')).toBe('')
-    })
-
-  })
-
-  describe('undoing the arbitration', () => {
-
-    beforeEach(() => {
-      vi.spyOn(KeyMomentsService, 'getPublications').mockResolvedValue(PUBLICATIONS)
-    })
-
-    /** The star goes back on the reading the client is served. */
-    it('should write the arbitration the publication froze back down', async () => {
-      const {
-        openExercice,
-        variantsFor,
-        retainVariant,
-        restorePublishedArbitration,
-        retainedKeyOf,
-      } = buildComments()
-      await openExercice(7)
-      const mine = variantsFor('synthese', 'Livré.', 2).find(variant => variant.isMine)
-      await retainVariant('synthese', mine!)
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(KeyMomentsService.retainComment))
-        .toHaveBeenLastCalledWith(42, 7, 'synthese', {
-          sourceContributorId: '456',
-          sourceClosingVersion: null,
-        })
-      expect(retainedKeyOf('synthese')).toBe('456')
-    })
-
-    /**
-     * Only which reading is retained ever moves. A contributor who reworded
-     * theirs since the publication keeps their words — and the slot rightly
-     * stays named as modified.
-     */
-    it('should never rewrite a contribution', async () => {
-      const { openExercice, restorePublishedArbitration } = buildComments()
-      await openExercice(7)
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(KeyMomentsService.saveComment)).not.toHaveBeenCalled()
-    })
-
-    /**
-     * The slots the publication took out carry no arbitration to write back:
-     * they are named on their own list, and discarded again through the very
-     * route that retains.
-     */
-    it('should discard again the slots the publication took out', async () => {
-      vi.spyOn(KeyMomentsService, 'getPublication').mockResolvedValue({
-        ...PUBLICATION_DETAIL,
-        comments: [],
-        discardedSlotIds: ['synthese'],
-      })
-      const { openExercice, restorePublishedArbitration, buildCommentBoards } = buildComments()
-      await openExercice(7)
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(KeyMomentsService.retainComment))
-        .toHaveBeenCalledExactlyOnceWith(42, 7, 'synthese', {
-          sourceContributorId: null,
-          sourceClosingVersion: null,
-          retainNone: true,
-        })
-      expect(buildCommentBoards(buildScreens(), 3).synthese.isDiscarded).toBe(true)
-    })
-
-    /**
-     * A publication frozen before the list existed carries none, which reads as
-     * no slot discarded — never as a failure, and never as a reason to take a
-     * decision the publication says nothing about away.
-     */
-    it('should discard nothing when the publication names no such slot', async () => {
-      const { openExercice, discardSlot, restorePublishedArbitration, buildCommentBoards }
-        = buildComments()
-      await openExercice(7)
-      await discardSlot('bilan')
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(KeyMomentsService.retainComment)).toHaveBeenCalledTimes(2)
-      expect(buildCommentBoards(buildScreens(), 3).synthese.isDiscarded).toBe(false)
-    })
-
-    /** Nothing published settles nothing: there is no arbitration to come back to. */
-    it('should write nothing on an exercice never published', async () => {
-      vi.spyOn(KeyMomentsService, 'getPublications').mockResolvedValue([])
-      const { openExercice, restorePublishedArbitration } = buildComments()
-      await openExercice(7)
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(KeyMomentsService.retainComment)).not.toHaveBeenCalled()
-    })
-
-    /**
-     * A publication designates each reading by exactly one of the two source
-     * keys, and one of them may designate nothing any more — a contribution
-     * gone since. That slot alone is refused; the others are written all the
-     * same, and the state is only read back once every one of them has landed.
-     */
-    it('should write every other slot when one source designates nothing', async () => {
-      vi.spyOn(KeyMomentsService, 'getPublication').mockResolvedValue({
-        ...PUBLICATION_DETAIL,
-        comments: [
-          ...PUBLICATION_DETAIL.comments,
-          {
-            slotId: 'bilan',
-            text: 'Lecture disparue.',
-            sourceContributorId: '999',
-            sourceContributorName: 'Parti',
-            sourceClosingVersion: null,
-          },
-        ],
-      })
-      vi.spyOn(KeyMomentsService, 'retainComment')
-        .mockImplementation((_accountId, _exerciceId, slotId, payload) => {
-          if (slotId === 'bilan') {
-            return Promise.reject(new Error('gone'))
-          }
-
-          retainInBase(slotId, payload.sourceContributorId, payload.sourceClosingVersion)
-
-          return Promise.resolve()
-        })
-      const { openExercice, restorePublishedArbitration, retainedKeyOf } = buildComments()
-      await openExercice(7)
-
-      await restorePublishedArbitration()
-
-      expect(retainedKeyOf('synthese')).toBe('456')
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', expect.any(String))
-    })
-
-    /** A write that did not land is stated, and the star says what the base holds. */
-    it('should state a failure and read the arbitration back as it stands', async () => {
-      const { openExercice, restorePublishedArbitration } = buildComments()
-      await openExercice(7)
-      vi.spyOn(KeyMomentsService, 'retainComment').mockRejectedValue(new Error('boom'))
-
-      await restorePublishedArbitration()
-
-      expect(vi.mocked(logger.error)).toHaveBeenCalled()
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', expect.any(String))
-      expect(vi.mocked(KeyMomentsService.getComments)).toHaveBeenCalledTimes(2)
     })
 
   })

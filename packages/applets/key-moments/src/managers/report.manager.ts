@@ -702,6 +702,7 @@ export class ReportManager {
       .map<Row>(line => ({
         id: line.indicator.id,
         label: line.indicator.label,
+        description: line.indicator.description ?? undefined,
         role: line.role,
         cells: Object.fromEntries(columnConfigs.map(column => [
           column.measure,
@@ -803,6 +804,7 @@ export class ReportManager {
         return {
           id: line.indicator.id,
           title: line.indicator.label,
+          description: line.indicator.description ?? undefined,
           value: ReportManager.format(value, line.indicator.kind, context.data, {
             hasSign: isSignColored,
             inThousands: context.inThousands,

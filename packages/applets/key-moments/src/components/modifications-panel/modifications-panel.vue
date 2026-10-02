@@ -3,7 +3,7 @@
     v-if="modifications.length > 0"
     pTrigger="click"
     pPlacement="bottom-end"
-    :pTitle="t('keyMoments.publish.revert.title')"
+    :pTitle="t('keyMoments.publish.restore.title')"
     :pWidth="POPOVER_WIDTH"
     pTestId="key-moments-modifications-popover"
   >
@@ -17,36 +17,31 @@
           :key="modification.kind"
           class="
             key-moments-modifications__row
-            flex
-            flex--align-items-center
-            flex--justify-content-space-between
-            flex-gap--2
             padding-y--1
             padding-x--2
+            font-small
+            text-color--text-heading
           "
-          :title="modification.hint"
         >
-          <span class="font-small text-color--text-heading">
-            {{ modification.label }}
-          </span>
-          <PButton
-            v-if="modification.isRevertible"
-            pSize="small"
-            pType="tertiary"
-            :pLoading="revertingKind === modification.kind"
-            :pTestId="`key-moments-revert-${modification.kind}-button`"
-            @click="emit('revert', modification)"
-          >
-            {{ t('keyMoments.publish.revert.button') }}
-          </PButton>
-          <span
-            v-else
-            class="font-small text-color--text-neutral"
-          >
-            {{ t('keyMoments.publish.revert.unavailable') }}
-          </span>
+          {{ modification.label }}
         </li>
       </ul>
+      <div
+        class="
+          flex
+          flex--justify-content-flex-end
+          margin-top--2
+        "
+      >
+        <PButton
+          pSize="small"
+          pType="tertiary"
+          pTestId="key-moments-restore-published-button"
+          @click="emit('restore')"
+        >
+          {{ t('keyMoments.publish.restore.button') }}
+        </PButton>
+      </div>
     </template>
     <button
       type="button"
@@ -69,20 +64,16 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PPopover } from '@pulse/styleguide/components'
-import { DivergenceKind } from '../../enums/key-moments.enums'
 import type { ModificationRow } from '../../pages/key-moments/publish-state.types'
 
 const POPOVER_WIDTH = 380
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   modifications: ModificationRow[]
-  revertingKind?: DivergenceKind
-}>(), {
-  revertingKind: undefined,
-})
+}>()
 
 const emit = defineEmits<{
-  revert: [modification: ModificationRow]
+  restore: []
 }>()
 
 const { t } = useI18n()

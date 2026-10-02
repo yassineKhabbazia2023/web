@@ -1,3 +1,5 @@
+import type { RecommendationRubric } from '../enums/key-moments.enums'
+
 /**
  * Ids the report puts on its sections and its blocks so that the navigation can
  * scroll to them. Screens and widgets are named in two separate namespaces of
@@ -15,7 +17,11 @@ export function widgetAnchorId(widgetId: string): string {
 
 /**
  * The recommendations close the report without coming from the template, so
- * their anchor is a constant rather than a name derived from a document: there
- * is no screen id to build it from, and there never will be.
+ * their anchor is a constant rather than a name derived from a document.
  */
-export const OFFERS_ANCHOR_ID = 'key-moments-offers'
+export const RECOMMENDATIONS_ANCHOR_ID = 'key-moments-recommendations'
+
+/** A rubric section, for the sub-entries of the navigation: named by the rubric's key. */
+export function rubricAnchorId(rubric: RecommendationRubric): string {
+  return `key-moments-recommendations-rubric-${rubric}`
+}

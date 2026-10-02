@@ -39,16 +39,20 @@ $oblique-skew: skewX(-30deg);
  * every card of the report — a rounded corner here would set the
  * recommendations apart from the figures they close.
  */
-@mixin block {
-  padding: 22px 24px 24px;
+@mixin block-surface {
   background-color: var(--p-surface-primary);
   border: 1px solid var(--key-moments-line);
   box-shadow: var(--key-moments-shadow);
-  transition: box-shadow 0.25s;
+}
 
-  &:hover {
-    box-shadow: var(--key-moments-shadow-hover);
-  }
+/**
+ * The surface with its own padding, for a block read in one piece. A block cut
+ * into zones takes the surface alone and pads each zone.
+ */
+@mixin block {
+  @include block-surface;
+
+  padding: 22px 24px 24px;
 
   // On a phone, the margin of the block is width the figures inside it need
   @include breakpoints.media(xs) {
@@ -89,26 +93,4 @@ $oblique-skew: skewX(-30deg);
   text-transform: uppercase;
   color: var(--p-text-heading);
   background-color: var(--key-moments-emphasis-surface);
-}
-
-/**
- * The recommendations, three per row whatever the width left by the navigation:
- * a note is a sentence about a client, and the auto-filled columns they used to
- * sit in squeezed it into a ribbon of two words per line.
- *
- * Stated once for the two surfaces: they display the same list, and a list that
- * broke at two different widths depending on who reads it would not be one.
- */
-@mixin offers-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px 26px;
-
-  @media (width <= 1400px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (width <= 900px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }

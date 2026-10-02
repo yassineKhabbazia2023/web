@@ -3,7 +3,7 @@
     <div
       class="
         flex
-        flex--justify-content-end
+        flex--justify-content-flex-end
         margin-bottom--4
       "
     >
@@ -102,6 +102,7 @@
     </PTable>
 
     <PConfirmationPopup
+      pAppendToBody
       :pIsVisible="pendingWithdrawal !== undefined"
       :pTitle="t('keyMoments.settings.templates.withdrawDialog.title')"
       :pConfirmButtonContent="t('keyMoments.settings.templates.withdrawDialog.confirm')"
@@ -140,7 +141,7 @@ import {
 import TemplateCreateDrawer from '@key-moments/components/editor/template-create-drawer/template-create-drawer.vue'
 import { TemplateEditorManager } from '@key-moments/managers/template-editor.manager'
 import { TemplateEditorService } from '@key-moments/services/template-editor.service'
-import { readApiErrorDetail } from '@key-moments/utils/api-error.utils'
+import { apiErrorKey } from '@key-moments/utils/api-error.utils'
 import { useTemplatesList } from './templates-list.composable'
 import type { TemplateCatalogueItem } from '@key-moments/services/template-editor.service.types'
 
@@ -209,10 +210,7 @@ async function withdraw(): Promise<void> {
     await load()
   } catch (error) {
     logger.error('[KeyMoments] settings: withdrawing the template failed', error)
-    displayNotification(
-      'error',
-      readApiErrorDetail(error) ?? t('keyMoments.settings.templates.withdrawError'),
-    )
+    displayNotification('error', t(apiErrorKey(error, 'keyMoments.settings.templates.withdrawError')))
   } finally {
     isWithdrawing.value = false
   }

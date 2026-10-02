@@ -60,6 +60,7 @@ describe('useIndicatorDrawer', () => {
       code: 'resultat-net',
       label: 'Résultat net',
       shortLabel: undefined,
+      description: null,
       kind: ValueKind.AMOUNT,
       sign: IndicatorSign.INCOME,
     })
@@ -78,9 +79,42 @@ describe('useIndicatorDrawer', () => {
     expect(vi.mocked(IndicatorsService.updateIndicator)).toHaveBeenCalledWith('ca', {
       label: 'Chiffre d\'affaires',
       shortLabel: undefined,
+      description: null,
       kind: ValueKind.AMOUNT,
       sign: IndicatorSign.INCOME,
     })
+  })
+
+  it('should open on the definition of an indicator', () => {
+    const { openEdit, form } = setup()
+
+    openEdit({ ...CA, description: 'Ventes de la période.' })
+
+    expect(form.description).toBe('Ventes de la période.')
+  })
+
+  it('should send the definition trimmed', async () => {
+    vi.spyOn(IndicatorsService, 'updateIndicator').mockResolvedValue()
+    const { openEdit, form, save } = setup()
+
+    openEdit(CA)
+    form.description = '  Ventes de la période.  '
+    await save()
+
+    expect(vi.mocked(IndicatorsService.updateIndicator))
+      .toHaveBeenCalledWith('ca', expect.objectContaining({ description: 'Ventes de la période.' }))
+  })
+
+  it('should clear the definition with null once the field is emptied', async () => {
+    vi.spyOn(IndicatorsService, 'updateIndicator').mockResolvedValue()
+    const { openEdit, form, save } = setup()
+
+    openEdit({ ...CA, description: 'Ventes de la période.' })
+    form.description = '   '
+    await save()
+
+    expect(vi.mocked(IndicatorsService.updateIndicator))
+      .toHaveBeenCalledWith('ca', expect.objectContaining({ description: null }))
   })
 
   it('should write the composition only when it changed', async () => {
@@ -136,11 +170,11 @@ describe('useIndicatorDrawer', () => {
     form.label = 'CA'
     await save()
 
-    expect(codeError.value).toBe('Code déjà utilisé')
+    expect(codeError.value).toBe('keyMoments.settings.indicatorDrawer.codeTaken')
     expect(isOpen.value).toBe(true)
   })
 
-  it('should put a refused composition under the list, with its details', async () => {
+  it('should put a refused composition under the list, in its own words', async () => {
     vi.spyOn(IndicatorsService, 'updateIndicator').mockResolvedValue()
     vi.spyOn(IndicatorsService, 'setComponents').mockRejectedValue({
       response: { status: 422, data: { errors: [{ pointer: '/components/0', detail: 'cycle' }] } },
@@ -152,7 +186,7 @@ describe('useIndicatorDrawer', () => {
     updateComponent(1, 'total')
     await save()
 
-    expect(componentsError.value).toBe('/components/0 — cycle')
+    expect(componentsError.value).toBe('keyMoments.settings.indicatorDrawer.componentsError')
     expect(isOpen.value).toBe(true)
   })
 
@@ -175,7 +209,7 @@ describe('useIndicatorDrawer', () => {
 
     expect(mode.value).toBe('edit')
     expect(form.code).toBe('total')
-    expect(componentsError.value).toBe('/components/0 — unknown')
+    expect(componentsError.value).toBe('keyMoments.settings.indicatorDrawer.componentsError')
     expect(onSaved).not.toHaveBeenCalled()
 
     await save()
