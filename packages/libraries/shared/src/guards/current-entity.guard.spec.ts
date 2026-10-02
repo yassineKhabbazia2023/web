@@ -15,7 +15,7 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { AccountType, RouteParam, RouteName } from '@pulse/common/enums'
-import { CurrentEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import type { RouteLocationNormalizedGeneric, RouteRecordNormalized } from 'vue-router'
 
 function makeMatchedRecord(name: RouteName): RouteRecordNormalized {
@@ -53,6 +53,8 @@ beforeEach(() => {
   fetchEntityByIdMock.mockResolvedValue(entitiesServiceMocks.fetchEntityById)
   vi.spyOn(CurrentEntityManager, 'initializeCurrentEntity').mockResolvedValue(undefined)
   vi.spyOn(CurrentEntityManager, 'fetchInvoicesAccess').mockResolvedValue(undefined)
+  vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)
+  vi.spyOn(CurrentUserManager, 'ensureUserContext').mockResolvedValue(undefined)
 
   const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
   currentEntityStoreMock.currentEntity = undefined
@@ -95,6 +97,44 @@ describe('verify entity change', () => {
       entitiesServiceMocks.fetchEntityById,
       { shouldFetchInvoicesAccess: false, shouldSaveLastSelectedEntity: true },
     )
+  })
+
+  it('identifies the user before initializing the entity, so the key moments access reads the user context', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentUserManager.ensureUserContext).toHaveBeenCalledOnce()
+    expect(CurrentUserManager.ensureUserContext).toHaveBeenCalledBefore(
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity),
+    )
+  })
+
+  it('does not identify the user when not authenticated', async () => {
+    vi.mocked(CurrentUserManager.isAuthenticated).mockReturnValue(false)
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentUserManager.ensureUserContext).not.toHaveBeenCalled()
+    expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledOnce()
+  })
+
+  it('does not identify the user when the entity is already selected', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+
+    const from = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    await currentEntityGuard(to, from)
+
+    expect(CurrentUserManager.ensureUserContext).not.toHaveBeenCalled()
   })
 
   it('fetches invoices access while initializing a regular entity route', async () => {

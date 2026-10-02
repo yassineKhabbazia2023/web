@@ -1,6 +1,6 @@
 import { logger } from '@pulse/toolbox'
 import type { RouteLocationNormalized } from 'vue-router'
-import { CurrentEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import type { Entity } from '@pulse/common/types'
 import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
@@ -33,6 +33,13 @@ export async function currentEntityGuard(to: RouteLocationNormalized, from: Rout
       if (entity === null || entity === undefined) {
         logger.error(`Entity Router Guard - No entity (${toEntityId}) to load has been found`)
         return { name: RouteName.ERROR403 }
+      }
+
+      // Global guards run before the authenticated route's beforeEnter, so on a page
+      // reload the user is not identified yet
+      // Resolved once per session, so this is a no-op after the first navigation.
+      if (CurrentUserManager.isAuthenticated()) {
+        await CurrentUserManager.ensureUserContext()
       }
 
       await CurrentEntityManager.initializeCurrentEntity(entity, {
