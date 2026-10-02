@@ -51,12 +51,6 @@ export class WalletTrackingManager {
     })
   }
 
-  static trackStatusClicked(statusValue: string) {
-    AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_STATUS_CLICKED, {
-      wallet_action_status_value: statusValue,
-    })
-  }
-
   static trackFolderMenuAction(actionValue: WalletMenuActionValue, menuType: WalletMenuActionType) {
     AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_FOLDER_MENU_REQUESTED, {
       wallet_action_menu_type: menuType,
@@ -69,12 +63,6 @@ export class WalletTrackingManager {
       wallet_action_favorite_activation: isActivating
         ? WalletFavoriteActivation.ACTIVATE
         : WalletFavoriteActivation.DEACTIVATE,
-    })
-  }
-
-  static trackPaginationSizeChanged(size: number) {
-    AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_PAGINATION_REQUESTED, {
-      wallet_action_pagination_size: size,
     })
   }
 

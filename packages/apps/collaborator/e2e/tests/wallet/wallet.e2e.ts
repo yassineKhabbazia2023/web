@@ -15,7 +15,7 @@ test.describe('Wallet - Folders', () => {
     await expect(page.getByTestId('folders-table')).toBeVisible()
   })
 
-  test('should display the filters for collaborators', async ({ page }) => {
-    await expect(page.getByTestId('filters')).toBeVisible()
+  test('should display the folders toolbar for collaborators', async ({ page }) => {
+    await expect(page.getByTestId('selected-folders-sticky-bar')).toBeVisible()
   })
 })

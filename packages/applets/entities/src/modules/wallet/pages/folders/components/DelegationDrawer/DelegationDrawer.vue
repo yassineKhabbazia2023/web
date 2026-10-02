@@ -41,17 +41,15 @@
         class="margin-bottom--2"
         @tab-click="handleTabChange"
       >
-        <template v-if="shouldShowDelegationRequestTabs">
-          <PTabPane
-            :pLabel="t('entities.delegationDrawer.pendingRequests')"
-            :pName="DelegationTab.PENDING_REQUESTS"
-            :pCount="pendingRequestsCount"
-          />
-          <PTabPane
-            :pLabel="t('entities.delegationDrawer.requestDelegation')"
-            :pName="DelegationTab.REQUEST_DELEGATION"
-          />
-        </template>
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.pendingRequests')"
+          :pName="DelegationTab.PENDING_REQUESTS"
+          :pCount="pendingRequestsCount"
+        />
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.requestDelegation')"
+          :pName="DelegationTab.REQUEST_DELEGATION"
+        />
         <PTabPane
           :pLabel="t('entities.delegationDrawer.walletDelegation')"
           :pName="DelegationTab.DELEGATE_WALLET"
@@ -135,7 +133,6 @@ import { useI18n } from 'vue-i18n'
 import { PDrawer, PDrawerActions, PSteps, PTabPane, PTabs } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
 import { delegateAccounts, fetchPendingDelegationRequests } from '@entities/services/account'
 import type { AccountsDelegation, AccountsDelegationDetails } from '@entities/services/account/account.type'
@@ -161,7 +158,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const shouldShowDelegationRequestTabs = computed(() => FeatureFlagManager.isDelegationRequestTabsActivated())
 const pendingRequestsCount = ref<number>(0)
 
 const getDefaultTab = () => {
@@ -173,9 +169,6 @@ const getDefaultTab = () => {
     return props.initialTab
   }
 
-  if (shouldShowDelegationRequestTabs.value === false) {
-    return DelegationTab.DELEGATE_WALLET
-  }
   return pendingRequestsCount.value > 0
     ? DelegationTab.PENDING_REQUESTS
     : DelegationTab.REQUEST_DELEGATION
@@ -199,10 +192,6 @@ const isDelegationDrawerOpened = computed({
 })
 
 async function refreshPendingRequestsCount() {
-  if (shouldShowDelegationRequestTabs.value === false) {
-    return
-  }
-
   try {
     const response = await fetchPendingDelegationRequests(1, 1)
     pendingRequestsCount.value = response?.totalItems ?? 0

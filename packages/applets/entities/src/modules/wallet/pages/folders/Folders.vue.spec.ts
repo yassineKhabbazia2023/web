@@ -13,7 +13,6 @@ import { getMockedMappedAccount, getMockedWalletQueryResult, getMockedSearchCrit
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import type { MockInstance } from 'vitest'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import { armRegistryServiceMocks, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
 import { displayNotification } from '@pulse/styleguide'
@@ -84,21 +83,9 @@ const routeMockData: RouterMockData = reactive({
 const mockFetchWalletData = vi.mocked(fetchWalletData)
 
 let hasPermissionMock: MockInstance
-const isManageWalletMenuActivatedMock = vi.fn()
-const isWalletTableLoadMorePaginationActivatedMock = vi.fn()
-const isLastActivityFeatureActivatedMock = vi.fn()
-const isWalletV2ActivatedMock = vi.fn()
-const isFavoriteSortActivatedMock = vi.fn()
 
 beforeEach(() => {
   hasPermissionMock = armCurrentUserPermissions(false)
-  vi.spyOn(FeatureFlagManager, 'isManageWalletMenuActivated').mockImplementation(isManageWalletMenuActivatedMock)
-  vi.spyOn(FeatureFlagManager, 'isWalletTableLoadMorePaginationActivated').mockImplementation(isWalletTableLoadMorePaginationActivatedMock)
-  vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockImplementation(isLastActivityFeatureActivatedMock)
-  vi.spyOn(FeatureFlagManager, 'isWalletV2Activated').mockImplementation(isWalletV2ActivatedMock)
-  vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockImplementation(isFavoriteSortActivatedMock)
-  isWalletV2ActivatedMock.mockReturnValue(false)
-  isFavoriteSortActivatedMock.mockReturnValue(false)
   armRegistryServiceMocks()
   vi.mocked(fetchAccountSubscriptions).mockResolvedValue([])
   fetchFavoriteEntitiesMock.mockResolvedValue([])
@@ -168,10 +155,6 @@ describe('deploy', () => {
     userStoreMock.isCollab = true
     isMobileMock.value = false
     hasPermissionMock.mockReturnValue(false)
-    isManageWalletMenuActivatedMock.mockReturnValue(true)
-    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
-    isLastActivityFeatureActivatedMock.mockReturnValue(false)
-    isWalletV2ActivatedMock.mockReturnValue(true)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
     checkLastCollaboratorOnAccountsMock.mockResolvedValue({
       isLastCollaboratorOnAny: false,
@@ -187,10 +170,6 @@ describe('deploy', () => {
 
   afterEach(() => {
     isMobileMock.value = false
-    isManageWalletMenuActivatedMock.mockReturnValue(true)
-    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
-    isLastActivityFeatureActivatedMock.mockReturnValue(false)
-    isWalletV2ActivatedMock.mockReturnValue(true)
   })
 
   it('should call setFavoriteEntities', async () => {
@@ -209,7 +188,6 @@ describe('deploy', () => {
   })
 
   it('forwards the current sorting criteria to the folders table', async () => {
-    isFavoriteSortActivatedMock.mockReturnValue(true)
     const wrapper = createWrapper()
     await flushPromises()
 
@@ -265,21 +243,6 @@ describe('deploy', () => {
     expect(wrapper.find('[data-testid="selected-folders-total-count"]').exists()).toBe(true)
     expect(wrapper.find('[data-testid="selected-folders-sticky-count"]').exists()).toBe(false)
     expect(wrapper.find('[data-testid="p-list-toolbar__deselect-button"]').exists()).toBe(false)
-  })
-
-  it('does not display the selected folders sticky bar when the wallet V2 feature flag is disabled', async () => {
-    isWalletV2ActivatedMock.mockReturnValue(false)
-    const wrapper = createWrapper()
-    await flushPromises()
-    const selectedFolderIds = mockedQueryResult.items
-      .slice(0, 2)
-      .map(({ accountId }) => accountId)
-
-    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
-    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
-    await nextTick()
-
-    expect(wrapper.find('[data-testid="selected-folders-sticky-bar"]').exists()).toBe(false)
   })
 
   it('displays a sticky selected folders bar and clears the selection', async () => {
@@ -794,37 +757,6 @@ describe('deploy', () => {
     expect(wrapper.findComponent({ name: 'EntityCreatorDrawer' }).exists()).toBe(true)
   })
 
-  describe('manage wallet menu feature flag', () => {
-    it('renders the legacy delegation buttons and hides the dropdown when the flag is off', async () => {
-      isManageWalletMenuActivatedMock.mockReturnValue(false)
-      hasPermissionMock.mockReturnValue(true)
-
-      const wrapper = createWrapper()
-      await flushPromises()
-
-      expect(wrapper.findComponent(ManageWalletButton).exists()).toBe(false)
-      expect(wrapper.text()).toContain('delegation')
-      expect(wrapper.text()).toContain('createTestAccount')
-    })
-
-    it('opens the delegation drawer when the legacy delegation button is clicked', async () => {
-      isManageWalletMenuActivatedMock.mockReturnValue(false)
-
-      const wrapper = createWrapper()
-      await flushPromises()
-
-      const delegationButton = wrapper
-        .findAllComponents({ name: 'PButton' })
-        .find((button) => button.text().includes('delegation'))
-      delegationButton?.vm.$emit('click')
-      await nextTick()
-
-      const delegationDrawer = wrapper.findComponent({ name: 'DelegationDrawer' })
-      expect(delegationDrawer.exists()).toBe(true)
-      expect(delegationDrawer.props('initialTab')).toBeUndefined()
-    })
-  })
-
   it('should call 2 api for get data', async () => {
     const wrapper = createWrapper()
     await flushPromises()
@@ -842,8 +774,6 @@ describe('deploy', () => {
   })
 
   it('should progressively append folders when loading more results multiple times', async () => {
-    isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
-
     const firstFolder = getMockedMappedAccount({ accountId: 1, accountNumber: '1' })
     const secondFolder = getMockedMappedAccount({ accountId: 2, accountNumber: '2' })
     const thirdFolder = getMockedMappedAccount({ accountId: 3, accountNumber: '3' })
@@ -918,8 +848,8 @@ describe('deploy', () => {
       limit: DESKTOP_FOLDERS_PAGE_SIZE,
       search: SEARCH_VALUE,
       sorting: {
-        descending: false,
-        field: '',
+        descending: true,
+        field: 'isFavorite',
       },
     })
 
@@ -949,8 +879,8 @@ describe('deploy', () => {
       limit: MOBILE_FOLDERS_PAGE_SIZE,
       search: SEARCH_VALUE,
       sorting: {
-        descending: false,
-        field: '',
+        descending: true,
+        field: 'isFavorite',
       },
     })
 
@@ -1073,81 +1003,6 @@ describe('deploy', () => {
     expect(noResult.exists()).toBeTruthy()
   })
 
-  it('should call api with the right filter when filterByStatus event is triggered', async () => {
-    // The statistics filters only exist without the wallet V2.
-    isWalletV2ActivatedMock.mockReturnValue(false)
-    const wrapper = createWrapper()
-    await flushPromises()
-    const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
-    tags.vm.$emit('filterByStatus', EntityStatus.TO_DEPLOY)
-    await nextTick()
-    await flushPromises()
-
-    const expectedSearchCriteria = {
-      currentPage: 0,
-      filterByDeploymentStatus: [EntityStatus.TO_DEPLOY.toString()],
-      limit: DESKTOP_FOLDERS_PAGE_SIZE,
-      sorting: {
-        descending: false,
-        field: '',
-      },
-    }
-    // base call + filter call
-    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-      2,
-      expect.anything(),
-      expect.objectContaining(expectedSearchCriteria),
-    )
-  })
-
-  it('should call api without filter when removeFilter event is triggered', async () => {
-    // The statistics filters only exist without the wallet V2.
-    isWalletV2ActivatedMock.mockReturnValue(false)
-    const wrapper = createWrapper()
-    await nextTick()
-
-    await flushPromises()
-
-    const tags = wrapper.findComponent('[data-testid="filters"]') as VueWrapper
-    tags.vm.$emit('removeFilter')
-    await flushPromises()
-
-    const expectedSearchCriteria = {
-      currentPage: 0,
-      limit: DESKTOP_FOLDERS_PAGE_SIZE,
-      sorting: {
-        descending: false,
-        field: '',
-      },
-    }
-
-    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-      2,
-      expect.anything(),
-      expect.objectContaining(expectedSearchCriteria),
-    )
-  })
-
-  it('should not displayed the filters component if the user is client', async () => {
-    userStoreMock.isCollab = false
-    const wrapper = createWrapper()
-
-    await flushPromises()
-    const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
-    expect(filters.exists()).toBeFalsy()
-  })
-
-  it('should not display the filters component when the wallet V2 feature flag is enabled', async () => {
-    isWalletV2ActivatedMock.mockReturnValue(true)
-    const wrapper = createWrapper()
-
-    await flushPromises()
-    const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
-    expect(filters.exists()).toBeFalsy()
-  })
-
   it.each([
     {
       accountNumber: ['100'],
@@ -1176,8 +1031,8 @@ describe('deploy', () => {
       limit: DESKTOP_FOLDERS_PAGE_SIZE,
       search: expectedSearchValue,
       sorting: {
-        descending: false,
-        field: '',
+        descending: true,
+        field: 'isFavorite',
       },
     })
     expect(mockFetchWalletData).toHaveBeenCalledTimes(1)
@@ -1368,8 +1223,8 @@ describe('deploy', () => {
           limit: DESKTOP_FOLDERS_PAGE_SIZE,
           search: '',
           sorting: {
-            descending: false,
-            field: '',
+            descending: true,
+            field: 'isFavorite',
           },
         }),
       )
@@ -1394,8 +1249,8 @@ describe('deploy', () => {
         limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
-          descending: false,
-          field: '',
+          descending: true,
+          field: 'isFavorite',
         },
       })
       const filterCountPastille = wrapper.find('[data-testid="p-list-toolbar__filter-count"]')
@@ -1426,8 +1281,8 @@ describe('deploy', () => {
         limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
-          descending: false,
-          field: '',
+          descending: true,
+          field: 'isFavorite',
         },
       })
       const filterCountPastille = wrapper.find('[data-testid="p-list-toolbar__filter-count"]')
@@ -1456,8 +1311,8 @@ describe('deploy', () => {
         limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
-          descending: false,
-          field: '',
+          descending: true,
+          field: 'isFavorite',
         },
       })
       await nextTick()
@@ -1515,128 +1370,8 @@ describe('deploy', () => {
         limit: DESKTOP_FOLDERS_PAGE_SIZE,
         search: '',
         sorting: {
-          descending: false,
-          field: '',
-        },
-      })
-
-      // Assert: fetchAccountList() called again after clearing
-      // Call count explanation:
-      // 1 - onMounted → fetchAccountList()
-      // 2 - searchCriteria watcher after applyAccountFilters()
-      // 3 - searchCriteria watcher after clearAllAccountFilters()
-      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
-      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-        3,
-        expect.anything(),
-        expectedSearchCriteria,
-      )
-    })
-  })
-
-  describe('AccountFiltersDrawer (wallet V2 disabled)', () => {
-    let wrapper: ReturnType<typeof createWrapper>
-    let accountFiltersDrawer: VueWrapper<InstanceType<typeof AccountFiltersDrawer>>
-
-    beforeEach(async () => {
-      isWalletV2ActivatedMock.mockReturnValue(false)
-      wrapper = createWrapper()
-      await flushPromises()
-      accountFiltersDrawer = wrapper.findComponent(AccountFiltersDrawer)
-    })
-
-    it('displays the filter count pastille when filters are applied', async () => {
-      // Arrange: Apply a single filter via drawer emit
-      accountFiltersDrawer.vm.$emit('apply-filters', {
-        isFavoriteFilter: false,
-        isCustomerRelationFilter: true,
-      })
-      await nextTick()
-
-      // Act: Get the filter count pastille element
-      const filterCountPastille = wrapper.find('[data-testid="account-search-bar__filter-count"]')
-
-      // Assert: Should show pastille with count 1
-      expect(filterCountPastille.exists()).toBe(true)
-      expect(filterCountPastille.text()).toBe('1')
-    })
-
-    it('displays the "Clear all" action when filters are applied', async () => {
-      // Arrange: Apply filters
-      accountFiltersDrawer.vm.$emit('apply-filters', {
-        isFavoriteFilter: false,
-        isCustomerRelationFilter: true,
-      })
-      const expectedSearchCriteria = getMockedSearchCriteria({
-        currentPage: 0,
-        filterByDeploymentStatus: undefined,
-        filterByMissionType: undefined,
-        isCustomerRelationFilter: true,
-        isFavoriteFilter: false,
-        limit: DESKTOP_FOLDERS_PAGE_SIZE,
-        search: '',
-        sorting: {
-          descending: false,
-          field: '',
-        },
-      })
-      await nextTick()
-      await flushPromises()
-
-      // Act: Click clear button
-      const clearAllButton = wrapper.find('[data-testid="account-search-bar__clear-filters-button"]')
-
-      // Assert: Button exists and triggers correct fetch
-      expect(clearAllButton.exists()).toBe(true)
-      expect(clearAllButton.text().trim()).toBe(`${I18N_KEY}.clearAll`)
-
-      // Call count explanation:
-      // 1 - onMounted → fetchAccountList()
-      // 2 - searchCriteria watcher after applyAccountFilters()
-      expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-        2,
-        expect.anything(),
-        expectedSearchCriteria,
-      )
-    })
-
-    it('opens the filter drawer when the filter button is clicked', async () => {
-      // Arrange: Get button and confirm initial drawer state
-      const filterButton = wrapper.find('[data-testid="account-search-bar__filter-button"]')
-      expect(accountFiltersDrawer.props('modelValue')).toBe(false)
-
-      // Act: Trigger click
-      await filterButton.trigger('click')
-
-      // Assert: Drawer should be open now
-      expect(accountFiltersDrawer.props('modelValue')).toBe(true)
-    })
-
-    it('emits "clear-filters" when the "Clear All" button is clicked after applying filters', async () => {
-      // Arrange: Apply filters to activate "Clear All"
-      accountFiltersDrawer.vm.$emit('apply-filters', {
-        isFavoriteFilter: false,
-        isCustomerRelationFilter: true,
-      })
-      await nextTick()
-
-      const clearAllButton = wrapper.find('[data-testid="account-search-bar__clear-filters-button"]')
-
-      // Act: Click the clear button
-      await clearAllButton.trigger('click')
-
-      const expectedSearchCriteria = getMockedSearchCriteria({
-        currentPage: 0,
-        filterByDeploymentStatus: undefined,
-        filterByMissionType: undefined,
-        isCustomerRelationFilter: false,
-        isFavoriteFilter: false,
-        limit: DESKTOP_FOLDERS_PAGE_SIZE,
-        search: '',
-        sorting: {
-          descending: false,
-          field: '',
+          descending: true,
+          field: 'isFavorite',
         },
       })
 
@@ -1731,22 +1466,8 @@ describe('deploy', () => {
     })
   })
 
-  describe('pagination feature flag', () => {
-    it('renders PPagination when isWalletTableLoadMorePaginationActivated is false', async () => {
-      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(false)
-
-      const wrapper = createWrapper()
-      await flushPromises()
-
-      const pPagination = wrapper.findComponent({ name: 'PPagination' })
-      const pSamePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
-
-      expect(pPagination.exists()).toBe(true)
-      expect(pSamePagePagination.exists()).toBe(false)
-    })
-
-    it('renders PSamePagePagination when isWalletTableLoadMorePaginationActivated is true and has more results', async () => {
-      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
+  describe('pagination', () => {
+    it('renders PSamePagePagination when has more results', async () => {
       mockFetchWalletData.mockResolvedValueOnce(getMockedWalletQueryResult({
         currentPage: 0,
         items: [getMockedMappedAccount({ accountId: 1 })],
@@ -1757,15 +1478,12 @@ describe('deploy', () => {
       const wrapper = createWrapper()
       await flushPromises()
 
-      const pPagination = wrapper.findComponent({ name: 'PPagination' })
       const pSamePagePagination = wrapper.findComponent({ name: 'PSamePagePagination' })
 
-      expect(pPagination.exists()).toBe(false)
       expect(pSamePagePagination.exists()).toBe(true)
     })
 
     it('does not render PSamePagePagination when has no more results', async () => {
-      isWalletTableLoadMorePaginationActivatedMock.mockReturnValue(true)
       mockFetchWalletData.mockResolvedValueOnce(getMockedWalletQueryResult({
         currentPage: 0,
         items: [],

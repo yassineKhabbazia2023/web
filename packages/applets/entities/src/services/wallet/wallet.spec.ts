@@ -3,18 +3,15 @@ import { apiGatewayGetMock, apiGatewayPatchMock } from '@pulse/common/mocks/vite
 import {
   fetchFavoriteEntities,
   manageFavoriteEntities,
-  fetchEntitiesStatistics,
   fetchAccountCustomers,
   fetchAccountContacts,
   fetchCustomers,
 } from '.'
 import { ContactType, AccountType } from '@pulse/common/enums'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
-import { getMockedEntitiesStatistics } from '@entities/__mocks__/filters.mocks'
 import type { Entity } from '@pulse/common/types'
 
 const accountId = 5
-const mockedEntitiesStatistics = getMockedEntitiesStatistics()
 const mockedCustomersCollab = getMockedCustomersCollab()
 
 const TEST_ENTITIES: Entity[] = [
@@ -37,11 +34,6 @@ const TEST_ENTITIES: Entity[] = [
 const mockedFavoriteEntityPatch = apiGatewayPatchMock
 const mockedGatewayGet = apiGatewayGetMock
 
-const fetchEntitiesStatisticsImplementation = () => {
-  return Promise.resolve({
-    data: mockedEntitiesStatistics,
-  })
-}
 const fetchEntitiesImplementation = () => {
   return Promise.resolve({
     data: TEST_ENTITIES,
@@ -63,9 +55,6 @@ describe('wallet service', () => {
         `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`
       ) {
         return fetchAccountCustomersImplementation()
-      }
-      if (url === `${API_PREFIXES.WALLET}/statistics/currentuser`) {
-        return fetchEntitiesStatisticsImplementation()
       }
       if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
         return fetchEntitiesImplementation()
@@ -125,13 +114,6 @@ describe('wallet service', () => {
       const favoriteEntities = await fetchFavoriteEntities()
 
       expect(favoriteEntities).toStrictEqual(TEST_ENTITIES)
-    })
-  })
-  describe('fetchEntitiesStatistics', () => {
-    it('should return the statistics for the entities associated with the current user', async () => {
-      const entitiesStatistics = await fetchEntitiesStatistics()
-
-      expect(entitiesStatistics).toStrictEqual(mockedEntitiesStatistics)
     })
   })
   describe('patchFavoriteEntity', () => {

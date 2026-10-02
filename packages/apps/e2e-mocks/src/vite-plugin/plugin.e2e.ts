@@ -2,6 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import { normalizePath } from 'vite'
 import type { Plugin, ViteDevServer } from 'vite'
 import { createProxyMiddleware } from '../proxy/middleware.ts'
 import type { ProxyMode } from '../types/proxy.type.ts'
@@ -33,6 +34,12 @@ interface E2EFileMapping {
   file: string
   contentType: string
   basePath: string
+}
+
+// Vite serves absolute files under `/@fs/`: Windows paths need forward slashes and a leading slash.
+function toFsUrlPath(filePath: string): string {
+  const normalizedPath = normalizePath(filePath)
+  return normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`
 }
 
 function normalizeUrl(url: string, base: string): string {
@@ -181,13 +188,13 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
         const appTypeScript = `<script>window.__MSW_APP_TYPE__ = '${appType}';</script>`
         // Use /@fs/ prefix for direct file access - Vite will transform and serve this TypeScript file
         // Prefix with resolvedBase so the path works with non-root base paths (e.g. /collaborateur/)
-        const mswScript = `<script type="module" src="${resolvedBase}@fs${bootstrapPath}"></script>`
+        const mswScript = `<script type="module" src="${resolvedBase}@fs${toFsUrlPath(bootstrapPath)}"></script>`
         return html.replace('<head>', `<head>${appTypeScript}${mswScript}`)
       }
 
       if (isDevMocks) {
         // Inject only the dev-mocks bootstrap — no shims, no env-var overrides
-        const mswScript = `<script type="module" src="${resolvedBase}@fs${devMocksBootstrapPath}"></script>`
+        const mswScript = `<script type="module" src="${resolvedBase}@fs${toFsUrlPath(devMocksBootstrapPath)}"></script>`
         return html.replace('<head>', `<head>${mswScript}`)
       }
 

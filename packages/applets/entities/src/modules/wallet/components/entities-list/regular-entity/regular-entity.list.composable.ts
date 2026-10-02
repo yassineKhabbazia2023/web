@@ -20,7 +20,6 @@ import type {
   MenuTranslations,
 } from './regular-entity.list.types'
 import { RegularEntityAction } from './regular-entity.list.enums'
-import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 
 const I18N_REGULAR_KEY = 'entities.wallet.entitiesListRegular'
 
@@ -60,13 +59,7 @@ export function useRegularEntitiesList(
     )
   }
 
-  const { isFavoriteSortActivated, isLastActivityFeatureActivated } = useWalletFeatureFlags()
-
-  const isSortedByFavorite = computed(() =>
-    isFavoriteSortActivated.value === true && props.sorting?.field === FAVORITE_SORT_FIELD,
-  )
-
-  const favoriteSortable = computed(() => (isFavoriteSortActivated.value === true ? 'custom' : false))
+  const isSortedByFavorite = computed(() => props.sorting?.field === FAVORITE_SORT_FIELD)
 
   const favoriteDefaultSort = computed(() => (isSortedByFavorite.value
     ? { prop: FAVORITE_SORT_FIELD, order: SortDirection.DESCENDING }
@@ -200,10 +193,7 @@ export function useRegularEntitiesList(
 
   return {
     isCollab,
-    isLastActivityFeatureActivated,
-    isFavoriteSortActivated,
     isSortedByFavorite,
-    favoriteSortable,
     favoriteDefaultSort,
     callHandleAddFavorite,
     menuElementsCollaborator,

@@ -3,7 +3,6 @@ import { getStoreMock, isMobileMockRef } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { ref } from 'vue'
 import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import {
@@ -26,7 +25,6 @@ afterEach(() => {
 
 beforeEach(() => {
   isMobileMock.value = false
-  vi.spyOn(FeatureFlagManager, 'isFavoriteSortActivated').mockReturnValue(true)
   vi.spyOn(WalletTrackingManager, 'trackFavoriteRequest').mockImplementation(() => undefined)
   vi.spyOn(WalletTrackingManager, 'trackColumnSortRequested').mockImplementation(() => undefined)
   vi.spyOn(WalletTrackingManager, 'trackFolderMenuAction').mockImplementation(() => undefined)
@@ -205,48 +203,6 @@ describe('useRegularEntitiesList', () => {
       const { result, app } = setupComposable()
 
       expect(result.isSortedByFavorite.value).toBe(false)
-
-      app.unmount()
-    })
-
-    it('is false when the favorite sort feature is disabled', () => {
-      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(false)
-
-      const { result, app } = setupComposable({ sorting: { field: 'isFavorite', descending: true } })
-
-      expect(result.isSortedByFavorite.value).toBe(false)
-
-      app.unmount()
-    })
-  })
-
-  describe('isLastActivityFeatureActivated', () => {
-    it('exposes the last activity feature flag to the list', () => {
-      vi.spyOn(FeatureFlagManager, 'isLastActivityFeatureActivated').mockReturnValue(true)
-
-      const { result, app } = setupComposable()
-
-      expect(result.isLastActivityFeatureActivated.value).toBe(true)
-
-      app.unmount()
-    })
-  })
-
-  describe('favoriteSortable', () => {
-    it('makes the favorite column sortable when the feature is activated', () => {
-      const { result, app } = setupComposable()
-
-      expect(result.favoriteSortable.value).toBe('custom')
-
-      app.unmount()
-    })
-
-    it('keeps the favorite column not sortable when the feature is disabled', () => {
-      vi.mocked(FeatureFlagManager.isFavoriteSortActivated).mockReturnValue(false)
-
-      const { result, app } = setupComposable()
-
-      expect(result.favoriteSortable.value).toBe(false)
 
       app.unmount()
     })

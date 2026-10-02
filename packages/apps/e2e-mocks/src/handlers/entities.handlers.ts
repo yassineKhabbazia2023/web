@@ -250,15 +250,6 @@ export const entitiesHandlers = [
     })
   }),
 
-  http.get('*/wallet/api/statistics/currentuser', () => {
-    return HttpResponse.json({
-      toDeploy: 5,
-      inProgress: 3,
-      connected: 42,
-      total: 50,
-    })
-  }),
-
   http.get('*/wallet/api/favorites/currentuser', () => {
     // Return favorites that match wallet entities
     const accountRows = getAllMockAccountRows()

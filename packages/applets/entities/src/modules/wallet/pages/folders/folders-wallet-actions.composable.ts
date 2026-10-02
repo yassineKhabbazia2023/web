@@ -1,7 +1,5 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
-import { CurrentUserManager } from '@pulse/common/managers'
-import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { useFoldersCustomerRelation } from './folders-customer-relation.composable'
@@ -16,9 +14,6 @@ export function useFoldersWalletActions(
   refreshWallet: () => Promise<void>,
 ) {
   const isEntityCreatorDrawerOpen = ref(false)
-  const hasEntityCreatorPermission = computed(() =>
-    CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.ENTITY_CREATOR),
-  )
 
   function onEntityCreatorDrawerOpen() {
     isEntityCreatorDrawerOpen.value = true
@@ -58,8 +53,6 @@ export function useFoldersWalletActions(
 
   return {
     isEntityCreatorDrawerOpen,
-    hasEntityCreatorPermission,
-    onEntityCreatorDrawerOpen,
     onWalletAction,
     ...delegation,
     ...customerRelation,

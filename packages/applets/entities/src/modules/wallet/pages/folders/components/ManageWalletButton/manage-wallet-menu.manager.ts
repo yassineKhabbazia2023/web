@@ -2,29 +2,27 @@ import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import type { AccessibleMenuItem } from '@entities/types'
 import { filterAccessibleMenuItems } from '@entities/utils'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { ManageWalletAction } from '@entities/modules/wallet/enums'
 import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
 import type { ManageWalletMenuTranslations } from './manage-wallet-button.types'
 
 export class ManageWalletMenuManager {
   static buildWalletMenuElements(translations: ManageWalletMenuTranslations): AccessibleMenuItem[] {
-    const isDelegationRequestActivated = FeatureFlagManager.isDelegationRequestTabsActivated()
-
     return [
       {
         pIconName: 'clockHistory',
         pValue: translations.pendingDelegations,
         pActionName: ManageWalletAction.PENDING_DELEGATIONS,
         pState: 'default',
-        display: isDelegationRequestActivated,
+        display: true,
       },
       {
         pIconName: 'arrowLeftRight',
         pValue: translations.requestDelegation,
         pActionName: ManageWalletAction.REQUEST_DELEGATION,
         pState: 'default',
-        display: isDelegationRequestActivated,
+        display: true,
       },
       {
         pIconName: 'folderMove',

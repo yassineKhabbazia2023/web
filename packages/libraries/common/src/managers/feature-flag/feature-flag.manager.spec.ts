@@ -49,23 +49,6 @@ describe('FeatureFlagManager', () => {
       })
     })
 
-  describe('isFavoriteSortActivated', () => {
-    it('should delegate to OpenFeatureService.getBooleanValue', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
-
-      const result = FeatureFlagManager.isFavoriteSortActivated()
-
-      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.FAVORITE_SORT, false)
-      expect(result).toBe(true)
-    })
-
-    it('should return false when OpenFeatureService returns false', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
-
-      expect(FeatureFlagManager.isFavoriteSortActivated()).toBe(false)
-    })
-  })
-
   describe('isDematMailCollectActivated', () => {
     it('should delegate to OpenFeatureService.getBooleanValue', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
@@ -97,23 +80,6 @@ describe('FeatureFlagManager', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
 
       expect(FeatureFlagManager.isMaintenanceModeActivated()).toBe(false)
-    })
-  })
-
-  describe('isManageWalletMenuActivated', () => {
-    it('should delegate to OpenFeatureService.getBooleanValue', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
-
-      const result = FeatureFlagManager.isManageWalletMenuActivated()
-
-      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.MANAGE_WALLET_MENU, false)
-      expect(result).toBe(true)
-    })
-
-    it('should return false when OpenFeatureService returns false', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
-
-      expect(FeatureFlagManager.isManageWalletMenuActivated()).toBe(false)
     })
   })
 
@@ -191,23 +157,6 @@ describe('FeatureFlagManager', () => {
       vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
 
       expect(FeatureFlagManager.isKeyMomentsActivated()).toBe(false)
-    })
-  })
-
-  describe('isWalletV2Activated', () => {
-    it('should delegate to OpenFeatureService.getBooleanValue', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(true)
-
-      const result = FeatureFlagManager.isWalletV2Activated()
-
-      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.WALLET_V2, false)
-      expect(result).toBe(true)
-    })
-
-    it('should return false when OpenFeatureService returns false', () => {
-      vi.spyOn(OpenFeatureService, 'getBooleanValue').mockReturnValue(false)
-
-      expect(FeatureFlagManager.isWalletV2Activated()).toBe(false)
     })
   })
 

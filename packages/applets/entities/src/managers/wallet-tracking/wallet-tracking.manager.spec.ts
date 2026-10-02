@@ -188,17 +188,6 @@ describe('WalletTrackingManager', () => {
     })
   })
 
-  describe('trackStatusClicked', () => {
-    it('should track status clicked event', () => {
-      WalletTrackingManager.trackStatusClicked('A déployer')
-
-      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
-        'Wallet Action Status Clicked',
-        { wallet_action_status_value: 'A déployer' },
-      )
-    })
-  })
-
   describe('trackFolderMenuAction', () => {
     it('should track menu opened event as a unitary action', () => {
       WalletTrackingManager.trackFolderMenuAction(WalletMenuActionValue.MENU_OPENED, WalletMenuActionType.UNITARY)
@@ -265,17 +254,6 @@ describe('WalletTrackingManager', () => {
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Wallet Action Favorite Request',
         { wallet_action_favorite_activation: WalletFavoriteActivation.DEACTIVATE },
-      )
-    })
-  })
-
-  describe('trackPaginationSizeChanged', () => {
-    it('should track pagination size change', () => {
-      WalletTrackingManager.trackPaginationSizeChanged(30)
-
-      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
-        'Wallet Action Pagination Requested',
-        { wallet_action_pagination_size: 30 },
       )
     })
   })

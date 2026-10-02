@@ -68,7 +68,6 @@
         </div>
       </PFormItem>
       <PFormItem
-        v-if="isLastActivityFeatureActivated"
         :pLabel="t(`${ACCOUNT_FILTERS_I18N_KEY}.lastActivityPeriod`)"
       >
         <PFilterOption
@@ -125,7 +124,6 @@ import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet
 import { getDefaultAccountFilters } from './account-filters-drawer.utils'
 import { ACCOUNT_FILTERS_I18N_KEY, MULTI_SELECT_FILTER_GROUPS, LAST_ACTIVITY_PERIOD_OPTIONS } from './account-filters-drawer.consts'
 import type { LastActivityPeriodInDays } from '@entities/enums'
-import { useWalletFeatureFlags } from '@entities/composables/wallet-feature-flags.composable'
 
 const { t } = useI18n()
 
@@ -137,8 +135,6 @@ const emit = defineEmits<{
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
-
-const { isLastActivityFeatureActivated } = useWalletFeatureFlags()
 
 // Mission type and status filters are reserved for collaborators
 const visibleFilterGroups = computed(() => (isCollab.value ? MULTI_SELECT_FILTER_GROUPS : []))
@@ -188,7 +184,7 @@ const hasAppliedAccountFilters = (filters: AccountFilters) =>
   filters.isCustomerRelationFilter ||
   (filters.missionTypeFilter?.length ?? 0) > 0 ||
   (filters.deploymentStatusFilter?.length ?? 0) > 0 ||
-  (isLastActivityFeatureActivated.value && filters.lastActivityPeriodFilter !== undefined)
+  filters.lastActivityPeriodFilter !== undefined
 
 const applyAccountFilters = () => {
   WalletTrackingManager.trackCustomFilterValidated(internalFilters.value)

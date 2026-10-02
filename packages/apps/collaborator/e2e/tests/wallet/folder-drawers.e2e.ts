@@ -9,6 +9,11 @@ async function navigateToFolders(page: Page) {
   await expect(page.getByTestId('folders-table')).toBeVisible({ timeout: 15000 })
 }
 
+async function clickManageWalletAction(page: Page, actionText: string) {
+  await page.getByTestId('manage-wallet-button').click()
+  await page.getByTestId('manage-wallet-menu').locator('button.p-toolbox-item').filter({ hasText: actionText }).click()
+}
+
 async function clickToolboxAction(page: Page, actionText: string) {
   await page.getByTestId('wallet-actions-toolbox').first().click()
   await page.locator('button.p-toolbox-item').filter({ hasText: actionText }).first().click()
@@ -20,17 +25,17 @@ test.describe('Folder page - Drawers', () => {
   })
 
   test('should open the Account Filters drawer', async ({ page }) => {
-    await page.getByTestId('account-search-bar__filter-button').click()
+    await page.getByTestId('p-list-toolbar__filter-button').click()
     await expect(page.getByTestId('account-filters-drawer__apply-button')).toBeVisible()
   })
 
   test('should open the Delegation drawer', async ({ page }) => {
-    await page.getByRole('button', { name: /Mes délégations/ }).click()
+    await clickManageWalletAction(page, 'Déléguer mon portefeuille')
     await expect(page.locator('[role="dialog"]').filter({ hasText: 'Mes délégations' })).toBeVisible()
   })
 
   test('should open the Entity Creator drawer', async ({ page }) => {
-    await page.getByRole('button', { name: /Créer un compte de test/ }).click()
+    await clickManageWalletAction(page, 'Créer un compte de test')
     await expect(page.getByTestId('entity-creator-user-card')).toBeVisible()
   })
 

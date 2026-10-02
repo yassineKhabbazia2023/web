@@ -6,23 +6,17 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 // Features evaluated via OpenFeature/ConfigCat instead of environment variables.
 // This list is internal to the manager and is meant to disappear once all flags are migrated.
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
-  Feature.DELEGATION_REQUEST_TABS,
   Feature.DEMAT_MAIL_COLLECT,
   Feature.ELECTRONIC_ADDRESS_AVAILABLE,
-  Feature.FAVORITE_SORT,
   Feature.HUBSPOT_PRODUCT_FRUITS,
   Feature.INVOICES_EXPERIENCE,
   Feature.KEY_MOMENTS,
-  Feature.LAST_ACTIVITY_FEATURE,
   Feature.LEGACY_VENTYA_INVOICES_ACCESS,
   Feature.MAINTENANCE_MODE,
-  Feature.MANAGE_WALLET_MENU,
   Feature.MONTHLY_NOTE,
   Feature.PENNYLANE_SSO_FORCE_PROXY,
   Feature.PROSPECT_EXPERIENCE,
   Feature.SERENITY_REDIRECTION_MODAL,
-  Feature.WALLET_TABLE_LOAD_MORE_PAGINATION,
-  Feature.WALLET_V2,
   Feature.RFINANCE,
 ])
 
@@ -39,20 +33,12 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.CLARITY_OFFER)
   }
 
-  static isDelegationRequestTabsActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.DELEGATION_REQUEST_TABS)
-  }
-
   static isDematMailCollectActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.DEMAT_MAIL_COLLECT)
   }
 
   static isElectronicAddressAvailable() {
     return FeatureFlagManager.isFeatureActivated(Feature.ELECTRONIC_ADDRESS_AVAILABLE)
-  }
-
-  static isFavoriteSortActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.FAVORITE_SORT)
   }
 
   static isFeatureActivated(feature: Feature) {
@@ -77,20 +63,12 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.KEY_MOMENTS)
   }
 
-  static isLastActivityFeatureActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.LAST_ACTIVITY_FEATURE)
-  }
-
   static isLegacyVentyaInvoicesAccessActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.LEGACY_VENTYA_INVOICES_ACCESS)
   }
 
   static isMaintenanceModeActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MAINTENANCE_MODE)
-  }
-
-  static isManageWalletMenuActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.MANAGE_WALLET_MENU)
   }
 
   static isMonthlyNoteActivated() {
@@ -123,13 +101,5 @@ export class FeatureFlagManager {
 
   static isSmartSearchOfferCatalogActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.SMART_SEARCH_OFFER_CATALOG)
-  }
-
-  static isWalletTableLoadMorePaginationActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.WALLET_TABLE_LOAD_MORE_PAGINATION)
-  }
-
-  static isWalletV2Activated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.WALLET_V2)
   }
 }

@@ -1,6 +1,4 @@
 import { ref } from 'vue'
-import { CurrentUserManager } from '@pulse/common/managers'
-import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { checkLastCollaboratorOnAccounts } from '@entities/services/account'
 import { DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
@@ -65,7 +63,6 @@ const WALLET_ACTION_TRACKING_CASES = [
 describe('useFoldersWalletActions', () => {
   beforeEach(() => {
     vi.spyOn(WalletTrackingManager, 'trackFolderMenuAction').mockImplementation(() => undefined)
-    vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
     vi.mocked(checkLastCollaboratorOnAccounts).mockResolvedValue({
       isLastCollaboratorOnAny: false,
       accountIdsWhereLastCollaborator: [],
@@ -90,15 +87,6 @@ describe('useFoldersWalletActions', () => {
 
     expect(vi.mocked(WalletTrackingManager.trackFolderMenuAction)).toHaveBeenCalledOnce()
     expect(isEntityCreatorDrawerOpen.value).toBe(true)
-  })
-
-  it('exposes the entity creator permission', () => {
-    vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
-
-    const { hasEntityCreatorPermission } = createWalletActions()
-
-    expect(hasEntityCreatorPermission.value).toBe(true)
-    expect(vi.mocked(CurrentUserManager.hasPermission)).toHaveBeenCalledWith(GLOBAL_PERMISSIONS.ENTITY_CREATOR)
   })
 
   it.each([

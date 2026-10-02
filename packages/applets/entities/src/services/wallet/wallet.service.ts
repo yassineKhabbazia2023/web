@@ -3,7 +3,6 @@ import type { Contact as userContact } from '@entities/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { api } from '@pulse/common/api'
 import type { Entity } from '@pulse/common/types'
-import { EntitiesStatistics } from './serviceWalletTypes'
 import type { GenericPageResponse } from '../collaborator/collaborator.type'
 
 export async function fetchAccountCustomers(
@@ -32,16 +31,6 @@ export async function fetchCustomers(searchParams: URLSearchParams) {
   const { data } = await api.gateway.get(url)
 
   return data
-}
-
-export const fetchEntitiesStatistics = async () => {
-  try {
-    const response = await api.gateway.get<EntitiesStatistics>(`${API_PREFIXES.WALLET}/statistics/currentuser`)
-
-    return response.data
-  } catch (error) {
-    logger.error('Error fetching entities statistics :', error)
-  }
 }
 
 export const fetchFavoriteEntities = async (): Promise<

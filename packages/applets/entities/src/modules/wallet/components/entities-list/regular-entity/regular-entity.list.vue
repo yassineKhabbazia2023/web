@@ -17,7 +17,7 @@
       pProp="isFavorite"
       :pWidth="54"
       :pShowOverflowTooltip="false"
-      :pSortable="favoriteSortable"
+      pSortable="custom"
       :pSortOrders="FAVORITE_SORT_ORDERS"
       pHeaderAlign="center"
       pLabelClassName="wallet-table__favorite-header"
@@ -25,7 +25,6 @@
     >
       <template #header>
         <PButton
-          v-if="isFavoriteSortActivated === true"
           pSize="small"
           pIconOnly
           class="margin-left--2"
@@ -168,7 +167,6 @@
     </PTableColumn>
     <template v-if="isCollab === true">
       <PTableColumn
-        v-if="isLastActivityFeatureActivated"
         :pLabel="t(`${REGULAR_KEY}.lastActivityDate`)"
         pProp="lastActivityDate"
         pSortable="custom"
@@ -339,10 +337,7 @@ const selectedFolderIds = defineModel<number[]>('selectedFolderIds', {
 
 const {
   isCollab,
-  isLastActivityFeatureActivated,
-  isFavoriteSortActivated,
   isSortedByFavorite,
-  favoriteSortable,
   favoriteDefaultSort,
   callHandleAddFavorite,
   menuElementsCollaborator,

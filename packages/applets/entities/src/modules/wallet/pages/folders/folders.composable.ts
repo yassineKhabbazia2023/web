@@ -5,20 +5,16 @@ import { logger } from '@pulse/toolbox'
 import { useResponsive } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
 import { useSort } from '@pulse/common/composables/sort'
-import { getPaginationLabel } from '@pulse/common/utils'
 import { RouteName } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
-import type { EntityStatus } from '@entities/modules/wallet/enums'
 import type { RegularWalletData, SearchCriteria, SearchResult } from '@entities/modules/wallet/types'
 import { fetchWalletData } from './FoldersUtils'
 import { useFolderSelection } from './folder-selection.composable'
 import { FoldersManager } from './folders.manager'
 import {
   DESKTOP_FOLDERS_PAGE_SIZE,
-  FOLDERS_PAGE_SIZES_DESKTOP,
-  FOLDERS_PAGE_SIZES_MOBILE,
   I18N_KEY,
   MOBILE_FOLDERS_PAGE_SIZE,
 } from './folders.consts'
@@ -37,9 +33,6 @@ export function useFolders() {
     isMobile.value ? t(`${I18N_KEY}.searchShort`) : t(`${I18N_KEY}.search`),
   )
 
-  const pageSizes = computed(() =>
-    isMobile.value ? FOLDERS_PAGE_SIZES_MOBILE : FOLDERS_PAGE_SIZES_DESKTOP,
-  )
   const currentFoldersPageSize = computed(() =>
     isMobile.value ? MOBILE_FOLDERS_PAGE_SIZE : DESKTOP_FOLDERS_PAGE_SIZE,
   )
@@ -72,13 +65,6 @@ export function useFolders() {
     selectedFolders,
     selectedFolderIds,
   } = useFolderSelection(searchResult)
-
-  const paginationLabel = computed(() => getPaginationLabel(t(`${I18N_KEY}.on`), {
-    currentPage: searchCriteria.value.currentPage,
-    limit: searchCriteria.value.limit,
-    data: searchResult.value.items,
-    totalItems: searchResult.value.totalItems,
-  }))
 
   const hasMoreResults = computed(() =>
     searchResult.value.items.length < searchResult.value.totalItems,
@@ -142,29 +128,8 @@ export function useFolders() {
     searchCriteria.value.search = searchValue
   }
 
-  function handlePageRangeChanged(pageRange: number) {
-    WalletTrackingManager.trackPaginationSizeChanged(pageRange)
-    searchCriteria.value.currentPage = 1
-    searchCriteria.value.limit = pageRange
-  }
-
-  function onUpdateCurrentPage(currentPage: number) {
-    WalletTrackingManager.trackPaginationPageClicked(currentPage)
-    searchCriteria.value.currentPage = currentPage
-  }
-
   function handleSortAccount(sortingCriteria: SortingCriteria) {
     handleSortCriteria(sortingCriteria, searchCriteria.value)
-  }
-
-  /**
-   * Resets every criterion, keeping only the optional deployment status shortcut.
-   */
-  function resetSearchCriteria(status?: EntityStatus) {
-    searchCriteria.value = FoldersManager.getDeploymentStatusSearchCriteria(
-      currentFoldersPageSize.value,
-      status,
-    )
   }
 
   function retrieveAndBindAccountsQuery() {
@@ -221,8 +186,6 @@ export function useFolders() {
     selectedFolders,
     selectedFolderIds,
     searchPlaceholder,
-    pageSizes,
-    paginationLabel,
     hasMoreResults,
     totalAccounts,
     fetchAccountList,
@@ -230,9 +193,6 @@ export function useFolders() {
     handleAddFavorite,
     loadMoreResults,
     handleSearchValueSubmitted,
-    handlePageRangeChanged,
-    onUpdateCurrentPage,
     handleSortAccount,
-    resetSearchCriteria,
   }
 }

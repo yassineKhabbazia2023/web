@@ -3,8 +3,10 @@ import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import { displayNotification } from '@pulse/styleguide'
 import { delegateAccounts } from '@entities/services/account'
+import { DelegationTab } from '@entities/modules/wallet/enums'
 
 import DelegationDrawer from '.'
+import RequestDelegationTab from './components/RequestDelegation/request-delegation.vue'
 
 const displayNotificationMock = vi.mocked(displayNotification)
 
@@ -59,6 +61,7 @@ const createWrapper = (
 const createFullDelegationWrapper = () => createWrapper({
   ...defaultProps,
   selectedFolders: [],
+  initialTab: DelegationTab.DELEGATE_WALLET,
 })
 
 describe('delegationDrawer', () => {
@@ -68,6 +71,17 @@ describe('delegationDrawer', () => {
   })
 
   describe('rendering', () => {
+    it('should open the request delegation tab by default when there is no pending request', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        selectedFolders: [],
+      })
+      await flushPromises()
+
+      expect(wrapper.findComponent(RequestDelegationTab).exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'PSteps' }).exists()).toBe(false)
+    })
+
     it('should display the correct steps when DelegationFlowType.FULL', async () => {
       const wrapper = createFullDelegationWrapper()
 

@@ -1,17 +1,14 @@
 import type { MockInstance } from 'vitest'
 import { ManageWalletMenuManager } from './manage-wallet-menu.manager'
 import { ManageWalletAction } from '@entities/modules/wallet/enums'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { armCurrentUserPermissions } from '@pulse/common/mocks/vitest/current-user.permissions.helper'
 import type { ManageWalletMenuTranslations } from './manage-wallet-button.types'
 import type { SelectedFolder } from '../DelegationDrawer/DelegationDrawerTypes'
 
 let hasPermissionMock: MockInstance
-const isDelegationRequestTabsActivatedMock = vi.fn(() => false)
 
 beforeEach(() => {
   hasPermissionMock = armCurrentUserPermissions(false)
-  vi.spyOn(FeatureFlagManager, 'isDelegationRequestTabsActivated').mockImplementation(isDelegationRequestTabsActivatedMock)
 })
 
 const translations: ManageWalletMenuTranslations = {
@@ -42,19 +39,9 @@ const getActions = (selectedFoldersCount: number, selectedFolders: SelectedFolde
 describe('ManageWalletMenuManager', () => {
   beforeEach(() => {
     hasPermissionMock.mockReturnValue(false)
-    isDelegationRequestTabsActivatedMock.mockReturnValue(false)
   })
 
-  it('exposes wallet and permanent delegation actions by default', () => {
-    expect(getActions(0)).toEqual([
-      ManageWalletAction.DELEGATE_WALLET,
-      ManageWalletAction.VIEW_PERMANENT_DELEGATIONS,
-    ])
-  })
-
-  it('adds request and pending actions when the delegation request flag is on', () => {
-    isDelegationRequestTabsActivatedMock.mockReturnValue(true)
-
+  it('exposes pending, request, wallet and permanent delegation actions by default', () => {
     expect(getActions(0)).toEqual([
       ManageWalletAction.PENDING_DELEGATIONS,
       ManageWalletAction.REQUEST_DELEGATION,
@@ -71,7 +58,6 @@ describe('ManageWalletMenuManager', () => {
 
   it('returns the declare action for a single folder without a customer relation', () => {
     hasPermissionMock.mockReturnValue(true)
-    isDelegationRequestTabsActivatedMock.mockReturnValue(true)
 
     expect(getActions(1, [buildSelectedFolder(false)])).toEqual([
       ManageWalletAction.DECLARE_CUSTOMER_RELATION,
