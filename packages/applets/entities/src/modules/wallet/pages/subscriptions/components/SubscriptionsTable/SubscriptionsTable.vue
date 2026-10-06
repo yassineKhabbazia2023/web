@@ -236,7 +236,7 @@ const props = defineProps<{
 }>()
 
 const offerCodes = defineModel<string[]>('offerCodes', {
-  default: [],
+  default: () => [],
 })
 
 const search = defineModel<string>('search', {
