@@ -31,7 +31,7 @@
     </div>
     <div class="margin-y--4">
       <div
-        v-if="isLoading"
+        v-if="isLoading || isSubmitting"
         class="flex flex--justify-content-center flex--align-items-center"
       >
         <PLoader pType="primary" pSize="50" />
@@ -49,7 +49,7 @@
     <template #footer>
       <PDrawerActions
         :pPrimaryCTA="primaryCTA"
-        @click-primary-cta="handleRetryMassActivationEmail"
+        @click-primary-cta="sendActivationEmails"
       />
     </template>
   </PDrawer>
@@ -69,14 +69,12 @@ import {
 import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@entities/services/wallet'
-import { inviteCustomers } from '@entities/services/contact'
-import { displayNotification } from '@pulse/styleguide'
 import { formatItemsFromApi } from '@entities/helpers'
 import UsersList from '@entities/components/users-list'
 import NoResult from '@entities/components/NoResult'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ExtendedUser, UserStatus } from '@entities/types'
 import { ContactType, AccountType } from '@pulse/common/enums'
+import { useResendActivationEmail } from './resend-activation-email.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -91,8 +89,6 @@ const { t } = useI18n({
       prospect: 'Prospect',
       selectClientUsers: 'Select client users',
       resendTheActivationEmail: 'Resend the activation email',
-      customersInvitationFailed: 'There was an issue inviting all selected customers.',
-      invitationEmailsSent: 'The user invitation email has been sent. | The user invitation emails have been sent.',
       pleaseSelectUsers: 'Please select the users for whom you wish to send a RYDGE Conseil account activation email.',
     },
     'fr-FR': {
@@ -104,8 +100,6 @@ const { t } = useI18n({
       prospect: 'Prospect',
       selectClientUsers: 'Sélectionnez des utilisateurs clients',
       resendTheActivationEmail: 'Relancer le mail d\'activation',
-      customersInvitationFailed: 'Il y a eu un problème pour inviter tous les clients sélectionnés.',
-      invitationEmailsSent: 'Le mail d\'invitation utilisateur a été envoyé | Les mails d\'invitation utilisateur ont été envoyés',
       pleaseSelectUsers: 'Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail d\'activation du compte RYDGE Conseil.',
     },
   },
@@ -119,11 +113,17 @@ const emit = defineEmits<{
 
 const isLoading = ref(true)
 const usersClientAccount = ref<ExtendedUser[]>([])
-const selectedUsersIds = ref<number[]>([])
+
+const { isSubmitting, selectedCustomerIds, sendActivationEmails } = useResendActivationEmail({
+  accountId: () => props.selectedAccount.accountId,
+  accountType: () => props.accountType,
+  refreshUsers: () => fetchAccountUsers(),
+})
 
 const primaryCTA = computed<PDrawerActionButton>(() => ({
   pLabel: t('submit'),
-  pDisabled: selectedUsersIds.value.length === 0,
+  pDisabled: selectedCustomerIds.value.length === 0 || isLoading.value || isSubmitting.value,
+  pLoading: isSubmitting.value,
   pTestId: 'resend-activation-email-submit-button',
 }))
 
@@ -150,33 +150,7 @@ const handleCloseDrawer = () => {
   isResendActivationEmailDrawerVisible.value = false
 }
 const handleSelectUser = (userClientIds: number[]) => {
-  selectedUsersIds.value = userClientIds
-}
-const handleRetryMassActivationEmail = async () => {
-  isLoading.value = true
-  try {
-    const invitedCustomerIDs = await inviteCustomers(
-      selectedUsersIds.value,
-      props.selectedAccount.accountId,
-      props.accountType,
-    )
-    if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
-      await fetchAccountUsers()
-
-      displayNotification('success', t('invitationEmailsSent', invitedCustomerIDs.length))
-      AmplitudeService.track('Onboarding Relaunched', {
-        onboarding_relaunch_result: 'succeeded',
-      })
-    }
-  } catch {
-    displayNotification('error', t('customersInvitationFailed'))
-    AmplitudeService.track('Onboarding Relaunched', {
-      onboarding_relaunch_result: 'failed',
-    })
-  } finally {
-    selectedUsersIds.value = []
-    isLoading.value = false
-  }
+  selectedCustomerIds.value = userClientIds
 }
 
 const getStatus = (status: string): UserStatus => {

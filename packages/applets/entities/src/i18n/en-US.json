@@ -14,6 +14,12 @@
         "error": "There was an issue inviting the user."
       }
     },
+    "resendActivationEmail": {
+      "success": "The user invitation email has been sent. | The user invitation emails have been sent.",
+      "partialInvitation": "Partial sending: {invitedCount} invitation email out of {selectedCount} has been sent. Please check the users' status. | Partial sending: {invitedCount} invitation emails out of {selectedCount} have been sent. Please check the users' status.",
+      "invitationNotConfirmed": "The request was processed, but sending the invitation emails could not be confirmed. Please check the users' status.",
+      "error": "There was an issue inviting all selected customers."
+    },
     "addressingIdentification": {
       "table": {
         "callName": "Call name",

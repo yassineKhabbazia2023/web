@@ -14,6 +14,12 @@
         "error": "Il y a eu un problème pour inviter l'utilisateur."
       }
     },
+    "resendActivationEmail": {
+      "success": "Le mail d'invitation utilisateur a été envoyé | Les mails d'invitation utilisateur ont été envoyés",
+      "partialInvitation": "Envoi partiel : {invitedCount} mail d'invitation sur {selectedCount} a été envoyé. Vérifiez le statut des utilisateurs. | Envoi partiel : {invitedCount} mails d'invitation sur {selectedCount} ont été envoyés. Vérifiez le statut des utilisateurs.",
+      "invitationNotConfirmed": "La demande a été traitée, mais l'envoi des mails d'invitation n'a pas été confirmé. Vérifiez le statut des utilisateurs.",
+      "error": "Il y a eu un problème pour inviter tous les clients sélectionnés."
+    },
     "addressingIdentification": {
       "table": {
         "callName": "Nom d'appel",
