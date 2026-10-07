@@ -6,6 +6,7 @@ import { featureFlagGuard, currentEntityGuard, seoGuard, scrollResetGuard } from
 import { customerAuthenticationGuard } from './guards/customer.authentication.guard'
 import { customerPermissionGuard } from './guards/customer.permission.guard'
 import { customerSsoGuard } from './guards/customer.sso.guard'
+import { customerWalletGuard } from './guards/customer.wallet.guard'
 import { CUSTOMER_ROUTES } from './customer.routes'
 
 import { errorCustomerRoutes } from './routes/customer.error.routes'
@@ -51,6 +52,7 @@ NewVersionManager.startWatching()
 router.beforeEach(newVersionReloadGuard)
 router.beforeEach(customerSsoGuard)
 router.beforeEach(customerAuthenticationGuard)
+router.beforeEach(customerWalletGuard)
 router.beforeEach(featureFlagGuard)
 router.beforeEach(currentEntityGuard)
 router.beforeEach(customerPermissionGuard)

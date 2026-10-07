@@ -2,18 +2,11 @@ import type { RouteRecordRaw } from 'vue-router'
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
 import { Feature } from '@pulse/common/enums'
 import { CUSTOMER_ROUTES } from '../customer.routes'
-import { CustomerLandingManager } from '@customer/managers/customer-landing.manager'
 
 export const walletCustomerRoutes = [
   {
     path: CUSTOMER_ROUTES.wallet.root.path,
     name: CUSTOMER_ROUTES.wallet.root.name,
-    beforeEnter: (to) => {
-      if (to.name === CUSTOMER_ROUTES.wallet.root.name) {
-        // If directly navigating to wallet root directly, redirect to default tab
-        return CustomerLandingManager.getWalletDefaultTab()
-      }
-    },
     component: () => import('@pulse/entities/wallet-pages').then(pages => pages.WalletRoot),
     children: [
       // CUSTOMER LANDING: entity list
