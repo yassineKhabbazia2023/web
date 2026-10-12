@@ -29,7 +29,7 @@ test.describe('Reset Password Form Page', () => {
     await firstPasswordInput.fill('weak')
 
     // Check that the weak password indicator (error color) is visible
-    await expect(page.locator('.bg--stroke-error').first()).toBeVisible()
+    await expect(page.locator('.bg--stroke-basic-error').first()).toBeVisible()
   })
 
   test('should show error when passwords do not match', async ({ page }) => {
@@ -51,6 +51,6 @@ test.describe('Reset Password Form Page', () => {
     await firstPasswordInput.fill('StrongPassword123!')
 
     // Check that the strong password indicator (success color) is visible
-    await expect(page.locator('.bg--stroke-success').first()).toBeVisible()
+    await expect(page.locator('.bg--stroke-basic-success').first()).toBeVisible()
   })
 })

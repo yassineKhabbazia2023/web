@@ -3,7 +3,7 @@
     :id="pStepId !== undefined ? `step-${pStepId}` : undefined"
     class="
       conformity-step-card
-      bg--surface-primary
+      bg--surface-basic-primary
       flex
       flex--direction-column
       padding--6

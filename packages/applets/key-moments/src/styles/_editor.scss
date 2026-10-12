@@ -9,7 +9,7 @@
   align-items: center;
   flex-shrink: 0;
   padding: 4px;
-  color: var(--p-text-neutral);
+  color: var(--p-text-neutral-neutral);
   cursor: grab;
 
   &:active {
@@ -37,7 +37,7 @@
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
     border-bottom: 1px solid var(--key-moments-line);
   }
 
@@ -101,7 +101,7 @@
 
   .key-moments-editor-drag {
     opacity: 0.9;
-    background-color: var(--p-surface-primary, #fff);
+    background-color: var(--p-surface-basic-primary, #fff);
     box-shadow: 0 6px 16px rgb(0 0 0 / 18%);
     border-radius: 4px;
   }

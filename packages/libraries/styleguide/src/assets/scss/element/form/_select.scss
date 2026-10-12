@@ -1,6 +1,6 @@
 $select: (
   'close-hover-color': var(--p-jungle-400),
-  'input-color': var(--p-icon-secondary),
+  'input-color': var(--p-icon-basic-secondary),
 );
 
 $select-option: (
@@ -28,7 +28,7 @@ $select-near-margin-left: (
 );
 
 .el-select {
-  border-bottom: 2px solid var(--p-stroke-default-secondary);
+  border-bottom: 2px solid var(--p-stroke-basic-default-secondary);
 
   &.p-dropdown--selected-value-display {
     .el-select__placeholder,
@@ -38,15 +38,15 @@ $select-near-margin-left: (
   }
 
   &:hover {
-    border-bottom-color: var(--p-stroke-hover);
+    border-bottom-color: var(--p-stroke-basic-hover);
   }
 
   &:has(.el-select__wrapper.is-focused) {
-    border-bottom-color: var(--p-stroke-press);
+    border-bottom-color: var(--p-stroke-basic-press);
   }
 
   &:has(.el-select__wrapper.is-disabled) {
-    border-bottom-color: var(--p-stroke-darker);
+    border-bottom-color: var(--p-stroke-neutral-darker);
   }
 
   .el-select__wrapper {

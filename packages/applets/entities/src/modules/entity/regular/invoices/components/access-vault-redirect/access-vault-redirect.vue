@@ -4,7 +4,7 @@
       flex
       flex--direction-column
       flex-gap--6
-      bg--surface-information-primary
+      bg--surface-information-primary-light
       padding--6
     "
   >
@@ -26,7 +26,7 @@
         class="
           font-size--21
           font-semibold
-          text-color--text-heading
+          text-color--text-basic-heading
           margin--0
         "
       >
@@ -45,7 +45,7 @@
         class="
           font-size--14
           font-normal
-          text-color--text-body
+          text-color--text-basic-body
           margin--0
         "
       >
@@ -69,7 +69,7 @@
             flex-gap--2
             font-size--14
             font-normal
-            text-color--text-body
+            text-color--text-basic-body
           "
         >
           <PIcon
@@ -99,7 +99,7 @@
             flex-gap--2
             font-size--14
             font-normal
-            text-color--text-body
+            text-color--text-basic-body
           "
         >
           <PIcon
@@ -140,7 +140,7 @@
           class="
             font-size--14
             font-semibold
-            text-color--text-body
+            text-color--text-basic-body
             pre-line
           "
         >

@@ -13,7 +13,7 @@
         margin--0
         font-size--12
         font-bold
-        text-color--text-neutral
+        text-color--text-neutral-neutral
       "
       :data-testid="`key-moments-${widgetId}-comment-discarded`"
     >

@@ -92,7 +92,7 @@ defineProps<{
   &__title {
     font-weight: 800;
     letter-spacing: -0.01em;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   &__badge {

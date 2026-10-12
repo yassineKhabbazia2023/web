@@ -8,7 +8,7 @@
       flex-gap--4
       bg--gray-50
       padding--8
-      text-color--text-neutral
+      text-color--text-neutral-neutral
       margin-top--2
     "
   >

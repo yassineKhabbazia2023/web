@@ -96,7 +96,7 @@
             flex--shrink-0
             no-wrap
             font-small
-            text-color--text-neutral
+            text-color--text-neutral-neutral
           "
           data-testid="key-moments-published-state"
         >
@@ -109,7 +109,7 @@
 
           <span
             v-if="publishBlockedReason !== undefined"
-            class="text-color--text-error"
+            class="text-color--text-basic-error"
             data-testid="key-moments-publish-blocked"
           >
             {{ publishBlockedReason }}

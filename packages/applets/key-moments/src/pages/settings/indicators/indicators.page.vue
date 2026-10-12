@@ -33,7 +33,7 @@
         <span>{{ t('keyMoments.settings.indicators.showDeprecated') }}</span>
       </label>
 
-      <span class="text-color--text-neutral">
+      <span class="text-color--text-neutral-neutral">
         {{ t('keyMoments.settings.indicators.count', { count: visibleIndicators.length }) }}
       </span>
 

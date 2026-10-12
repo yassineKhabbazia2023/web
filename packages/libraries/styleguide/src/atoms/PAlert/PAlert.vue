@@ -77,7 +77,7 @@ const iconName = computed<PIconProps['pName']>(() => {
 
   padding: 12px 16px;
 
-  color: var(--p-text-body);
+  color: var(--p-text-basic-body);
   background-color: var(--p-black-rock-100);
 
   &__icon {

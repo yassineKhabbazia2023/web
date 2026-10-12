@@ -143,8 +143,8 @@ export const ColorVariants: Story = {
             pValue="98%"
             pDescription="Success rate"
             pIcon="checkCircle"
-            pBackgroundClass="bg--surface-success"
-            pAccentClass="text-color--text-success"
+            pBackgroundClass="bg--surface-basic-success"
+            pAccentClass="text-color--text-basic-success"
           />
         </div>
         <div style="width: 220px;">
@@ -153,8 +153,8 @@ export const ColorVariants: Story = {
             pValue="3"
             pDescription="Items need attention"
             pIcon="exclamationTriangle"
-            pBackgroundClass="bg--surface-warning"
-            pAccentClass="text-color--text-warning"
+            pBackgroundClass="bg--surface-basic-warning"
+            pAccentClass="text-color--text-basic-warning"
           />
         </div>
         <div style="width: 220px;">
@@ -163,8 +163,8 @@ export const ColorVariants: Story = {
             pValue="1"
             pDescription="Critical error"
             pIcon="xCircle"
-            pBackgroundClass="bg--surface-error"
-            pAccentClass="text-color--text-error"
+            pBackgroundClass="bg--surface-basic-error"
+            pAccentClass="text-color--text-basic-error"
           />
         </div>
       </div>

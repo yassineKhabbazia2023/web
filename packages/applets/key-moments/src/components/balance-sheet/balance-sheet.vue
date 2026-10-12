@@ -68,7 +68,7 @@ const sides = computed<BalanceSheetSide[]>(() => [
 
   &__title {
     letter-spacing: 0.08em;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 }
 

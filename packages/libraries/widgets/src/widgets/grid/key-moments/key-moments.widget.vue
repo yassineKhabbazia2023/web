@@ -142,14 +142,14 @@ function goToKeyMoments() {
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.01em;
-    color: var(--p-text-white);
+    color: var(--p-text-basic-white);
   }
 
   &__description {
     margin: 0;
     font-size: 13px;
     line-height: 1.4;
-    color: var(--p-text-white);
+    color: var(--p-text-basic-white);
   }
 
   // Kept at its label width, at the foot of the card: the text beside it takes

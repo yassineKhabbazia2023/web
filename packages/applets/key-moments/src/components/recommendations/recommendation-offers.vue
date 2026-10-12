@@ -39,7 +39,9 @@
               flex-gap--2
             "
           >
-            <span class="key-moments-recommendation-offers__title text-color--text-heading">{{ offer.title }}</span>
+            <span class="key-moments-recommendation-offers__title text-color--text-basic-heading">
+              {{ offer.title }}
+            </span>
             <PTag
               v-if="offer.categoryName !== undefined"
               :pContent="offer.categoryName"

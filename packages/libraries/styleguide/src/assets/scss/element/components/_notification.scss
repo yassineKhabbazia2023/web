@@ -15,7 +15,7 @@ $notification: (
   cursor: pointer;
 
   &[role="alert"] {
-    background-color: var(--p-stroke-secondary);
+    background-color: var(--p-stroke-basic-secondary);
   }
 
   align-items: center;
@@ -26,29 +26,29 @@ $notification: (
 
   &.info {
     #{$self}__icon {
-      background: var(--p-surface-secondary);
-      color: var(--p-icon-primary);
+      background: var(--p-surface-basic-secondary);
+      color: var(--p-icon-basic-primary);
     }
   }
 
   &.success {
     #{$self}__icon {
-      background: var(--p-surface-success);
-      color: var(--p-icon-success);
+      background: var(--p-surface-basic-success);
+      color: var(--p-icon-basic-success);
     }
   }
 
   &.error {
     #{$self}__icon {
-      background: var(--p-surface-error);
-      color: var(--p-icon-error);
+      background: var(--p-surface-basic-error);
+      color: var(--p-icon-basic-error);
     }
   }
 
   &.warning {
     #{$self}__icon {
-      background: var(--p-surface-warning);
-      color: var(--p-icon-warning);
+      background: var(--p-surface-basic-warning);
+      color: var(--p-icon-basic-warning);
     }
   }
 
@@ -93,7 +93,7 @@ $notification: (
       margin-left: 2.4rem;
       padding: 1px; // the X icon has no white space. This is on order to avoid the cross touching the borders
       border-radius: var(--el-border-radius-circle);
-      background-color: var(--p-surface-primary);
+      background-color: var(--p-surface-basic-primary);
     }
   }
 }

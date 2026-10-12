@@ -57,15 +57,15 @@ const { t } = useI18n()
 
 <style scoped lang="scss">
 .key-moments-editor-placeholder {
-  border: 1px dashed var(--p-text-neutral);
+  border: 1px dashed var(--p-text-neutral-neutral);
   border-radius: 4px;
 
   &__title {
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   &__text {
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 }
 </style>

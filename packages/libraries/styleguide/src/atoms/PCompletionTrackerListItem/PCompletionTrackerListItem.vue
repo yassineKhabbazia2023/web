@@ -115,12 +115,12 @@ const classNames = computed(() => ({
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    border: 2px solid var(--p-stroke-secondary);
+    border: 2px solid var(--p-stroke-basic-secondary);
     box-sizing: border-box;
   }
 
   &__check-icon {
-    color: var(--p-icon-success);
+    color: var(--p-icon-basic-success);
   }
 
   &__text {
@@ -140,11 +140,11 @@ const classNames = computed(() => ({
     background-color: var(--p-gray-50);
 
     #{$self}__label {
-      color: var(--p-text-heading);
+      color: var(--p-text-basic-heading);
     }
 
     #{$self}__arrow {
-      color: var(--p-icon-secondary);
+      color: var(--p-icon-basic-secondary);
     }
   }
 
@@ -164,14 +164,14 @@ const classNames = computed(() => ({
 
   // Status: completed (unselected)
   &--completed {
-    background-color: var(--p-surface-success);
+    background-color: var(--p-surface-basic-success);
 
     #{$self}__label {
-      color: var(--p-text-success);
+      color: var(--p-text-basic-success);
     }
 
     #{$self}__arrow {
-      color: var(--p-icon-success);
+      color: var(--p-icon-basic-success);
     }
   }
 

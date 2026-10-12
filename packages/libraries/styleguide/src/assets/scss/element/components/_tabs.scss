@@ -71,12 +71,12 @@
         margin-bottom: 0;
         border: none;
         background: var(--p-surface-neutral-lighter);
-        color: var(--p-text-heading);
+        color: var(--p-text-basic-heading);
         font-weight: 400;
 
         &.is-active {
           background: var(--p-surface-state-active);
-          color: var(--p-text-white);
+          color: var(--p-text-basic-white);
           font-weight: 600;
         }
       }

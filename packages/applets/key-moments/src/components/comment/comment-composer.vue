@@ -117,7 +117,7 @@ function save(): void {
 <style scoped lang="scss">
 .key-moments-comment-composer {
   padding: 14px 16px;
-  background-color: var(--p-surface-primary);
+  background-color: var(--p-surface-basic-primary);
   box-shadow: 0 1px 2px rgba(var(--p-black-rock-900-rgb), 0.06);
 
   &__content {

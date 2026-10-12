@@ -68,7 +68,7 @@ describe('PStatCard', () => {
       },
     })
 
-    expect(wrapper.classes()).toContain('bg--surface-information-primary')
+    expect(wrapper.classes()).toContain('bg--surface-information-primary-light')
   })
 
   it('applies default accent class to title', () => {
@@ -80,7 +80,7 @@ describe('PStatCard', () => {
     })
 
     const title = wrapper.find('.text-uppercase')
-    expect(title.classes()).toContain('text-color--text-information-primary')
+    expect(title.classes()).toContain('text-color--text-basic-information-primary')
   })
 
   it('applies custom background class when provided', () => {
@@ -88,12 +88,12 @@ describe('PStatCard', () => {
       props: {
         pTitle: 'Test',
         pValue: '100',
-        pBackgroundClass: 'bg--surface-success',
+        pBackgroundClass: 'bg--surface-basic-success',
       },
     })
 
-    expect(wrapper.classes()).toContain('bg--surface-success')
-    expect(wrapper.classes()).not.toContain('bg--surface-information-primary')
+    expect(wrapper.classes()).toContain('bg--surface-basic-success')
+    expect(wrapper.classes()).not.toContain('bg--surface-information-primary-light')
   })
 
   it('applies custom accent class when provided', () => {
@@ -101,12 +101,12 @@ describe('PStatCard', () => {
       props: {
         pTitle: 'Test',
         pValue: '100',
-        pAccentClass: 'text-color--text-success',
+        pAccentClass: 'text-color--text-basic-success',
       },
     })
 
     const title = wrapper.find('.text-uppercase')
-    expect(title.classes()).toContain('text-color--text-success')
+    expect(title.classes()).toContain('text-color--text-basic-success')
   })
 
   it('applies custom accent class to icon when provided', () => {
@@ -115,12 +115,12 @@ describe('PStatCard', () => {
         pTitle: 'Test',
         pValue: '100',
         pIcon: 'checkCircle',
-        pAccentClass: 'text-color--text-success',
+        pAccentClass: 'text-color--text-basic-success',
       },
     })
 
     const icon = wrapper.findComponent({ name: 'PIcon' })
-    expect(icon.classes()).toContain('text-color--text-success')
+    expect(icon.classes()).toContain('text-color--text-basic-success')
   })
 
   it('renders with currency value', () => {

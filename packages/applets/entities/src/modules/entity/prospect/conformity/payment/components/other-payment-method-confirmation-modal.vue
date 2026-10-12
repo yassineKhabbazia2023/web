@@ -18,7 +18,7 @@
       <PIcon
         pName="infoCircle"
         pSize="24"
-        pColor="var(--p-icon-action-default)"
+        pColor="var(--p-icon-basic-default)"
       />
       <div class="h2">
         {{ t(`${I18N_KEY}.title`) }}

@@ -6,7 +6,7 @@
         flex
         flex--align-items-center
         position--relative
-        bg--surface-secondary
+        bg--surface-basic-secondary
         cursor-pointer
         overflow-hidden
       "

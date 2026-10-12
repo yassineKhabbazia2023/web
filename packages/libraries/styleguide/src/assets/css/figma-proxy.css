@@ -3,26 +3,17 @@
 
 :root {
   /* surface colors */
-  --p-surface-primary: #FFFFFF;
-  --p-surface-secondary: #0E0F30;
-  --p-surface-success: #D8FFD7;
-  --p-surface-error: #FFDDDD;
-  --p-surface-alert: #FF0000;
-  --p-surface-warning: #FFFCEA;
-  --p-surface-information-primary: #E3F2FD;
-  --p-surface-information-secondary: #DDE9FF;
-  --p-surface-highlight: #DDE9FF;
-  --p-surface-collab: #2C2FD6;
-  --p-surface-client: #0E6151;
-  /* surface-state colors */
-  --p-surface-state-hover: #E7FFFF;
-  --p-surface-state-press: #ADE1D6;
-  --p-surface-state-active: #1AAB8E;
-  --p-surface-state-active-disabled: #88D3C4;
-  --p-surface-state-selection: #E4FCF7;
-  --p-surface-state-disabled: #F8F9FA;
-  --p-surface-state-action-hover: #0C4F41;
-  --p-surface-state-action-press: #093C32;
+  /* surface-basic colors */
+  --p-surface-basic-primary: #FFFFFF;
+  --p-surface-basic-secondary: #0E0F30;
+  --p-surface-basic-success: #D8FFD7;
+  --p-surface-basic-disabled: #CDD1D4;
+  --p-surface-basic-error: #FFDDDD;
+  --p-surface-basic-alert: #FF0000;
+  --p-surface-basic-warning: #FFFCEA;
+  --p-surface-basic-highlight: #DDE9FF;
+  --p-surface-basic-collab: #3438C5;
+  --p-surface-basic-client: #0E6151;
 
   /* surface-neutral colors */
   --p-surface-neutral-lighter: #F8F9FA;
@@ -30,37 +21,197 @@
   --p-surface-neutral-default: #ADB5BD;
   --p-surface-neutral-dark: #6C757D;
 
+  /* surface-state colors */
+  --p-surface-state-hover: #E4FCF7;
+  --p-surface-state-press: #ADE1D6;
+  --p-surface-state-active: #1AAB8E;
+  --p-surface-state-active-disabled: #88D3C4;
+  --p-surface-state-selection: #CCEEE6;
+  --p-surface-state-disabled: #F8F9FA;
+  --p-surface-state-action-hover: #0C4F41;
+  --p-surface-state-action-press: #093C32;
+
+  /* surface-ia colors */
+  /* surface-ia-primary colors */
+  --p-surface-ia-primary-almost-white: #F9F9FC;
+  --p-surface-ia-primary-lighter: #F4F4FB;
+  --p-surface-ia-primary-default-light: #EBEBF9;
+  --p-surface-ia-primary-default: #C2C3EE;
+  --p-surface-ia-primary-active: #3438C5;
+  --p-surface-ia-primary-selection: #2A2D9E;
+  --p-surface-ia-primary-hover: #15164F;
+  --p-surface-ia-primary-press: #0A0B27;
+  --p-surface-ia-primary-disabled: #F8F9FA;
+  --p-surface-ia-primary-white: #FFFFFF;
+
+  /* surface-ia-secondary colors */
+  --p-surface-ia-secondary-active: #EBEBF9;
+  --p-surface-ia-secondary-selection: #C2C3EE;
+  --p-surface-ia-secondary-hover: #AEAFE8;
+  --p-surface-ia-secondary-press: #5D60D1;
+  --p-surface-ia-secondary-disabled: #F8F9FA;
+
+
+  /* surface-information colors */
+  /* surface-information-primary colors */
+  --p-surface-information-primary-almost-white: #F8FDFE;
+  --p-surface-information-primary-lighter: #E6FAFC;
+  --p-surface-information-primary-light: #E3F2FD;
+  --p-surface-information-primary-default: #00CFDE;
+  --p-surface-information-primary-dark: #008194;
+  --p-surface-information-primary-darker: #074957;
+
+  /* surface-information-secondary colors */
+  --p-surface-information-secondary-lighter: #EBEBF9;
+  --p-surface-information-secondary-light: #C2C3EE;
+  --p-surface-information-secondary-dark: #1F2276;
+
+  /* surface-information-tertiary colors */
+  --p-surface-information-tertiary-almost-white: #F8FEFD;
+  --p-surface-information-tertiary-lighter: #E4FCF7;
+  --p-surface-information-tertiary-light: #ADE1D6;
+  --p-surface-information-tertiary-default: #148670;
+  --p-surface-information-tertiary-dark: #0C4F41;
+  --p-surface-information-tertiary-darker: #062A23;
+
+
+  /* surface-background colors */
+  --p-surface-background-white: #FDFDFF;
+  --p-surface-background-black: #0E0F30;
+  /* surface-background-collab colors */
+  --p-surface-background-collab-almost-white-collab: #F9F9FC;
+  --p-surface-background-collab-lighter-collab: #F4F4FB;
+  --p-surface-background-collab-light-collab: #EBEBF9;
+
+  /* surface-background-client colors */
+  --p-surface-background-client-almost-white-client: #F8FEFD;
+  --p-surface-background-client-lighter-client: #E4FCF7;
+  --p-surface-background-client-light-client: #ADE1D6;
+
+
 
   /* stroke colors */
-  --p-stroke-primary: #FFFFFF;
-  --p-stroke-secondary: #0E0F30;
-  --p-stroke-neutral: #CDD1D4;
-  --p-stroke-darker: #889BA8;
-  --p-stroke-default-primary: #ADB5BD;
-  --p-stroke-default-secondary: #88D3C4;
-  --p-stroke-active: #1AAB8E;
-  --p-stroke-hover: #0C4F41;
-  --p-stroke-press: #093C32;
-  --p-stroke-disabled: #CDD1D4;
-  --p-stroke-success: #00B800;
-  --p-stroke-error: #FF0000;
-  --p-stroke-warning: #FFA500;
-  --p-stroke-information-secondary: #2C2FD6;
+  /* stroke-basic colors */
+  --p-stroke-basic-primary: #FFFFFF;
+  --p-stroke-basic-secondary: #0E0F30;
+  --p-stroke-basic-default-secondary: #88D3C4;
+  --p-stroke-basic-active: #1AAB8E;
+  --p-stroke-basic-hover: #0C4F41;
+  --p-stroke-basic-press: #093C32;
+  --p-stroke-basic-disabled: #CDD1D4;
+  --p-stroke-basic-success: #00B800;
+  --p-stroke-basic-error: #FF0000;
+  --p-stroke-basic-warning: #FFA500;
+  --p-stroke-basic-information-secondary: #3438C5;
+
+  /* stroke-neutral colors */
+  --p-stroke-neutral-neutral-2: #F8F9FA;
+  --p-stroke-neutral-neutral: #DEE2E6;
+  --p-stroke-neutral-darker: #CDD1D4;
+  --p-stroke-neutral-default-primary: #6C757D;
+
+  /* stroke-ia colors */
+  /* stroke-ia-primary colors */
+  --p-stroke-ia-primary-active: #3438C5;
+  --p-stroke-ia-primary-selection: #5D60D1;
+  --p-stroke-ia-primary-hover: #15164F;
+  --p-stroke-ia-primary-press: #0A0B27;
+  --p-stroke-ia-primary-disabled: #F8F9FA;
+  --p-stroke-ia-primary-white: #FFFFFF;
+
+  /* stroke-ia-secondary colors */
+  --p-stroke-ia-secondary-active: #EBEBF9;
+  --p-stroke-ia-secondary-selection: #C2C3EE;
+  --p-stroke-ia-secondary-hover: #AEAFE8;
+  --p-stroke-ia-secondary-press: #5D60D1;
+  --p-stroke-ia-secondary-disabled: #F8F9FA;
+
+
+  /* stroke-information colors */
+  /* stroke-information-primary colors */
+  --p-stroke-information-primary-almost-white: #F8FDFE;
+  --p-stroke-information-primary-lighter: #E6FAFC;
+  --p-stroke-information-primary-light: #E3F2FD;
+  --p-stroke-information-primary-default: #00CFDE;
+  --p-stroke-information-primary-dark: #008194;
+  --p-stroke-information-primary-darker: #074957;
+
+  /* stroke-information-secondary colors */
+  --p-stroke-information-secondary-lighter: #EBEBF9;
+  --p-stroke-information-secondary-light: #C2C3EE;
+  --p-stroke-information-secondary-dark: #1F2276;
+
+  /* stroke-information-tertiary colors */
+  --p-stroke-information-tertiary-almost-white: #F8FEFD;
+  --p-stroke-information-tertiary-lighter: #E4FCF7;
+  --p-stroke-information-tertiary-light: #ADE1D6;
+  --p-stroke-information-tertiary-default: #148670;
+  --p-stroke-information-tertiary-dark: #0E6151;
+  --p-stroke-information-tertiary-darker: #062A23;
+
+
 
   /* text colors */
-  --p-text-heading: #0E0F30;
-  --p-text-body: #15171A;
-  --p-text-highlight: #093C32;
-  --p-text-white: #FFFFFF;
-  --p-text-neutral: #889BA8;
-  --p-text-active: #1AAB8E;
-  --p-text-active-hover: #0C4F41;
-  --p-text-disabled: #ADB5BD;
-  --p-text-success: #0A710B;
-  --p-text-error: #B10303;
-  --p-text-warning: #BB5502;
-  --p-text-information-primary: #126778;
-  --p-text-information-secondary: #2C2FD6;
+  /* text-basic colors */
+  --p-text-basic-heading: #0E0F30;
+  --p-text-basic-body: #15171A;
+  --p-text-basic-highlight: #093C32;
+  --p-text-basic-white: #FFFFFF;
+  --p-text-basic-active: #1AAB8E;
+  --p-text-basic-active-hover: #0C4F41;
+  --p-text-basic-disabled: #ADB5BD;
+  --p-text-basic-success: #0A710B;
+  --p-text-basic-error: #B10303;
+  --p-text-basic-warning: #BB5502;
+  --p-text-basic-information-primary: #126778;
+  --p-text-basic-information-secondary: #3438C5;
+
+  /* text-neutral colors */
+  --p-text-neutral-neutral: #889BA8;
+  --p-text-neutral-dark: #6C757D;
+
+  /* text-ia colors */
+  /* text-ia-primary colors */
+  --p-text-ia-primary-body: #15171A;
+  --p-text-ia-primary-active: #3438C5;
+  --p-text-ia-primary-selection: #5D60D1;
+  --p-text-ia-primary-hover: #15164F;
+  --p-text-ia-primary-press: #0A0B27;
+  --p-text-ia-primary-disabled: #ADB5BD;
+  --p-text-ia-primary-white: #FFFFFF;
+
+  /* text-ia-secondary colors */
+  --p-text-ia-secondary-body: #15171A;
+  --p-text-ia-secondary-active: #EBEBF9;
+  --p-text-ia-secondary-selection: #C2C3EE;
+  --p-text-ia-secondary-hover: #AEAFE8;
+  --p-text-ia-secondary-press: #5D60D1;
+  --p-text-ia-secondary-disabled: #ADB5BD;
+
+
+  /* text-information colors */
+  /* text-information-primary colors */
+  --p-text-information-primary-almost-white: #F8FDFE;
+  --p-text-information-primary-lighter: #E6FAFC;
+  --p-text-information-primary-light: #E3F2FD;
+  --p-text-information-primary-default: #00CFDE;
+  --p-text-information-primary-dark: #008194;
+  --p-text-information-primary-darker: #074957;
+
+  /* text-information-secondary colors */
+  --p-text-information-secondary-lighter: #EBEBF9;
+  --p-text-information-secondary-light: #C2C3EE;
+  --p-text-information-secondary-dark: #1F2276;
+
+  /* text-information-tertiary colors */
+  --p-text-information-tertiary-almost-white: #F8FEFD;
+  --p-text-information-tertiary-lighter: #E4FCF7;
+  --p-text-information-tertiary-light: #ADE1D6;
+  --p-text-information-tertiary-default: #148670;
+  --p-text-information-tertiary-dark: #0E6151;
+  --p-text-information-tertiary-darker: #062A23;
+
+
 
   /* button colors */
   --p-button-white: #FFFFFF;
@@ -112,20 +263,54 @@
 
 
   /* icon colors */
-  --p-icon-primary: #FFFFFF;
-  --p-icon-secondary: #0E0F30;
-  --p-icon-neutral: #ADB5BD;
-  --p-icon-disabled: #FFFFFF;
-  --p-icon-disabled-reverse: #DEE2E6;
-  --p-icon-error: #B10303;
-  --p-icon-warning: #BB5502;
-  --p-icon-information: #126778;
-  --p-icon-success: #0A710B;
-  /* icon-action colors */
-  --p-icon-action-default: #0E0F30;
-  --p-icon-action-active: #1AAB8E;
-  --p-icon-action-hover: #0C4F41;
-  --p-icon-action-press: #093C32;
+  /* icon-basic colors */
+  --p-icon-basic-primary: #FFFFFF;
+  --p-icon-basic-secondary: #0E0F30;
+  --p-icon-basic-disabled: #ADB5BD;
+  --p-icon-basic-disabled-reverse: #DEE2E6;
+  --p-icon-basic-error: #B10303;
+  --p-icon-basic-warning: #BB5502;
+  --p-icon-basic-information-primary: #126778;
+  --p-icon-basic-information-secondary: #3438C5;
+  --p-icon-basic-success: #0A710B;
+  --p-icon-basic-default: #0E0F30;
+  --p-icon-basic-active: #1AAB8E;
+  --p-icon-basic-hover: #0C4F41;
+  --p-icon-basic-press: #093C32;
+
+  /* icon-neutral colors */
+  --p-icon-neutral-neutral: #889BA8;
+  --p-icon-neutral-dark: #6C757D;
+
+  /* icon-ia colors */
+  --p-icon-ia-active: #3438C5;
+  --p-icon-ia-selection: #5D60D1;
+  --p-icon-ia-hover: #15164F;
+  --p-icon-ia-press: #0A0B27;
+  --p-icon-ia-white: #FFFFFF;
+
+  /* icon-information colors */
+  /* icon-information-primary colors */
+  --p-icon-information-primary-almost-white: #F8FDFE;
+  --p-icon-information-primary-lighter: #E6FAFC;
+  --p-icon-information-primary-light: #E3F2FD;
+  --p-icon-information-primary-default: #00CFDE;
+  --p-icon-information-primary-dark: #008194;
+  --p-icon-information-primary-darker: #074957;
+
+  /* icon-information-secondary colors */
+  --p-icon-information-secondary-lighter: #EBEBF9;
+  --p-icon-information-secondary-light: #C2C3EE;
+  --p-icon-information-secondary-dark: #1F2276;
+
+  /* icon-information-tertiary colors */
+  --p-icon-information-tertiary-almost-white: #F8FEFD;
+  --p-icon-information-tertiary-lighter: #E4FCF7;
+  --p-icon-information-tertiary-light: #ADE1D6;
+  --p-icon-information-tertiary-default: #148670;
+  --p-icon-information-tertiary-dark: #0E6151;
+  --p-icon-information-tertiary-darker: #062A23;
+
 
 
   /* navbar colors */
@@ -134,7 +319,7 @@
   --p-navbar-client-surface-active: #ADE1D6;
 
   /* navbar-collab colors */
-  --p-navbar-collab-surface-default: #E7E8FF;
+  --p-navbar-collab-surface-default: #C2C3EE;
   --p-navbar-collab-surface-active: #C2D5FF;
 
 

@@ -187,7 +187,7 @@ const colorMapper = computed(() => {
 
   &--color-disabled {
     &:hover {
-      border-color: var(--p-text-disabled);
+      border-color: var(--p-text-basic-disabled);
     }
     background-color: var(--p-surface-state-disabled);
   }
@@ -259,7 +259,7 @@ const colorMapper = computed(() => {
 
     &#{$self}--color-disabled {
       background-color: var(--p-surface-state-disabled);
-      border-color: var(--p-text-disabled);
+      border-color: var(--p-text-basic-disabled);
     }
 
   }

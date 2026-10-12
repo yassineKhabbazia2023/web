@@ -336,19 +336,19 @@ const copyToClipboard = async (text: string) => {
 .grid-documentation {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -371,17 +371,17 @@ const copyToClipboard = async (text: string) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-weight: 500;
   min-width: 150px;
 }
 
 .control-select {
   padding: 8px 12px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 6px;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
 }
 
@@ -392,22 +392,22 @@ const copyToClipboard = async (text: string) => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
 
 .example-item {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   overflow: hidden;
 }
 
@@ -420,7 +420,7 @@ const copyToClipboard = async (text: string) => {
   gap: 4px;
   background: var( --p-surface-neutral-lighter);
   padding: 16px;
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
 }
 
@@ -430,7 +430,7 @@ const copyToClipboard = async (text: string) => {
   gap: 4px;
   background: var( --p-surface-neutral-lighter);
   padding: 16px;
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   position: relative;
 }
@@ -441,15 +441,15 @@ const copyToClipboard = async (text: string) => {
   right: 8px;
   font-weight: bold;
   padding: 4px 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   border-radius: 4px;
   font-size: 12px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   content: 'md+';
 }
 
 .grid-item {
-  background: var(--p-surface-information-primary, #E3F2FD);
+  background: var(--p-surface-information-primary-light, #E3F2FD);
   border: 1px solid var(--p-stroke-information-primary, #1976D2);
   border-radius: 4px;
   padding: 8px;
@@ -457,21 +457,21 @@ const copyToClipboard = async (text: string) => {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
   font-size: 14px;
   min-height: 40px;
 }
 
 .grid-item.span-item {
   background: var(--p-surface-success-primary, #E8F5E8);
-  border-color: var(--p-stroke-success, #00B800);
-  color: var(--p-text-success, #0A710B);
+  border-color: var(--p-stroke-basic-success, #00B800);
+  color: var(--p-text-basic-success, #0A710B);
 }
 
 .grid-item.responsive {
   background: var(--p-surface-warning-primary, #FFF8E1);
-  border-color: var(--p-stroke-warning, #FFA500);
-  color: var(--p-text-warning, #BB5502);
+  border-color: var(--p-stroke-basic-warning, #FFA500);
+  color: var(--p-text-basic-warning, #BB5502);
 }
 
 .item-content {
@@ -490,7 +490,7 @@ const copyToClipboard = async (text: string) => {
 
 .example-name {
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 12px;
   font-size: 18px;
 }
@@ -504,7 +504,7 @@ const copyToClipboard = async (text: string) => {
 
 .example-class {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   font-size: 13px;
   background: rgba(9, 60, 50, 0.1);
   padding: 4px 8px;
@@ -512,7 +512,7 @@ const copyToClipboard = async (text: string) => {
 }
 
 .example-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 16px;
   line-height: 1.4;
 }
@@ -533,13 +533,13 @@ const copyToClipboard = async (text: string) => {
 
 .span-index {
   font-weight: 600;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   min-width: 20px;
 }
 
 .span-class {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   background: rgba(9, 60, 50, 0.1);
   padding: 2px 6px;
   border-radius: 3px;
@@ -552,7 +552,7 @@ const copyToClipboard = async (text: string) => {
 }
 
 .breakpoint-info strong {
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
 }
 
 .breakpoint-list {
@@ -563,7 +563,7 @@ const copyToClipboard = async (text: string) => {
 
 .breakpoint-list li {
   padding: 4px 0;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
 }
 
 .breakpoint-list code {
@@ -571,7 +571,7 @@ const copyToClipboard = async (text: string) => {
   background: var( --p-surface-neutral-lighter);
   padding: 2px 4px;
   border-radius: 3px;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
 }
 
 .copy-buttons {
@@ -583,9 +583,9 @@ const copyToClipboard = async (text: string) => {
 .copy-btn {
   padding: 8px 12px;
   font-size: 12px;
-  border: 1px solid var(--p-stroke-default-primary, #ADB5BD);
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  border: 1px solid var(--p-stroke-neutral-default-primary, #ADB5BD);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -600,7 +600,7 @@ const copyToClipboard = async (text: string) => {
 
 .copy-btn:hover {
   background: var(--p-surface-state-hover, #E7FFFF);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .copy-btn:active {
@@ -624,7 +624,7 @@ const copyToClipboard = async (text: string) => {
 .category-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
@@ -641,7 +641,7 @@ const copyToClipboard = async (text: string) => {
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   border: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
   border-radius: 4px;
   cursor: pointer;
@@ -649,19 +649,19 @@ const copyToClipboard = async (text: string) => {
 }
 
 .reference-item:hover {
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
   background: var(--p-surface-state-hover, #E7FFFF);
 }
 
 .reference-item code {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   font-size: 12px;
   font-weight: 600;
 }
 
 .reference-description {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   font-size: 12px;
 }
 

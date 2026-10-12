@@ -166,14 +166,14 @@ function getCardClasses(card: Card): string[] {
     padding: 16px 18px;
     background-color: var(--key-moments-card-surface);
     border: 1px solid var(--key-moments-line);
-    border-top: 3px solid var(--p-text-heading);
+    border-top: 3px solid var(--p-text-basic-heading);
 
     &--positive {
       border-top-color: var(--p-jungle-400);
     }
 
     &--negative {
-      border-top-color: var(--p-text-error);
+      border-top-color: var(--p-text-basic-error);
     }
 
     // Dimmed rather than removed, so a hidden card stays visible to the collaborator
@@ -194,7 +194,7 @@ function getCardClasses(card: Card): string[] {
     line-height: 1.1;
     letter-spacing: -0.01em;
     font-variant-numeric: tabular-nums;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   // Trend colour applied directly since a signed value has no chip
@@ -203,7 +203,7 @@ function getCardClasses(card: Card): string[] {
   }
 
   &__card--negative &__value--signed {
-    color: var(--p-text-error);
+    color: var(--p-text-basic-error);
   }
 
   &__references {
@@ -248,7 +248,7 @@ function getCardClasses(card: Card): string[] {
 
   &__card--negative &__chip {
     background-color: var(--p-red-100);
-    color: var(--p-text-error);
+    color: var(--p-text-basic-error);
   }
 
   // Hero: the first card of a widget configured with `heroFirst`
@@ -304,11 +304,11 @@ function getCardClasses(card: Card): string[] {
 
     .key-moments-cards__value {
       font-size: 40px;
-      color: var(--p-text-white);
+      color: var(--p-text-basic-white);
     }
 
     .key-moments-cards__compartment-value {
-      color: var(--p-text-white);
+      color: var(--p-text-basic-white);
     }
 
     .key-moments-cards__footer {

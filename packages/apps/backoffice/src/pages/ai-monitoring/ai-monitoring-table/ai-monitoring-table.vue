@@ -60,7 +60,7 @@
                 <PIcon
                   pName="chatSquareText"
                   pSize="16"
-                  :color="AppColors.ICON_NEUTRAL"
+                  :color="AppColors.ICON_NEUTRAL_NEUTRAL"
                 />
                 <span class="ai-monitoring-table__section-title">QUESTION DEMANDÉE</span>
               </div>
@@ -89,7 +89,7 @@
                 <PIcon
                   pName="stars"
                   pSize="16"
-                  :color="AppColors.ICON_NEUTRAL"
+                  :color="AppColors.ICON_NEUTRAL_NEUTRAL"
                 />
                 <span class="ai-monitoring-table__section-title">RÉPONSE DE L'IA</span>
               </div>

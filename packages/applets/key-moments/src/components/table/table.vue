@@ -115,7 +115,7 @@ const resolvedValueMinWidth = computed(
 
 function getRowClasses(row: Row): string[] {
   if (row.role === LineRole.MEMO) {
-    return ['font-italic', 'text-color--text-neutral']
+    return ['font-italic', 'text-color--text-neutral-neutral']
   }
 
   if (row.role === LineRole.TOTAL || row.role === LineRole.SUBTOTAL) {
@@ -146,7 +146,7 @@ function getCellStyle({ row }: { row: Record<string, unknown> }): CSSProperties 
 
 .key-moments-table {
   --el-table-header-bg-color: var(--p-black-rock-900);
-  --el-table-header-text-color: var(--p-text-white);
+  --el-table-header-text-color: var(--p-text-basic-white);
   --el-table-row-hover-bg-color: var(--p-mint-tulip-100);
   --el-table-border-color: var(--key-moments-line);
   --el-fill-color-lighter: var(--key-moments-stripe-surface);
@@ -201,7 +201,7 @@ function getCellStyle({ row }: { row: Record<string, unknown> }): CSSProperties 
 
   :deep(thead th.el-table__cell.key-moments-table__variation-header) {
     background-color: var(--p-jungle-400);
-    border-left: 1px solid var(--p-text-white);
+    border-left: 1px solid var(--p-text-basic-white);
   }
 
   @include breakpoints.media(xs) {

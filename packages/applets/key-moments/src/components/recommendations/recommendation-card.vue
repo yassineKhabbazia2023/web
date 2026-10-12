@@ -45,14 +45,14 @@
         <PIcon :pName="isOpen ? 'chevronUp' : 'chevronDown'" />
         <span
           class="
-            text-color--text-heading
+            text-color--text-basic-heading
             font-size--14
             font-bold
             overflow-hidden
             text-overflow--ellipsis
             no-wrap
           "
-          :class="{ 'font-italic text-color--text-neutral': hasTheme === false }"
+          :class="{ 'font-italic text-color--text-neutral-neutral': hasTheme === false }"
           :data-testid="`${testIdPrefix}-theme`"
         >
           {{ hasTheme ? recommendation.themeLabel : t('keyMoments.recommendations.card.themeMissing') }}
@@ -170,7 +170,7 @@
           v-if="hasTheme === false"
           class="
             font-small
-            text-color--text-neutral
+            text-color--text-neutral-neutral
             margin-top--1
             margin-bottom--0
           "
@@ -182,7 +182,7 @@
           v-else-if="recommendation.isThemeRefused"
           class="
             font-small
-            text-color--text-error
+            text-color--text-basic-error
             margin-top--1
             margin-bottom--0
           "

@@ -46,7 +46,7 @@
             <p class="font-bold font-size--14">
               {{ pTopLeftSectionText }}
             </p>
-            <p class="font-size--12 text-color--text-neutral margin-top--1">
+            <p class="font-size--12 text-color--text-neutral-neutral margin-top--1">
               {{ pTopLeftSubText }}
             </p>
           </slot>

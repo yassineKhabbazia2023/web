@@ -40,7 +40,7 @@ $oblique-skew: skewX(-30deg);
  * recommendations apart from the figures they close.
  */
 @mixin block-surface {
-  background-color: var(--p-surface-primary);
+  background-color: var(--p-surface-basic-primary);
   border: 1px solid var(--key-moments-line);
   box-shadow: var(--key-moments-shadow);
 }
@@ -91,6 +91,6 @@ $oblique-skew: skewX(-30deg);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p-text-heading);
+  color: var(--p-text-basic-heading);
   background-color: var(--key-moments-emphasis-surface);
 }

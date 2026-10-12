@@ -136,10 +136,10 @@ const stateIconName = computed<IconName | undefined>(() => {
 
   &__icon {
     &--success {
-      color: var(--p-text-success);
+      color: var(--p-text-basic-success);
     }
     &--error {
-      color: var(--p-text-error);
+      color: var(--p-text-basic-error);
     }
   }
 

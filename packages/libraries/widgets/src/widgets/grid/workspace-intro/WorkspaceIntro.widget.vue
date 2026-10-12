@@ -2,7 +2,7 @@
   <section
     class="
       widget-workspace-intro
-      bg--surface-client
+      bg--surface-basic-client
       padding--6
       flex
       flex--direction-column

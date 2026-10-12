@@ -238,7 +238,7 @@ const { selectedId, onStepClick, spacerHeight } = useProspectConformity(
   }
 
   &__step-description {
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
     line-height: 1.6;
   }
 

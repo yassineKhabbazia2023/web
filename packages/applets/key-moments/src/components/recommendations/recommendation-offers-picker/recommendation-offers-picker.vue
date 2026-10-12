@@ -92,12 +92,12 @@
           key-moments-recommendations-offers-picker__offer
           flex
           flex--direction-column
-          bg--surface-primary
+          bg--surface-basic-primary
         "
         :class="{ 'key-moments-recommendations-offers-picker__offer--selected': isSelected(offer.id) }"
         :data-testid="`key-moments-recommendations-offers-picker-offer-${offer.id}`"
       >
-        <h4 class="key-moments-recommendations-offers-picker__title text-color--text-heading">
+        <h4 class="key-moments-recommendations-offers-picker__title text-color--text-basic-heading">
           {{ offer.title }}
         </h4>
         <p class="key-moments-recommendations-offers-picker__description">

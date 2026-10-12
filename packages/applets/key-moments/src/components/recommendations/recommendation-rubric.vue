@@ -18,7 +18,7 @@
         {{ t(`keyMoments.recommendations.rubrics.${rubric}`) }}
       </h3>
       <span
-        class="font-small text-color--text-neutral"
+        class="font-small text-color--text-neutral-neutral"
         :data-testid="`key-moments-recommendations-rubric-${rubric}-count`"
       >
         {{ hasVisibility
@@ -40,7 +40,7 @@
 
     <p
       v-if="views.length === 0"
-      class="key-moments-recommendation-rubric__empty text-color--text-neutral"
+      class="key-moments-recommendation-rubric__empty text-color--text-neutral-neutral"
       :data-testid="`key-moments-recommendations-rubric-${rubric}-empty`"
     >
       {{ t('keyMoments.recommendations.rubric.empty') }}

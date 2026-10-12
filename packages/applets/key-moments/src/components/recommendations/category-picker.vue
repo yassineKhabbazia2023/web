@@ -32,7 +32,7 @@
 
     <p
       v-if="categories.length === 0"
-      class="text-color--text-neutral"
+      class="text-color--text-neutral-neutral"
       data-testid="key-moments-recommendations-category-picker-empty"
     >
       {{ t('keyMoments.recommendations.categoryPicker.empty') }}
@@ -57,7 +57,7 @@
         :data-testid="`key-moments-recommendations-category-${category.id}-choose-button`"
         @click="emit('choose', category.id)"
       >
-        <span class="key-moments-category-picker__label text-color--text-heading">
+        <span class="key-moments-category-picker__label text-color--text-basic-heading">
           {{ category.label }}
         </span>
         <span class="key-moments-category-picker__text">

@@ -199,7 +199,7 @@ useChartInstance(canvas, () => props.chart, canvasElement => new Chart(canvasEle
   height: 280px;
 
   &__axis-title {
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 }
 </style>

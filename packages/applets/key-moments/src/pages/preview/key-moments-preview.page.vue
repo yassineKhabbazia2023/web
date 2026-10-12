@@ -392,7 +392,7 @@ async function onUnpublish(): Promise<void> {
 
   // Read on the dark banner
   &__mode {
-    --p-text-heading: var(--p-white);
+    --p-text-basic-heading: var(--p-white);
   }
 
   // A select owes nothing to its content width: unsized, it shrinks to its arrow

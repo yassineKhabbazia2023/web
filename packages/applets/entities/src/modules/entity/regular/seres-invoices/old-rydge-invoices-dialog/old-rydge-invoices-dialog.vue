@@ -25,7 +25,7 @@
           class="
             font-size--28
             font-semibold
-            text-color--text-heading
+            text-color--text-basic-heading
             line-height--inherit
             margin--0
           "

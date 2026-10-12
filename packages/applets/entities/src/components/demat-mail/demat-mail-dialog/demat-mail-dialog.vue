@@ -10,7 +10,7 @@
         class="
           font-size--24
           font-semibold
-          text-color--text-heading
+          text-color--text-basic-heading
           line-height--inherit
           margin--0
           padding-right--11

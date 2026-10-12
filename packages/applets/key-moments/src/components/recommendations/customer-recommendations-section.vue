@@ -61,7 +61,7 @@
             flex-gap--3
           "
         >
-          <span class="key-moments-customer-recommendations__theme text-color--text-heading">
+          <span class="key-moments-customer-recommendations__theme text-color--text-basic-heading">
             {{ recommendation.theme }}
           </span>
           <PTag
@@ -197,7 +197,7 @@ const rubrics = computed(() => groupedByRubric(props.recommendations))
   &__rubric-count {
     font-size: 12px;
     font-weight: 400;
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 
   &__card {

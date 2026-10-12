@@ -79,7 +79,7 @@
       <p class="font-semibold margin-top--4">
         {{ t('keyMoments.settings.indicatorDrawer.components') }}
       </p>
-      <p class="font-small text-color--text-neutral">
+      <p class="font-small text-color--text-neutral-neutral">
         {{ t('keyMoments.settings.indicatorDrawer.componentsHint') }}
       </p>
 
@@ -127,7 +127,7 @@
 
       <p
         v-if="componentsError !== undefined"
-        class="text-color--text-error margin-top--2"
+        class="text-color--text-basic-error margin-top--2"
         data-testid="key-moments-settings-indicator-components-error"
       >
         {{ componentsError }}
@@ -155,7 +155,7 @@
         />
         <p
           v-else-if="usages.length === 0"
-          class="font-small text-color--text-neutral"
+          class="font-small text-color--text-neutral-neutral"
           data-testid="key-moments-settings-indicator-usages-empty"
         >
           {{ t('keyMoments.settings.indicatorDrawer.noUsage') }}
@@ -175,7 +175,7 @@
             >{{ usage.label }}</a>
             <span
               v-if="(usage.versions ?? []).length > 0"
-              class="text-color--text-neutral"
+              class="text-color--text-neutral-neutral"
             > · {{ usage.versions?.join(', ') }}</span>
           </li>
         </ul>

@@ -395,19 +395,19 @@ const copyToClipboard = async (className: string) => {
 .spacing-documentation {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -419,14 +419,14 @@ const copyToClipboard = async (className: string) => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -437,7 +437,7 @@ const copyToClipboard = async (className: string) => {
 .dimensions-table-container {
   overflow-x: auto;
   border-radius: 8px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   margin-bottom: 32px;
 }
 
@@ -446,14 +446,14 @@ const copyToClipboard = async (className: string) => {
 .dimensions-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .spacing-types-table thead,
 .spacing-values-table thead,
 .dimensions-table thead {
   background: var( --p-surface-neutral-lighter);
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 .spacing-types-table th,
@@ -473,7 +473,7 @@ const copyToClipboard = async (className: string) => {
 .dimensions-table td {
   padding: 16px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
   line-height: 1.4;
 }
@@ -491,7 +491,7 @@ const copyToClipboard = async (className: string) => {
   background: var( --p-surface-neutral-lighter);
   padding: 4px 8px;
   border-radius: 4px;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   font-size: 13px;
 }
 
@@ -503,7 +503,7 @@ const copyToClipboard = async (className: string) => {
 .group-title {
   font-size: 20px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 20px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
@@ -516,16 +516,16 @@ const copyToClipboard = async (className: string) => {
 }
 
 .example-item {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .example-item:hover {
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -536,8 +536,8 @@ const copyToClipboard = async (className: string) => {
 
 .spacing-container {
   display: flex;
-  background: var(--p-surface-primary, #FFFFFF);
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 6px;
   min-height: 80px;
   align-items: center;
@@ -546,31 +546,31 @@ const copyToClipboard = async (className: string) => {
 }
 
 .spacing-element {
-  background: var(--p-surface-information-primary, #E3F2FD);
+  background: var(--p-surface-information-primary-light, #E3F2FD);
   border: 1px solid var(--p-stroke-information-primary, #1976D2);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
   font-weight: 600;
   font-size: 12px;
 }
 
 .spacing-element.spacing-highlight {
   background: var(--p-surface-success-primary, #E8F5E8) !important;
-  border-color: var(--p-stroke-success, #00B800) !important;
-  color: var(--p-text-success, #0A710B) !important;
+  border-color: var(--p-stroke-basic-success, #00B800) !important;
+  color: var(--p-text-basic-success, #0A710B) !important;
 }
 
 .dimension-element {
   background: var(--p-surface-warning-primary, #FFF8E1);
-  border: 1px solid var(--p-stroke-warning, #FFA500);
+  border: 1px solid var(--p-stroke-basic-warning, #FFA500);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--p-text-warning, #BB5502);
+  color: var(--p-text-basic-warning, #BB5502);
   font-weight: 600;
   font-size: 12px;
   padding: 8px;
@@ -583,7 +583,7 @@ const copyToClipboard = async (className: string) => {
 
 .example-name {
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 8px;
   font-size: 16px;
   text-transform: capitalize;
@@ -591,7 +591,7 @@ const copyToClipboard = async (className: string) => {
 
 .example-class {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   margin-bottom: 8px;
   font-size: 13px;
   background: rgba(9, 60, 50, 0.1);
@@ -601,7 +601,7 @@ const copyToClipboard = async (className: string) => {
 }
 
 .example-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.4;
   font-size: 14px;
 }

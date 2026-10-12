@@ -27,9 +27,9 @@ export const MAX_WIDGET_SPAN = 12
 
 /** Text color applied to a value depending on how its variation reads. */
 export const TREND_TEXT_COLOR_CLASS: Record<Trend, string> = {
-  [Trend.POSITIVE]: 'text-color--text-success',
-  [Trend.NEGATIVE]: 'text-color--text-error',
-  [Trend.NEUTRAL]: 'text-color--text-body',
+  [Trend.POSITIVE]: 'text-color--text-basic-success',
+  [Trend.NEGATIVE]: 'text-color--text-basic-error',
+  [Trend.NEUTRAL]: 'text-color--text-basic-body',
 }
 
 /** Modifier tinting the top border and the variation chip of a card. */
@@ -92,7 +92,7 @@ export const ROLE_CELL_STYLE: Partial<Record<LineRole, CSSProperties>> = {
   },
   [LineRole.TOTAL]: {
     backgroundColor: 'var(--key-moments-emphasis-surface)',
-    borderTop: '2px solid var(--p-text-heading)',
+    borderTop: '2px solid var(--p-text-basic-heading)',
   },
 }
 

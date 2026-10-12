@@ -39,7 +39,7 @@
             v-if="caption.length > 0"
             class="
               font-small
-              text-color--text-neutral
+              text-color--text-neutral-neutral
               margin-top--1
             "
             data-testid="customer-key-moments-caption"

@@ -110,7 +110,7 @@ div.el-step {
         .el-step__icon {
           background: var(--p-red-100);
           border: none;
-          color: var(--p-icon-error);
+          color: var(--p-icon-basic-error);
         }
       }
 
@@ -161,7 +161,7 @@ div.el-step {
 
       &.is-process {
         font-weight: 600;
-        color: var(--p-text-active);
+        color: var(--p-text-basic-active);
       }
 
       &.is-success,

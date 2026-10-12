@@ -1,9 +1,9 @@
 <div>
   <ul class="flex flex--justify-content-space-between list-style-none flex-gap--half">
-    <li class="bg--stroke-success flex--grow-1 height--1"></li>
-    <li class="bg--stroke-success flex--grow-1 height--1"></li>
-    <li class="bg--stroke-success flex--grow-1 height--1"></li>
-    <li class="bg--stroke-success flex--grow-1 height--1"></li>
+    <li class="bg--stroke-basic-success flex--grow-1 height--1"></li>
+    <li class="bg--stroke-basic-success flex--grow-1 height--1"></li>
+    <li class="bg--stroke-basic-success flex--grow-1 height--1"></li>
+    <li class="bg--stroke-basic-success flex--grow-1 height--1"></li>
   </ul>
-  <div class="font-semibold text-color--stroke-success">Fort</div>
+  <div class="font-semibold text-color--stroke-basic-success">Fort</div>
 </div>

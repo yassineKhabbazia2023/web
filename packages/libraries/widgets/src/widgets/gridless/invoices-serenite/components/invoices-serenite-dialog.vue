@@ -19,7 +19,7 @@
 
       <section
         class="
-          bg--surface-information-primary
+          bg--surface-information-primary-light
           flex
           flex--direction-column
           flex-gap--4

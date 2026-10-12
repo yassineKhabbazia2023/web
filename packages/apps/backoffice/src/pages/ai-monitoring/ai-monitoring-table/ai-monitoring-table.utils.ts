@@ -46,5 +46,5 @@ export function getEvaluationIcon(evaluation: boolean): IconName {
 }
 
 export function getEvaluationColor(evaluation: boolean): string {
-  return evaluation === true ? AppColors.ICON_SUCCESS : AppColors.ICON_ERROR
+  return evaluation === true ? AppColors.ICON_BASIC_SUCCESS : AppColors.ICON_BASIC_ERROR
 }

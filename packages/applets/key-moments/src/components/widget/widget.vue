@@ -24,7 +24,7 @@
           key-moments-widget__title
           margin--0
           font-bold
-          text-color--text-heading
+          text-color--text-basic-heading
         "
       >
         {{ widget.title }}
@@ -268,7 +268,7 @@ function onDiscard() {
     cursor: pointer;
 
     &--off {
-      color: var(--p-text-neutral);
+      color: var(--p-text-neutral-neutral);
     }
   }
 

@@ -42,7 +42,7 @@
         <li
           v-for="(item, index) in RISK_ITEMS"
           :key="index"
-          class="faq-section__item text-color--text-white"
+          class="faq-section__item text-color--text-basic-white"
         >
           {{ item }}
         </li>
@@ -86,7 +86,7 @@
         <li
           v-for="(item, index) in PENNYLANE_ITEMS"
           :key="index"
-          class="faq-section__item text-color--text-white"
+          class="faq-section__item text-color--text-basic-white"
         >
           <span class="font-bold">{{ item.bold }}</span>{{ item.text }}
         </li>
@@ -130,7 +130,7 @@
         <li
           v-for="(item, index) in COMPLIANCE_ITEMS"
           :key="index"
-          class="faq-section__item text-color--text-white"
+          class="faq-section__item text-color--text-basic-white"
         >
           <span class="font-bold">{{ item.bold }}</span>{{ item.text }}
         </li>

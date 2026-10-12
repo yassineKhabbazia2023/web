@@ -20,7 +20,7 @@
             padding-y--1
             padding-x--2
             font-small
-            text-color--text-heading
+            text-color--text-basic-heading
           "
         >
           {{ modification.label }}
@@ -50,7 +50,7 @@
         padding--0
         font-small
         font-bold
-        text-color--text-heading
+        text-color--text-basic-heading
         cursor-pointer
       "
       data-testid="key-moments-modifications-button"

@@ -9,7 +9,7 @@
     <!-- Success hero -->
     <div
       class="
-        bg--surface-success
+        bg--surface-basic-success
         border-radius--4
         flex
         flex--direction-column
@@ -22,13 +22,13 @@
       <PIcon
         pName="circleCheckDuotone"
         pSize="48"
-        pColor="var(--p-icon-success)"
+        pColor="var(--p-icon-basic-success)"
       />
       <span
         class="
           font-size--18
           font-bold
-          text-color--text-heading
+          text-color--text-basic-heading
         "
       >
         {{ t(`${I18N}.successTitle`) }}

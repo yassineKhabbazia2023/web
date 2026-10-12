@@ -114,9 +114,9 @@ export const DifferentColors: Story = {
       <div style="display: flex; flex-direction: column; gap: 24px;">
         <PTitle pTitle="Couleur primaire" pIconName="pulse" :pIconColor="AppColors.JUNGLE_400" />
         <PTitle pTitle="Couleur secondaire" pIconName="pulse" :pIconColor="AppColors.BLACK_ROCK_900" />
-        <PTitle pTitle="Couleur succès" pIconName="check" :pIconColor="AppColors.TEXT_SUCCESS" />
-        <PTitle pTitle="Couleur avertissement" pIconName="exclamationTriangle" :pIconColor="AppColors.TEXT_WARNING" />
-        <PTitle pTitle="Couleur erreur" pIconName="x" :pIconColor="AppColors.TEXT_ERROR" />
+        <PTitle pTitle="Couleur succès" pIconName="check" :pIconColor="AppColors.TEXT_BASIC_SUCCESS" />
+        <PTitle pTitle="Couleur avertissement" pIconName="exclamationTriangle" :pIconColor="AppColors.TEXT_BASIC_WARNING" />
+        <PTitle pTitle="Couleur erreur" pIconName="x" :pIconColor="AppColors.TEXT_BASIC_ERROR" />
       </div>
     `,
   }),
@@ -150,12 +150,12 @@ export const RealWorldExamples: Story = {
         </div>
 
         <div>
-          <PTitle pTitle="Alertes actives" pIconName="bell" :pIconColor="AppColors.TEXT_WARNING" pIconSize="24" />
+          <PTitle pTitle="Alertes actives" pIconName="bell" :pIconColor="AppColors.TEXT_BASIC_WARNING" pIconSize="24" />
           <p style="margin-top: 8px; color: #666;">3 nouvelles notifications</p>
         </div>
 
         <div>
-          <PTitle pTitle="Support" pIconName="questionCircle" :pIconColor="AppColors.TEXT_INFORMATION_PRIMARY" />
+          <PTitle pTitle="Support" pIconName="questionCircle" :pIconColor="AppColors.TEXT_BASIC_INFORMATION_PRIMARY" />
           <p style="margin-top: 8px; color: #666;">Besoin d'aide ? Contactez-nous</p>
         </div>
       </div>

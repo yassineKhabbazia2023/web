@@ -95,7 +95,7 @@ defineEmits<{
   &--selected,
   &--selected:disabled {
     background-color: var(--p-surface-state-selection);
-    border-color: var(--p-stroke-active);
+    border-color: var(--p-stroke-basic-active);
   }
 
   &__logo {

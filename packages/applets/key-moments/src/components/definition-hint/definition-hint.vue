@@ -33,7 +33,7 @@ defineProps<{
   margin-left: 6px;
   font-size: 12px;
   vertical-align: middle;
-  color: var(--p-text-neutral);
+  color: var(--p-text-neutral-neutral);
   cursor: help;
 }
 </style>

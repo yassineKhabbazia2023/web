@@ -175,7 +175,7 @@ const { t } = useI18n()
     height: 20px;
     flex: none;
     background-color: var(--p-jungle-400);
-    color: var(--p-text-white);
+    color: var(--p-text-basic-white);
     vertical-align: middle;
   }
 

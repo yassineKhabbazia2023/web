@@ -61,23 +61,23 @@ withDefaults(defineProps<PNoticeCardProps>(), {
     }
 
     &--info {
-      background-color: var(--p-surface-information-primary);
-      color: var(--p-text-information-primary);
+      background-color: var(--p-surface-information-primary-light);
+      color: var(--p-text-basic-information-primary);
     }
 
     &--success {
-      background-color: var(--p-surface-success);
-      color: var(--p-text-success);
+      background-color: var(--p-surface-basic-success);
+      color: var(--p-text-basic-success);
     }
 
     &--warning {
-      background-color: var(--p-surface-warning);
-      color: var(--p-text-warning);
+      background-color: var(--p-surface-basic-warning);
+      color: var(--p-text-basic-warning);
     }
 
     &--danger {
-      background-color: var(--p-surface-error);
-      color: var(--p-text-error);
+      background-color: var(--p-surface-basic-error);
+      color: var(--p-text-basic-error);
     }
 
     &--purple {

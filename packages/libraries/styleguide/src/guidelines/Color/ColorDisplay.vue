@@ -500,23 +500,23 @@ const getGroupDescription = (groupName: string) => {
 const getTokenUsage = (groupName: string, tokenName: string) => {
   const usages: Record<string, Record<string, string>> = {
     'surface': {
-      'primary': 'Fond principal',
-      'secondary': 'Fond secondaire',
-      'success': 'Fond de succès',
-      'error': 'Fond d\'erreur',
-      'warning': 'Fond d\'avertissement',
+      'basic-primary': 'Fond principal',
+      'basic-secondary': 'Fond secondaire',
+      'basic-success': 'Fond de succès',
+      'basic-error': 'Fond d\'erreur',
+      'basic-warning': 'Fond d\'avertissement',
       'state-hover': 'État de survol',
       'state-active': 'État actif',
       'state-disabled': 'État désactivé',
     },
     'text': {
-      'heading': 'Titres principaux',
-      'body': 'Texte de corps',
-      'highlight': 'Texte mis en évidence',
-      'neutral': 'Texte neutre',
-      'success': 'Texte de succès',
-      'error': 'Texte d\'erreur',
-      'warning': 'Texte d\'avertissement',
+      'basic-heading': 'Titres principaux',
+      'basic-body': 'Texte de corps',
+      'basic-highlight': 'Texte mis en évidence',
+      'neutral-neutral': 'Texte neutre',
+      'basic-success': 'Texte de succès',
+      'basic-error': 'Texte d\'erreur',
+      'basic-warning': 'Texte d\'avertissement',
     },
   }
   return usages[groupName]?.[tokenName] || 'Usage contextuel'
@@ -549,13 +549,13 @@ const copyToClipboard = async (text: string) => {
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -567,14 +567,14 @@ const copyToClipboard = async (text: string) => {
 .color-group-title, .token-group-title, .category-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 24px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .token-group-description {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   margin-bottom: 24px;
   font-style: italic;
 }
@@ -593,9 +593,9 @@ const copyToClipboard = async (text: string) => {
   display: flex;
   align-items: center;
   padding: 16px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   transition: box-shadow 0.2s ease;
 }
 
@@ -608,7 +608,7 @@ const copyToClipboard = async (text: string) => {
   height: 48px;
   border-radius: 6px;
   margin-right: 16px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   flex-shrink: 0;
 }
 
@@ -623,27 +623,27 @@ const copyToClipboard = async (text: string) => {
 
 .color-name, .token-name {
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 4px;
   font-size: 14px;
 }
 
 .color-variable, .token-variable {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   margin-bottom: 4px;
   font-size: 13px;
 }
 
 .color-hex, .token-hex {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   margin-bottom: 12px;
   font-size: 13px;
 }
 
 .token-usage {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   font-size: 12px;
   margin-bottom: 12px;
   font-style: italic;
@@ -658,9 +658,9 @@ const copyToClipboard = async (text: string) => {
 .copy-btn {
   padding: 4px 8px;
   font-size: 11px;
-  border: 1px solid var(--p-stroke-default-primary, #ADB5BD);
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  border: 1px solid var(--p-stroke-neutral-default-primary, #ADB5BD);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -668,7 +668,7 @@ const copyToClipboard = async (text: string) => {
 
 .copy-btn:hover {
   background: var(--p-surface-state-hover, #E7FFFF);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .copy-btn:active {
@@ -676,27 +676,27 @@ const copyToClipboard = async (text: string) => {
 }
 
 .copy-btn.legacy {
-  color: var(--p-text-error, #B10303);
-  border-color: var(--p-stroke-error, #FF0000);
+  color: var(--p-text-basic-error, #B10303);
+  border-color: var(--p-stroke-basic-error, #FF0000);
 }
 
 .copy-btn.new {
-  color: var(--p-text-success, #0A710B);
-  border-color: var(--p-stroke-success, #00B800);
+  color: var(--p-text-basic-success, #0A710B);
+  border-color: var(--p-stroke-basic-success, #00B800);
 }
 
 .copy-btn.hex {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 .copy-btn.bg-class {
-  color: var(--p-text-information-primary, #126778);
-  border-color: var(--p-stroke-information-secondary, #2C2FD6);
+  color: var(--p-text-basic-information-primary, #126778);
+  border-color: var(--p-stroke-basic-information-secondary, #2C2FD6);
 }
 
 .copy-btn.text-class {
-  color: var(--p-text-warning, #BB5502);
-  border-color: var(--p-stroke-warning, #FFA500);
+  color: var(--p-text-basic-warning, #BB5502);
+  border-color: var(--p-stroke-basic-warning, #FFA500);
 }
 
 /* Legacy mapping specific styles */
@@ -709,29 +709,29 @@ const copyToClipboard = async (text: string) => {
   max-width: 500px;
   padding: 12px 16px;
   font-size: 16px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 8px;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--p-stroke-active, #1AAB8E);
+  border-color: var(--p-stroke-basic-active, #1AAB8E);
   box-shadow: 0 0 0 2px rgba(26, 171, 142, 0.1);
 }
 
 .search-info {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   font-size: 14px;
 }
 
 .mapping-table {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   overflow: hidden;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .table-header {
@@ -740,16 +740,16 @@ const copyToClipboard = async (text: string) => {
   background: var(--p-surface-neutral-lighter, #F8F9FA);
   padding: 12px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   font-size: 14px;
-  border-bottom: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .mapping-row {
   display: grid;
   grid-template-columns: 60px 1fr 1fr 120px 200px;
   padding: 12px;
-  border-bottom: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   align-items: center;
   transition: background-color 0.2s ease;
 }
@@ -778,20 +778,20 @@ const copyToClipboard = async (text: string) => {
 }
 
 .legacy-var {
-  color: var(--p-text-error, #B10303);
+  color: var(--p-text-basic-error, #B10303);
 }
 
 .new-var {
-  color: var(--p-text-success, #0A710B);
+  color: var(--p-text-basic-success, #0A710B);
 }
 
 .hex-value {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 .var-category {
   font-size: 11px;
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   margin-top: 2px;
 }
 
@@ -804,7 +804,7 @@ const copyToClipboard = async (text: string) => {
 .no-results {
   text-align: center;
   padding: 48px 24px;
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 @media (max-width: 1024px) {

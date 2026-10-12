@@ -245,19 +245,19 @@ const resetForm = () => {
 .pdf-text-extraction {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -269,14 +269,14 @@ const resetForm = () => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -293,7 +293,7 @@ const resetForm = () => {
 }
 
 .loading-text {
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
   font-weight: 500;
 }
 
@@ -343,7 +343,7 @@ const resetForm = () => {
 
 /* Extracted Text Container */
 .extracted-text-container {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -354,17 +354,17 @@ const resetForm = () => {
   align-items: center;
   padding: 12px 16px;
   background: var(--p-surface-neutral-lighter, #F5F7FA);
-  border-bottom: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
 }
 
 .copy-btn {
   padding: 8px 12px;
   font-size: 12px;
-  border: 1px solid var(--p-stroke-default-primary, #ADB5BD);
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  border: 1px solid var(--p-stroke-neutral-default-primary, #ADB5BD);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -373,7 +373,7 @@ const resetForm = () => {
 
 .copy-btn:hover {
   background: var(--p-surface-state-hover, #E7FFFF);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .extracted-text {
@@ -386,22 +386,22 @@ const resetForm = () => {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--p-text-body, #15171A);
-  background: var(--p-surface-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 /* Form Demo */
 .form-demo {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   padding: 24px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .form-section-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin: 0 0 16px 0;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
@@ -442,7 +442,7 @@ const resetForm = () => {
 
 .field-label {
   font-weight: 500;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
 }
 

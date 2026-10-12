@@ -178,28 +178,28 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
       background: var(--p-surface-neutral-lighter);
 
       #{$self}__title {
-        color: var(--p-text-neutral);
+        color: var(--p-text-neutral-neutral);
       }
     }
 
     &-fail {
-      background: var(--p-surface-error);
+      background: var(--p-surface-basic-error);
 
       #{$self}__title {
-        color: var(--p-text-error);
+        color: var(--p-text-basic-error);
       }
 
       #{$self}__icon {
-        color: var(--p-icon-error);
+        color: var(--p-icon-basic-error);
       }
 
       #{$self}__message {
-        color: var(--p-text-error);
+        color: var(--p-text-basic-error);
       }
     }
 
     &-success {
-      background: var(--p-surface-success);
+      background: var(--p-surface-basic-success);
     }
 
     &-ready {
@@ -217,15 +217,15 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
 
     // Solid status borders must win over the default dashed dropzone border.
     &#{$self}--status-fail {
-      border: 1px solid var(--p-stroke-error);
+      border: 1px solid var(--p-stroke-basic-error);
     }
 
     &#{$self}--status-success {
-      border: 1px solid var(--p-stroke-success);
+      border: 1px solid var(--p-stroke-basic-success);
     }
 
     &#{$self}--status-ready {
-      border: 1px solid var(--p-stroke-information-secondary);
+      border: 1px solid var(--p-stroke-basic-information-secondary);
     }
 
     #{$self}__content {
@@ -267,7 +267,7 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
   &__message {
     white-space: nowrap;
     font-size: 1.2rem;
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 
   :deep(.p-loader__icon) {

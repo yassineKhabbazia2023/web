@@ -323,19 +323,19 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 .flex-documentation {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -352,7 +352,7 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-weight: 500;
   cursor: pointer;
 }
@@ -373,21 +373,21 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .property-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 12px;
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -404,9 +404,9 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 }
 
 .example-item {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   overflow: hidden;
   cursor: pointer;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
@@ -414,7 +414,7 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 
 .example-item:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .flex-demo-container {
@@ -426,28 +426,28 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
   display: flex;
   min-height: 80px;
   background: var( --p-surface-neutral-lighter);
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   padding: 8px;
 }
 
 .flex-item {
-  background: var(--p-surface-information-primary, #E3F2FD);
+  background: var(--p-surface-information-primary-light, #E3F2FD);
   border: 1px solid var(--p-stroke-information-primary, #1976D2);
   border-radius: 4px;
   min-width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
   font-weight: 600;
   font-size: 12px;
 }
 
 .flex-item.darker {
   background: var(--p-surface-success-primary, #E8F5E8) !important;
-  border-color: var(--p-stroke-success, #00B800) !important;
-  color: var(--p-text-success, #0A710B) !important;
+  border-color: var(--p-stroke-basic-success, #00B800) !important;
+  color: var(--p-text-basic-success, #0A710B) !important;
 }
 
 .example-info {
@@ -461,7 +461,7 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 
 .example-name {
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 8px;
   font-size: 16px;
   text-transform: capitalize;
@@ -469,7 +469,7 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 
 .example-class {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   margin-bottom: 8px;
   font-size: 13px;
   background: rgba(9, 60, 50, 0.1);
@@ -479,7 +479,7 @@ const copyToClipboard = async (className: string, additionalClass = '') => {
 }
 
 .example-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.4;
   font-size: 14px;
 }

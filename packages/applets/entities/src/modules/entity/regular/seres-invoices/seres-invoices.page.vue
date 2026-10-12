@@ -13,13 +13,13 @@
         flex--justify-content-space-between
         flex--align-items-center
         flex-gap--3
-        bg--surface-primary
+        bg--surface-basic-primary
         shadow--6
         padding-x--4
         padding-y--3
         margin-bottom--6
       "
-      style="border-bottom: 1px solid var(--p-stroke-neutral)"
+      style="border-bottom: 1px solid var(--p-stroke-neutral-neutral)"
     >
       <PFormSearch
         v-model:pSearch="search"

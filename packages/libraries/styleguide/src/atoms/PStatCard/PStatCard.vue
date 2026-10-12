@@ -45,7 +45,7 @@
     </div>
     <div
       v-if="pDescription !== undefined"
-      class="font-size--18 text-color--text-neutral"
+      class="font-size--18 text-color--text-neutral-neutral"
     >
       {{ pDescription }}
     </div>
@@ -57,8 +57,8 @@ import PIcon from '../PIcon'
 import type { PStatCardProps } from './PStatCardTypes'
 
 withDefaults(defineProps<PStatCardProps>(), {
-  pBackgroundClass: 'bg--surface-information-primary',
-  pAccentClass: 'text-color--text-information-primary',
+  pBackgroundClass: 'bg--surface-information-primary-light',
+  pAccentClass: 'text-color--text-basic-information-primary',
 })
 </script>
 

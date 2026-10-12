@@ -66,7 +66,7 @@ const { t } = useI18n()
 <style scoped lang="scss">
 .key-moments-nav {
   &__screen {
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
     background: none;
     border: none;
     border-left: 3px solid transparent;
@@ -78,7 +78,7 @@ const { t } = useI18n()
     &--hidden .key-moments-nav__screen-label {
       font-style: italic;
       font-weight: 400;
-      color: var(--p-text-neutral);
+      color: var(--p-text-neutral-neutral);
     }
   }
 
@@ -88,7 +88,7 @@ const { t } = useI18n()
 
   &__screen-state,
   &__count {
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 }
 </style>

@@ -239,7 +239,7 @@ const isDraftEmpty = computed(() => isNullOrEmpty(draft.value.trim()))
   padding: 14px 16px;
   font-size: 13px;
   line-height: 1.55;
-  background-color: var(--p-surface-primary);
+  background-color: var(--p-surface-basic-primary);
   border-left: 3px solid transparent;
   box-shadow: 0 1px 2px rgba(var(--p-black-rock-900-rgb), 0.06);
 
@@ -254,12 +254,12 @@ const isDraftEmpty = computed(() => isNullOrEmpty(draft.value.trim()))
 
   &__author {
     font-weight: 700;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   &__date {
     font-size: 11.5px;
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 
   &__badge {

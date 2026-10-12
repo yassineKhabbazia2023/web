@@ -2,7 +2,7 @@
   <div
     class="
       conformity-payment
-      text-color--text-body
+      text-color--text-basic-body
       flex
       flex--direction-column
       flex-gap--6
@@ -70,7 +70,7 @@
           <PIcon
             :pName="benefit.iconName"
             pSize="16px"
-            pColor="var(--p-icon-action-default)"
+            pColor="var(--p-icon-basic-default)"
           />
           <span class="font-size--14 font-semibold">
             {{ t(`${PAYMENT_I18N_BASE}.${benefit.labelKey}`) }}
@@ -114,7 +114,7 @@
       <div
         v-if="hasDoneBox"
         class="
-          bg--surface-information-primary
+          bg--surface-information-primary-light
           padding--4
           flex
           flex--align-items-center
@@ -124,7 +124,7 @@
       >
         <span
           class="
-            text-color--text-heading
+            text-color--text-basic-heading
             font-size--16
             font-bold
           "

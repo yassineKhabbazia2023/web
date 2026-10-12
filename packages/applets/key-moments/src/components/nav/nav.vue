@@ -388,7 +388,7 @@ $nav-collapsed-width: 40px;
     flex: 1;
     min-width: 0;
     letter-spacing: 0.08em;
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
     opacity: 1;
     transition: opacity 0.2s ease;
   }

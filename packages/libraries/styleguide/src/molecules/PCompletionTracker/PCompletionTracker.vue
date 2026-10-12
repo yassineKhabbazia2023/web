@@ -71,7 +71,7 @@ const percentage = computed(() => {
 <style lang="scss" scoped>
 .p-completion-tracker {
   &__description {
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 }
 </style>

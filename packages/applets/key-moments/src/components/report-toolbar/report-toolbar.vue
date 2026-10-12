@@ -42,7 +42,7 @@
   margin: 0 calc(-1 * var(--key-moments-gutter));
   padding: 12px var(--key-moments-gutter);
   row-gap: 12px;
-  background-color: var(--p-surface-primary);
+  background-color: var(--p-surface-basic-primary);
   box-shadow: var(--key-moments-shadow);
 
   &__filters {

@@ -56,7 +56,7 @@ withDefaults(defineProps<{
 <style scoped lang="scss">
 .key-moments-nav {
   &__widget {
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
     background: none;
     border: none;
     border-bottom: 1px solid var(--key-moments-line);
@@ -74,7 +74,7 @@ withDefaults(defineProps<{
 
     &--hidden .key-moments-nav__widget-label {
       font-style: italic;
-      color: var(--p-text-neutral);
+      color: var(--p-text-neutral-neutral);
     }
   }
 
@@ -83,7 +83,7 @@ withDefaults(defineProps<{
   }
 
   &__widget-state {
-    color: var(--p-text-neutral);
+    color: var(--p-text-neutral-neutral);
   }
 }
 </style>

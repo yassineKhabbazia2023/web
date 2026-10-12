@@ -744,20 +744,20 @@ async function checkDocumentStatus() {
 .getaccept-poc {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #ffffff);
+  background: var(--p-surface-basic-primary, #ffffff);
   max-width: 960px;
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -769,14 +769,14 @@ async function checkDocumentStatus() {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #cdd1d4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #cdd1d4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -802,22 +802,22 @@ async function checkDocumentStatus() {
 .form-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
 }
 
 .form-input {
   padding: 8px 12px;
-  border: 1px solid var(--p-stroke-neutral, #cdd1d4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #cdd1d4);
   border-radius: 6px;
   font-size: 14px;
-  color: var(--p-text-body, #15171a);
-  background: var(--p-surface-primary, #ffffff);
+  color: var(--p-text-basic-body, #15171a);
+  background: var(--p-surface-basic-primary, #ffffff);
   transition: border-color 0.2s ease;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--p-stroke-hover, #0c4f41);
+  border-color: var(--p-stroke-basic-hover, #0c4f41);
   box-shadow: 0 0 0 2px rgba(12, 79, 65, 0.1);
 }
 
@@ -832,13 +832,13 @@ async function checkDocumentStatus() {
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   cursor: pointer;
 }
 
 .file-info {
   font-size: 12px;
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   opacity: 0.7;
   margin-top: 4px;
 }
@@ -884,7 +884,7 @@ async function checkDocumentStatus() {
 }
 
 .btn-primary {
-  background: var(--p-surface-highlight, #0c4f41);
+  background: var(--p-surface-basic-highlight, #0c4f41);
   color: #ffffff;
 }
 
@@ -894,8 +894,8 @@ async function checkDocumentStatus() {
 
 .btn-secondary {
   background: var(--p-surface-neutral-lighter, #f5f5f5);
-  color: var(--p-text-body, #15171a);
-  border: 1px solid var(--p-stroke-neutral, #cdd1d4);
+  color: var(--p-text-basic-body, #15171a);
+  border: 1px solid var(--p-stroke-neutral-neutral, #cdd1d4);
 }
 
 .btn-secondary:hover:not(:disabled) {
@@ -913,25 +913,25 @@ async function checkDocumentStatus() {
 
 .status-success {
   background: rgba(0, 184, 0, 0.08);
-  border: 1px solid var(--p-stroke-success, #00b800);
-  color: var(--p-text-success, #0a710b);
+  border: 1px solid var(--p-stroke-basic-success, #00b800);
+  color: var(--p-text-basic-success, #0a710b);
 }
 
 .status-error {
   background: rgba(220, 38, 38, 0.08);
-  border: 1px solid var(--p-stroke-error, #dc2626);
-  color: var(--p-text-error, #b91c1c);
+  border: 1px solid var(--p-stroke-basic-error, #dc2626);
+  color: var(--p-text-basic-error, #b91c1c);
 }
 
 .status-warning {
   background: rgba(245, 158, 11, 0.08);
-  border: 1px solid var(--p-stroke-warning, #f59e0b);
-  color: var(--p-text-warning, #92400e);
+  border: 1px solid var(--p-stroke-basic-warning, #f59e0b);
+  color: var(--p-text-basic-warning, #92400e);
 }
 
 /* Iframe */
 .iframe-container {
-  border: 1px solid var(--p-stroke-neutral, #cdd1d4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #cdd1d4);
   border-radius: 8px;
   overflow: hidden;
   margin-top: 16px;
@@ -957,9 +957,9 @@ async function checkDocumentStatus() {
 .empty-state {
   padding: 32px;
   text-align: center;
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   background: var(--p-surface-neutral-lighter, #f5f5f5);
-  border: 1px dashed var(--p-stroke-neutral, #cdd1d4);
+  border: 1px dashed var(--p-stroke-neutral-neutral, #cdd1d4);
   border-radius: 8px;
 }
 
@@ -982,7 +982,7 @@ async function checkDocumentStatus() {
 .status-label {
   font-weight: 600;
   font-size: 13px;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   margin-right: 8px;
 }
 
@@ -1016,7 +1016,7 @@ async function checkDocumentStatus() {
 .status-json {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 12px;
-  background: var(--p-surface-primary, #ffffff);
+  background: var(--p-surface-basic-primary, #ffffff);
   border: 1px solid var(--p-stroke-neutral-lighter, #e0e6ed);
   border-radius: 6px;
   padding: 12px;
@@ -1033,7 +1033,7 @@ async function checkDocumentStatus() {
 .events-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   margin-bottom: 12px;
 }
 
@@ -1055,18 +1055,18 @@ async function checkDocumentStatus() {
 
 .event-type {
   font-weight: 600;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   min-width: 100px;
 }
 
 .event-date {
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 12px;
 }
 
 .event-description {
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   flex: 1;
 }
 
@@ -1096,19 +1096,19 @@ async function checkDocumentStatus() {
 }
 
 .log-time {
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   opacity: 0.6;
   min-width: 80px;
 }
 
 .log-method {
   font-weight: 700;
-  color: var(--p-text-heading, #0e0f30);
+  color: var(--p-text-basic-heading, #0e0f30);
   min-width: 50px;
 }
 
 .log-url {
-  color: var(--p-text-body, #15171a);
+  color: var(--p-text-basic-body, #15171a);
   flex: 1;
 }
 

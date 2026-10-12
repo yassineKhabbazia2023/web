@@ -20,27 +20,27 @@
     }
 
     .p-breadcrumb__text {
-      color: var(--p-text-neutral);
+      color: var(--p-text-neutral-neutral);
       cursor: pointer;
 
       &:hover {
-        color: var(--p-text-active);
+        color: var(--p-text-basic-active);
       }
     }
 
     .p-breadcrumb__text--current {
-      color: var(--p-text-heading);
+      color: var(--p-text-basic-heading);
       font-weight: 600;
 
       &:hover {
-        color: var(--p-text-heading);
+        color: var(--p-text-basic-heading);
       }
     }
 
     .p-breadcrumb__trigger {
       justify-content: center;
       background-color: var(--p-button-generic-surface);
-      color: var(--p-icon-action-default);
+      color: var(--p-icon-basic-default);
     }
 
     .p-breadcrumb__trigger-icon {
@@ -48,7 +48,7 @@
     }
 
     .p-breadcrumb__trigger:hover {
-      color: var(--p-icon-action-hover);
+      color: var(--p-icon-basic-hover);
     }
   }
 }

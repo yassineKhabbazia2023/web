@@ -42,7 +42,7 @@
     <p class="font-semibold">
       {{ t('keyMoments.settings.recommendations.categoryDrawer.recommendations') }}
     </p>
-    <p class="font-small text-color--text-neutral">
+    <p class="font-small text-color--text-neutral-neutral">
       {{ t('keyMoments.settings.recommendations.categoryDrawer.recommendationsHint') }}
     </p>
 
@@ -78,14 +78,14 @@
       >
         <span
           v-if="areRecommendationsUnreadable"
-          class="font-small text-color--text-neutral"
+          class="font-small text-color--text-neutral-neutral"
           data-testid="key-moments-settings-recommendations-category-unreadable-hint"
         >
           {{ t('keyMoments.settings.recommendations.categoryDrawer.unreadableHint') }}
         </span>
         <span
           v-else-if="hasIncompleteLine"
-          class="font-small text-color--text-neutral"
+          class="font-small text-color--text-neutral-neutral"
           data-testid="key-moments-settings-recommendations-category-incomplete-hint"
         >
           {{ t('keyMoments.settings.recommendations.categoryDrawer.incompleteHint') }}

@@ -2,7 +2,7 @@
   <!-- Without the themes no line can be placed in its rubric -->
   <p
     v-if="areThemesUnreadable === true"
-    class="text-color--text-error"
+    class="text-color--text-basic-error"
     :class="isCompact ? 'margin-top--4' : 'margin-top--6'"
     :data-testid="`${testIdPrefix}-themes-error`"
   >

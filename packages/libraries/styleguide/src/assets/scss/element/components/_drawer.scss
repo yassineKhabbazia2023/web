@@ -6,7 +6,7 @@ div.el-overlay:not(.p-drawer--mini) {
 }
 
 .p-drawer {
-  color: var(--p-text-body);
+  color: var(--p-text-basic-body);
 
   @include media(md) {
     width: 50% !important;
@@ -90,7 +90,7 @@ div.el-overlay:not(.p-drawer--mini) {
   }
   .el-drawer__body {
     padding: 0 2.4rem 1.6rem;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
   }
 
   .el-drawer__footer {
@@ -99,7 +99,7 @@ div.el-overlay:not(.p-drawer--mini) {
     // the ::before fade gradient rendered above the footer box.
     overflow: visible;
     padding: 2.4rem;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
 
     &:before {
       content: '';
@@ -119,7 +119,7 @@ div.el-overlay:not(.p-drawer--mini) {
     display: flex;
     justify-content: space-between;
     min-width: 0;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
 
     > div {
       display: flex;
@@ -129,7 +129,7 @@ div.el-overlay:not(.p-drawer--mini) {
 
     &-prefix {
       justify-content: space-between;
-      color: var(--p-text-neutral);
+      color: var(--p-text-neutral-neutral);
     }
 
     &-suffix {
@@ -156,7 +156,7 @@ div.el-overlay:not(.p-drawer--mini) {
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
   }
 
   &__step-back-button {

@@ -155,7 +155,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   /* Keep wheel events from chaining out of the iframe to the page behind the drawer. */
   overscroll-behavior: contain;
-  border: 1px solid var(--p-stroke-neutral);
+  border: 1px solid var(--p-stroke-neutral-neutral);
 }
 
 .signature-step__iframe {

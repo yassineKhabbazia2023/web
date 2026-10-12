@@ -64,14 +64,14 @@ const labelId = `${props.testId}-label`
 .key-moments-filter-field {
   &__label {
     letter-spacing: 0.08em;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   &__icon {
     flex-shrink: 0;
     font-size: 12px;
     cursor: help;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 }
 </style>

@@ -1,9 +1,9 @@
 <div>
   <ul class="flex flex--justify-content-space-between list-style-none flex-gap--half">
-    <li class="bg--stroke-error flex--grow-1 height--1"></li>
+    <li class="bg--stroke-basic-error flex--grow-1 height--1"></li>
     <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
     <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
     <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
   </ul>
-  <div class="font-semibold text-color--stroke-error">Faible</div>
+  <div class="font-semibold text-color--stroke-basic-error">Faible</div>
 </div>

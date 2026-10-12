@@ -108,7 +108,7 @@ $stack-height: 420px;
   &__title {
     margin-bottom: 8px;
     letter-spacing: 0.08em;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   // Fixed height so both halves are comparable as surfaces
@@ -121,11 +121,11 @@ $stack-height: 420px;
     // Minimum height so a near-zero term still shows its label
     min-height: 28px;
     padding: 6px 8px;
-    border-bottom: 1px solid var(--p-text-white);
-    color: var(--p-text-white);
+    border-bottom: 1px solid var(--p-text-basic-white);
+    color: var(--p-text-basic-white);
 
     &--light {
-      color: var(--p-text-heading);
+      color: var(--p-text-basic-heading);
     }
   }
 
@@ -134,8 +134,8 @@ $stack-height: 420px;
   }
 
   &__total {
-    border-top: 2px solid var(--p-text-heading);
-    color: var(--p-text-heading);
+    border-top: 2px solid var(--p-text-basic-heading);
+    color: var(--p-text-basic-heading);
   }
 }
 

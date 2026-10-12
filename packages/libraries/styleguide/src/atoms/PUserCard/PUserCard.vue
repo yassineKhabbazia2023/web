@@ -157,7 +157,7 @@ const slots = useSlots()
     font-size: 2.1rem;
     line-height: 1.2;
     font-weight: 600;
-    color: var(--p-text-heading);
+    color: var(--p-text-basic-heading);
   }
 
   &__subtitle {
@@ -165,7 +165,7 @@ const slots = useSlots()
     margin-top: 4px;
     font-size: 1.6rem;
     line-height: 1.2;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -174,7 +174,7 @@ const slots = useSlots()
     margin-top: 4px;
     font-size: 1.2rem;
     line-height: 1.2;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
   }
 }
 </style>

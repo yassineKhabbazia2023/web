@@ -203,7 +203,7 @@
             <template #default="{ item }">
               <span>
                 {{ asSearchResult(item).legalName }}
-                <span class="text-color--text-neutral">({{ asSearchResult(item).siret }})</span>
+                <span class="text-color--text-neutral-neutral">({{ asSearchResult(item).siret }})</span>
               </span>
             </template>
           </PAutocomplete>

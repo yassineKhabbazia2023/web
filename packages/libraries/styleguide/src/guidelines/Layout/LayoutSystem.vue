@@ -328,19 +328,19 @@ const copyLayoutCode = async () => {
 .layout-documentation {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -352,14 +352,14 @@ const copyLayoutCode = async () => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -369,20 +369,20 @@ const copyLayoutCode = async () => {
 .breakpoints-table-container {
   overflow-x: auto;
   border-radius: 8px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .spacing-table,
 .breakpoints-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .spacing-table thead,
 .breakpoints-table thead {
   background: var( --p-surface-neutral-lighter);
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 .spacing-table th,
@@ -400,7 +400,7 @@ const copyLayoutCode = async () => {
 .breakpoints-table td {
   padding: 16px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
   line-height: 1.4;
 }
@@ -416,14 +416,14 @@ const copyLayoutCode = async () => {
   background: var( --p-surface-neutral-lighter);
   padding: 2px 6px;
   border-radius: 3px;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
 }
 
 /* Interactive Demo */
 .layout-demo-container {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   padding: 24px;
 }
 
@@ -449,7 +449,7 @@ const copyLayoutCode = async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-weight: 500;
   font-size: 14px;
 }
@@ -467,7 +467,7 @@ const copyLayoutCode = async () => {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: var(--p-surface-information-primary, #E3F2FD);
+  background: var(--p-surface-information-primary-light, #E3F2FD);
   border: 2px solid var(--p-stroke-information-primary, #1976D2);
   border-radius: 50%;
   cursor: pointer;
@@ -476,24 +476,24 @@ const copyLayoutCode = async () => {
 .control-select {
   flex: 1;
   padding: 6px 10px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 4px;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
 }
 
 .control-value {
   min-width: 40px;
   font-weight: 600;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
 }
 
 .layout-demo {
   margin-bottom: 24px;
   padding: 20px;
   background: var( --p-surface-neutral-lighter);
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
 }
 
@@ -509,18 +509,18 @@ const copyLayoutCode = async () => {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   transition: all 0.3s ease;
 }
 
 .demo-col-light {
   background: var(--p-surface-information-lighter, #E3F2FD);
-  border: 1px solid var(--p-stroke-information-secondary, #2C2FD6);
+  border: 1px solid var(--p-stroke-basic-information-secondary, #2C2FD6);
 }
 
 .demo-col-dark {
   background: var(--p-surface-success-lighter, #E8F5E8);
-  border: 1px solid var(--p-stroke-success, #00B800);
+  border: 1px solid var(--p-stroke-basic-success, #00B800);
 }
 
 .demo-code {
@@ -531,7 +531,7 @@ const copyLayoutCode = async () => {
 }
 
 .code-title {
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 12px;
   font-size: 16px;
   font-weight: 600;
@@ -540,7 +540,7 @@ const copyLayoutCode = async () => {
 .code-block {
   margin-bottom: 16px;
   padding: 16px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   border: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
   border-radius: 6px;
   overflow-x: auto;
@@ -550,16 +550,16 @@ const copyLayoutCode = async () => {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   white-space: pre;
 }
 
 .copy-btn {
   padding: 8px 12px;
   font-size: 12px;
-  border: 1px solid var(--p-stroke-default-primary, #ADB5BD);
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  border: 1px solid var(--p-stroke-neutral-default-primary, #ADB5BD);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -568,7 +568,7 @@ const copyLayoutCode = async () => {
 
 .copy-btn:hover {
   background: var(--p-surface-state-hover, #E7FFFF);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .copy-btn:active {
@@ -592,12 +592,12 @@ const copyLayoutCode = async () => {
 .principle-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 12px;
 }
 
 .principle-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.5;
   margin-bottom: 16px;
 }
@@ -609,13 +609,13 @@ const copyLayoutCode = async () => {
 }
 
 .spacing-demo {
-  background: var(--p-surface-information-primary, #E3F2FD);
+  background: var(--p-surface-information-primary-light, #E3F2FD);
   border: 1px solid var(--p-stroke-information-primary, #1976D2);
   border-radius: 4px;
   padding: 8px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--p-text-information-primary, #126778);
+  color: var(--p-text-basic-information-primary, #126778);
 }
 
 .spacing-4 { width: 4px; }
@@ -625,10 +625,10 @@ const copyLayoutCode = async () => {
 .principle-highlight {
   padding: 12px;
   background: var(--p-surface-success-lighter, #E8F5E8);
-  border: 1px solid var(--p-stroke-success, #00B800);
+  border: 1px solid var(--p-stroke-basic-success, #00B800);
   border-radius: 6px;
   text-align: center;
-  color: var(--p-text-success, #0A710B);
+  color: var(--p-text-basic-success, #0A710B);
 }
 
 .responsive-illustration {

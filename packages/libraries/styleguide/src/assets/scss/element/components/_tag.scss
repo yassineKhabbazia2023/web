@@ -35,10 +35,10 @@ $tag: (
     }
 
     &#{$self}--success {
-      --el-tag-bg-color: var(--p-surface-success);
-      --el-tag-border-color: var(--p-surface-success);
-      --el-tag-hover-color: var(--p-text-success);
-      --el-tag-text-color: var(--p-text-success);
+      --el-tag-bg-color: var(--p-surface-basic-success);
+      --el-tag-border-color: var(--p-surface-basic-success);
+      --el-tag-hover-color: var(--p-text-basic-success);
+      --el-tag-text-color: var(--p-text-basic-success);
     }
 
     &#{$self}--light-green {
@@ -63,10 +63,10 @@ $tag: (
     }
 
     &#{$self}--warning {
-      --el-tag-bg-color: var(--p-surface-warning);
-      --el-tag-border-color: var(--p-surface-warning);
-      --el-tag-hover-color: var(--p-text-warning);
-      --el-tag-text-color: var(--p-text-warning);
+      --el-tag-bg-color: var(--p-surface-basic-warning);
+      --el-tag-border-color: var(--p-surface-basic-warning);
+      --el-tag-hover-color: var(--p-text-basic-warning);
+      --el-tag-text-color: var(--p-text-basic-warning);
     }
 
     &#{$self}--orange {
@@ -77,10 +77,10 @@ $tag: (
     }
 
     &#{$self}--danger {
-      --el-tag-bg-color: var(--p-surface-error);
-      --el-tag-border-color: var(--p-surface-error);
-      --el-tag-hover-color: var(--p-text-error);
-      --el-tag-text-color: var(--p-text-error);
+      --el-tag-bg-color: var(--p-surface-basic-error);
+      --el-tag-border-color: var(--p-surface-basic-error);
+      --el-tag-hover-color: var(--p-text-basic-error);
+      --el-tag-text-color: var(--p-text-basic-error);
     }
 
     &#{$self}--red {
@@ -91,10 +91,10 @@ $tag: (
     }
 
     &#{$self}--info {
-      --el-tag-bg-color: var(--p-surface-information-primary);
-      --el-tag-border-color: var(--p-surface-information-primary);
-      --el-tag-hover-color: var(--p-text-information-primary);
-      --el-tag-text-color: var(--p-text-information-primary);
+      --el-tag-bg-color: var(--p-surface-information-primary-light);
+      --el-tag-border-color: var(--p-surface-information-primary-light);
+      --el-tag-hover-color: var(--p-text-basic-information-primary);
+      --el-tag-text-color: var(--p-text-basic-information-primary);
     }
 
     &#{$self}--purple {
@@ -149,8 +149,8 @@ $tag: (
     &#{$self}--disabled {
       --el-tag-bg-color: var(--p-surface-state-disabled);
       --el-tag-border-color: var(--p-surface-state-disabled);
-      --el-tag-hover-color: var(--p-text-disabled);
-      --el-tag-text-color: var(--p-text-disabled);
+      --el-tag-hover-color: var(--p-text-basic-disabled);
+      --el-tag-text-color: var(--p-text-basic-disabled);
     }
 
     &#{$self}--lighter-gray {
@@ -239,9 +239,9 @@ $tag: (
   }
 
   &--type-error {
-    background: var(--p-surface-error);
-    border-color: var(--p-surface-error);
-    color: var(--p-text-error);
+    background: var(--p-surface-basic-error);
+    border-color: var(--p-surface-basic-error);
+    color: var(--p-text-basic-error);
   }
 
   &--type-dark-green {
@@ -253,10 +253,10 @@ $tag: (
   &--type-white {
     background: var(--p-white);
     border: none;
-    color: var(--p-text-body);
+    color: var(--p-text-basic-body);
 
     .p-icon {
-      color: var(--p-icon-secondary);
+      color: var(--p-icon-basic-secondary);
     }
   }
 

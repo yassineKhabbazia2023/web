@@ -1,6 +1,6 @@
 // css3 var in packages/theme-chalk/src/input.scss
 $input: (
-  'clear-hover-color': var(--p-stroke-default-secondary),
+  'clear-hover-color': var(--p-stroke-basic-default-secondary),
   'border-color': var(--p-white),
   'hover-border-color': var(--p-white)
 );
@@ -16,13 +16,13 @@ $input-font-size: (
 
 div.el-textarea {
   box-shadow: none;
-  border-bottom: 2px solid var(--p-stroke-default-secondary);
+  border-bottom: 2px solid var(--p-stroke-basic-default-secondary);
   &:hover {
-    border-bottom: 2px solid var(--p-stroke-hover);
+    border-bottom: 2px solid var(--p-stroke-basic-hover);
   }
 
   &.is-disabled {
-    border-bottom-color: var(--p-stroke-darker);
+    border-bottom-color: var(--p-stroke-neutral-darker);
     .el-textarea__inner {
       box-shadow: none;
     }
@@ -49,9 +49,9 @@ div.el-textarea {
       display: none;
     }
   }
-  border-bottom: 2px solid var(--p-stroke-default-secondary);
+  border-bottom: 2px solid var(--p-stroke-basic-default-secondary);
   &:hover {
-    border-bottom: 2px solid var(--p-stroke-hover);
+    border-bottom: 2px solid var(--p-stroke-basic-hover);
   }
 
   .el-input__icon {
@@ -80,12 +80,12 @@ div.el-textarea {
 
   .el-input__suffix .el-input__password,
   .el-input__suffix .el-input__password:hover {
-    color: var(--p-icon-secondary);
+    color: var(--p-icon-basic-secondary);
   }
 
   &:has(.el-input__inner[type='search']) {
     .el-input__prefix {
-      color: var(--p-icon-secondary);
+      color: var(--p-icon-basic-secondary);
     }
   }
 
@@ -101,7 +101,7 @@ div.el-textarea {
   &.is-disabled {
     --el-disabled-border-color: transparent;
 
-    border-bottom-color: var(--p-stroke-darker);
+    border-bottom-color: var(--p-stroke-neutral-darker);
   }
 
   &.el-date-editor.el-date-editor--date {
@@ -111,6 +111,6 @@ div.el-textarea {
 
 .el-autocomplete {
   .el-input__prefix {
-    color: var(--p-icon-secondary);
+    color: var(--p-icon-basic-secondary);
   }
 }

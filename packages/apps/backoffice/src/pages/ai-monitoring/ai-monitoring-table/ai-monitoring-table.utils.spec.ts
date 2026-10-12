@@ -110,11 +110,11 @@ describe('ai-monitoring-table.utils', () => {
 
   describe('getEvaluationColor', () => {
     it('should return success color for positive evaluation', () => {
-      expect(getEvaluationColor(true)).toBe(AppColors.ICON_SUCCESS)
+      expect(getEvaluationColor(true)).toBe(AppColors.ICON_BASIC_SUCCESS)
     })
 
     it('should return error color for negative evaluation', () => {
-      expect(getEvaluationColor(false)).toBe(AppColors.ICON_ERROR)
+      expect(getEvaluationColor(false)).toBe(AppColors.ICON_BASIC_ERROR)
     })
   })
 })

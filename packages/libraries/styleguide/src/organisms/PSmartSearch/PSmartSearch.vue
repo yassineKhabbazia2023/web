@@ -39,7 +39,7 @@
                 data-testid="p-smart-search-switch"
               />
               <span
-                class="p-smart-search__switch-label font-size--14 text-color--text-neutral"
+                class="p-smart-search__switch-label font-size--14 text-color--text-neutral-neutral"
                 data-testid="p-smart-search-switch-label"
               >
                 {{ pSwitchLabel }}
@@ -75,7 +75,7 @@
           <div class="p-smart-search__ai-row flex flex-gap--2 min-width--full flex--align-items-stretch">
             <PIcon
               pName="stars"
-              class="p-smart-search__ai-stars flex--shrink-0 text-color--text-body margin-top--1"
+              class="p-smart-search__ai-stars flex--shrink-0 text-color--text-basic-body margin-top--1"
               data-testid="p-smart-search-ai-icon"
             />
             <textarea
@@ -83,7 +83,13 @@
               v-model="searchValue"
               :placeholder="pAiPlaceholder"
               :disabled="pDisabled"
-              class="p-smart-search__ai-textarea font-size--16 text-color--text-neutral bg--transparent flex--grow-1"
+              class="
+                p-smart-search__ai-textarea
+                font-size--16
+                text-color--text-neutral-neutral
+                bg--transparent
+                flex--grow-1
+              "
               data-testid="p-smart-search-textarea"
             />
             <div class="flex flex--direction-column flex--justify-content-space-between flex--shrink-0">

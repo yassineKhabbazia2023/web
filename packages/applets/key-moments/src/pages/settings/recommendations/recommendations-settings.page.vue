@@ -8,7 +8,7 @@
         margin-bottom--4
       "
     >
-      <span class="text-color--text-neutral">
+      <span class="text-color--text-neutral-neutral">
         {{ t('keyMoments.settings.recommendations.categories.count', { count: categories.length }, categories.length) }}
       </span>
 
@@ -26,7 +26,7 @@
     <p
       class="
         font-small
-        text-color--text-neutral
+        text-color--text-neutral-neutral
         margin-bottom--2
       "
     >
@@ -50,7 +50,7 @@
 
     <p
       v-else-if="categories.length === 0"
-      class="text-color--text-neutral"
+      class="text-color--text-neutral-neutral"
       data-testid="key-moments-settings-recommendations-categories-empty"
     >
       {{ t('keyMoments.settings.recommendations.categories.empty') }}
@@ -78,7 +78,7 @@
             class="
               key-moments-categories__pitch
               font-small
-              text-color--text-neutral
+              text-color--text-neutral-neutral
               overflow-hidden
               text-overflow--ellipsis
               no-wrap

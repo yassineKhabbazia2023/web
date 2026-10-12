@@ -474,19 +474,19 @@ const copyToClipboard = async (text: string) => {
 .typography-documentation {
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .section-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
 }
 
 .intro {
   margin-bottom: 32px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -498,14 +498,14 @@ const copyToClipboard = async (text: string) => {
 .subsection-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--p-stroke-neutral, #CDD1D4);
+  border-bottom: 2px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .subsection-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -517,16 +517,16 @@ const copyToClipboard = async (text: string) => {
 }
 
 .example-item {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .example-item:hover {
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -540,7 +540,7 @@ const copyToClipboard = async (text: string) => {
 }
 
 .typography-sample {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.4;
   max-width: 100%;
   overflow: hidden;
@@ -553,14 +553,14 @@ const copyToClipboard = async (text: string) => {
 
 .example-name {
   font-weight: 700;
-  color: var(--p-text-heading, #0E0F30);
+  color: var(--p-text-basic-heading, #0E0F30);
   margin-bottom: 8px;
   font-size: 16px;
 }
 
 .example-class {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   margin-bottom: 8px;
   font-size: 13px;
   background: rgba(9, 60, 50, 0.1);
@@ -570,16 +570,16 @@ const copyToClipboard = async (text: string) => {
 }
 
 .example-description {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   line-height: 1.4;
   font-size: 14px;
 }
 
 /* Interactive Demo */
 .interactive-demo {
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
   padding: 24px;
 }
 
@@ -605,24 +605,24 @@ const copyToClipboard = async (text: string) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-weight: 500;
   font-size: 14px;
 }
 
 .control-select {
   padding: 8px 12px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 6px;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
 }
 
 .demo-preview {
   padding: 32px;
   background: var( --p-surface-neutral-lighter);
-  border: 2px dashed var(--p-stroke-neutral, #CDD1D4);
+  border: 2px dashed var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 8px;
   margin-bottom: 20px;
   min-height: 100px;
@@ -631,7 +631,7 @@ const copyToClipboard = async (text: string) => {
 }
 
 .demo-text {
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   max-width: 100%;
 }
 
@@ -644,19 +644,19 @@ const copyToClipboard = async (text: string) => {
 
 .applied-classes {
   margin-bottom: 12px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
 }
 
 .no-classes {
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
   font-style: italic;
 }
 
 .applied-class {
   display: inline-block;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-highlight, #093C32);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-highlight, #093C32);
   padding: 2px 6px;
   border-radius: 3px;
   margin: 2px 4px 2px 0;
@@ -673,9 +673,9 @@ const copyToClipboard = async (text: string) => {
 .reset-btn {
   padding: 8px 12px;
   font-size: 12px;
-  border: 1px solid var(--p-stroke-default-primary, #ADB5BD);
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  border: 1px solid var(--p-stroke-neutral-default-primary, #ADB5BD);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -685,7 +685,7 @@ const copyToClipboard = async (text: string) => {
 .copy-btn:hover,
 .reset-btn:hover {
   background: var(--p-surface-state-hover, #E7FFFF);
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
 }
 
 .copy-btn:active,
@@ -701,22 +701,22 @@ const copyToClipboard = async (text: string) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-weight: 500;
 }
 
 .text-input {
   padding: 12px 16px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
   border-radius: 6px;
-  background: var(--p-surface-primary, #FFFFFF);
-  color: var(--p-text-body, #15171A);
+  background: var(--p-surface-basic-primary, #FFFFFF);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
 }
 
 .text-input:focus {
   outline: none;
-  border-color: var(--p-stroke-hover, #0C4F41);
+  border-color: var(--p-stroke-basic-hover, #0C4F41);
   box-shadow: 0 0 0 2px rgba(12, 79, 65, 0.1);
 }
 
@@ -724,18 +724,18 @@ const copyToClipboard = async (text: string) => {
 .reference-table-container {
   overflow-x: auto;
   border-radius: 8px;
-  border: 1px solid var(--p-stroke-neutral, #CDD1D4);
+  border: 1px solid var(--p-stroke-neutral-neutral, #CDD1D4);
 }
 
 .reference-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--p-surface-primary, #FFFFFF);
+  background: var(--p-surface-basic-primary, #FFFFFF);
 }
 
 .reference-table thead {
   background: var( --p-surface-neutral-lighter);
-  color: var(--p-text-neutral, #889BA8);
+  color: var(--p-text-neutral-neutral, #889BA8);
 }
 
 .reference-table th {
@@ -751,7 +751,7 @@ const copyToClipboard = async (text: string) => {
 .reference-table td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--p-stroke-neutral-lighter, #E0E6ED);
-  color: var(--p-text-body, #15171A);
+  color: var(--p-text-basic-body, #15171A);
   font-size: 14px;
   vertical-align: middle;
 }
@@ -759,7 +759,7 @@ const copyToClipboard = async (text: string) => {
 .group-header {
   background: var(--p-surface-information-lighter, #E3F2FD) !important;
   font-weight: 700 !important;
-  color: var(--p-text-information-primary, #126778) !important;
+  color: var(--p-text-basic-information-primary, #126778) !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 12px;
@@ -779,7 +779,7 @@ const copyToClipboard = async (text: string) => {
   background: var( --p-surface-neutral-lighter);
   padding: 2px 6px;
   border-radius: 3px;
-  color: var(--p-text-highlight, #093C32);
+  color: var(--p-text-basic-highlight, #093C32);
   font-size: 12px;
 }
 
